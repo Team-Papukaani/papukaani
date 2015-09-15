@@ -37,8 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'papukaaniApp',
-    'django_jenkins'
+    'papukaaniApp'
 )
 
 MIDDLEWARE_CLASSES = (

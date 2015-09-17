@@ -13,6 +13,7 @@ class MapPoint(models.Model):
     longitude = models.DecimalField(max_digits=12, decimal_places=9)
     altitude = models.DecimalField(max_digits=8, decimal_places=3)
     temperature = models.DecimalField(max_digits=5, decimal_places=2)
+    public = models.BooleanField()
 
     class Meta:
         unique_together = (("creature", "timestamp"),)
@@ -21,3 +22,4 @@ class MapPoint(models.Model):
         point['creature'], was_created = Creature.objects.get_or_create(name="1", gpsNumber=point["gpsNumber"])
         point.pop('gpsNumber')
         super(MapPoint, self).__init__(**point)
+

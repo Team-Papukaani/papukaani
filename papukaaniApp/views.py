@@ -7,7 +7,9 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from .models import Creature
+import json
 import timeit
+
 
 
 def index(request):
@@ -44,6 +46,12 @@ def _redirect_with_param(to, param):
     return response
 
 
+def set_public(request):
+    if request.method == 'POST':
+        if 'data' in request.POST:
+            points = json.loads(request.POST['data'])
+
+
 def creatures(request):
     demcreature = Creature()  # placeholder
     demcreature.name = "Koecreature"
@@ -69,3 +77,4 @@ def creature(request, creature_id):
     }
 
     return render(request, 'papukaaniApp/creature.html', context)
+

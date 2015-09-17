@@ -7,6 +7,8 @@ create_map_with_points = function(points) {
     map.addLayer(osm);
     map.setView([61.0, 20.0], 5);
 
-    L.polyline(points, {smoothFactor: 25.0}).addTo(map);
+    if(points){
+        L.polyline(points, {smoothFactor: 25.0}).addTo(map);
+    }
 
 }

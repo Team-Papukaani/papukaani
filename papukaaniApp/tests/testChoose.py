@@ -7,17 +7,17 @@ class TestChoose(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self. creature = Creature.objects.create(name="Creature", gpsNumber="1")
+        self. creature = Creature.objects.create(name="Creature")
         self.A = MapPoint.objects.create(
-            gpsNumber = "1",
+            creature = self.creature,
             latitude = 22.22,
             longitude = 22.22,
             altitude = 222.22,
             temperature = 22.2,
-            timestamp = datetime.now()
+            timestamp = datetime.now(),
         )
         self.B = MapPoint.objects.create(
-            gpsNumber = "1",
+            creature = self.creature,
             latitude = 11.22,
             longitude = 11.22,
             altitude = 111.22,
@@ -27,6 +27,16 @@ class TestChoose(TestCase):
 
 
     def test(self):
-        self.assertTrue(True)
+        Aid = self.A.id
+        Bid = self.B.id
+        response = self.c.post('/papukaani/choose/', {'data' : '[{"id" : '+str(Aid)+', "public" : 1},{"id" : '+str(Bid)+', "public" : 0}]'})
+
+        self.A = MapPoint.objects.get(id=Aid)
+        self.B = MapPoint.objects.get(id=Bid)
+
+        self.assertTrue(self.A.public)
+        self.assertFalse(self.B.public)
+
+
 
 

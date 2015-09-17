@@ -13,11 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Creature',
             fields=[
-<<<<<<< HEAD
-                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
-=======
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
->>>>>>> 50a08a16168419ca65f66fbc4bb52f71c064d20e
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
                 ('name', models.CharField(max_length=300)),
                 ('gpsNumber', models.IntegerField()),
             ],
@@ -25,23 +21,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MapPoint',
             fields=[
-<<<<<<< HEAD
-                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
-                ('timestamp', models.DateTimeField()),
-                ('latitude', models.DecimalField(decimal_places=9, max_digits=12)),
-                ('longitude', models.DecimalField(decimal_places=9, max_digits=12)),
-                ('altitude', models.DecimalField(decimal_places=3, max_digits=8)),
-                ('temperature', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('public', models.BooleanField(default=False)),
-=======
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
                 ('timestamp', models.DateTimeField()),
                 ('latitude', models.DecimalField(max_digits=12, decimal_places=9)),
                 ('longitude', models.DecimalField(max_digits=12, decimal_places=9)),
                 ('altitude', models.DecimalField(max_digits=8, decimal_places=3)),
                 ('temperature', models.DecimalField(max_digits=5, decimal_places=2)),
-                ('public', models.BooleanField()),
->>>>>>> 50a08a16168419ca65f66fbc4bb52f71c064d20e
+                ('public', models.BooleanField(default=False)),
                 ('creature', models.ForeignKey(to='papukaaniApp.Creature')),
             ],
         ),

@@ -9,7 +9,6 @@ class TestChoose(TestCase):
         self.c = Client()
         self. creature = Creature.objects.create(name="Creature", gpsNumber="1")
         self.A = MapPoint.objects.create(
-            creature = self.creature,
             gpsNumber = "1",
             latitude = 22.22,
             longitude = 22.22,
@@ -18,7 +17,6 @@ class TestChoose(TestCase):
             timestamp = datetime.now()
         )
         self.B = MapPoint.objects.create(
-            creature = self.creature,
             gpsNumber = "1",
             latitude = 11.22,
             longitude = 11.22,

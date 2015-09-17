@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.test import Client
-from papukaaniApp.models import MapPoint
+from papukaaniApp.models import *
 from unittest import mock
 from datetime import datetime
 
@@ -45,17 +45,19 @@ class FileUploadTest(TestCase):
         self.assertTrue(after == before)
 
     def test_new_mappoints_can_be_added_to_database(self):
-        dict = {"gpsNumber": 1, "timestamp": datetime.now(), "latitude": -10.0, "longitude": 10.0, "altitude": 10.0,
+        dict = {"timestamp": datetime.now(), "latitude": -10.0, "longitude": 10.0, "altitude": 10.0,
                 "temperature": 10.0}
-        point = MapPoint(**dict)
+        creature, was_created = Creature.objects.get_or_create(name="Pekka")
+        point = MapPoint(creature=creature, **dict)
         point.save()
         assert (MapPoint.objects.filter(latitude=-10.0, longitude=10.0, temperature=10.0,
                                         timestamp=point.timestamp)).exists()
 
     def test_existing_mappoints_cannot_be_added_to_database(self):
-        dict = {"gpsNumber": 1, "timestamp": datetime.now(), "latitude": -10.0, "longitude": 10.0, "altitude": 10.0,
+        dict = {"timestamp": datetime.now(), "latitude": -10.0, "longitude": 10.0, "altitude": 10.0,
                 "temperature": 10.0}
-        point = MapPoint(**dict)
+        creature, was_created = Creature.objects.get_or_create(name="Pekka")
+        point = MapPoint(creature=creature, **dict)
         try:
             point.save()
             point.save()

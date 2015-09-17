@@ -8,8 +8,8 @@ def choose(request):
         if 'data' in request.POST:
             points = json.loads(request.POST['data'])
             for point in points:
-                mPoint = MapPoint.objects.get(point[u'id'])
-                mPoint.public = point[u'public']
+                mPoint = MapPoint.objects.get(id = point['id'])
+                mPoint.public = point['public']
                 mPoint.save()
 
             return redirect_with_param(choose, '?m=Valitut pisteet asetettu julkisiksi!')

@@ -15,7 +15,7 @@ def ecotones_parse(file):
         alt = fields[15]
         if len(alt) == 0:
             alt = 0
-        e_dict = {"gpsNumber": int(fields[1]),
+        e_dict = {
                   "timestamp": parsetime(fields[2]),
                   # "smstime": int(fields[3]),
                   "latitude": float(fields[4]),

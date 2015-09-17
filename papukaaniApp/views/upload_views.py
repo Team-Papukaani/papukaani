@@ -1,4 +1,4 @@
-from papukaaniApp.models import MapPoint
+from papukaaniApp.models import *
 from papukaaniApp.utils.parser import ecotones_parse
 from django.shortcuts import render
 from papukaaniApp.utils.view_utils import redirect_with_param
@@ -25,6 +25,6 @@ def upload(request):
             MapPoint.objects.bulk_create(newpoints)
 
             latlongs = [[mapPoint.latitude, mapPoint.longitude] for mapPoint in points]
-            return render(request, 'choose.html', {'points': latlongs})
+            return render(request, 'upload.html', {'points': latlongs})
 
         return redirect_with_param(upload, "?m=Et valinnut ladattavaa tiedostoa!")

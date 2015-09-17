@@ -1,9 +1,9 @@
 from django.db import models
+from django.db.models.signals import pre_init
 
 
 class Creature(models.Model):
     name = models.CharField(max_length=300)
-    gpsNumber = models.IntegerField()  # gpsNumber integer or varchar?
 
 
 class MapPoint(models.Model):
@@ -19,7 +19,6 @@ class MapPoint(models.Model):
         unique_together = (("creature", "timestamp"),)
 
     def __init__(self, **point):
-        point['creature'], was_created = Creature.objects.get_or_create(name="1", gpsNumber=point["gpsNumber"])
+        point['creature'], was_created = Creature.objects.get_or_create(name="1")
         point['public'] = 0
-        point.pop('gpsNumber')
         super(MapPoint, self).__init__(**point)

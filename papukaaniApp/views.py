@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.serializers import serialize
 from .models import MapPoint
 from datetime import datetime
+import timeit
 
 
 def index(request):
@@ -16,8 +17,12 @@ def upload(request):
     if request.method == 'POST' and 'file' in request.FILES:
         file = request.FILES['file']
         data = ecotones_parse(file)
-        points = [MapPoint.objects.create(**point) for point in data]
-        return render(request, 'index.html', {'points': serialize('json', points)})
+
+        points = [MapPoint(**point) for point in data]
+        MapPoint.objects.bulk_create(points)
+
+        latlongs = [[mapPoint.latitude, mapPoint.longitude] for mapPoint in points]
+        return render(request, 'choose.html', {'points': latlongs})
     return redirect(index)
 
 

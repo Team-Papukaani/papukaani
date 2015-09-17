@@ -11,7 +11,7 @@ def ecotones_parse(file):
             alt = 0
         e_dict = {"timestamp": parsetime(fields[2]), "latitude": float(fields[4]), "longitude": float(fields[5]),
                   "altitude": float(alt),
-                  "temperature": float(fields[8])};
+                  "temperature": float(fields[8]), "gpsNumber" : fields[0]};
         entries.append(e_dict)
     return entries
 

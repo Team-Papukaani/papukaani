@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body onload="init({{points}})">
+    <h2>Lataa tiedosto</h2>
+    <form form enctype="multipart/form-data" action="upload/" method="post"> {% csrf_token %}
+        <input type="file" id="file" name="file">
+        <input type="submit" value="Lähetä">
+    </form>
+    <p>{{message}}</p>
+    {% load staticfiles %}
+    <script src="{% static 'papukaani/js/upload.js' %}"></script>
+
+</body>
+</html>

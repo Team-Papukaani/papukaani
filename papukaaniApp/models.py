@@ -3,10 +3,11 @@ from django.db import models
 
 class Creature(models.Model):
     name = models.CharField(max_length=300)
-    gpsNumber = models.IntegerField(max_length=20)
+    gpsNumber = models.IntegerField() # gpsNumber integer or varchar?
 
 
 class MapPoint(models.Model):
+    creature = models.ForeignKey(Creature)
     timestamp = models.DateTimeField()
     latitude = models.DecimalField(max_digits=12, decimal_places=9)  # decimals are important, float approximates
     longitude = models.DecimalField(max_digits=12, decimal_places=9)

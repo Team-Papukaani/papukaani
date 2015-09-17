@@ -1,0 +1,6 @@
+moi3
+<ul>
+{% for creature in creature_list %}
+    <li><a href="{% url 'creature' creature.id %}">{{ creature.name }}</a></li>
+{% endfor %}
+</ul>

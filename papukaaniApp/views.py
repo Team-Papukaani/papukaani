@@ -32,7 +32,13 @@ def upload(request):
             except:
                 return _redirect_with_param(upload, "?m=Tiedostosi formaatti ei ole kelvollinen!")
             points = [MapPoint(**point) for point in data]
-            MapPoint.objects.bulk_create(points)
+            newpoints = []
+            for point in points:
+                if MapPoint.objects.filter(creature=point.creature, timestamp=point.timestamp).exists():
+                    pass
+                else:
+                    newpoints.append(point)
+            MapPoint.objects.bulk_create(newpoints)
 
             latlongs = [[mapPoint.latitude, mapPoint.longitude] for mapPoint in points]
             return render(request, 'choose.html', {'points': latlongs})

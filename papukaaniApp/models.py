@@ -20,6 +20,6 @@ class MapPoint(models.Model):
 
     def __init__(self, **point):
         point['creature'], was_created = Creature.objects.get_or_create(name="1", gpsNumber=point["gpsNumber"])
+        point['public'] = 0
         point.pop('gpsNumber')
         super(MapPoint, self).__init__(**point)
-

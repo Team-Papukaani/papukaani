@@ -28,17 +28,8 @@ class FileUploadTest(TestCase):
         after = MapPoint.objects.all().count()
         self.assertTrue(after > before)
 
-    def test_file_upload_response_contains_json(self):
-        with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post('/papukaani/upload/', {'file' : file})
-
-        self.assertTrue("latitude" in  str(response.content))
-        self.assertTrue("[{" in  str(response.content))
-        self.assertTrue("longitude" in  str(response.content))
-
     def test_invalid_file_does_not_cause_exception(self):
         with open(_filePath+"invalid.txt") as file:
             response = self.c.post('/papukaani/upload/', {'file' : file})
 
         self.assertTrue(response.status_code == 302)
-

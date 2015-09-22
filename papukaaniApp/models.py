@@ -18,8 +18,3 @@ class MapPoint(models.Model):
 
     class Meta:
         unique_together = (("gpsNumber", "timestamp"),)
-
-    def __init__(self, **point):
-        point['creature'], was_created = Creature.objects.get_or_create(name="1")
-        point['public'] = 0
-        super(MapPoint, self).__init__(**point)

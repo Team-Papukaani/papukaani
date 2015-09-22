@@ -27,14 +27,21 @@ class TestChoose(TestCase):
             timestamp=datetime.now()
         )
 
-    def test(self):
+    def test_post_with_data_changes_database_entries(self):
         Aid = self.A.id
         Bid = self.B.id
-        response = self.c.post('/papukaani/choose/', {
-            'data': '[{"id" : ' + str(Aid) + ', "public" : 1},{"id" : ' + str(Bid) + ', "public" : 0}]'})
+        response = self.c.post('/papukaani/choose/', {'data' : '[{"id" : '+str(Aid)+', "public" : 1},{"id" : '+str(Bid)+', "public" : 0}]'})
 
         self.A = MapPoint.objects.get(id=Aid)
         self.B = MapPoint.objects.get(id=Bid)
 
         self.assertTrue(self.A.public)
         self.assertFalse(self.B.public)
+
+    def test_get_returns_200(self):
+        response = self.c.get('/papukaani/choose/')
+        self.assertTrue(response.status_code == 200)
+
+    def test_post_without_data_is_redirected(self):
+        response = self.c.post('/papukaani/choose/')
+        self.assertTrue(response.status_code == 302)

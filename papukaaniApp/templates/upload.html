@@ -11,19 +11,21 @@
     <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 </head>
 <body>
-    <h2>Lataa tiedosto</h2>
-    <form enctype="multipart/form-data"  method="post"> {% csrf_token %}
-        <input type="file" id="file" name="file">
-        <input type="submit" value="Lähetä">
-    </form>
-    <p>{{message}}</p>
+{% include "papukaaniApp/navigation.html" %}
+<h2>Lataa tiedosto</h2>
 
-    <div id="map"></div>
-    <script>
-        {% autoescape off %}
+<form enctype="multipart/form-data" method="post"> {% csrf_token %}
+    <input type="file" id="file" name="file">
+    <input type="submit" value="Lähetä">
+</form>
+<p>{{ message }}</p>
+
+<div id="map"></div>
+<script>
+    {% autoescape off %}
         create_map_with_points('{{points}}')
-        {% endautoescape%}
-    </script>
+    {% endautoescape%}
+</script>
 
 
 </body>

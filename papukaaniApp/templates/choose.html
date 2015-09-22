@@ -14,15 +14,15 @@
 </head>
 
 <body>
-
+{% include "papukaaniApp/navigation.html" %}
 
 <div id="map" style="height: 400px;width: 400px;clear:none"></div>
 
 {{ points|length }}
 {% autoescape off %}
-<script>
-    init('{{points}}')
-</script>
+    <script>
+        init('{{points}}')
+    </script>
 {% endautoescape %}
 
 </body>

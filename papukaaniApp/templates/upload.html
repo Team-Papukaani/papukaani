@@ -10,6 +10,7 @@
     <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 </head>
 <body>
+    {% include "papukaaniApp/navigation.html" %}
     <h2>Lataa tiedosto</h2>
     <form enctype="multipart/form-data"  method="post"> {% csrf_token %}
         <input type="file" id="file" name="file">

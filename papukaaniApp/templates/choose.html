@@ -12,13 +12,14 @@
 
 </head>
 <body>
+    {% include "papukaaniApp/navigation.html" %}
 
-<div id="map" style="height: 400px;width: 400px;clear:none"></div>
+    <div id="map" style="height: 400px;width: 400px;clear:none"></div>
 
-{{ points|length }}
+    {{ points|length }}
 
-<script>
-    create_map_with_points({{ points }})
-</script>
+    <script>
+        create_map_with_points({{ points }})
+    </script>
 </body>
 </html>

@@ -7,22 +7,25 @@
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 </head>
 <body>
-    {% include "papukaaniApp/navigation.html" %}
-    <h2>Lataa tiedosto</h2>
-    <form enctype="multipart/form-data"  method="post"> {% csrf_token %}
-        <input type="file" id="file" name="file">
-        <input type="submit" value="Lähetä">
-    </form>
-    <p>{{message}}</p>
+{% include "papukaaniApp/navigation.html" %}
+<h2>Lataa tiedosto</h2>
 
-    <div id="map"></div>
+<form enctype="multipart/form-data" method="post"> {% csrf_token %}
+    <input type="file" id="file" name="file">
+    <input type="submit" value="Lähetä">
+</form>
+<p>{{ message }}</p>
 
-    <script>
-        create_map_with_points({{points}})
-    </script>
+<div id="map"></div>
+<script>
+    {% autoescape off %}
+        create_map_with_points('{{points}}')
+    {% endautoescape%}
+</script>
 
 
 </body>

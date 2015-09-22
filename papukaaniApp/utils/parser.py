@@ -1,24 +1,22 @@
 from datetime import datetime
+import csv
+import tempfile
 
 
 def ecotones_parse(file):
-    entries = []
+    """
+    Reads the given file and extracts the values of individual events.
+    :param file: An Ecotones-format file.
+    :return: A dictionary containing every event as named values.
+    """
     with file as f:
         lines = [line for line in f]
-    for i in range(1, len(lines)):
-        fields = str(lines[i]).split(',')
-        alt = fields[15]
-        if len(alt) == 0:
-            alt = 0
-        e_dict = {
-                  "timestamp": parsetime(fields[2]),
-                  "latitude": float(fields[4]),
-                  "longitude": float(fields[5]),
-                  "altitude": float(alt),
-                  "temperature": float(fields[8])};
-        entries.append(e_dict)
-    return entries
+    headers = lines[0].decode("utf-8").rstrip().split(',')
+    if "GpsNumber" not in headers:
+        raise TypeError("a")
+    parsed = []
+    for line in lines[1:]:
+        parsed_line = dict(zip(headers, line.decode("utf-8").rstrip().split(',')))
+        parsed.append(parsed_line)
+    return parsed
 
-
-def parsetime(timestring):
-    return datetime.strptime(timestring, "%Y-%m-%d %H:%M:%S")

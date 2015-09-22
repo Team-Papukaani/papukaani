@@ -30,7 +30,6 @@ def _render_points(points, request):
     latlongs = extract_latlongs(points)
     return render(request, 'upload.html', {'points': json.dumps(latlongs)})
 
-
 def _render_with_message(request):
     message = request.GET['m'] if 'm' in request.GET else ''
     return render(request, 'upload.html', {"message": message})
@@ -49,7 +48,7 @@ def _create_points(data):
         timestamp=point['GPSTime'],
         latitude=point['Latitude'],
         longitude=point['Longtitude'],
-        altitude=point['Altitude'],
+        altitude=point['Altitude'] if point['Altitude'] != '' else 0,
         temperature=point['Temperature']) for point in data]
     newpoints = []
     for p in points:

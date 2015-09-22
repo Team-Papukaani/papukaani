@@ -12,7 +12,8 @@ def ecotones_parse(file):
     with file as f:
         lines = [line for line in f]
     headers = lines[0].decode("utf-8").rstrip().split(',')
-
+    if "GpsNumber" not in headers:
+        raise TypeError("a")
     parsed = []
     for line in lines[1:]:
         parsed_line = dict(zip(headers, line.decode("utf-8").rstrip().split(',')))

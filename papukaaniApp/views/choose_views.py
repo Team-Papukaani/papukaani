@@ -19,8 +19,9 @@ def choose(request):
         return redirect(choose)
 
     else:
-        points = [{"latlong" : [float(mapPoint.latitude), float(mapPoint.longitude)] , "id" : mapPoint.id} for mapPoint in MapPoint.objects.all()]
-        return render(request, 'choose.html', {'points' : json.dumps(points)})
+        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id} for mapPoint in
+                  MapPoint.objects.all()]
+        return render(request, 'choose.html', {'points': json.dumps(points)})
 
 
 def _set_points_public(request):
@@ -29,5 +30,3 @@ def _set_points_public(request):
         mPoint = MapPoint.objects.get(id=point['id'])
         mPoint.public = point['public']
         mPoint.save()
-
-

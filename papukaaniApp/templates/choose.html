@@ -22,6 +22,11 @@
 
 <div id="map" style="height: 400px;width: 400px;clear:none"></div>
 
+
+
+{% csrf_token %}
+<button onclick="send('{{csrf_token}}')">Tallenna</button>
+
 {{ points|length }}
 {% autoescape off %}
 <script>

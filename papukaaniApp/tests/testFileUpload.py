@@ -5,6 +5,7 @@ from unittest import mock
 from datetime import datetime
 
 _filePath = "papukaaniApp/tests/test_files/"
+_URL = '/papukaani/upload/'
 
 
 class FileUploadTest(TestCase):
@@ -12,11 +13,11 @@ class FileUploadTest(TestCase):
         self.c = Client()
 
     def test_get_to_upload_returns_200(self):
-        response = self.c.get('/papukaani/upload/')
+        response = self.c.get(_URL)
         self.assertTrue(response.status_code == 200)
 
     def test_post_to_upload_is_redirected(self):
-        response = self.c.get('/papukaani/upload/')
+        response = self.c.get(_URL)
 
         self.assertTrue(response.status_code == 200)
 
@@ -24,13 +25,13 @@ class FileUploadTest(TestCase):
         before = MapPoint.objects.all().count()
 
         with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post('/papukaani/upload/', {'file': file})
+            response = self.c.post(_URL, {'file': file})
 
         after = MapPoint.objects.all().count()
         self.assertTrue(after > before)
 
     def test_invalid_file_does_not_cause_exception(self):
         with open(_filePath + "invalid.txt") as file:
-            response = self.c.post('/papukaani/upload/', {'file': file})
+            response = self.c.post(_URL, {'file': file})
 
         self.assertTrue(response.status_code == 302)

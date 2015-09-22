@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 </head>
 <body>
@@ -18,9 +19,10 @@
     <p>{{message}}</p>
 
     <div id="map"></div>
-
     <script>
-        create_map_with_points({{points}})
+        {% autoescape off %}
+        create_map_with_points("{{points}}")
+        {% endautoescape%}
     </script>
 
 

@@ -1,7 +1,8 @@
 from papukaaniApp.models import *
 from papukaaniApp.utils.parser import ecotones_parse
 from django.shortcuts import render
-from papukaaniApp.utils.view_utils import redirect_with_param
+from papukaaniApp.utils.view_utils import *
+import json
 
 
 def upload(request):
@@ -27,9 +28,8 @@ def upload(request):
 
 
 def _render_points(points, request):
-    latlongs = [[mapPoint.latitude, mapPoint.longitude] for mapPoint in points]
-    return render(request, 'upload.html', {'points': latlongs})
-
+    latlongs = extract_latlongs(points)
+    return render(request, 'upload.html', {'points': json.dumps(latlongs)})
 
 def _render_with_message(request):
     message = request.GET['m'] if 'm' in request.GET else ''

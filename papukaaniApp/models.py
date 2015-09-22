@@ -8,6 +8,7 @@ class Creature(models.Model):
 
 class MapPoint(models.Model):
     creature = models.ForeignKey(Creature)
+    gpsNumber = models.CharField(max_length=20)
     timestamp = models.DateTimeField()
     latitude = models.DecimalField(max_digits=12, decimal_places=9)  # decimals are important, float approximates
     longitude = models.DecimalField(max_digits=12, decimal_places=9)
@@ -16,7 +17,7 @@ class MapPoint(models.Model):
     public = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = (("creature", "timestamp"),)
+        unique_together = (("gpsNumber", "timestamp"),)
 
     def __init__(self, **point):
         point['creature'], was_created = Creature.objects.get_or_create(name="1")

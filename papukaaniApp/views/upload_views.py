@@ -1,5 +1,5 @@
 from papukaaniApp.models import *
-from papukaaniApp.utils.parser import ecotones_parse
+from papukaaniApp.utils.parser import *
 from django.shortcuts import render
 from papukaaniApp.utils.view_utils import *
 import json
@@ -42,12 +42,19 @@ def _create_points(data):
     :return: A list containing all of the MapPoints found in the file.
     """
     creature, was_created = Creature.objects.get_or_create(name="Pekka")
-    points = [MapPoint(creature=creature, **point) for point in data]
+    points = [MapPoint(
+        creature=creature,
+        gpsNumber=point['GpsNumber'],
+        timestamp=point['GPSTime'],
+        latitude=point['Latitude'],
+        longitude=point['Longtitude'],
+        altitude=point['Altitude'] if point['Altitude'] != '' else 0,
+        temperature=point['Temperature']) for point in data]
     newpoints = []
-    for point in points:
-        if MapPoint.objects.filter(gpsNumber=point.gpsNumber, timestamp=point.timestamp).exists():
+    for p in points:
+        if MapPoint.objects.filter(gpsNumber=p.gpsNumber, timestamp=p.timestamp).exists():
             pass
         else:
-            newpoints.append(point)
+            newpoints.append(p)
     MapPoint.objects.bulk_create(newpoints)
     return points

@@ -20,7 +20,6 @@ def upload(request):
                 data = ecotones_parse(file)
             except:
                 return redirect_with_param(upload, "?m=Tiedostosi formaatti ei ole kelvollinen!")
-
             points = _create_points(data)
             return _render_points(points, request)
 
@@ -37,9 +36,18 @@ def _render_with_message(request):
 
 
 def _create_points(data):
+    """
+    Creates a new entry for every MapPoint not already in the database.
+    :param data: The contents of the uploaded file.
+    :return: A list containing all of the MapPoints found in the file.
+    """
     creature, was_created = Creature.objects.get_or_create(name="Pekka")
     points = [MapPoint(creature=creature, **point) for point in data]
-    MapPoint.objects.bulk_create(points)
+    newpoints = []
+    for point in points:
+        if MapPoint.objects.filter(gpsNumber=point.gpsNumber, timestamp=point.timestamp).exists():
+            pass
+        else:
+            newpoints.append(point)
+    MapPoint.objects.bulk_create(newpoints)
     return points
-
-

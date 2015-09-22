@@ -10,5 +10,5 @@ function init(data){
         L.polyline(latlongs, {smoothFactor: 25.0}).addTo(map);
     }
 
-    
+
 }

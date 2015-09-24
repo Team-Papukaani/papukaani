@@ -13,26 +13,26 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Creature',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=300)),
-                ('gpsNumber', models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
             name='MapPoint',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
+                ('gpsNumber', models.CharField(max_length=20)),
                 ('timestamp', models.DateTimeField()),
-                ('latitude', models.DecimalField(max_digits=12, decimal_places=9)),
-                ('longitude', models.DecimalField(max_digits=12, decimal_places=9)),
-                ('altitude', models.DecimalField(max_digits=8, decimal_places=3)),
-                ('temperature', models.DecimalField(max_digits=5, decimal_places=2)),
+                ('latitude', models.CharField(max_length=20)),
+                ('longitude', models.CharField(max_length=20)),
+                ('altitude', models.CharField(max_length=20)),
+                ('temperature', models.CharField(max_length=20)),
                 ('public', models.BooleanField(default=False)),
                 ('creature', models.ForeignKey(to='papukaaniApp.Creature')),
             ],
         ),
         migrations.AlterUniqueTogether(
             name='mappoint',
-            unique_together=set([('creature', 'timestamp')]),
+            unique_together=set([('gpsNumber', 'timestamp')]),
         ),
     ]

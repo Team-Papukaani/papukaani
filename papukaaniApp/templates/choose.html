@@ -5,21 +5,25 @@
     <title></title>
 
     {% load staticfiles %}
-    <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <script src="{% static 'papukaani/js/map.js' %}"></script>
+    <script src="{% static 'papukaani/js/choose.js' %}"></script>
 
 </head>
+
 <body>
-    {% include "papukaaniApp/navigation.html" %}
+{% include "papukaaniApp/navigation.html" %}
 
-    <div id="map" style="height: 400px;width: 400px;clear:none"></div>
+<div id="map" style="height: 400px;width: 400px;clear:none"></div>
 
-    {{ points|length }}
-
+{{ points|length }}
+{% autoescape off %}
     <script>
-        create_map_with_points({{ points }})
+        init('{{points}}')
     </script>
+{% endautoescape %}
+
 </body>
 </html>

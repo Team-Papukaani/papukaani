@@ -3,8 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+
+    {% load staticfiles %}
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <script src="{% static 'papukaani/js/map.js' %}"></script>
+    <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
+
 </head>
+
 <body>
+{% include "papukaaniApp/navigation.html" %}
+
+<div id="map" style="height: 400px;width: 400px;clear:none"></div>
+
+{{ points|length }}
+{% autoescape off %}
+    <script id="mapScript">
+        create_map_with_points('{{points}}')
+    </script>
+{% endautoescape %}
 
 </body>
 </html>

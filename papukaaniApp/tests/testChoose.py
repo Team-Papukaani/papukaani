@@ -31,7 +31,7 @@ class TestChoose(TestCase):
     def test_post_with_data_changes_database_entries(self):
         Aid = self.A.id
         Bid = self.B.id
-        response = self.c.post(_URL, {'data' : '[{"id" : '+str(Aid)+', "public" : 1},{"id" : '+str(Bid)+', "public" : 0}]'})
+        response = self.c.post(_URL, {'data' : '[{"id" : '+str(Aid)+', "public" : true},{"id" : '+str(Bid)+', "public" : false}]'})
 
         self.A = MapPoint.objects.get(id=Aid)
         self.B = MapPoint.objects.get(id=Bid)

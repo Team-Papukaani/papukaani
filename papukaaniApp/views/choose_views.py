@@ -1,6 +1,7 @@
 from papukaaniApp.utils.view_utils import *
 from papukaaniApp.models import MapPoint
 from django.shortcuts import render, redirect
+from django.db.transaction import atomic
 import json
 
 
@@ -24,6 +25,8 @@ def choose(request):
         return render(request, 'choose.html', {'points': json.dumps(points)})
 
 
+
+@atomic()
 def _set_points_public(request):
     points = json.loads(request.POST['data'])
     for point in points:

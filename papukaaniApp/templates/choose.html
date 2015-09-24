@@ -7,7 +7,12 @@
     {% load staticfiles %}
 
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/choose.js' %}"></script>
 
@@ -17,6 +22,12 @@
 {% include "papukaaniApp/navigation.html" %}
 
 <div id="map" style="height: 400px;width: 400px;clear:none"></div>
+
+
+
+{% csrf_token %}
+<button id="save" onclick="send('{{csrf_token}}')">Tallenna</button>
+<p id="loading"></p>
 
 {{ points|length }}
 {% autoescape off %}

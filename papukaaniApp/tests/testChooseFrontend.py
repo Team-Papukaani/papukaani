@@ -30,6 +30,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
 
     def tearDown(self):
         MapPoint.objects.all().delete()
+        self.driver.close()
 
     def test_save_with_button(self):
         button = self.driver.find_element_by_id("save")

@@ -18,7 +18,6 @@ class FileUploadSeleniumTest(StaticLiveServerTestCase):
         self.browser.get(base_url + '/papukaani/upload')
         upload = self.browser.find_element_by_name("file")
         upload.send_keys(BASE_DIR + "/papukaaniApp/tests/test_files/ecotones.csv")
-        time.sleep(40)
         upload.submit()
         time.sleep(1)
         self.assertTrue("Tiedostosi formaatti ei ole kelvollinen" not in self.browser.page_source)

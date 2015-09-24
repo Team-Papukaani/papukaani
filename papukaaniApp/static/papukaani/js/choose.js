@@ -16,8 +16,6 @@ function init(data){
         popupAnchor: [-3, -76],
      });
 
-
-
     markers = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
         maxClusterRadius : 40,
@@ -61,10 +59,27 @@ function changePublicity(marker){
 
 function send(csrf_token){
     data = JSON.stringify(points)
-    xmlhttp = new XMLHttpRequest;
+    messagebox = $("#loading");
+    button = $("#save");
 
-    xmlhttp.open("POST","", true);
-    xmlhttp.setRequestHeader("X-CSRFToken", csrf_token);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("data="+data);
+    messagebox.text("Tallennetaan...");
+    button.attr("disabled", true);
+
+    request = new XMLHttpRequest;
+
+    request.onreadystatechange = function(){
+        if(request.readyState == 4){
+            button.attr("disabled", false);
+            if(request.status == 200){
+                messagebox.text("Valmis!");
+            } else{
+                messagebox.text("Tapahtui virhe!");
+            }
+        }
+    }
+
+    request.open("POST","", true);
+    request.setRequestHeader("X-CSRFToken", csrf_token);
+    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    request.send("data="+data);
 }

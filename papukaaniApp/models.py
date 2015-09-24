@@ -2,7 +2,12 @@ from django.db import models
 from django.db.models.signals import pre_init
 
 class Creature(models.Model):
+
     name = models.CharField(max_length=300)
+
+    def return_public_points(self):
+#        return MapPoint.objects.all()
+        return MapPoint.objects.filter(creature=self).filter(public=True)
 
 class MapPoint(models.Model):
     creature = models.ForeignKey(Creature)

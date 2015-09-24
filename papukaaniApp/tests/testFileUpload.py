@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.test import Client
 from papukaaniApp.models import *
-from unittest import mock
 from datetime import datetime
 
 _filePath = "papukaaniApp/tests/test_files/"
@@ -59,8 +58,8 @@ class FileUploadTest(TestCase):
                 "temperature": 10.0}
         creature, was_created = Creature.objects.get_or_create(name="Pekka")
         point = MapPoint(creature=creature, **dict)
+        point.save()
         try:
-            point.save()
             point.save()
             assert 0
         except:

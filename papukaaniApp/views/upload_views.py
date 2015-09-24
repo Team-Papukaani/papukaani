@@ -30,6 +30,7 @@ def _render_points(points, request):
     latlongs = extract_latlongs(points)
     return render(request, 'upload.html', {'points': json.dumps(latlongs)})
 
+
 def _render_with_message(request):
     message = request.GET['m'] if 'm' in request.GET else ''
     return render(request, 'upload.html', {"message": message})

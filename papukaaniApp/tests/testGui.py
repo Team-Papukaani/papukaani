@@ -20,6 +20,6 @@ class TestGui(LiveServerTestCase):
         MainNavigation(self.browser).openPage(upload)
         sleep(5)
         self.assertEquals(self.browser.current_url, self.base_url + reverse("upload"))
-    
+        self.browser.close()
 
 

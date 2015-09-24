@@ -8,7 +8,13 @@ class Creature(models.Model):
 
 
     def return_public_points(self):
+        """
+        This method returns public points from the database.
+
+        :return: MapPoint objects that contains public points
+        """
         return MapPoint.objects.filter(creature=self).filter(public=True)
+
 
 
 class MapPoint(models.Model):

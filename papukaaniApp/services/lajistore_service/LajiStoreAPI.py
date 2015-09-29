@@ -7,8 +7,9 @@ _URL = settings.LAJISTORE_URL
 _AUTH = (secret_settings.LAJISTORE_USER, secret_settings.LAJISTORE_PASSWORD)
 _JSON_HEADERS = {'Content-Type': 'application/json'}
 
+#Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object.
 
-#Devices lajistore/devices
+#Devices lajistore/devices.
 
 def get_all_devices():
     return _get("device")["_embedded"]["device"]

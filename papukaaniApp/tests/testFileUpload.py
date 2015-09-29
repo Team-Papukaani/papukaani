@@ -8,6 +8,7 @@ _URL = '/papukaani/upload/'
 
 
 class FileUploadTest(TestCase):
+
     def setUp(self):
         self.c = Client()
 

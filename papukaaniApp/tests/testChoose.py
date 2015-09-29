@@ -43,6 +43,7 @@ class TestChoose(TestCase):
         response = self.c.get(_URL)
         self.assertTrue(response.status_code == 200)
 
+
     def test_post_without_data_is_redirected(self):
         response = self.c.post(_URL)
         self.assertTrue(response.status_code == 302)

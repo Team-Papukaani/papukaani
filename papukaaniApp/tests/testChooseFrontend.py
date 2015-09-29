@@ -1,11 +1,13 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from django.test import Client
+from selenium.webdriver.common.by import By
 from papukaaniApp.models import *
 from datetime import datetime
 from selenium.webdriver.support.expected_conditions import text_to_be_present_in_element
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
 
 _filePath = "papukaaniApp/tests/test_files/"
 
@@ -23,7 +25,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
             timestamp=datetime.now(),
         )
 
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.PhantomJS()
         self.base_url = "http://localhost:8081"
         self.driver.get(self.base_url + '/papukaani/choose')
 
@@ -37,9 +39,9 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         messagebox = self.driver.find_element_by_id("loading")
 
         button.click()
-        self.driver.implicitly_wait(1)
-
-        self.assertTrue(messagebox.text == "Valmis!")
+        WebDriverWait(self.driver, 60).until(
+            EC.text_to_be_present_in_element((By.ID, "loading"), "Valmis!")
+        )
 
     def test_icon_changes_when_double_clicked(self):
         marker = self.driver.find_elements_by_class_name("leaflet-marker-icon")[0]

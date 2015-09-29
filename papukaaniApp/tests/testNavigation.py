@@ -12,7 +12,7 @@ from papukaaniApp.views.upload_views import upload
 class TestNavigation(LiveServerTestCase):
 
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.PhantomJS()
         self.base_url = 'http://127.0.0.1:8081'
         self.browser.get(self.base_url + '/papukaani')
 

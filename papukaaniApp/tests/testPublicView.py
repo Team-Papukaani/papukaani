@@ -8,7 +8,7 @@ from papukaaniApp.models import MapPoint
 
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.PhantomJS()
         self.c = Client()
 
     def tearDown(self):

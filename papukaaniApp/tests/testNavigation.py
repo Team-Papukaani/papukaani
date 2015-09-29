@@ -9,7 +9,7 @@ from papukaaniApp.tests.page_models import MainNavigation
 from papukaaniApp.views.upload_views import upload
 
 
-class TestGui(LiveServerTestCase):
+class TestNavigation(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -17,7 +17,7 @@ class TestGui(LiveServerTestCase):
         self.browser.get(self.base_url + '/papukaani')
 
     def test(self):
-        MainNavigation(self.browser).openPage(upload)
+        MainNavigation(self.browser).open_upload_page()
         sleep(5)
         self.assertEquals(self.browser.current_url, self.base_url + reverse("upload"))
         self.browser.close()

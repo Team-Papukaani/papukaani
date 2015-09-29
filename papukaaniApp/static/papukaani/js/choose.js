@@ -22,30 +22,42 @@ function init(data){
         disableClusteringAtZoom : 13
     });
 
-    markers.on('clusterdblclick', function(a){
-        var mkrs = a.layer.getAllChildMarkers()
-        for(var i = 0; i < mkrs.length; i++){
-            changePublicity(mkrs[i]);
-        }
-    })
+    markers.on('clusterdblclick', changeMarkerClusterPublicity)
 
-    for(var i = 0; i < points.length; i++){
+    createMarkersFromPoints(points,markers)
+
+    map.addLayer(markers);
+}
+
+//Creates markers from point data and adds them to the marker cluster object.
+function createMarkersFromPoints(points, markers){
+     for(var i = 0; i < points.length; i++){
         var ltlgs = points[i].latlong;
         var marker = L.marker(new L.LatLng(ltlgs[0],ltlgs[1]));
         marker.pnt = points[i];
         chooseIcon(marker);
 
-        marker.on('dblclick', function(marker){
-            return function(e){
-                changePublicity(marker);
-            }
-        }(marker));
+        marker.on('dblclick', changePublicityForMarker(marker));
 
         markers.addLayer(marker);
-    }
-
-    map.addLayer(markers);
+     }
 }
+
+//Takes a marker as a parameter and returns a function that changes the markers publicity.
+function changePublicityForMarker(marker){
+    return function(e){
+         changePublicity(marker);
+    }
+}
+
+//Changes the publicity of every marker in marker cluster a.
+function changeMarkerClusterPublicity(a){
+        var mkrs = a.layer.getAllChildMarkers()
+        for(var i = 0; i < mkrs.length; i++){
+            changePublicity(mkrs[i]);
+        }
+}
+
 
 function chooseIcon(marker){
     icon = marker.pnt.public ? blueIcon : greyIcon;
@@ -57,6 +69,7 @@ function changePublicity(marker){
     chooseIcon(marker);
 }
 
+//Posts publicity data to server. Shows a message and disables the save button while waiting for response.
 function send(csrf_token){
     data = JSON.stringify(points)
     messagebox = $("#loading");
@@ -68,6 +81,22 @@ function send(csrf_token){
     request = new XMLHttpRequest;
 
     request.onreadystatechange = function(){
+        setLoadingMessage(request, button, messagebox)
+    }
+
+    request.open("POST","", true);
+    set_headers(csrf_token, request)
+    request.send("data="+data);
+}
+
+//Sets the content type and CSRF token cookie headers.
+function set_headers(csrf_token, request){
+    request.setRequestHeader("X-CSRFToken", csrf_token);
+    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+}
+
+//Callback function for post request. Shows a message depending on response status.
+function setLoadingMessage(request, button, messagebox){
         if(request.readyState == 4){
             button.attr("disabled", false);
             if(request.status == 200){
@@ -77,9 +106,3 @@ function send(csrf_token){
             }
         }
     }
-
-    request.open("POST","", true);
-    request.setRequestHeader("X-CSRFToken", csrf_token);
-    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    request.send("data="+data);
-}

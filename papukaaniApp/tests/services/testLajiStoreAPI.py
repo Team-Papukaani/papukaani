@@ -27,6 +27,11 @@ class testLajiStoreAPI(TestCase):
                             "gatherings": [],
                         }
 
+        self.individual = {
+                            "individualId" : "INDIVIDUALABCD",
+                            "taxon" : "test test"
+                            }
+
     def testLajiStoreDevice(self):
 
         response = LajiStoreAPI.post_device(**self.device)
@@ -56,5 +61,20 @@ class testLajiStoreAPI(TestCase):
         self.assertEquals(True, "id" in response)
 
         response = LajiStoreAPI.delete_document(response["id"])
+        self.assertEquals(204, response.status_code)
+
+    def testLajiStoreIndividual(self):
+
+        response = LajiStoreAPI.post_individual(**self.individual)
+        self.assertEquals(True, "id" in response)
+
+        response = LajiStoreAPI.get_individual(response["id"])
+        self.assertEquals(True, "id" in response)
+
+        self.individual["id"] = response["id"]
+        response = LajiStoreAPI.update_individual(**self.individual)
+        self.assertEquals(True, "id" in response)
+
+        response = LajiStoreAPI.delete_individual(response["id"])
         self.assertEquals(204, response.status_code)
 

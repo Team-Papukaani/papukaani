@@ -16,6 +16,17 @@ class testIndividual(TestCase):
 	def testGet():
 		indiv = papukaaniApp.models_LajiStore.individual.create(**self.individual)
 		indivSame = papukaaniApp.models_LajiStore.individual.get(indiv.id)
-		self.assertEquals(indiv.id, indivSame.id) 
+		self.assertEquals(indiv.id, indivSame.id)
 
+	def testGetAll():
+		papukaaniApp.models_LajiStore.individual.create(**self.individual)
+		individual2 = {
+        	"individualId" : "INDIVIDUALABCD",
+            "taxon" : "test test"
+            }
+		papukaaniApp.models_LajiStore.individual.create(individual2)
+		individuals = papukaaniApp.models_LajiStore.individual.getAll()
+		self.assertEquals(2, individuals.__len__())
+
+	def test_get_many():
 )

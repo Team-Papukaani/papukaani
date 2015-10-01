@@ -1,11 +1,9 @@
 from datetime import datetime
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium import webdriver
 from django.test import Client
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-
 from selenium.webdriver.support import expected_conditions as EC
 
 from papukaaniApp.models import *
@@ -27,17 +25,16 @@ class TestChooseFrontend(StaticLiveServerTestCase):
             timestamp=datetime.now(),
         )
 
-        self.driver = webdriver.PhantomJS()
-        self.page = ChoosePage(self.driver)
+        self.page = ChoosePage()
         self.page.navigate()
 
     def tearDown(self):
         MapPoint.objects.all().delete()
-        self.driver.close()
+        self.page.close()
 
     def test_save_with_button(self):
         self.page.click_save_button()
-        WebDriverWait(self.driver, 60).until(
+        WebDriverWait(self.page.driver, 60).until(
             EC.text_to_be_present_in_element((By.ID, "loading"), "Valmis!")
         )
 

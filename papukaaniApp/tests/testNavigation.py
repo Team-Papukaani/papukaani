@@ -1,20 +1,16 @@
-from django.test.testcases import LiveServerTestCase
-from selenium import webdriver
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from papukaaniApp.tests.page_models.page_models import NavigationPage
 
 
-class TestNavigation(LiveServerTestCase):
+class TestNavigation(StaticLiveServerTestCase):
     def setUp(self):
-        self.browser = webdriver.PhantomJS()
-        self.nav = NavigationPage(self.browser)
+        self.nav = NavigationPage()
         self.nav.navigate()
 
+    def tearDown(self):
+        self.nav.close()
 
-def tearDown(self):
-    self.browser.close()
-
-
-def test(self):
-    self.nav.open_upload_page()
-    self.assertEquals(str(self.browser.current_url), str(nav.url) + 'upload/')
+    def test(self):
+        self.nav.open_upload_page()
+        self.assertEquals(str(self.nav.driver.current_url), str(self.nav.url) + 'upload/')

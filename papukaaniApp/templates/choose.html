@@ -26,13 +26,13 @@
 
 
 {% csrf_token %}
-<button id="save" onclick="send('{{csrf_token}}')">Tallenna</button>
+<button id="save" onclick="send('{{csrf_token}}', map.points)">Tallenna</button>
 <p id="loading"></p>
 
 {{ points|length }}
 {% autoescape off %}
     <script>
-        init('{{points}}')
+         var map = new ChooseMap({{points}})
     </script>
 {% endautoescape %}
 

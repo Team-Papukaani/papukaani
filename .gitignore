@@ -3,4 +3,4 @@
 *.sqlite3
 db.sqlite3
 papukaani/secret_settings.py
-
+*~

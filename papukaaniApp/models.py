@@ -27,22 +27,3 @@ class MapPoint(models.Model):
     class Meta:
         unique_together = ("gpsNumber", "timestamp", "latitude", "longitude")
 
-class Device():
-    deviceId = models.ForeignKey(Creature)
-    device =  models.CharField(max_length=20)
-    deviceType = models.CharField(max_length=20)
-    deviceManufacturer = models.CharField(max_length=20)
-    createdAt = models.DateTimeField()
-    createdBy = models.CharField(max_length=20)
-    lastModifiedAt = models.DateTimeField()
-    lastModifiedBy = models.CharField(max_length=20)
-    facts = models.QuerySet #???
-
-class Document():
-    documentID = models.ForeignKey(Creature)
-    lastModifiedAt = models.DateTimeField()
-    lastModifiedBy = models.CharField(max_length=20)
-    createdAt = models.DateTimeField()
-    createdBy = models.CharField(max_length=20)
-    facts = models.QuerySet #???
-    gatherings = models.QuerySet #???

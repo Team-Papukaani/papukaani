@@ -7,12 +7,13 @@ _URL = settings.LAJISTORE_URL
 _AUTH = (secret_settings.LAJISTORE_USER, secret_settings.LAJISTORE_PASSWORD)
 _JSON_HEADERS = {'Content-Type': 'application/json'}
 
-#Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object.
+#Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
+#as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
 
 #Devices lajistore/devices.
 
 def get_all_devices(**kwargs):
-    return _get("device")["_embedded"]["device"]
+    return _get("device", **kwargs)["_embedded"]["device"]
 
 def get_device(id):
     return  _get("device/"+str(id))
@@ -35,8 +36,8 @@ def update_device(id ,deviceId, deviceType, deviceManufacturer, createdAt, creat
 
 #Documents lajistore/documents/
 
-def get_all_documents():
-    return _get("document")["_embedded"]["document"]
+def get_all_documents(**kwargs):
+    return _get("document", **kwargs)["_embedded"]["document"]
 
 def get_document(id):
     return _get("document/"+str(id))
@@ -56,8 +57,8 @@ def update_document(id, documentId, lastModifiedAt, lastModifiedBy, createdAt, c
 
 #Individuals lajistore/individual
 
-def get_all_individuals():
-    return _get("individual")["_embedded"]["individual"]
+def get_all_individuals(**kwargs):
+    return _get("individual", **kwargs)["_embedded"]["individual"]
 
 def get_individual(id):
     return _get("individual/"+str(id))
@@ -82,6 +83,8 @@ def _delete(uri):
 
 def _get(uri, **kwargs):
     url = _URL + uri
+    if(kwargs):
+        url += _addQuery(**kwargs)
     response = requests.get(url, auth=_AUTH).json()
     return response
 
@@ -95,7 +98,13 @@ def _put(uri, data):
     response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     return response
 
+def _addQuery(**kwargs):
+    q = "?query="
+    for k in kwargs:
+        q += "" if q == "?query=" else " AND "
+        q += k +":"+str(kwargs[k])
 
+    return q
 
 
 

@@ -83,22 +83,32 @@ class testLajiStoreAPI(TestCase):
         response = LajiStoreAPI.get_all_devices(deviceType="Type")
         self.assertGreaterEqual(len(response), 0)
 
-        response = LajiStoreAPI.get_all_documents(documentId="TEST1234")
+        response = LajiStoreAPI.get_all_documents(arg="TEST1234")
         self.assertGreaterEqual(len(response), 0)
 
-        response = LajiStoreAPI.get_all_individuals(individualId="TEST123")
+        response = LajiStoreAPI.get_all_individuals(arg="TEST123")
         self.assertGreaterEqual(len(response), 0)
 
     def testMultipleArgumentQueries(self):
 
-        response = LajiStoreAPI.get_all_documents(documentId="TEST1234", facts=[])
+        response = LajiStoreAPI.get_all_documents(something="TEST1234", testtest=[])
         self.assertGreaterEqual(len(response), 0)
 
-        response = LajiStoreAPI.get_all_devices(deviceType="Type", deviceId="A123TEsT", deviceManufacturer="Manu")
+        response = LajiStoreAPI.get_all_devices(param="Type", param2="A123TEsT", deviceManufacturer="Manu")
         self.assertGreaterEqual(len(response), 0)
 
 
-        response = LajiStoreAPI.get_all_individuals(individualId="IDIDIDI", taxon="test test" )
+        response = LajiStoreAPI.get_all_individuals(param="IDIDIDI", taxon="test test" )
+        self.assertGreaterEqual(len(response), 0)
+
+    def testGetAll(self):
+        response = LajiStoreAPI.get_all_documents()
+        self.assertGreaterEqual(len(response), 0)
+
+        response = LajiStoreAPI.get_all_devices()
+        self.assertGreaterEqual(len(response), 0)
+
+        response = LajiStoreAPI.get_all_individuals()
         self.assertGreaterEqual(len(response), 0)
 
     def testAddQuery(self):
@@ -116,3 +126,4 @@ class testLajiStoreAPI(TestCase):
         self.assertTrue("arg2:value" in q)
         self.assertTrue("arg3:2" in q)
         self.assertTrue(" AND " in q)
+

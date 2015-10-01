@@ -1,6 +1,5 @@
 import requests
 import json
-from requests.auth import HTTPBasicAuth
 from papukaani import secret_settings, settings
 
 _URL = settings.LAJISTORE_URL
@@ -13,7 +12,7 @@ _JSON_HEADERS = {'Content-Type': 'application/json'}
 #Devices lajistore/devices.
 
 def get_all_devices(**kwargs):
-    return _get("device", **kwargs)["_embedded"]["device"]
+    return _get_all_pages("device","device",**kwargs)
 
 def get_device(id):
     return  _get("device/"+str(id))
@@ -37,7 +36,7 @@ def update_device(id ,deviceId, deviceType, deviceManufacturer, createdAt, creat
 #Documents lajistore/documents/
 
 def get_all_documents(**kwargs):
-    return _get("document", **kwargs)["_embedded"]["document"]
+    return _get_all_pages("document", "document",**kwargs)
 
 def get_document(id):
     return _get("document/"+str(id))
@@ -58,7 +57,7 @@ def update_document(id, documentId, lastModifiedAt, lastModifiedBy, createdAt, c
 #Individuals lajistore/individual
 
 def get_all_individuals(**kwargs):
-    return _get("individual", **kwargs)["_embedded"]["individual"]
+    return _get_all_pages("individual","individual", **kwargs)
 
 def get_individual(id):
     return _get("individual/"+str(id))
@@ -105,6 +104,21 @@ def _addQuery(**kwargs):
         q += k +":"+str(kwargs[k])
 
     return q
+
+def _get_all_pages(uri, key, list = None, **kwargs):
+
+    response = _get(uri, **kwargs)
+    embedded = response["_embedded"][key]
+    list = list + embedded if list else embedded
+    links = response["_links"]
+
+    if links["self"]["href"] == links["last"]["href"]:
+        return list
+
+    else:
+        uri = links["next"]["href"].split("/")[-1]
+        return _get_all_pages(uri, key, list)
+
 
 
 

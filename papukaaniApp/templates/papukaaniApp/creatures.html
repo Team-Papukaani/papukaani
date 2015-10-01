@@ -1,6 +1,19 @@
-moi3
-<ul>
-{% for creature in creature_list %}
-    <li><a href="{% url 'creature' creature.id %}">{{ creature.name }}</a></li>
-{% endfor %}
-</ul>
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pelikaija</title>
+    <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/style.css" %}">
+</head>
+<body>
+    {% include "papukaaniApp/navigation.html" %}
+    <h1>Valitse lintu</h1>
+    <ul>
+    {% for creature in creature_list %}
+        <li><a href="{% url 'creature' creature.id %}">{{ creature.name }}</a></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
+

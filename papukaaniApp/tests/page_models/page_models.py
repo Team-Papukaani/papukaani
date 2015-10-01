@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from xvfbwrapper import Xvfb
 
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
@@ -61,8 +62,8 @@ class PublicPage(Page):
     POINTS_JSON = Element(By.ID, 'mapScript')
     POLYLINE = Element(By.TAG_NAME, 'g')
 
-    def __init__(self, driver, creature_id):
-        super().__init__(driver)
+    def __init__(self, creature_id):
+        super().__init__()
         self.url += str(creature_id)
 
     def get_points_json(self):

@@ -2,7 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import Client
 
 from papukaaniApp.tests.page_models.page_models import PublicPage
-from papukaani.settings import *
+from papukaani.settings.common import *
 from papukaaniApp.models import MapPoint
 
 

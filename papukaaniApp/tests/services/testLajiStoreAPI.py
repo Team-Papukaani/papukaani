@@ -112,16 +112,16 @@ class testLajiStoreAPI(TestCase):
         self.assertGreaterEqual(len(response), 0)
 
     def testAddQuery(self):
-        q = LajiStoreAPI._addQuery(arg1 = "test")
+        q = LajiStoreAPI._add_query(arg1 = "test")
         self.assertEquals(q, "?query=arg1:test")
         self.assertTrue(" AND " not in q)
 
-        q = LajiStoreAPI._addQuery(arg1 = "test", arg2="value")
+        q = LajiStoreAPI._add_query(arg1 = "test", arg2="value")
         self.assertTrue("arg1:test" in q)
         self.assertTrue("arg2:value" in q)
         self.assertTrue(" AND " in q)
 
-        q = LajiStoreAPI._addQuery(arg1 = "test", arg2="value", arg3=2)
+        q = LajiStoreAPI._add_query(arg1 = "test", arg2="value", arg3=2)
         self.assertTrue("arg1:test" in q)
         self.assertTrue("arg2:value" in q)
         self.assertTrue("arg3:2" in q)

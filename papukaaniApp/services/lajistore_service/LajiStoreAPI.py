@@ -83,7 +83,7 @@ def _delete(uri):
 def _get(uri, **kwargs):
     url = _URL + uri
     if(kwargs):
-        url += _addQuery(**kwargs)
+        url += _add_query(**kwargs)
     response = requests.get(url, auth=_AUTH).json()
     return response
 
@@ -97,7 +97,7 @@ def _put(uri, data):
     response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     return response
 
-def _addQuery(**kwargs):
+def _add_query(**kwargs):
     q = "?query="
     for k in kwargs:
         q += "" if q == "?query=" else " AND "

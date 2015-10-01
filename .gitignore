@@ -2,4 +2,5 @@
 *.pyc
 *.sqlite3
 db.sqlite3
-secret_settings.py
+papukaani/secret_settings.py
+

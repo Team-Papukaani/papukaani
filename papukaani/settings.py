@@ -108,3 +108,5 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LAJISTORE_URL = 'http://fmnh-ws-prod2.it.helsinki.fi/lajistore/'

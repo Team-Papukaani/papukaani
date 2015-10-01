@@ -10,11 +10,9 @@ class TestNavigation(LiveServerTestCase):
         self.nav = NavigationPage(self.browser)
         self.nav.navigate()
 
+    def tearDown(self):
+        self.browser.close()
 
-def tearDown(self):
-    self.browser.close()
-
-
-def test(self):
-    self.nav.open_upload_page()
-    self.assertEquals(str(self.browser.current_url), str(nav.url) + 'upload/')
+    def test(self):
+        self.nav.open_upload_page()
+        self.assertEquals(str(self.browser.current_url), str(self.nav.url) + 'upload/')

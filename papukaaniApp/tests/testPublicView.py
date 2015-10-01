@@ -20,7 +20,7 @@ class PublicView(StaticLiveServerTestCase):
             self.c.post('/papukaani/upload/', {'file': file})
 
         points = MapPoint.objects.all()
-        print(len(points))
+        len(points)
         for num in range(1,5):
             points[num].public = 1
             points[num].save()

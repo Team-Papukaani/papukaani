@@ -5,6 +5,7 @@ from datetime import datetime
 
 _URL = '/papukaani/choose/'
 
+
 class TestChoose(TestCase):
     def setUp(self):
         self.c = Client()
@@ -31,7 +32,8 @@ class TestChoose(TestCase):
     def test_post_with_data_changes_database_entries(self):
         Aid = self.A.id
         Bid = self.B.id
-        response = self.c.post(_URL, {'data' : '[{"id" : '+str(Aid)+', "public" : true},{"id" : '+str(Bid)+', "public" : false}]'})
+        response = self.c.post(_URL, {
+            'data': '[{"id" : ' + str(Aid) + ', "public" : true},{"id" : ' + str(Bid) + ', "public" : false}]'})
 
         self.A = MapPoint.objects.get(id=Aid)
         self.B = MapPoint.objects.get(id=Bid)
@@ -50,7 +52,6 @@ class TestChoose(TestCase):
 
     def test_get_returns_points(self):
         response = self.c.get(_URL)
-        self.assertTrue("[{"  in str(response.content))
-        self.assertTrue("latlong"  in str(response.content))
-        self.assertTrue("id"  in str(response.content))
-
+        self.assertTrue("[{" in str(response.content))
+        self.assertTrue("latlong" in str(response.content))
+        self.assertTrue("id" in str(response.content))

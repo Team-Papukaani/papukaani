@@ -9,8 +9,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 _filePath = "papukaaniApp/tests/test_files/"
 
-class TestChooseFrontend(StaticLiveServerTestCase):
 
+class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
         self.creature = Creature.objects.create(name="Creature")
         self.A = MapPoint.objects.create(
@@ -26,7 +26,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.driver = webdriver.Firefox()
         self.base_url = "http://localhost:8081"
         self.driver.get(self.base_url + '/papukaani/choose')
-
 
     def tearDown(self):
         MapPoint.objects.all().delete()
@@ -50,17 +49,12 @@ class TestChooseFrontend(StaticLiveServerTestCase):
 
         assert "blueMarker.png" in marker.get_attribute("src")
 
-
     def test_save_button_is_disabled_while_waiting_for_response(self):
         with open(_filePath + "big.csv") as file:
-             Client().post('/papukaani/upload/', {'file': file})
+            Client().post('/papukaani/upload/', {'file': file})
 
         self.driver.get(self.base_url + '/papukaani/choose')
         button = self.driver.find_element_by_id("save")
         button.click()
 
         self.assertTrue(not button.is_enabled())
-
-
-
-

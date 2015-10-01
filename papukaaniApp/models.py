@@ -3,9 +3,7 @@ from django.db.models.signals import pre_init
 
 
 class Creature(models.Model):
-
     name = models.CharField(max_length=300)
-
 
     def return_public_points(self):
         """
@@ -14,7 +12,6 @@ class Creature(models.Model):
         :return: MapPoint objects that contains public points
         """
         return MapPoint.objects.filter(creature=self).filter(public=True)
-
 
 
 class MapPoint(models.Model):
@@ -28,4 +25,4 @@ class MapPoint(models.Model):
     public = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = (("gpsNumber", "timestamp"),)
+        unique_together = ("gpsNumber", "timestamp", "latitude", "longitude")

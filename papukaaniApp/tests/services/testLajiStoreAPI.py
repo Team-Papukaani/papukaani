@@ -27,6 +27,11 @@ class testLajiStoreAPI(TestCase):
                             "gatherings": [],
                         }
 
+        self.individual = {
+                            "individualId" : "INDIVIDUALABCD",
+                            "taxon" : "test test"
+                            }
+
     def testLajiStoreDevice(self):
 
         response = LajiStoreAPI.post_device(**self.device)
@@ -58,3 +63,56 @@ class testLajiStoreAPI(TestCase):
         response = LajiStoreAPI.delete_document(response["id"])
         self.assertEquals(204, response.status_code)
 
+    def testLajiStoreIndividual(self):
+
+        response = LajiStoreAPI.post_individual(**self.individual)
+        self.assertEquals(True, "id" in response)
+
+        response = LajiStoreAPI.get_individual(response["id"])
+        self.assertEquals(True, "id" in response)
+
+        self.individual["id"] = response["id"]
+        response = LajiStoreAPI.update_individual(**self.individual)
+        self.assertEquals(True, "id" in response)
+
+        response = LajiStoreAPI.delete_individual(response["id"])
+        self.assertEquals(204, response.status_code)
+
+    def testSingleArgumentQueries(self):
+
+        response = LajiStoreAPI.get_all_devices(deviceType="Type")
+        self.assertGreaterEqual(len(response), 0)
+
+        response = LajiStoreAPI.get_all_documents(documentId="TEST1234")
+        self.assertGreaterEqual(len(response), 0)
+
+        response = LajiStoreAPI.get_all_individuals(individualId="TEST123")
+        self.assertGreaterEqual(len(response), 0)
+
+    def testMultipleArgumentQueries(self):
+
+        response = LajiStoreAPI.get_all_documents(documentId="TEST1234", facts=[])
+        self.assertGreaterEqual(len(response), 0)
+
+        response = LajiStoreAPI.get_all_devices(deviceType="Type", deviceId="A123TEsT", deviceManufacturer="Manu")
+        self.assertGreaterEqual(len(response), 0)
+
+
+        response = LajiStoreAPI.get_all_individuals(individualId="IDIDIDI", taxon="test test" )
+        self.assertGreaterEqual(len(response), 0)
+
+    def testAddQuery(self):
+        q = LajiStoreAPI._addQuery(arg1 = "test")
+        self.assertEquals(q, "?query=arg1:test")
+        self.assertTrue(" AND " not in q)
+
+        q = LajiStoreAPI._addQuery(arg1 = "test", arg2="value")
+        self.assertTrue("arg1:test" in q)
+        self.assertTrue("arg2:value" in q)
+        self.assertTrue(" AND " in q)
+
+        q = LajiStoreAPI._addQuery(arg1 = "test", arg2="value", arg3=2)
+        self.assertTrue("arg1:test" in q)
+        self.assertTrue("arg2:value" in q)
+        self.assertTrue("arg3:2" in q)
+        self.assertTrue(" AND " in q)

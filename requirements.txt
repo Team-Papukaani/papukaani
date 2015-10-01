@@ -2,3 +2,4 @@ Django==1.8.4
 coverage==3.7.1
 selenium==2.47.1
 pyvirtualdisplay==0.1.5
+xvfbwrapper==0.2.5

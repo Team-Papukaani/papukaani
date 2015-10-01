@@ -15,7 +15,7 @@ class Creature(models.Model):
 
 
 class MapPoint(models.Model):
-    creature = models.ForeignKey(Creature)
+    creature =  models.ForeignKey(Creature)
     gpsNumber = models.CharField(max_length=20)
     timestamp = models.DateTimeField()
     latitude = models.DecimalField(max_digits=12, decimal_places=9)  # decimals are important, float approximates
@@ -26,3 +26,23 @@ class MapPoint(models.Model):
 
     class Meta:
         unique_together = ("gpsNumber", "timestamp", "latitude", "longitude")
+
+class Device():
+    deviceId = models.ForeignKey(Creature)
+    device =  models.CharField(max_length=20)
+    deviceType = models.CharField(max_length=20)
+    deviceManufacturer = models.CharField(max_length=20)
+    createdAt = models.DateTimeField()
+    createdBy = models.CharField(max_length=20)
+    lastModifiedAt = models.DateTimeField()
+    lastModifiedBy = models.CharField(max_length=20)
+    facts = models.QuerySet #???
+
+class Document():
+    documentID = models.ForeignKey(Creature)
+    lastModifiedAt = models.DateTimeField()
+    lastModifiedBy = models.CharField(max_length=20)
+    createdAt = models.DateTimeField()
+    createdBy = models.CharField(max_length=20)
+    facts = models.QuerySet #???
+    gatherings = models.QuerySet #???

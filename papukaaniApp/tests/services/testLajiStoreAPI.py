@@ -89,6 +89,10 @@ class testLajiStoreAPI(TestCase):
         response = LajiStoreAPI.get_all_individuals(arg="TEST123")
         self.assertGreaterEqual(len(response), 0)
 
+        response = LajiStoreAPI.get_all_documents(documentId="NOTFOUND")
+        self.assertGreaterEqual(len(response), 0)
+
+
     def testMultipleArgumentQueries(self):
 
         response = LajiStoreAPI.get_all_documents(something="TEST1234", testtest=[])

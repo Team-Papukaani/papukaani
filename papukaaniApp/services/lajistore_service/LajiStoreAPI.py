@@ -112,6 +112,9 @@ def _get_all_pages(uri, key, list = None, **kwargs):
     list = list + embedded if list else embedded
     links = response["_links"]
 
+    if "last" not in links:
+        return []
+
     if links["self"]["href"] == links["last"]["href"]:
         return list
 

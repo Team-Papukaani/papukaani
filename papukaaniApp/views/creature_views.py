@@ -25,7 +25,7 @@ def creature(request, creature_id):
     # demcreature = Creature()  # placeholder
     # demcreature.name = "Koecreature"
 
-    points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)]} for mapPoint in MapPoint.objects.filter(creature_id=creature_id)]
+    points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)]} for mapPoint in MapPoint.objects.filter(creature_id=creature_id, public=True)]
 
     context = {
         'creature_id': creature_id,

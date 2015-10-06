@@ -47,13 +47,13 @@ def get_all():
     return _get_many()
 
 
-def get(deviceId):
+def get(id):
     '''
     Gets a device from LajiStore
     :param id: The LajiStore ID of the device
     :return: A Device object
     '''
-    device = LajiStoreAPI.get_device(deviceId)
+    device = LajiStoreAPI.get_device(id)
     return Device(**device)
 
 

@@ -3,4 +3,9 @@
 *.sqlite3
 db.sqlite3
 papukaani/secret_settings.py
+<<<<<<< HEAD
+papukaaniApp/migrations/*
+!papukaaniApp/migrations/__init__.py
+=======
 *~
+>>>>>>> 0bac621d20aed2acc426a640f1bca4393a2e8ee7

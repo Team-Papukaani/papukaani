@@ -1,76 +1,69 @@
-function init(data){
-    points = JSON.parse(data); //Format : {latlong : [x,y], id : int}
+function ChooseMap(points){
     map = create_map("map", [61.0, 20.0], 5)
 
-     blueIcon = L.icon({
+    this.blueIcon = L.icon({
         iconUrl: "/static/papukaani/media/blueMarker.png",
         iconSize: [38, 38],
         iconAnchor: [19, 38],
         popupAnchor: [-3, -76],
-     });
+    });
 
-     greyIcon = L.icon({
+    this.greyIcon = L.icon({
         iconUrl: "/static/papukaani/media/greyMarker.png",
         iconSize: [38, 38],
         iconAnchor: [19, 38],
         popupAnchor: [-3, -76],
-     });
+    });
 
-    markers = L.markerClusterGroup({
+    this.markers = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
         maxClusterRadius : 40,
         disableClusteringAtZoom : 13
     });
 
-    markers.on('clusterdblclick', changeMarkerClusterPublicity)
+    this.markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this))
+    this.points = points
 
-    createMarkersFromPoints(points,markers)
+    this.createMarkersFromPoints(this.points, this.markers)
 
-    map.addLayer(markers);
-}
+    map.addLayer(this.markers);
+};
 
 //Creates markers from point data and adds them to the marker cluster object.
-function createMarkersFromPoints(points, markers){
+ChooseMap.prototype.createMarkersFromPoints = function(points, markers){
      for(var i = 0; i < points.length; i++){
         var ltlgs = points[i].latlong;
         var marker = L.marker(new L.LatLng(ltlgs[0],ltlgs[1]));
         marker.pnt = points[i];
-        chooseIcon(marker);
+        this.chooseIcon(marker);
 
-        marker.on('dblclick', changePublicityForMarker(marker));
+        marker.on('dblclick', this.changePublicity.bind(this, marker));
 
         markers.addLayer(marker);
      }
-}
-
-//Takes a marker as a parameter and returns a function that changes the markers publicity.
-function changePublicityForMarker(marker){
-    return function(e){
-         changePublicity(marker);
-    }
-}
+};
 
 //Changes the publicity of every marker in marker cluster a.
-function changeMarkerClusterPublicity(a){
-        var mkrs = a.layer.getAllChildMarkers()
-        for(var i = 0; i < mkrs.length; i++){
-            changePublicity(mkrs[i]);
-        }
-}
+ChooseMap.prototype.changeMarkerClusterPublicity = function (a){
+    var markers = a.layer.getAllChildMarkers()
+    for(var i = 0; i < markers.length; i++){
+        this.changePublicity(markers[i]);
+    }
+};
 
 
-function chooseIcon(marker){
-    icon = marker.pnt.public ? blueIcon : greyIcon;
+ChooseMap.prototype.chooseIcon = function (marker){
+    icon = marker.pnt.public ? this.blueIcon : this.greyIcon;
     marker.setIcon(icon);
-}
+};
 
-function changePublicity(marker){
+ChooseMap.prototype.changePublicity = function(marker){
     marker.pnt.public = !marker.pnt.public;
-    chooseIcon(marker);
-}
+    this.chooseIcon(marker);
+};
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
-function send(csrf_token){
+function send(csrf_token, points){
     data = JSON.stringify(points)
     messagebox = $("#loading");
     button = $("#save");
@@ -82,10 +75,10 @@ function send(csrf_token){
 
     request.onreadystatechange = function(){
         setLoadingMessage(request, button, messagebox)
-    }
+    };
 
     request.open("POST","", true);
-    set_headers(csrf_token, request)
+    set_headers(csrf_token, request);
     request.send("data="+data);
 }
 

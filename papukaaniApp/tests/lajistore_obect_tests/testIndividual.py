@@ -1,7 +1,10 @@
 from django.test import TestCase
 from papukaaniApp.models_LajiStore import individual
+from papukaaniApp.tests.lajistore_object_tests import LajiStoreMock
 
 class testIndividual(TestCase):
+
+	LajiStoreAPI = LajiStoreMock
 
 	def setUp(self):
 		self.individual = {
@@ -29,5 +32,7 @@ class testIndividual(TestCase):
 		self.assertEquals(2, individuals.__len__())
 
 	def test_find():		
-		
+		papukaaniApp.models_LajiStore.testOk = False
+		papukaaniApp.models_LajiStore.individual.find(individualId = "INDIVIDUALABCD")
+		self.assertTrue(papukaaniApp.models_LajiStore.testOk)
 )

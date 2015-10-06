@@ -107,6 +107,13 @@ class ChoosePage(Page):
         """
         return self.MARKER.get_attribute('src')
 
+    def number_of_visible_markers_on_map(self):
+        """
+        Calculates how many markers are currently shown to the user on the map.
+        :return: The number of markers.
+        """
+        return len(self.driver.find_elements_by_class_name("leaflet-marker-icon"))
+
     def double_click_marker(self):
         """
         Performs a double click action on the marker.

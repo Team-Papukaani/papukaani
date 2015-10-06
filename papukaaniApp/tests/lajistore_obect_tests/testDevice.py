@@ -16,6 +16,7 @@ class TestDevice(TestCase):
             "lastModifiedBy": "SomeUser",
             "facts": []
         }
+
         self.d = device.create(**dev)
 
     def tearDown(self):
@@ -32,6 +33,8 @@ class TestDevice(TestCase):
         gotten = device.get(self.d.id)
         self.assertEquals("NewType", gotten.deviceType)
 
+    def test_get_all(self):
+        self.assertGreater(len(device.get_all()), 0)
 
 
 

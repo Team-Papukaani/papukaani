@@ -2,17 +2,17 @@ from papukaaniApp.services.lajistore_service import LajiStoreAPI
 
 
 class Device:
-    def __init__(self, id, deviceId, device, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt,
-                 lastModifiedBy, facts, **kwargs):
+    def __init__(self, id, device_id, device, device_type, device_manufacturer, created_at, created_by,
+                 last_modified_at, last_modified_by, facts, **kwargs):
         self.id = id
-        self.deviceId = deviceId
+        self.deviceId = device_id
         self.device = device
-        self.deviceType = deviceType
-        self.deviceManufacturer = deviceManufacturer
-        self.createdAt = createdAt
-        self.createdBy = createdBy
-        self.lastModifiedAt = lastModifiedAt
-        self.lastModifiedBy = lastModifiedBy
+        self.deviceType = device_type
+        self.deviceManufacturer = device_manufacturer
+        self.createdAt = created_at
+        self.createdBy = created_by
+        self.lastModifiedAt = last_modified_at
+        self.lastModifiedBy = last_modified_by
         self.facts = facts
 
     def delete(self):
@@ -30,15 +30,15 @@ def get_all():
     return _get_many()
 
 
-def get(deviceId):
-    device = LajiStoreAPI.get_device(deviceId)
+def get(device_id):
+    device = LajiStoreAPI.get_device(device_id)
     return Device(**device)
 
 
-def create(deviceId, device, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy,
+def create(device_id, device_type, device_manufacturer, created_at, created_by, last_modified_at, last_modified_by,
            facts):
-    device = LajiStoreAPI.post_device(deviceId, device, deviceType, deviceManufacturer, createdAt, createdBy,
-                                      lastModifiedAt, lastModifiedBy, facts)
+    device = LajiStoreAPI.post_device(device_id, device_type, device_manufacturer, created_at, created_by,
+                                      last_modified_at, last_modified_by, facts)
     return Device(**device)
 
 

@@ -24,7 +24,7 @@
     <div id="map" style="height: 400px;width: 100%; clear:none"></div>
 
     {% autoescape off %}
-        <script>
+        <script id="mapScript">
             var mapPoints = {{points}};
             creatureMapInit(mapPoints);
         </script>

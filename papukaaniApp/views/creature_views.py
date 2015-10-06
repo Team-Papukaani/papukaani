@@ -1,3 +1,4 @@
+from django.contrib.sites.models import get_current_site
 from django.shortcuts import get_object_or_404, render
 from papukaaniApp.models import Creature, MapPoint
 import json
@@ -33,7 +34,8 @@ def creature(request, creature_id):
     context = {
         'creature_id': creature_id,
         'creature': creature,
-        'points': json.dumps(latlongs)
+        'points': json.dumps(latlongs),
+        'server_url': 'http://' + get_current_site(request).domain
     }
 
     return render(request, 'papukaaniApp/creature.html', context)

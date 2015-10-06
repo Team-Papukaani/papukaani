@@ -1,4 +1,4 @@
-
+testOk = False
 
 _device = {
         "id":0,

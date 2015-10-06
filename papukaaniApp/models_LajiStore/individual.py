@@ -20,7 +20,7 @@ def get_all():
 	return _get_many()
 	
 def get(individualId):
-	individual = LajistoreAPI.get_individual(individualId)
+	individual = LajiStoreAPI.get_individual(individualId)
 	return Individual(**individual)
 
 def create(individualId, taxon):	
@@ -28,7 +28,7 @@ def create(individualId, taxon):
 	return Individual(**individual)
 
 def _get_many(**kwargs): 
-	data = LajiStoreAPI.get_all_individuals(**kwargs):
+	data = LajiStoreAPI.get_all_individuals(**kwargs)
 	individuals = []
 	for individual in data: #creates a list of individuals to return
 		individuals.append(Individual(**individual))

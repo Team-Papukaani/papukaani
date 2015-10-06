@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from .common import *
-from os import environ
+import os
 
 SECRET_KEY = os.environ("PAPUKAANI_SECRET_KEY")
 

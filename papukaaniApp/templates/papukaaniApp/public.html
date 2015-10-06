@@ -1,29 +1,34 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Pelikaija</title>
+    <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/style.css" %}">
 
-    {% load staticfiles %}
-
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-1.0.0-b1/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-1.0.0-b1/leaflet.js"></script>
+    <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
-    <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
+    <script src="{% static 'papukaani/js/creature.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
 
 </head>
-
 <body>
-{% include "papukaaniApp/navigation.html" %}
+    <h2>Lintu: {{ creature.name }}</h2>
 
-<div id="map" style="height: 400px;width: 400px;clear:none"></div>
+    <div id="map" style="height: 400px;width: 100%; clear:none"></div>
 
-{{ points|length }}
-{% autoescape off %}
-    <script id="mapScript">
-        create_map_with_points('{{points}}')
-    </script>
-{% endautoescape %}
-
+    {% autoescape off %}
+        <script id="mapScript">
+            var mapPoints = {{points}};
+            creatureMapInit(mapPoints);
+        </script>
+    {% endautoescape %}
 </body>
 </html>
+

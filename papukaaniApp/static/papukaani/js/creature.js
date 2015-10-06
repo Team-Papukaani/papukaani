@@ -47,7 +47,7 @@ function creatureMapInit(points){
 function createLatlngsFromPoints(points){
     var latlngs = [];
     for(var i = 0; i < points.length; i++){
-        var coordinates = points[i].latlong;
+        var coordinates = points[i];
         var latlng = L.latLng(coordinates[0], coordinates[1]);
         latlngs.push(latlng);
     }

@@ -24,6 +24,13 @@
 
     <div id="map" style="height: 400px;width: 100%; clear:none"></div>
 
+    <p>
+        iFrame URL:
+        <code id="iframeUrl">
+            &lt;iframe width="400px" height="300px" src="{{ server_url }}{% url 'public' creature_id %}"&gt;&lt;/iframe&gt;
+        </code>
+    </p>
+
     {% autoescape off %}
         <script>
             var mapPoints = {{points}};

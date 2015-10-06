@@ -1,6 +1,7 @@
 import requests
 import json
-from papukaani import secret_settings, settings
+from papukaani import secret_settings
+from django.conf import settings
 
 _URL = settings.LAJISTORE_URL
 _AUTH = (secret_settings.LAJISTORE_USER, secret_settings.LAJISTORE_PASSWORD)

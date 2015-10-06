@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from xvfbwrapper import Xvfb
 
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
@@ -106,6 +105,13 @@ class ChoosePage(Page):
         :return: The source of the icon used by the marker.
         """
         return self.MARKER.get_attribute('src')
+
+    def number_of_visible_markers_on_map(self):
+        """
+        Calculates how many markers are currently shown to the user on the map.
+        :return: The number of markers.
+        """
+        return len(self.driver.find_elements_by_class_name("leaflet-marker-icon"))
 
     def double_click_marker(self):
         """

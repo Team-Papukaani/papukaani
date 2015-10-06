@@ -13,18 +13,12 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PROJECT_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-# Quick-start development settings - unsuitable for production
+# Quick-start development config - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '098#5x@dnk#)p+kijq(%u@*bsho)*u4mgga1f(u&9*-237z0@j'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -72,23 +66,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'papukaani.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-OTHER_ROOT = os.path.join(PROJECT_DIR, 'staticfiles/other')
+OTHER_ROOT = os.path.join(PROJECT_DIR, 'staticfiles/../staticfiles/other')
 
 OTHER_URL = '/other/'
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, 'staticfiles'),
+    os.path.join(PROJECT_DIR, '..papukaani/staticfiles'),
+    os.path.join(PROJECT_DIR, '..papukaaniApp/static')
 )
 
 

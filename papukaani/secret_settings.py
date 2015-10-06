@@ -1,0 +1,3 @@
+import os
+LAJISTORE_USER = os.environ['LAJISTORE_USER']
+LAJISTORE_PASSWORD = os.environ['LAJISTORE_PASSWORD']

@@ -1,5 +1,6 @@
+//Creates a map where the uploader can select the points which will be published.
 function ChooseMap(points){
-    map = create_map("map", [61.0, 20.0], 5)
+    this.map = create_map("map", [61.0, 20.0], 5)
 
     this.blueIcon = L.icon({
         iconUrl: "/static/papukaani/media/blueMarker.png",
@@ -18,7 +19,8 @@ function ChooseMap(points){
     this.markers = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
         maxClusterRadius : 40,
-        disableClusteringAtZoom : 13
+        disableClusteringAtZoom : 13,
+        singleMarkerMode: true
     });
 
     this.markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this))
@@ -26,7 +28,7 @@ function ChooseMap(points){
 
     this.createMarkersFromPoints(this.points, this.markers)
 
-    map.addLayer(this.markers);
+    this.map.addLayer(this.markers);
 };
 
 //Creates markers from point data and adds them to the marker cluster object.
@@ -35,8 +37,6 @@ ChooseMap.prototype.createMarkersFromPoints = function(points, markers){
         var ltlgs = points[i].latlong;
         var marker = L.marker(new L.LatLng(ltlgs[0],ltlgs[1]));
         marker.pnt = points[i];
-        this.chooseIcon(marker);
-
         marker.on('dblclick', this.changePublicity.bind(this, marker));
 
         markers.addLayer(marker);
@@ -47,8 +47,9 @@ ChooseMap.prototype.createMarkersFromPoints = function(points, markers){
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a){
     var markers = a.layer.getAllChildMarkers()
     for(var i = 0; i < markers.length; i++){
-        this.changePublicity(markers[i]);
+        this.changePublicity.bind(this, markers[i]);
     }
+    this.markers.removeLayers(a.layer.getAllChildMarkers())
 };
 
 
@@ -59,7 +60,7 @@ ChooseMap.prototype.chooseIcon = function (marker){
 
 ChooseMap.prototype.changePublicity = function(marker){
     marker.pnt.public = !marker.pnt.public;
-    this.chooseIcon(marker);
+    this.map.removeLayer(marker)
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.

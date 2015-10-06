@@ -2,14 +2,14 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import Client
 
 from papukaaniApp.tests.page_models.page_models import PublicPage
-from papukaani.settings import *
+from django.conf import settings
 from papukaaniApp.models import MapPoint
 
 
 class PublicView(StaticLiveServerTestCase):
 
     def test_public_points_are_shown_on_map(self):
-        with open(BASE_DIR + "/papukaaniApp/tests/test_files/ecotones.csv") as file:
+        with open(settings.BASE_DIR + "/papukaaniApp/tests/test_files/ecotones.csv") as file:
             Client().post('/papukaani/upload/', {'file': file})
 
         points = MapPoint.objects.all()

@@ -1,6 +1,4 @@
 from datetime import datetime
-from django.db import models
-from django.db.models.signals import pre_init
 from django.test import TestCase
 
 from papukaaniApp.models import Creature

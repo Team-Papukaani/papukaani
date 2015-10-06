@@ -1,0 +1,9 @@
+h1 {
+    color: green;
+}
+
+.largeMap {
+    height: 500px;
+    width: 100%;
+    clear: none;
+}

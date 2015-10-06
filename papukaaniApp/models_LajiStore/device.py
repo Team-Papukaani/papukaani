@@ -1,6 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 
-
 class Device():
     '''
     Represents the Device table of LajiStore

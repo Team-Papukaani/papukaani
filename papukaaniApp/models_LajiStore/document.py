@@ -37,6 +37,7 @@ def find(**kwargs):
     '''
     return _get_many(**kwargs)
 
+
 def get_all():
     '''
     Returns all documents
@@ -53,6 +54,7 @@ def get(id):
     document = LajiStoreAPI.get_document(id)
     return Document(**document)
 
+
 def create(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
@@ -61,17 +63,16 @@ def create(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, fac
     document = LajiStoreAPI.post_document(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings)
     return Document(**document)
 
-def _get_many(**kwargs): 
+
+def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_documents(**kwargs)
     documents = []
-    for document in data: #creates a list of documents to return
+    for document in data:  # creates a list of documents to return
         documents.append(Document(**document))
     return documents
 
+
 def _parse_gathering(data):
     return  [gathering.from_lajistore_json(**point) for point in data]
-
-
-
 
 

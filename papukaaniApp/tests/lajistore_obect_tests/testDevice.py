@@ -7,14 +7,14 @@ class TestDevice(TestCase):
     def setUp(self):
 
         dev = {
-        "deviceId": "ABCD1234567",
-        "deviceType": "Type",
-        "deviceManufacturer": "Manufacturer",
-        "createdAt": "2015-09-29T14:00:00+03:00",
-        "createdBy": "SomeUser",
-        "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-        "lastModifiedBy": "SomeUser",
-        "facts": []
+            "deviceId": "ABCD1234567",
+            "deviceType": "Type",
+            "deviceManufacturer": "Manufacturer",
+            "createdAt": "2015-09-29T14:00:00+03:00",
+            "createdBy": "SomeUser",
+            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
+            "lastModifiedBy": "SomeUser",
+            "facts": []
         }
 
         self.d = device.create(**dev)

@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from xvfbwrapper import Xvfb
 
 from papukaaniApp.tests.page_models.page_model import Page, Element
 

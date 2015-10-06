@@ -1,7 +1,8 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from papukaaniApp.models_LajiStore import gathering
 
 class Document():
-    def _init_(self, id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings):
+    def __init__(self, id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings, **kwargs):
         self.id = id
         self.documentId = documentId
         self.lastModifiedAt = lastModifiedAt
@@ -9,13 +10,15 @@ class Document():
         self.createdAt = createdAt
         self.createdBy = createdBy
         self.facts = facts
-        self.gatherings = gatherings
+        self.gatherings = _parse_gathering(gatherings)
 
     def delete(self):
         LajiStoreAPI.delete_document(self.id)
 
     def update(self):
-        LajiStoreAPI.update_document(**self.__dict__) #__dict__ puts all arguments here
+        dict = self.__dict__
+        dict["gatherings"] = [g.to_lajistore_json() for g in self.gatherings]
+        LajiStoreAPI.update_document(**dict) #__dict__ puts all arguments here
 
 def find(**kwargs):
     return _get_many(**kwargs)
@@ -38,6 +41,10 @@ def _get_many(**kwargs):
     for document in data: #creates a list of documents to return
         documents.append(Document(**document))
     return documents
+
+def _parse_gathering(data):
+    return  [gathering.from_lajistore_json(**point) for point in data]
+
 
 
 

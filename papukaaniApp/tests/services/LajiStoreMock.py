@@ -62,7 +62,6 @@ def update_document(**kwargs):
     return kwargs
 
 def get_all_individuals(**kwargs):
-    testOk = True
     return [_individual]
 
 def get_individual(id):

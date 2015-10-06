@@ -2,7 +2,8 @@ from papukaaniApp.services.lajistore_service import LajiStoreAPI
 
 
 class Individual:
-    def _init_(self, id, individualId, taxon):
+
+    def __init__(self, id, individualId, taxon, **kwargs):
         self.id = id
         self.individualId = individualId
         self.taxon = taxon
@@ -11,7 +12,7 @@ class Individual:
         LajiStoreAPI.delete_individual(self.id)
 
     def update(self):
-        LajiStoreAPI.update_individual(**self.__dict__)  #__dict__ puts all arguments here
+        LajiStoreAPI.update_individual(**self.__dict__)  # __dict__ puts all arguments here
 
 
 def find(**kwargs):
@@ -35,7 +36,7 @@ def create(individualId, taxon):
 def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_individuals(**kwargs)
     individuals = []
-    for individual in data:  #creates a list of individuals to return
+    for individual in data:  # creates a list of individuals to return
         individuals.append(Individual(**individual))
     return individuals
 

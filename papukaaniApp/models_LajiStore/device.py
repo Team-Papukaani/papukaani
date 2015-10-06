@@ -19,14 +19,14 @@ class Device():
 	def update(self):
 		LajiStoreAPI.update_device(**self.__dict__) #__dict__ puts all arguments here
 
-def find(**kwargs)
+def find(**kwargs):
 	return _get_many(**kwargs)
 
 def get_all():
 	return _get_many()
 
 def get(deviceId):
-	device = LajistoreAPI.get_device(deviceId)
+	device = LajiStoreAPI.get_device(deviceId)
 	return Device(**device)
 
 def create(deviceId, device, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy, facts):

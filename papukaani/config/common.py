@@ -71,8 +71,8 @@ OTHER_ROOT = os.path.join(PROJECT_DIR, 'staticfiles/../staticfiles/other')
 OTHER_URL = '/other/'
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, '..papukaani/staticfiles'),
-    os.path.join(PROJECT_DIR, '..papukaaniApp/static')
+    os.path.join(PROJECT_DIR, '../papukaani/staticfiles'),
+    os.path.join(PROJECT_DIR, '../papukaaniApp/static')
 )
 
 

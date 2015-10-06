@@ -13,20 +13,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Creature',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('name', models.CharField(max_length=300)),
             ],
         ),
         migrations.CreateModel(
             name='MapPoint',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('gpsNumber', models.CharField(max_length=20)),
                 ('timestamp', models.DateTimeField()),
-                ('latitude', models.DecimalField(max_digits=12, decimal_places=9)),
-                ('longitude', models.DecimalField(max_digits=12, decimal_places=9)),
-                ('altitude', models.DecimalField(max_digits=8, decimal_places=3)),
-                ('temperature', models.DecimalField(max_digits=5, decimal_places=2)),
+                ('latitude', models.DecimalField(decimal_places=9, max_digits=12)),
+                ('longitude', models.DecimalField(decimal_places=9, max_digits=12)),
+                ('altitude', models.DecimalField(decimal_places=3, max_digits=8)),
+                ('temperature', models.DecimalField(decimal_places=2, max_digits=5)),
                 ('public', models.BooleanField(default=False)),
                 ('creature', models.ForeignKey(to='papukaaniApp.Creature')),
             ],

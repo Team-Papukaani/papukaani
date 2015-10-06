@@ -42,6 +42,8 @@ class Element:
                 self.location_strategy, self.locator
             )
         )
-        return driver.find_element(
+        found_element =  driver.find_element(
             self.location_strategy, self.locator
         )
+
+        return found_element

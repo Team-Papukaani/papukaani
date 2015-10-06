@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PROJECT_DIR = os.path.dirname(__file__)
 
-# Quick-start development settings - unsuitable for production
+# Quick-start development config - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -74,7 +74,7 @@ WSGI_APPLICATION = 'papukaani.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.8/ref/config/#databases
 
 DATABASES = {
     'default': {

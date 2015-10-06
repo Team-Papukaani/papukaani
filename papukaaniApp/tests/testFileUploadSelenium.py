@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
-from papukaani.settings.common import *
+from papukaani.config.common import *
 from papukaaniApp.tests.page_models.page_models import UploadPage
 
 

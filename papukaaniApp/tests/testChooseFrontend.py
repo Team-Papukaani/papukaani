@@ -39,9 +39,9 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         )
 
     def test_icon_changes_when_double_clicked(self):
-        self.assertEquals("greyMarker.png" in self.page.get_marker_src(), 1)
+        markers = self.page.number_of_visible_markers_on_map()
         self.page.double_click_marker()
-        self.assertEquals("blueMarker.png" in self.page.get_marker_src(), 1)
+        self.assertEqual(markers - 1, self.page.number_of_visible_markers_on_map())
 
     def test_save_button_is_disabled_while_waiting_for_response(self):
         with open(_filePath + "big.csv") as file:

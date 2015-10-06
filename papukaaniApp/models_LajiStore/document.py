@@ -3,13 +3,13 @@ from papukaaniApp.services.lajistore_service import LajiStoreAPI
 class Document():
     def _init_(self, id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings):
         self.id = id
-            self.documentId = documentId
-            self.lastModifiedAt = lastModifiedAt
-            self.lastModifiedBy = lastModifiedBy
-            self.createdAt = createdAt
-            self.createdBy = createdBy
-            self.facts = facts
-            self.gatherings = gatherings
+        self.documentId = documentId
+        self.lastModifiedAt = lastModifiedAt
+        self.lastModifiedBy = lastModifiedBy
+        self.createdAt = createdAt
+        self.createdBy = createdBy
+        self.facts = facts
+        self.gatherings = gatherings
 
     def delete(self):
         LajiStoreAPI.delete_document(self.id)

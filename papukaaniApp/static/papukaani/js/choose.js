@@ -69,6 +69,7 @@ ChooseMap.prototype.chooseIcon = function (marker) {
 
 ChooseMap.prototype.changePublicity = function (marker) {
     marker.pnt.public = !marker.pnt.public;
+    this.map.removeLayer(marker)
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.

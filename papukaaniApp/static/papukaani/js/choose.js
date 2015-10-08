@@ -24,12 +24,9 @@ function ChooseMap(points) {
         iconCreateFunction: function (cluster) {
             var childCount = cluster.getChildCount();
 
-            var c = ' marker-cluster-small';
-
-
             return new L.DivIcon({
                 html: '<div><span>' + childCount + '</span></div>',
-                className: 'marker-cluster' + c,
+                className: 'marker-cluster marker-cluster-small',
                 iconSize: new L.Point(40, 40)
             });
         }

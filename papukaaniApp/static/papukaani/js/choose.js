@@ -1,5 +1,5 @@
 //Creates a map where the uploader can select the points which will be published.
-function ChooseMap(points){
+function ChooseMap(points) {
     this.map = create_map("map", [61.0, 20.0], 5)
 
     this.blueIcon = L.icon({
@@ -18,9 +18,21 @@ function ChooseMap(points){
 
     this.markers = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
-        maxClusterRadius : 40,
-        disableClusteringAtZoom : 13,
-        singleMarkerMode: true
+        maxClusterRadius: 40,
+        disableClusteringAtZoom: 13,
+        singleMarkerMode: true,
+        iconCreateFunction: function (cluster) {
+            var childCount = cluster.getChildCount();
+
+            var c = ' marker-cluster-small';
+
+
+            return new L.DivIcon({
+                html: '<div><span>' + childCount + '</span></div>',
+                className: 'marker-cluster' + c,
+                iconSize: new L.Point(40, 40)
+            });
+        }
     });
 
     this.markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this))
@@ -32,39 +44,38 @@ function ChooseMap(points){
 };
 
 //Creates markers from point data and adds them to the marker cluster object.
-ChooseMap.prototype.createMarkersFromPoints = function(points, markers){
-     for(var i = 0; i < points.length; i++){
+ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
+    for (var i = 0; i < points.length; i++) {
         var ltlgs = points[i].latlong;
-        var marker = L.marker(new L.LatLng(ltlgs[0],ltlgs[1]));
+        var marker = L.marker(new L.LatLng(ltlgs[0], ltlgs[1]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
 
         markers.addLayer(marker);
-     }
+    }
 };
 
 //Changes the publicity of every marker in marker cluster a.
-ChooseMap.prototype.changeMarkerClusterPublicity = function (a){
+ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
     var markers = a.layer.getAllChildMarkers()
-    for(var i = 0; i < markers.length; i++){
+    for (var i = 0; i < markers.length; i++) {
         this.changePublicity.bind(this, markers[i]);
     }
     this.markers.removeLayers(a.layer.getAllChildMarkers())
 };
 
 
-ChooseMap.prototype.chooseIcon = function (marker){
+ChooseMap.prototype.chooseIcon = function (marker) {
     icon = marker.pnt.public ? this.blueIcon : this.greyIcon;
     marker.setIcon(icon);
 };
 
-ChooseMap.prototype.changePublicity = function(marker){
+ChooseMap.prototype.changePublicity = function (marker) {
     marker.pnt.public = !marker.pnt.public;
-    this.map.removeLayer(marker)
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
-function send(csrf_token, points){
+function send(csrf_token, points) {
     data = JSON.stringify(points)
     messagebox = $("#loading");
     button = $("#save");
@@ -74,29 +85,29 @@ function send(csrf_token, points){
 
     request = new XMLHttpRequest;
 
-    request.onreadystatechange = function(){
+    request.onreadystatechange = function () {
         setLoadingMessage(request, button, messagebox)
     };
 
-    request.open("POST","", true);
+    request.open("POST", "", true);
     set_headers(csrf_token, request);
-    request.send("data="+data);
+    request.send("data=" + data);
 }
 
 //Sets the content type and CSRF token cookie headers.
-function set_headers(csrf_token, request){
+function set_headers(csrf_token, request) {
     request.setRequestHeader("X-CSRFToken", csrf_token);
-    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 }
 
 //Callback function for post request. Shows a message depending on response status.
-function setLoadingMessage(request, button, messagebox){
-        if(request.readyState == 4){
-            button.attr("disabled", false);
-            if(request.status == 200){
-                messagebox.text("Valmis!");
-            } else{
-                messagebox.text("Tapahtui virhe!");
-            }
+function setLoadingMessage(request, button, messagebox) {
+    if (request.readyState == 4) {
+        button.attr("disabled", false);
+        if (request.status == 200) {
+            messagebox.text("Valmis!");
+        } else {
+            messagebox.text("Tapahtui virhe!");
         }
     }
+}

@@ -72,16 +72,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
         self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
 
-    def test_cluster_with_mixed_public_and_private_points_divides_properly_into_public_and_private_child_clusters(self):
-        self.add_public_point()
-        self.page.navigate()
-        for i in range(0, 10):
-            self.page.map_zoom_in()
-            time.sleep(0.5)
-        self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
-        self.assertEquals(2, self.page.number_of_private_clusters_on_map())
-        self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
-
     def test_save_button_is_disabled_while_waiting_for_response(self):
         with open(_filePath + "big.csv") as file:
             Client().post('/papukaani/upload/', {'file': file})

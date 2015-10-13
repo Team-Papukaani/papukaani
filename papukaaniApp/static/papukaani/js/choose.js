@@ -2,20 +2,6 @@
 function ChooseMap(points) {
     this.map = create_map("map", [61.0, 20.0], 5)
 
-    this.blueIcon = L.icon({
-        iconUrl: "/static/papukaani/media/blueMarker.png",
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [-3, -76],
-    });
-
-    this.greyIcon = L.icon({
-        iconUrl: "/static/papukaani/media/greyMarker.png",
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [-3, -76],
-    });
-
     this.markers = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
         maxClusterRadius: 40,
@@ -46,32 +32,48 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
-    var markers = a.layer.getAllChildMarkers()
+    console.log("function called");
+    var markers = a.layer.getAllChildMarkers();
+    var changepublicityto = true;
+    if (getPublicChildCount(a.layer) > 0) {
+        changepublicityto = false;
+    }
+
     for (var i = 0; i < markers.length; i++) {
-        this.changePublicity(markers[i]);
+        changePublicityTo(markers[i], changepublicityto);
         this.markers.removeLayer(markers[i]);
         this.markers.addLayer(markers[i]);
     }
-    this.map.removeLayer(this.markers);
-    this.map.addLayer(this.markers);
-};
-
-
-ChooseMap.prototype.chooseIcon = function (marker) {
-    icon = marker.pnt.public ? this.blueIcon : this.greyIcon;
-    marker.setIcon(icon);
 };
 
 ChooseMap.prototype.changePublicity = function (marker) {
     marker.pnt.public = !marker.pnt.public;
+    this.markers.removeLayer(marker);
+    this.markers.addLayer(marker);
 };
 
-ChooseMap.prototype.isPublic = function (marker) {
-    return marker.pnt.public
+changePublicityTo = function (marker, value) {
+    marker.pnt.public = value;
 };
 
+//Custom function for MarkerCluster's iconCreateFunction, generates the icon based on the number of public points in the cluster.
 ChooseMap.prototype.customCluster = function (cluster) {
     var childCount = cluster.getChildCount();
+    var pubcount = getPublicChildCount(cluster);
+
+    var c = ' marker-cluster';
+    if (pubcount === 0) c += '-large';
+    else if (pubcount < childCount) c += '-medium';
+    else c += '-small';
+
+    return new L.DivIcon({
+        html: '<div><span>' + pubcount + "/" + childCount + '</span></div>',
+        className: 'marker-cluster' + c,
+        iconSize: new L.Point(40, 40)
+    });
+};
+
+getPublicChildCount = function (cluster) {
     var pubcount = 0;
 
     var markers = cluster.getAllChildMarkers()
@@ -80,16 +82,7 @@ ChooseMap.prototype.customCluster = function (cluster) {
             pubcount++;
         }
     }
-
-    var c = ' marker-cluster';
-    if (pubcount === 0) c += '-large';
-    else c += '-small';
-
-    return new L.DivIcon({
-        html: '<div><span>' + pubcount + "/" + childCount + '</span></div>',
-        className: 'marker-cluster' + c,
-        iconSize: new L.Point(40, 40)
-    });
+    return pubcount;
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.

@@ -7,72 +7,77 @@ _URL = settings.LAJISTORE_URL
 _AUTH = (secret_settings.LAJISTORE_USER, secret_settings.LAJISTORE_PASSWORD)
 _JSON_HEADERS = {'Content-Type': 'application/json'}
 
+#LajiStore resource paths:
+_DEVICE_PATH = "devices"
+_DOCUMENT_PATH = "documents"
+_INDIVIDUAL_PATH = "individuals"
+
 #Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 #as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
 
 #Devices lajistore/devices.
 
 def get_all_devices(**kwargs):
-    return _get_all_pages("device","device",**kwargs)
+    return _get_all_pages(_DEVICE_PATH,"device",**kwargs)
 
 def get_device(id):
-    return  _get("device/"+str(id))
+    return  _get(_DEVICE_PATH+"/"+str(id))
 
 def delete_device(id):
-    return _delete("device/"+str(id))
+    return _delete(_DEVICE_PATH+"/"+str(id))
 
 def post_device(deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy, facts=[]):
     data = {"deviceId":deviceId, "deviceType":deviceType, "deviceManufacturer":deviceManufacturer, "createdAt":createdAt, "createdBy":createdBy,
             "lastModifiedAt":lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts":facts}
 
-    return _post(data, "device")
+    return _post(data, _DEVICE_PATH)
 
 def update_device(id ,deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy, facts=[]):
     data = {"id":id, "deviceId":deviceId, "deviceType":deviceType, "deviceManufacturer":deviceManufacturer, "createdAt":createdAt,
             "createdBy":createdBy, "lastModifiedAt":lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts":facts}
 
-    return _put("device/" + str(id), data)
+    return _put(_DEVICE_PATH+"/" + str(id), data)
 
 
 #Documents lajistore/documents/
 
 def get_all_documents(**kwargs):
-    return _get_all_pages("document", "document",**kwargs)
+    return _get_all_pages(_DOCUMENT_PATH, "document",**kwargs)
 
 def get_document(id):
-    return _get("document/"+str(id))
+    return _get(_DOCUMENT_PATH+"/"+str(id))
 
 def delete_document(id):
-    return _delete("document/"+str(id))
+    return _delete(_DOCUMENT_PATH+"/"+str(id))
 
 def post_document(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts=[], gatherings=[]):
     data={"documentId":documentId, "lastModifiedAt":lastModifiedAt, "lastModifiedBy":lastModifiedBy, "createdAt":createdAt, "createdBy":createdBy, "facts":facts, "gatherings":gatherings}
-    return _post(data, "document")
+    return _post(data, _DOCUMENT_PATH)
 
 def update_document(id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts=[], gatherings=[]):
     data =  {"id": id, "documentId": documentId, "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy,
             "createdAt": createdAt, "createdBy": createdBy, "facts": facts, "gatherings": gatherings}
 
-    return _put("document/" + str(id), data)
+    return _put(_DOCUMENT_PATH+"/" + str(id), data)
 
 #Individuals lajistore/individual
 
 def get_all_individuals(**kwargs):
-    return _get_all_pages("individual","individual", **kwargs)
+    return _get_all_pages(_INDIVIDUAL_PATH,"individual", **kwargs)
 
 def get_individual(id):
-    return _get("individual/"+str(id))
+    return _get(_INDIVIDUAL_PATH+"/"+str(id))
 
 def delete_individual(id):
-    return _delete("individual/"+str(id))
+    return _delete(_INDIVIDUAL_PATH+"/"+str(id))
 
 def post_individual(individualId, taxon):
     data = {"individualId":individualId, "taxon":taxon}
-    return _post(data, "individual")
+    return _post(data, _INDIVIDUAL_PATH)
 
 def update_individual(id, individualId, taxon):
     data = {"id":id, "individualId":individualId, "taxon":taxon}
-    return _put("individual/"+str(id), data)
+    return _put(_INDIVIDUAL_PATH+"/"+str(id), data)
 
 #Private helpers:
 

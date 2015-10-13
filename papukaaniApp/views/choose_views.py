@@ -1,3 +1,4 @@
+import datetime
 from papukaaniApp.utils.view_utils import *
 from papukaaniApp.models import MapPoint
 from django.shortcuts import render, redirect
@@ -20,7 +21,10 @@ def choose(request):
         return redirect(choose)
 
     else:
-        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id, "public" : mapPoint.public} for mapPoint in MapPoint.objects.all()]
+        start_time = request.GET.get('start_time', '')
+        end_time = request.GET.get('end_time', '')
+        print(start_time)
+        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id, "public" : mapPoint.public, "timestamp": str(mapPoint.timestamp)} for mapPoint in MapPoint.objects.all()]
         return render(request, 'choose.html', {'points': json.dumps(points)})
 
 

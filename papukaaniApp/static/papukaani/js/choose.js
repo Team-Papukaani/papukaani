@@ -16,7 +16,29 @@ function ChooseMap(points) {
         popupAnchor: [-3, -76],
     });
 
-    this.markers = L.markerClusterGroup({
+    this.markers = createEmptyMarkerClusterGroup();
+
+    this.points = points
+
+    this.createMarkersFromPoints(this.points, this.markers)
+    this.map.addLayer(this.markers)
+    this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
+};
+
+//Updates the map to show all the markers within start and end, which are strings that Date.parse understands,
+ChooseMap.prototype.showMarkersWithinTimeRange = function(start, end) {
+    this.removeAllMarkers()
+    pointsWithinRange = this.points.filter(function(point) {
+        timestamp = Date.parse(point.timestamp)
+        return timestamp >= Date.parse(start) && timestamp <= Date.parse(end)
+    });
+    this.createMarkersFromPoints(pointsWithinRange, this.markers)
+    this.map.addLayer(this.markers)
+}
+
+//
+function createEmptyMarkerClusterGroup() {
+    return L.markerClusterGroup({
         zoomToBoundsOnClick: false,
         maxClusterRadius: 40,
         disableClusteringAtZoom: 13,
@@ -31,18 +53,15 @@ function ChooseMap(points) {
             });
         }
     });
-
-    this.markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this))
-    this.points = points
-
-    this.createMarkersFromPoints(this.points, this.markers)
-
-    this.map.addLayer(this.markers);
-};
+}
+ChooseMap.prototype.removeAllMarkers = function() {
+    this.map.removeLayer(this.markers)
+    this.markers = createEmptyMarkerClusterGroup();
+}
 
 //Creates markers from point data and adds them to the marker cluster object.
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
-    for (var i = 0; i < points.length; i++) {
+    for (var i = 0; i < points.length - 10; i++) {
         var ltlgs = points[i].latlong;
         var marker = L.marker(new L.LatLng(ltlgs[0], ltlgs[1]));
         marker.pnt = points[i];
@@ -50,6 +69,7 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
         markers.addLayer(marker);
     }
+    markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this))
 };
 
 //Changes the publicity of every marker in marker cluster a.

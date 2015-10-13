@@ -1,9 +1,11 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 
-class Device():
+
+class Device:
     '''
     Represents the Device table of LajiStore
     '''
+
     def __init__(self, id, deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt,
                  lastModifiedBy, facts, **kwargs):
         self.id = id

@@ -3,9 +3,7 @@ from papukaaniApp.models_LajiStore import device
 
 
 class TestDevice(TestCase):
-
     def setUp(self):
-
         dev = {
             "deviceId": "ABCD1234567",
             "deviceType": "Type",
@@ -35,7 +33,3 @@ class TestDevice(TestCase):
 
     def test_get_all(self):
         self.assertGreater(len(device.get_all()), 0)
-
-
-
-

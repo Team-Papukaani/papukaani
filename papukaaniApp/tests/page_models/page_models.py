@@ -86,7 +86,9 @@ class ChoosePage(Page):
 
     SAVE_BUTTON = Element(By.ID, 'save')
     MESSAGE_BOX = Element(By.ID, 'loading')
-    MARKER = Element(By.CLASS_NAME, "leaflet-marker-icon")
+    MARKER = Element(By.CLASS_NAME, "marker-cluster-large")
+    ZOOM_IN = Element(By.CLASS_NAME, 'leaflet-control-zoom-in')
+    ZOOM_OUT = Element(By.CLASS_NAME, 'leaflet-control-zoom-out')
 
     def click_save_button(self):
         """
@@ -112,6 +114,33 @@ class ChoosePage(Page):
         :return: The number of markers.
         """
         return len(self.driver.find_elements_by_class_name("leaflet-marker-icon"))
+
+    def number_of_completely_public_clusters_on_map(self):
+        """
+        Counts the number of clusters that contain only public points.
+        :return: The number of public (green) clusters.
+        """
+        return len(self.driver.find_elements_by_class_name("marker-cluster-small"))
+
+    def number_of_partially_public_clusters_on_map(self):
+        """
+        Counts the number of clusters that contain at least 1 public point.
+        :return: The number of partially public (yellow) clusters.
+        """
+        return len(self.driver.find_elements_by_class_name("marker-cluster-medium"))
+
+    def number_of_private_clusters_on_map(self):
+        """
+        Counts the number of clusters that contain only private points.
+        :return: The number of private (grey) clusters.
+        """
+        return len(self.driver.find_elements_by_class_name("marker-cluster-large"))
+
+    def map_zoom_in(self):
+        self.ZOOM_IN.click()
+
+    def map_zoom_out(self):
+        self.ZOOM_OUT.click()
 
     def double_click_marker(self):
         """

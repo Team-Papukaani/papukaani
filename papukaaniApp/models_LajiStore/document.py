@@ -5,13 +5,11 @@ class Document():
     '''
     Represents the LajiStore table Document
     '''
-    def __init__(self, id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings, **kwargs):
+    def __init__(self, id, documentId, lastModifiedAt, createdAt, facts, gatherings, **kwargs):
         self.id = id
         self.documentId = documentId
         self.lastModifiedAt = lastModifiedAt
-        self.lastModifiedBy = lastModifiedBy
         self.createdAt = createdAt
-        self.createdBy = createdBy
         self.facts = facts
         self.gatherings = _parse_gathering(gatherings)
 
@@ -55,12 +53,12 @@ def get(id):
     return Document(**document)
 
 
-def create(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings):
+def create(documentId, facts, gatherings, lastModifiedAt=None, createdAt=None):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
     '''
-    document = LajiStoreAPI.post_document(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings)
+    document = LajiStoreAPI.post_document(documentId=documentId, lastModifiedAt=lastModifiedAt, createdAt=createdAt, facts=facts, gatherings=gatherings)
     return Document(**document)
 
 

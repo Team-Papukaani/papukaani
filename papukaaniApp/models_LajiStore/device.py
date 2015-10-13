@@ -1,19 +1,18 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from datetime import datetime
 
 class Device():
     '''
     Represents the Device table of LajiStore
     '''
-    def __init__(self, id, deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt,
-                 lastModifiedBy, facts, **kwargs):
+    def __init__(self, id, deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
+                 facts, **kwargs):
         self.id = id
         self.deviceId = deviceId
         self.deviceType = deviceType
         self.deviceManufacturer = deviceManufacturer
         self.createdAt = createdAt
-        self.createdBy = createdBy
         self.lastModifiedAt = lastModifiedAt
-        self.lastModifiedBy = lastModifiedBy
         self.facts = facts
 
     def delete(self):
@@ -45,6 +44,24 @@ def get_all():
     '''
     return _get_many()
 
+def get_or_create(deviceId, parserInfo):
+    '''
+    Gets the device with the given deviceId, or creates it if not found.
+    :return: a Device object
+    '''
+    result = find(deviceId=deviceId)
+    if len(result) == 0:
+        return create(
+            deviceId=deviceId,
+            deviceType=parserInfo["type"],
+            deviceManufacturer=parserInfo["manufacturer"],
+            createdAt=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
+            lastModifiedAt=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
+            facts=[]
+        )
+    else:
+        return result[0]
+
 
 def get(id):
     '''
@@ -56,13 +73,13 @@ def get(id):
     return Device(**device)
 
 
-def create(deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy, facts):
+def create(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, facts):
     '''
     Creates a device instance in LajiStore and a corresponding Device object
     :return: A Device object
     '''
-    device = LajiStoreAPI.post_device(deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt,
-                                      lastModifiedBy, facts)
+    device = LajiStoreAPI.post_device(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
+                                     facts)
     return Device(**device)
 
 

@@ -8,9 +8,7 @@ class testDocumentAndGathering(TestCase):
         dict = {
             "documentId": "TestId0000001",
             "createdAt":"2015-09-14T15:29:28+03:00",
-            "createdBy":"User",
             "lastModifiedAt":"2015-09-14T15:29:28+03:00",
-            "lastModifiedBy":"User",
             "facts": [],
             "gatherings": [
                             {
@@ -21,7 +19,8 @@ class testDocumentAndGathering(TestCase):
                              },
                              "temperatureCelsius": -3,
                              "facts": [],
-                             "units": []
+                             "units": [],
+                             "publicity":"public"
                            }
                     ]
             }

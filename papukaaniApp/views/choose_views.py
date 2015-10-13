@@ -2,6 +2,7 @@ from papukaaniApp.utils.view_utils import *
 from papukaaniApp.models import MapPoint
 from django.shortcuts import render, redirect
 from django.db.transaction import atomic
+from papukaaniApp.models_LajiStore import gathering, document
 import json
 
 
@@ -20,15 +21,14 @@ def choose(request):
         return redirect(choose)
 
     else:
-        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id, "public" : mapPoint.public} for mapPoint in MapPoint.objects.all()]
-        return render(request, 'choose.html', {'points': json.dumps(points)})
+        docs = [d.to_dict for d in document.get_all()]
+
+        return render(request, 'choose.html', {'points': json.dumps(docs)})
 
 
 
-@atomic()
 def _set_points_public(request):
-    points = json.loads(request.POST['data'])
-    for point in points:
-        mPoint = MapPoint.objects.get(id=point['id'])
-        mPoint.public = point['public']
-        mPoint.save()
+    docs = json.loads(request.POST['data'])
+    for dict in docs:
+        document.update_from_dict(dict)
+

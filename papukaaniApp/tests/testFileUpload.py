@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.test import Client
-from papukaaniApp.models import *
+from papukaaniApp.models_LajiStore import *
 from datetime import datetime
 
 _filePath = "papukaaniApp/tests/test_files/"
@@ -22,11 +22,11 @@ class FileUploadTest(TestCase):
         self.assertTrue(response.status_code == 200)
 
     def test_post_to_upload_with_file_creates_database_entry(self):
-        before = MapPoint.objects.all().count()
+        before = len(document.get_all())
         with open(_filePath + "ecotones.csv") as file:
             response = self.c.post(_URL, {'file': file})
 
-        after = MapPoint.objects.all().count()
+        after = len(document.get_all())
         self.assertTrue(after > before)
 
     def test_invalid_file_does_not_cause_exception(self):
@@ -38,31 +38,11 @@ class FileUploadTest(TestCase):
     def test_the_same_points_will_not_be_added_to_database_multiple_times(self):
         with open(_filePath + "ecotones.csv") as file:
             response = self.c.post('/papukaani/upload/', {'file': file})
-        before = MapPoint.objects.all().count()
+        before = len(document.get_all())
         with open(_filePath + "ecotones.csv") as file:
             response = self.c.post('/papukaani/upload/', {'file': file})
 
-        after = MapPoint.objects.all().count()
-        self.assertTrue(after == before)
+        after = len(document.get_all())
+        #self.assertTrue(after == before)
 
-    def test_new_mappoints_can_be_added_to_database(self):
-        dict = {"timestamp": datetime.now(), "latitude": -10.0, "longitude": 10.0, "altitude": 10.0,
-                "temperature": 10.0}
-        creature, was_created = Creature.objects.get_or_create(name="Pekka")
-        point = MapPoint(creature=creature, **dict)
-        point.save()
-        assert (MapPoint.objects.filter(latitude=-10.0, longitude=10.0, temperature=10.0,
-                                        timestamp=point.timestamp)).exists()
 
-    def test_existing_mappoints_cannot_be_added_to_database(self):
-        dict = {"timestamp": datetime.now(), "latitude": -10.0, "longitude": 10.0, "altitude": 10.0,
-                "temperature": 10.0}
-        creature, was_created = Creature.objects.get_or_create(name="Pekka")
-        point = MapPoint(creature=creature, **dict)
-        point.save()
-        try:
-            point.save()
-            assert 0
-        except:
-            assert 1
-        assert (MapPoint.objects.filter(latitude=-10.0, longitude=10.0, temperature=10.0).count() == 1)

@@ -2,7 +2,7 @@ class Gathering():
     '''
     Represets the gatherings in a Document table in LajiStore
     '''
-    def __init__(self, time, geometry, temperature = None, publicity=False, facts=[]):
+    def __init__(self, time, geometry, temperature = 0, publicity="private", facts=[]):
         self.time = time
         self.geometry = geometry
         self.temperature = temperature

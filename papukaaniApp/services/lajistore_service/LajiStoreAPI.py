@@ -51,13 +51,13 @@ def get_document(id):
 def delete_document(id):
     return _delete(_DOCUMENT_PATH+"/"+str(id))
 
-def post_document(documentId, lastModifiedAt, createdAt, createdBy=None, lastModifiedBy=None, facts=[], gatherings=[]):
-    data={"documentId":documentId, "lastModifiedAt":lastModifiedAt, "lastModifiedBy":lastModifiedBy, "createdAt":createdAt, "createdBy":createdBy, "facts":facts, "gatherings":gatherings}
+def post_document(documentId, lastModifiedAt, createdAt, deviceId, createdBy=None, lastModifiedBy=None, facts=[], gatherings=[]):
+    data={"documentId":documentId, "lastModifiedAt":lastModifiedAt, "lastModifiedBy":lastModifiedBy, "createdAt":createdAt, "createdBy":createdBy, "facts":facts, "gatherings":gatherings, "deviceId":deviceId}
     return _post(data, _DOCUMENT_PATH)
 
-def update_document(id, documentId, lastModifiedAt, createdAt, createdBy=None, lastModifiedBy=None, facts=[], gatherings=[]):
+def update_document(id, documentId, lastModifiedAt, createdAt, deviceId, createdBy=None, lastModifiedBy=None, facts=[], gatherings=[]):
     data =  {"id": id, "documentId": documentId, "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy,
-            "createdAt": createdAt, "createdBy": createdBy, "facts": facts, "gatherings": gatherings}
+            "createdAt": createdAt, "createdBy": createdBy, "facts": facts, "gatherings": gatherings, "deviceId":deviceId}
 
     return _put(_DOCUMENT_PATH+"/" + str(id), data)
 

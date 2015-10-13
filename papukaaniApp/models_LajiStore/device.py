@@ -1,5 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
-from datetime import datetime
+from papukaaniApp.utils.model_utils import *
 
 class Device():
     '''
@@ -55,8 +55,8 @@ def get_or_create(deviceId, parserInfo):
             deviceId=deviceId,
             deviceType=parserInfo["type"],
             deviceManufacturer=parserInfo["manufacturer"],
-            createdAt=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
-            lastModifiedAt=datetime.now().strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
+            createdAt= current_time_as_lajistore_timestamp(),
+            lastModifiedAt= current_time_as_lajistore_timestamp(),
             facts=[]
         )
     else:

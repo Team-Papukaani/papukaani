@@ -1,10 +1,13 @@
 from django.test import TestCase
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from papukaani import secret_settings
+import sys
 
 class testLajiStoreAPI(TestCase):
 
 
     def setUp(self):
+
         self.device = {
                            "deviceId": "ABCD1234567",
                            "deviceType": "Type",

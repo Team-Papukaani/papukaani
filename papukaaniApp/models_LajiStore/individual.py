@@ -5,6 +5,7 @@ class Individual:
     '''
     Represents the Individual table of LajiStore
     '''
+
     def __init__(self, id, individualId, taxon, **kwargs):
         self.id = id
         self.individualId = individualId
@@ -69,5 +70,3 @@ def _get_many(**kwargs):
 
         individuals.append(Individual(**individual))
     return individuals
-
-

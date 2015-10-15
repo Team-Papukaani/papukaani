@@ -24,6 +24,15 @@ class TestChooseFrontend(StaticLiveServerTestCase):
             temperature=22.2,
             timestamp=datetime.now(),
         )
+        MapPoint.objects.create(
+            creature=self.creature,
+            gpsNumber=1,
+            latitude=61.01,
+            longitude=23.01,
+            altitude=222.22,
+            temperature=22.2,
+            timestamp=datetime.now()
+        )
 
         self.page = ChoosePage()
         self.page.navigate()
@@ -39,12 +48,42 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         )
 
     def test_icon_changes_when_double_clicked(self):
-        markers = self.page.number_of_visible_markers_on_map()
+        markers = self.page.number_of_completely_public_clusters_on_map()
         self.page.double_click_marker()
-        self.assertEqual(markers - 1, self.page.number_of_visible_markers_on_map())
+        self.assertEquals(markers + 1, self.page.number_of_completely_public_clusters_on_map())
+
+    def test_cluster_with_only_public_points_is_green(self):
+        self.page.double_click_marker()
+        self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
+
+    def test_cluster_initially_contains_only_private_points_and_is_grey(self):
+        self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
+
+    def test_cluster_with_mixed_public_and_private_points_is_yellow(self):
+        self.add_public_point()
+        self.page.navigate()
+        self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
 
     def test_save_button_is_disabled_while_waiting_for_response(self):
         with open(_filePath + "big.csv") as file:
             Client().post('/papukaani/upload/', {'file': file})
         self.page.click_save_button()
         self.assertTrue(not self.page.save_button_is_enabled())
+
+    def add_public_point(self):
+        MapPoint.objects.create(
+            creature=self.creature,
+            gpsNumber=1,
+            latitude=61.01,
+            longitude=23.01,
+            altitude=222.22,
+            temperature=22.2,
+            timestamp=datetime.now(),
+            public=True
+        )

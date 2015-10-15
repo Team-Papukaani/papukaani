@@ -2,20 +2,6 @@
 function ChooseMap(points) {
     this.map = create_map("map", [61.0, 20.0], 5)
 
-    this.blueIcon = L.icon({
-        iconUrl: "/static/papukaani/media/blueMarker.png",
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [-3, -76],
-    });
-
-    this.greyIcon = L.icon({
-        iconUrl: "/static/papukaani/media/greyMarker.png",
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [-3, -76],
-    });
-
     this.markers = createEmptyMarkerClusterGroup();
 
     this.points = points
@@ -27,7 +13,7 @@ function ChooseMap(points) {
 
 //Updates the map to show all the markers within start and end, which are strings that Date.parse understands,
 ChooseMap.prototype.showMarkersWithinTimeRange = function(start, end) {
-    this.removeAllMarkers()
+    this.removeAllMarkers.call(this)
     pointsWithinRange = this.points.filter(function(point) {
         timestamp = Date.parse(point.timestamp)
         return timestamp >= Date.parse(start) && timestamp <= Date.parse(end)
@@ -38,21 +24,30 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function(start, end) {
 
 //
 function createEmptyMarkerClusterGroup() {
-    return L.markerClusterGroup({
+    customCluster = function (cluster) {
+        var childCount = cluster.getChildCount();
+        var pubcount = getPublicChildCount(cluster);
+
+        var c = ' marker-cluster';
+        if (pubcount === 0) c += '-large';
+        else if (pubcount < childCount) c += '-medium';
+        else c += '-small';
+
+        return new L.DivIcon({
+            html: '<div><span>' + pubcount + "/" + childCount + '</span></div>',
+            className: 'marker-cluster' + c,
+            iconSize: new L.Point(40, 40)
+        });
+    }
+
+    clusterGroup = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
         maxClusterRadius: 40,
         disableClusteringAtZoom: 13,
         singleMarkerMode: true,
-        iconCreateFunction: function (cluster) {
-            var childCount = cluster.getChildCount();
-
-            return new L.DivIcon({
-                html: '<div><span>' + childCount + '</span></div>',
-                className: 'marker-cluster marker-cluster-small',
-                iconSize: new L.Point(40, 40)
-            });
-        }
+        iconCreateFunction: customCluster
     });
+    return clusterGroup
 }
 ChooseMap.prototype.removeAllMarkers = function() {
     this.map.removeLayer(this.markers)
@@ -69,32 +64,50 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
         markers.addLayer(marker);
     }
-    markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this))
+    clusterGroup.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this));
 };
 
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
-    var markers = a.layer.getAllChildMarkers()
-    for (var i = 0; i < markers.length; i++) {
-        this.changePublicity.bind(this, markers[i]);
+    console.log("function called");
+    var markers = a.layer.getAllChildMarkers();
+    var changepublicityto = true;
+    if (getPublicChildCount(a.layer) > 0) {
+        changepublicityto = false;
     }
-    this.markers.removeLayers(a.layer.getAllChildMarkers())
-};
 
-
-ChooseMap.prototype.chooseIcon = function (marker) {
-    icon = marker.pnt.public ? this.blueIcon : this.greyIcon;
-    marker.setIcon(icon);
+    for (var i = 0; i < markers.length; i++) {
+        changePublicityTo(markers[i], changepublicityto);
+        this.markers.removeLayer(markers[i]);
+        this.markers.addLayer(markers[i]);
+    }
 };
 
 ChooseMap.prototype.changePublicity = function (marker) {
     marker.pnt.public = !marker.pnt.public;
-    this.map.removeLayer(marker)
+    this.markers.removeLayer(marker);
+    this.markers.addLayer(marker);
+};
+
+changePublicityTo = function (marker, value) {
+    marker.pnt.public = value;
+};
+
+getPublicChildCount = function (cluster) {
+    var pubcount = 0;
+
+    var markers = cluster.getAllChildMarkers()
+    for (var i = 0; i < markers.length; i++) {
+        if (markers[i].pnt.public) {
+            pubcount++;
+        }
+    }
+    return pubcount;
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
 function send(csrf_token, points) {
-    data = JSON.stringify(points)
+    data = JSON.stringify(points);
     messagebox = $("#loading");
     button = $("#save");
 

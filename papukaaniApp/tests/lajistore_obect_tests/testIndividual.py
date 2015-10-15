@@ -3,17 +3,15 @@ from papukaaniApp.models_LajiStore import individual
 
 
 class TestIndividual(TestCase):
-
     def setUp(self):
-
         indiv = {
             "individualId": "ABCD",
             "taxon": "test test"
-                            }
+        }
         indiv2 = {
             "individualId": "ABCD2",
             "taxon": "test test2"
-            }
+        }
 
         self.ind = individual.create(**indiv)
         self.ind2 = individual.create(**indiv2)

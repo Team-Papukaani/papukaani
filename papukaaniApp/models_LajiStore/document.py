@@ -1,11 +1,14 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.models_LajiStore import gathering
 
-class Document():
+
+class Document:
     '''
     Represents the LajiStore table Document
     '''
-    def __init__(self, id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings, **kwargs):
+
+    def __init__(self, id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings,
+                 **kwargs):
         self.id = id
         self.documentId = documentId
         self.lastModifiedAt = lastModifiedAt
@@ -27,7 +30,8 @@ class Document():
         '''
         dict = self.__dict__
         dict["gatherings"] = [g.to_lajistore_json() for g in self.gatherings]
-        LajiStoreAPI.update_document(**dict) #__dict__ puts all arguments here
+        LajiStoreAPI.update_document(**dict)  # __dict__ puts all arguments here
+
 
 def find(**kwargs):
     '''
@@ -45,6 +49,7 @@ def get_all():
     '''
     return _get_many()
 
+
 def get(id):
     '''
     Gets a document from LajiStore
@@ -60,7 +65,8 @@ def create(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, fac
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
     '''
-    document = LajiStoreAPI.post_document(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings)
+    document = LajiStoreAPI.post_document(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts,
+                                          gatherings)
     return Document(**document)
 
 
@@ -73,6 +79,4 @@ def _get_many(**kwargs):
 
 
 def _parse_gathering(data):
-    return  [gathering.from_lajistore_json(**point) for point in data]
-
-
+    return [gathering.from_lajistore_json(**point) for point in data]

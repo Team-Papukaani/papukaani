@@ -1,5 +1,5 @@
 function creatureMapInit(points){
-    map = create_map("map", [61.0, 20.0], 5)
+    map = create_map("map", [61.0, 20.0], 5);
 
     var latlngs = createLatlngsFromPoints(points);
 

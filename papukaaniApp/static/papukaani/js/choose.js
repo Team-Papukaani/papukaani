@@ -1,26 +1,27 @@
 //Creates a map where the uploader can select the points which will be published.
 function ChooseMap(points) {
-    this.map = create_map("map", [61.0, 20.0], 5)
+    this.map = create_map("map", [61.0, 20.0], 5);
 
     this.markers = createEmptyMarkerClusterGroup();
 
-    this.points = points
+    this.points = points;
 
-    this.createMarkersFromPoints(this.points, this.markers)
-    this.map.addLayer(this.markers)
+    this.createMarkersFromPoints(this.points, this.markers);
+    this.map.addLayer(this.markers);
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
-};
+}
 
 //Updates the map to show all the markers within start and end, which are strings that Date.parse understands,
-ChooseMap.prototype.showMarkersWithinTimeRange = function(start, end) {
-    this.removeAllMarkers.call(this)
-    pointsWithinRange = this.points.filter(function(point) {
-        timestamp = Date.parse(point.timestamp)
+ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
+    this.removeAllMarkers.call(this);
+    pointsWithinRange = this.points.filter(function (point) {
+        var timestring = point.timestamp.split(' ')[0];
+        var timestamp = Date.parse(timestring);
         return timestamp >= Date.parse(start) && timestamp <= Date.parse(end)
     });
-    this.createMarkersFromPoints(pointsWithinRange, this.markers)
-    this.map.addLayer(this.markers)
-}
+    this.createMarkersFromPoints(pointsWithinRange, this.markers);
+    this.map.addLayer(this.markers);
+};
 
 //
 function createEmptyMarkerClusterGroup() {
@@ -38,7 +39,7 @@ function createEmptyMarkerClusterGroup() {
             className: 'marker-cluster' + c,
             iconSize: new L.Point(40, 40)
         });
-    }
+    };
 
     clusterGroup = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
@@ -49,10 +50,10 @@ function createEmptyMarkerClusterGroup() {
     });
     return clusterGroup
 }
-ChooseMap.prototype.removeAllMarkers = function() {
-    this.map.removeLayer(this.markers)
+ChooseMap.prototype.removeAllMarkers = function () {
+    this.map.removeLayer(this.markers);
     this.markers = createEmptyMarkerClusterGroup();
-}
+};
 
 //Creates markers from point data and adds them to the marker cluster object.
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
@@ -69,7 +70,6 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
-    console.log("function called");
     var markers = a.layer.getAllChildMarkers();
     var changepublicityto = true;
     if (getPublicChildCount(a.layer) > 0) {
@@ -78,17 +78,19 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 
     for (var i = 0; i < markers.length; i++) {
         changePublicityTo(markers[i], changepublicityto);
-        this.markers.removeLayer(markers[i]);
-        this.markers.addLayer(markers[i]);
     }
+    this.markers.refreshClusters(markers);
 };
 
+//Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
+    console.log("Called");
     marker.pnt.public = !marker.pnt.public;
-    this.markers.removeLayer(marker);
-    this.markers.addLayer(marker);
+    console.log(marker.pnt.public);
+    this.markers.refreshClusters(marker);
 };
 
+//Changes the publicity of a marker to the desired value.
 changePublicityTo = function (marker, value) {
     marker.pnt.public = value;
 };

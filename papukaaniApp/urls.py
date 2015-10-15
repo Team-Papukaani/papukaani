@@ -12,6 +12,5 @@ urlpatterns = [
     url(r'^creature/(?P<creature_id>[0-9]+)/$', views.creature, name='creature'),
     # ex: /papukaani/creatures/
     url(r'^creatures/$', views.creatures, name='creatures'),
-
     url(r'^choose/$', views.choose, name='choose')
 ]

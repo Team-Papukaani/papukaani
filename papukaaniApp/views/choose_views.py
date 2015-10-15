@@ -24,9 +24,11 @@ def choose(request):
         start_time = request.GET.get('start_time', '')
         end_time = request.GET.get('end_time', '')
         print(start_time)
-        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id, "public" : mapPoint.public, "timestamp": str(mapPoint.timestamp)} for mapPoint in MapPoint.objects.all()]
-        return render(request, 'choose.html', {'points': json.dumps(points)})
+        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id,
+                   "public": mapPoint.public, "timestamp": str(mapPoint.timestamp)} for mapPoint in
+                  MapPoint.objects.all()]
 
+        return render(request, 'choose.html', {'points': json.dumps(points)})
 
 
 @atomic()

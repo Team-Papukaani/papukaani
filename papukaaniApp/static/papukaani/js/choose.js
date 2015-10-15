@@ -17,6 +17,13 @@ function ChooseMap(points) {
 
     this.map.addLayer(this.markers);
 }
+ChooseMap.prototype.changePoints = function(points){
+    this.points = points;
+    this.markers.clearLayers()
+
+    this.createMarkersFromPoints(this.points, this.markers);
+}
+
 
 //Creates markers from point data and adds them to the marker cluster object.
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
@@ -123,13 +130,46 @@ function setLoadingMessage(request, button, messagebox) {
 }
 
 function init(docs){
-    documents = docs
-    points = [];
-    for(var i = 0 ; i < docs.length; i++){
-        for(var j = 0; j < docs[i].gatherings.length; j++){
-            points.push(docs[i].gatherings[j]);
-        }
+    documents = docs;
+    devices = sortIntoDevices(documents);
+    points = getAllPoints(devices);
+
+    console.log(devices);
+    console.log(points);
+
+    cMap = new ChooseMap(points);
+}
+
+function getAllPoints(devices){
+    var points = [];
+    var device_keys = Object.keys(devices);
+    for(i = 0; i < device_keys.length; i++){
+        points = points.concat(devices[device_keys[i]]);
+    }
+    return points;
+}
+
+function changeDeviceSelection(deviceId){
+    if(devices[deviceId]){
+        points = devices[deviceId];
+    } else {
+        points = getAllPoints(devices);
     }
 
-    var map = new ChooseMap(points);
+    cMap.changePoints(points)
+}
+
+function sortIntoDevices(documents){
+    var devices = {};
+    for(var i = 0; i < documents.length; i++){
+        var deviceId = documents[i].deviceId;
+        if(!devices[deviceId]){
+            devices[deviceId] = [];
+        }
+        for(var j = 0; j < documents[i].gatherings.length; j++){
+            devices[deviceId].push(documents[i].gatherings[j]);
+        }
+     }
+
+     return devices;
 }

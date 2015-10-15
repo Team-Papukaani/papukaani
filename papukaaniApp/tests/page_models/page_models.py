@@ -86,7 +86,7 @@ class ChoosePage(Page):
 
     SAVE_BUTTON = Element(By.ID, 'save')
     MESSAGE_BOX = Element(By.ID, 'loading')
-    MARKER = Element(By.CLASS_NAME, "marker-cluster-large")
+    MARKER = Element(By.CLASS_NAME, 'marker-cluster-large')
     ZOOM_IN = Element(By.CLASS_NAME, 'leaflet-control-zoom-in')
     ZOOM_OUT = Element(By.CLASS_NAME, 'leaflet-control-zoom-out')
 

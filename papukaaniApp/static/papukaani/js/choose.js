@@ -57,7 +57,7 @@ ChooseMap.prototype.removeAllMarkers = function () {
 
 //Creates markers from point data and adds them to the marker cluster object.
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
-    for (var i = 0; i < points.length - 10; i++) {
+    for (var i = 0; i < points.length; i++) {
         var ltlgs = points[i].latlong;
         var marker = L.marker(new L.LatLng(ltlgs[0], ltlgs[1]));
         marker.pnt = points[i];
@@ -78,15 +78,27 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 
     for (var i = 0; i < markers.length; i++) {
         changePublicityTo(markers[i], changepublicityto);
+        redrawIcon(markers[i]);
     }
     this.markers.refreshClusters(markers);
 };
 
+redrawIcon = function (marker) {
+    var c = ' marker-cluster';
+    if (marker.pnt.public == true) c += '-small';
+    else c += '-large';
+
+    marker.setIcon(new L.DivIcon({
+        html: '<div><span>' + (marker.pnt.public ? 1 : 0) + '/' + 1 + '</span></div>',
+        className: 'marker-cluster' + c,
+        iconSize: new L.Point(40, 40)
+    }));
+};
+
 //Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
-    console.log("Called");
     marker.pnt.public = !marker.pnt.public;
-    console.log(marker.pnt.public);
+    redrawIcon(marker);
     this.markers.refreshClusters(marker);
 };
 

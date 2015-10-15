@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import Client
 from selenium.webdriver.common.by import By
@@ -53,6 +53,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(markers + 1, self.page.number_of_completely_public_clusters_on_map())
 
     def test_cluster_with_only_public_points_is_green(self):
+        time.sleep(10)
         self.page.double_click_marker()
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
@@ -66,6 +67,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def test_cluster_with_mixed_public_and_private_points_is_yellow(self):
         self.add_public_point()
         self.page.navigate()
+        time.sleep(10)
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
         self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
@@ -74,14 +76,14 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         with open(_filePath + "big.csv") as file:
             Client().post('/papukaani/upload/', {'file': file})
         self.page.click_save_button()
-        self.assertTrue(not self.page.save_button_is_enabled())
+        self.assertEquals(not self.page.save_button_is_enabled(), True)
 
     def add_public_point(self):
         MapPoint.objects.create(
             creature=self.creature,
             gpsNumber=1,
             latitude=61.01,
-            longitude=23.01,
+            longitude=23.02,
             altitude=222.22,
             temperature=22.2,
             timestamp=datetime.now(),

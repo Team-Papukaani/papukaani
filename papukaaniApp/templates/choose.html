@@ -17,26 +17,60 @@
     <script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/choose.js' %}"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 </head>
 
 <body>
 {% include "papukaaniApp/navigation.html" %}
 
-<div id="map" class="largeMap"></div>
+<form id="time_range">
+    <div class="input_field">
+        <label for="start_time">Start time</label>
+        <input type="text" id="start_time" name="start_time" class="datepicker">
+    </div>
 
+    <div class="input_field">
+        <label for="end_time">End time</label>
+        <input type="text" id="end_time" name="end_time" class="datepicker">
+    </div>
+
+    <div class="input_field">
+        <br>
+        <button type="button"
+                onclick="map.showMarkersWithinTimeRange(time_range.start_time.value, time_range.end_time.value)"
+                id="show_time_range">Show time range
+        </button>
+    </div>
+</form>
+
+
+<div id="map" class="largeMap"></div>
 
 {% csrf_token %}
 <button id="save" onclick="send('{{csrf_token}}', documents)">Tallenna</button>
 
 <p id="loading"></p>
+<button id="reset" onclick="resetMap(map)">Reset</button>
 
-{{ points|length }}
 {% autoescape off %}
     <script>
-         init({{points}})
+         var map = init({{points}})
     </script>
 {% endautoescape %}
+
+
+
+<script>
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+
+    var validateTimeRange = function (start_time, end_time) {
+        return Date.parse(start_time) <= Date.parse(end_time);
+    }
+</script>
 
 </body>
 </html>

@@ -1,3 +1,4 @@
+import datetime
 from papukaaniApp.utils.view_utils import *
 from papukaaniApp.models import MapPoint
 from django.shortcuts import render, redirect
@@ -22,7 +23,6 @@ def choose(request):
 
     else:
         docs = [d.to_dict() for d in document.get_all()]
-
         return render(request, 'choose.html', {'points': json.dumps(docs)})
 
 
@@ -30,4 +30,3 @@ def _set_points_public(request):
     docs = json.loads(request.POST['data'])
     for dict in docs:
         document.update_from_dict(**dict)
-

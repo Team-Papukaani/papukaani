@@ -7,3 +7,12 @@ h1 {
     width: 100%;
     clear: none;
 }
+
+#time_range_selection .input_field {
+    float: left;
+    margin-right: 10px;
+}
+
+#time_range input, label {
+    display: block;
+}

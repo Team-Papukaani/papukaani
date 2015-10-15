@@ -89,6 +89,9 @@ class ChoosePage(Page):
     MARKER = Element(By.CLASS_NAME, 'marker-cluster-large')
     ZOOM_IN = Element(By.CLASS_NAME, 'leaflet-control-zoom-in')
     ZOOM_OUT = Element(By.CLASS_NAME, 'leaflet-control-zoom-out')
+    RESET_BUTTON = Element(By.ID, 'reset')
+    START_TIME = Element(By.ID, 'start_time')
+    END_TIME = Element(By.ID, 'end_time')
 
     def click_save_button(self):
         """
@@ -148,3 +151,21 @@ class ChoosePage(Page):
         """
         actionChains = ActionChains(self.driver)
         actionChains.double_click(self.MARKER).perform()
+
+    def reset(self):
+        """
+        Resets the page by clicking the reset button.
+        """
+        self.RESET_BUTTON.click()
+
+    def set_start_time(self, string):
+        self.START_TIME.send_keys(string)
+
+    def set_end_time(self, string):
+        self.END_TIME.send_keys(string)
+
+    def get_start_time(self):
+        return self.START_TIME.get_attribute('value')
+
+    def get_end_time(self):
+        return self.END_TIME.get_attribute('value')

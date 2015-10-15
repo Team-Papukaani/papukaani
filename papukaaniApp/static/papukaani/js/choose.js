@@ -4,6 +4,8 @@ function ChooseMap(points) {
 
     this.markers = createEmptyMarkerClusterGroup();
 
+    this.originalPoints = JSON.parse(JSON.stringify(points));
+
     this.points = points;
 
     this.createMarkersFromPoints(this.points, this.markers);
@@ -83,6 +85,7 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
     this.markers.refreshClusters(markers);
 };
 
+//Redraws the markers icon on the map.
 redrawIcon = function (marker) {
     var c = ' marker-cluster';
     if (marker.pnt.public == true) c += '-small';
@@ -107,6 +110,7 @@ changePublicityTo = function (marker, value) {
     marker.pnt.public = value;
 };
 
+//Counts the cluster's public child markers.
 getPublicChildCount = function (cluster) {
     var pubcount = 0;
 
@@ -155,4 +159,15 @@ function setLoadingMessage(request, button, messagebox) {
             messagebox.text("Tapahtui virhe!");
         }
     }
+}
+
+//Resets the map to the state it was in when the page was loaded.
+function resetMap(map) {
+    map.map.removeLayer(map.markers);
+    map.markers = createEmptyMarkerClusterGroup();
+    map.points = JSON.parse(JSON.stringify(map.originalPoints));
+    map.createMarkersFromPoints(map.points, map.markers);
+    map.map.addLayer(map.markers);
+    document.getElementById("start_time").value = "";
+    document.getElementById("end_time").value = "";
 }

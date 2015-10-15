@@ -39,4 +39,3 @@ def creature(request, creature_id):
     }
 
     return render(request, 'papukaaniApp/creature.html', context)
-

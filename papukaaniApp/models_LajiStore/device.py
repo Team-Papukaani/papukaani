@@ -1,7 +1,8 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.utils.model_utils import *
 
-class Device():
+
+class Device:
     '''
     Represents the Device table of LajiStore
     '''

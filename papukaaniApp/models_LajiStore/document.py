@@ -3,10 +3,12 @@ from papukaaniApp.models_LajiStore import gathering
 from datetime import datetime
 from papukaaniApp.utils.model_utils import *
 
-class Document():
+
+class Document:
     '''
     Represents the LajiStore table Document
     '''
+
     def __init__(self, id, documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId, **kwargs):
         self.id = id
         self.documentId = documentId
@@ -34,6 +36,7 @@ class Document():
         dict["gatherings"] = [g.to_lajistore_json() for g in self.gatherings]
         return dict
 
+
 def find(**kwargs):
     '''
     Find all matching documents.
@@ -51,6 +54,7 @@ def get_all():
     :return A list of Document objects:
     '''
     return _get_many()
+
 
 def get(id):
     '''
@@ -86,6 +90,4 @@ def _get_many(**kwargs):
 
 
 def _parse_gathering(data):
-    return  [gathering.from_lajistore_json(**point) for point in data]
-
-
+    return [gathering.from_lajistore_json(**point) for point in data]

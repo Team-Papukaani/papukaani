@@ -1,10 +1,9 @@
 from django.test import TestCase
 from papukaaniApp.models_LajiStore import document
 
+
 class testDocumentAndGathering(TestCase):
-
     def setUp(self):
-
         dict = {
             "documentId": "TestId0000001",
             "createdAt":"2015-09-14T15:29:28+03:00",
@@ -24,7 +23,6 @@ class testDocumentAndGathering(TestCase):
                            }
                     ]
             }
-
         self.doc = document.create(**dict)
 
     def tearDown(self):
@@ -46,5 +44,4 @@ class testDocumentAndGathering(TestCase):
         self.assertEquals(4, self.doc.gatherings[0].temperature)
 
     def test_get_all(self):
-        self.assertGreater(len(document.get_all()) , 0)
-
+        self.assertGreater(len(document.get_all()), 0)

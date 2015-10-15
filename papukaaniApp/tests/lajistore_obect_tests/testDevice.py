@@ -3,9 +3,7 @@ from papukaaniApp.models_LajiStore import device
 
 
 class TestDevice(TestCase):
-
     def setUp(self):
-
         dev = {
             "deviceId": "ABCD1234567",
             "deviceType": "Type",
@@ -43,6 +41,8 @@ class TestDevice(TestCase):
         self.assertLess(before, len(device.get_all()))
 
         d.delete()
+
+
 
 
 

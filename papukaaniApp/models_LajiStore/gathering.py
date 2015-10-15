@@ -1,4 +1,4 @@
-class Gathering():
+class Gathering:
     '''
     Represets the gatherings in a Document table in LajiStore
     '''
@@ -24,6 +24,5 @@ def from_lajistore_json(**kwargs):
     :return: a Gathering object
     '''
     return Gathering( time = kwargs["timeStart"], geometry= kwargs["wgs84Geometry"]["coordinates"], temperature=kwargs["temperatureCelsius"],publicity=kwargs["publicity"], facts=kwargs["facts"])
-
 
 

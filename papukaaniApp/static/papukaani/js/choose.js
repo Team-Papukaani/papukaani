@@ -2,43 +2,21 @@
 function ChooseMap(points) {
     this.map = create_map("map", [61.0, 20.0], 5)
 
-    this.blueIcon = L.icon({
-        iconUrl: "/static/papukaani/media/blueMarker.png",
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [-3, -76],
-    });
-
-    this.greyIcon = L.icon({
-        iconUrl: "/static/papukaani/media/greyMarker.png",
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [-3, -76],
-    });
-
     this.markers = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
         maxClusterRadius: 40,
         disableClusteringAtZoom: 13,
         singleMarkerMode: true,
-        iconCreateFunction: function (cluster) {
-            var childCount = cluster.getChildCount();
-
-            return new L.DivIcon({
-                html: '<div><span>' + childCount + '</span></div>',
-                className: 'marker-cluster marker-cluster-small',
-                iconSize: new L.Point(40, 40)
-            });
-        }
+        iconCreateFunction: this.customCluster
     });
 
-    this.markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this))
-    this.points = points
+    this.markers.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this));
+    this.points = points;
 
-    this.createMarkersFromPoints(this.points, this.markers)
+    this.createMarkersFromPoints(this.points, this.markers);
 
     this.map.addLayer(this.markers);
-};
+}
 
 //Creates markers from point data and adds them to the marker cluster object.
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
@@ -54,28 +32,61 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
-    var markers = a.layer.getAllChildMarkers()
-    for (var i = 0; i < markers.length; i++) {
-        this.changePublicity.bind(this, markers[i]);
+    var markers = a.layer.getAllChildMarkers();
+    var changepublicityto = true;
+    if (getPublicChildCount(a.layer) > 0) {
+        changepublicityto = false;
     }
-    this.markers.removeLayers(a.layer.getAllChildMarkers())
+
+    for (var i = 0; i < markers.length; i++) {
+        changePublicityTo(markers[i], changepublicityto);
+    }
+    this.markers.refreshClusters(markers);
 };
 
-
-ChooseMap.prototype.chooseIcon = function (marker) {
-    icon = marker.pnt.public ? this.blueIcon : this.greyIcon;
-    marker.setIcon(icon);
-};
-
+//Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
-    marker.pnt.publicity = marker.pnt.publicity==="public"  ? "public" : "private";
-    console.log(marker.pnt.publicity)
-    this.map.removeLayer(marker)
+    marker.pnt.public = !marker.pnt.public;
+    this.markers.refreshClusters(marker);
+};
+
+//Changes the publicity of a marker to the desired value.
+changePublicityTo = function (marker, value) {
+    marker.pnt.public = value;
+};
+
+//Custom function for MarkerCluster's iconCreateFunction, generates the icon based on the number of public points in the cluster.
+ChooseMap.prototype.customCluster = function (cluster) {
+    var childCount = cluster.getChildCount();
+    var pubcount = getPublicChildCount(cluster);
+
+    var c = ' marker-cluster';
+    if (pubcount === 0) c += '-large';
+    else if (pubcount < childCount) c += '-medium';
+    else c += '-small';
+
+    return new L.DivIcon({
+        html: '<div><span>' + pubcount + "/" + childCount + '</span></div>',
+        className: 'marker-cluster' + c,
+        iconSize: new L.Point(40, 40)
+    });
+};
+
+getPublicChildCount = function (cluster) {
+    var pubcount = 0;
+
+    var markers = cluster.getAllChildMarkers()
+    for (var i = 0; i < markers.length; i++) {
+        if (markers[i].pnt.public) {
+            pubcount++;
+        }
+    }
+    return pubcount;
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
 function send(csrf_token, points) {
-    data = JSON.stringify(points)
+    data = JSON.stringify(points);
     messagebox = $("#loading");
     button = $("#save");
 

@@ -14,6 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
     <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
+    <script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/choose.js' %}"></script>
 
@@ -25,9 +26,9 @@
 <div id="map" class="largeMap"></div>
 
 
-
 {% csrf_token %}
 <button id="save" onclick="send('{{csrf_token}}', documents)">Tallenna</button>
+
 <p id="loading"></p>
 
 {{ points|length }}

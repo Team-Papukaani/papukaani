@@ -43,7 +43,7 @@ function ChooseMap(points) {
 //Creates markers from point data and adds them to the marker cluster object.
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
     for (var i = 0; i < points.length; i++) {
-        var ltlgs = points[i].latlong;
+        var ltlgs = points[i].wgs84Geometry.coordinates;
         var marker = L.marker(new L.LatLng(ltlgs[0], ltlgs[1]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
@@ -68,7 +68,8 @@ ChooseMap.prototype.chooseIcon = function (marker) {
 };
 
 ChooseMap.prototype.changePublicity = function (marker) {
-    marker.pnt.public = !marker.pnt.public;
+    marker.pnt.publicity = marker.pnt.publicity==="public"  ? "public" : "private";
+    console.log(marker.pnt.publicity)
     this.map.removeLayer(marker)
 };
 
@@ -108,4 +109,16 @@ function setLoadingMessage(request, button, messagebox) {
             messagebox.text("Tapahtui virhe!");
         }
     }
+}
+
+function init(docs){
+    documents = docs
+    points = [];
+    for(var i = 0 ; i < docs.length; i++){
+        for(var j = 0; j < docs[i].gatherings.length; j++){
+            points.push(docs[i].gatherings[j]);
+        }
+    }
+
+    var map = new ChooseMap(points);
 }

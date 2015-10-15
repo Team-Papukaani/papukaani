@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from papukaaniApp.models import *
+from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
 
 _filePath = "papukaaniApp/tests/test_files/"
@@ -14,31 +14,13 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.creature = Creature.objects.create(name="Creature")
-        self.A = MapPoint.objects.create(
-            creature=self.creature,
-            gpsNumber=1,
-            latitude=61.00,
-            longitude=23.00,
-            altitude=222.22,
-            temperature=22.2,
-            timestamp=datetime.now(),
-        )
-        MapPoint.objects.create(
-            creature=self.creature,
-            gpsNumber=1,
-            latitude=61.01,
-            longitude=23.01,
-            altitude=222.22,
-            temperature=22.2,
-            timestamp=datetime.now()
-        )
+        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0]), gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01])], "DeviceId")
 
         self.page = ChoosePage()
         self.page.navigate()
 
     def tearDown(self):
-        MapPoint.objects.all().delete()
+        self.A.delete()
         self.page.close()
 
     def test_save_with_button(self):
@@ -77,13 +59,5 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertTrue(not self.page.save_button_is_enabled())
 
     def add_public_point(self):
-        MapPoint.objects.create(
-            creature=self.creature,
-            gpsNumber=1,
-            latitude=61.01,
-            longitude=23.01,
-            altitude=222.22,
-            temperature=22.2,
-            timestamp=datetime.now(),
-            public=True
-        )
+        self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01], publicity="public"))
+        self.A.update()

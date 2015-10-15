@@ -11,7 +11,6 @@ _URL = '/papukaani/choose/'
 class TestChoose(TestCase):
     def setUp(self):
         self.c = Client()
-        self.creature = Creature.objects.create(name="Creature")
         self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [22.2, 22.2])], "DeviceId")
         self.B = document.create("TestB", [gathering.Gathering("1234-12-12T12:12:12+00:00", [32.2, 32.2])], "DeviceId")
 

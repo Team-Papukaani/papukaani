@@ -38,14 +38,10 @@ def update_device(id ,deviceId, deviceType, deviceManufacturer, createdAt, lastM
     data = {"id":id, "deviceId":deviceId, "deviceType":deviceType, "deviceManufacturer":deviceManufacturer, "createdAt":createdAt,
             "createdBy":createdBy, "lastModifiedAt":lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts":facts}
 
-def update_device(id, deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy,
-                  facts=[]):
-    data = {"id": id, "deviceId": deviceId, "deviceType": deviceType, "deviceManufacturer": deviceManufacturer,
-            "createdAt": createdAt,
-            "createdBy": createdBy, "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts": facts}
-
     return _put(_DEVICE_PATH + "/" + str(id), data)
 
+def delete_all_devices():
+    return _delete(_DEVICE_PATH)
 
 # Documents lajistore/documents/
 
@@ -71,6 +67,9 @@ def update_document(id, documentId, lastModifiedAt, createdAt, deviceId, created
 
     return _put(_DOCUMENT_PATH + "/" + str(id), data)
 
+def delete_all_documents():
+    return _delete(_DOCUMENT_PATH)
+
 
 # Individuals lajistore/individual
 
@@ -95,6 +94,8 @@ def update_individual(id, individualId, taxon):
     data = {"id": id, "individualId": individualId, "taxon": taxon}
     return _put(_INDIVIDUAL_PATH + "/" + str(id), data)
 
+def delete_all_individuals():
+    return _delete(_INDIVIDUAL_PATH)
 
 # Private helpers:
 

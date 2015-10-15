@@ -96,3 +96,5 @@ STATIC_URL = '/static/'
 LAJISTORE_URL = 'http://fmnh-ws-prod2.it.helsinki.fi/lajistore/'
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, '../../static/')
+
+TEST_RUNNER = "papukaani.test_runner.TestRunner"

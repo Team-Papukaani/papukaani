@@ -80,6 +80,11 @@ def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, crea
     document = LajiStoreAPI.post_document(documentId=documentId, lastModifiedAt=lastModifiedAt, deviceId=deviceId , createdAt=createdAt, facts=facts, gatherings=[g.to_lajistore_json() for g in gatherings])
     return Document(**document)
 
+def delete_all():
+    '''
+    Deletes all documents. Can only be used in test enviroment.
+    '''
+    LajiStoreAPI.delete_all_documents()
 
 def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_documents(**kwargs)

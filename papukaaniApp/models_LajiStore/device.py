@@ -83,6 +83,11 @@ def create(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, 
                                      facts)
     return Device(**device)
 
+def delete_all():
+    '''
+    Deletes all devices. Can only be used in test enviroment.
+    '''
+    LajiStoreAPI.delete_all_devices()
 
 def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_devices(**kwargs)

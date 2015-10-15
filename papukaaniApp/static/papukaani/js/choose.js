@@ -47,6 +47,8 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 //Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
     marker.pnt.public = !marker.pnt.public;
+    this.markers.removeLayer(marker);
+    this.markers.addLayer(marker);
     this.markers.refreshClusters(marker);
 };
 

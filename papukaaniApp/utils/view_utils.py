@@ -10,3 +10,4 @@ def redirect_with_param(to, param):
 def extract_latlongs(points):
     latlongs = [[float(mapPoint.latitude), float(mapPoint.longitude)] for mapPoint in points]
     return latlongs
+

@@ -12,7 +12,6 @@ _DEVICE_PATH = "devices"
 _DOCUMENT_PATH = "documents"
 _INDIVIDUAL_PATH = "individuals"
 
-
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 # as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
 
@@ -29,24 +28,20 @@ def get_device(id):
 def delete_device(id):
     return _delete(_DEVICE_PATH + "/" + str(id))
 
-
-def post_device(deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy,
-                facts=[]):
-    data = {"deviceId": deviceId, "deviceType": deviceType, "deviceManufacturer": deviceManufacturer,
-            "createdAt": createdAt, "createdBy": createdBy,
-            "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts": facts}
+def post_device(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, lastModifiedBy=None, createdBy=None, facts=[]):
+    data = {"deviceId":deviceId, "deviceType":deviceType, "deviceManufacturer":deviceManufacturer, "createdAt":createdAt, "createdBy":createdBy,
+            "lastModifiedAt":lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts":facts}
 
     return _post(data, _DEVICE_PATH)
 
-
-def update_device(id, deviceId, deviceType, deviceManufacturer, createdAt, createdBy, lastModifiedAt, lastModifiedBy,
-                  facts=[]):
-    data = {"id": id, "deviceId": deviceId, "deviceType": deviceType, "deviceManufacturer": deviceManufacturer,
-            "createdAt": createdAt,
-            "createdBy": createdBy, "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts": facts}
+def update_device(id ,deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, lastModifiedBy=None, createdBy=None, facts=[]):
+    data = {"id":id, "deviceId":deviceId, "deviceType":deviceType, "deviceManufacturer":deviceManufacturer, "createdAt":createdAt,
+            "createdBy":createdBy, "lastModifiedAt":lastModifiedAt, "lastModifiedBy": lastModifiedBy, "facts":facts}
 
     return _put(_DEVICE_PATH + "/" + str(id), data)
 
+def delete_all_devices():
+    return _delete(_DEVICE_PATH)
 
 # Documents lajistore/documents/
 
@@ -62,17 +57,18 @@ def delete_document(id):
     return _delete(_DOCUMENT_PATH + "/" + str(id))
 
 
-def post_document(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts=[], gatherings=[]):
-    data = {"documentId": documentId, "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy,
-            "createdAt": createdAt, "createdBy": createdBy, "facts": facts, "gatherings": gatherings}
+def post_document(documentId, lastModifiedAt, createdAt, deviceId, createdBy=None, lastModifiedBy=None, facts=[], gatherings=[]):
+    data={"documentId":documentId, "lastModifiedAt":lastModifiedAt, "lastModifiedBy":lastModifiedBy, "createdAt":createdAt, "createdBy":createdBy, "facts":facts, "gatherings":gatherings, "deviceId":deviceId}
     return _post(data, _DOCUMENT_PATH)
 
-
-def update_document(id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts=[], gatherings=[]):
-    data = {"id": id, "documentId": documentId, "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy,
-            "createdAt": createdAt, "createdBy": createdBy, "facts": facts, "gatherings": gatherings}
+def update_document(id, documentId, lastModifiedAt, createdAt, deviceId, createdBy=None, lastModifiedBy=None, facts=[], gatherings=[]):
+    data =  {"id": id, "documentId": documentId, "lastModifiedAt": lastModifiedAt, "lastModifiedBy": lastModifiedBy,
+            "createdAt": createdAt, "createdBy": createdBy, "facts": facts, "gatherings": gatherings, "deviceId":deviceId}
 
     return _put(_DOCUMENT_PATH + "/" + str(id), data)
+
+def delete_all_documents():
+    return _delete(_DOCUMENT_PATH)
 
 
 # Individuals lajistore/individual
@@ -98,6 +94,8 @@ def update_individual(id, individualId, taxon):
     data = {"id": id, "individualId": individualId, "taxon": taxon}
     return _put(_INDIVIDUAL_PATH + "/" + str(id), data)
 
+def delete_all_individuals():
+    return _delete(_INDIVIDUAL_PATH)
 
 # Private helpers:
 
@@ -127,10 +125,10 @@ def _put(uri, data):
 
 
 def _add_query(**kwargs):
-    q = "?query="
+    q = "?q="
     for k in kwargs:
-        q += "" if q == "?query=" else " AND "
-        q += k + ":" + str(kwargs[k])
+        q += "" if q == "?q=" else " AND "
+        q += k +":"+str(kwargs[k])
 
     return q
 

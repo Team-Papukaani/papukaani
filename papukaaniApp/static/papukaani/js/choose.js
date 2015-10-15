@@ -21,7 +21,7 @@ function ChooseMap(points) {
 //Creates markers from point data and adds them to the marker cluster object.
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
     for (var i = 0; i < points.length; i++) {
-        var ltlgs = points[i].latlong;
+        var ltlgs = points[i].wgs84Geometry.coordinates;
         var marker = L.marker(new L.LatLng(ltlgs[0], ltlgs[1]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
@@ -33,9 +33,9 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
     var markers = a.layer.getAllChildMarkers();
-    var changepublicityto = true;
+    var changepublicityto = "public";
     if (getPublicChildCount(a.layer) > 0) {
-        changepublicityto = false;
+        changepublicityto = "private";
     }
 
     for (var i = 0; i < markers.length; i++) {
@@ -46,13 +46,13 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 
 //Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
-    marker.pnt.public = !marker.pnt.public;
+    marker.pnt.publicity = (marker.pnt.publicity) === "public" ? "private" : "public";
     this.markers.refreshClusters(marker);
 };
 
 //Changes the publicity of a marker to the desired value.
 changePublicityTo = function (marker, value) {
-    marker.pnt.public = value;
+    marker.pnt.publicity = value;
 };
 
 //Custom function for MarkerCluster's iconCreateFunction, generates the icon based on the number of public points in the cluster.
@@ -77,7 +77,7 @@ getPublicChildCount = function (cluster) {
 
     var markers = cluster.getAllChildMarkers()
     for (var i = 0; i < markers.length; i++) {
-        if (markers[i].pnt.public) {
+        if (markers[i].pnt.publicity == "public") {
             pubcount++;
         }
     }
@@ -101,7 +101,7 @@ function send(csrf_token, points) {
 
     request.open("POST", "", true);
     set_headers(csrf_token, request);
-    request.send("data=" + data);
+    request.send("data="+encodeURIComponent(data));
 }
 
 //Sets the content type and CSRF token cookie headers.
@@ -120,4 +120,16 @@ function setLoadingMessage(request, button, messagebox) {
             messagebox.text("Tapahtui virhe!");
         }
     }
+}
+
+function init(docs){
+    documents = docs
+    points = [];
+    for(var i = 0 ; i < docs.length; i++){
+        for(var j = 0; j < docs[i].gatherings.length; j++){
+            points.push(docs[i].gatherings[j]);
+        }
+    }
+
+    var map = new ChooseMap(points);
 }

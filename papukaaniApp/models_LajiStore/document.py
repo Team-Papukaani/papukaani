@@ -1,5 +1,7 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.models_LajiStore import gathering
+from datetime import datetime
+from papukaaniApp.utils.model_utils import *
 
 
 class Document:
@@ -7,16 +9,14 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, id, documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings,
-                 **kwargs):
+    def __init__(self, id, documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId, **kwargs):
         self.id = id
         self.documentId = documentId
         self.lastModifiedAt = lastModifiedAt
-        self.lastModifiedBy = lastModifiedBy
         self.createdAt = createdAt
-        self.createdBy = createdBy
         self.facts = facts
         self.gatherings = _parse_gathering(gatherings)
+        self.deviceId = deviceId
 
     def delete(self):
         '''
@@ -28,9 +28,13 @@ class Document:
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
+        dict = self.to_dict()
+        LajiStoreAPI.update_document(**dict) #__dict__ puts all arguments here
+
+    def to_dict(self):
         dict = self.__dict__
         dict["gatherings"] = [g.to_lajistore_json() for g in self.gatherings]
-        LajiStoreAPI.update_document(**dict)  # __dict__ puts all arguments here
+        return dict
 
 
 def find(**kwargs):
@@ -41,6 +45,8 @@ def find(**kwargs):
     '''
     return _get_many(**kwargs)
 
+def update_from_dict(**kwargs):
+    LajiStoreAPI.update_document(**kwargs)
 
 def get_all():
     '''
@@ -60,15 +66,25 @@ def get(id):
     return Document(**document)
 
 
-def create(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts, gatherings):
+def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, createdAt=None):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
     '''
-    document = LajiStoreAPI.post_document(documentId, lastModifiedAt, lastModifiedBy, createdAt, createdBy, facts,
-                                          gatherings)
+    if lastModifiedAt == None:
+        lastModifiedAt = current_time_as_lajistore_timestamp()
+
+    if createdAt == None:
+        createdAt = current_time_as_lajistore_timestamp()
+
+    document = LajiStoreAPI.post_document(documentId=documentId, lastModifiedAt=lastModifiedAt, deviceId=deviceId , createdAt=createdAt, facts=facts, gatherings=[g.to_lajistore_json() for g in gatherings])
     return Document(**document)
 
+def delete_all():
+    '''
+    Deletes all documents. Can only be used in test enviroment.
+    '''
+    LajiStoreAPI.delete_all_documents()
 
 def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_documents(**kwargs)

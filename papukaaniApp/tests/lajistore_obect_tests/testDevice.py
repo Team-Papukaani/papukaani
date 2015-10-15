@@ -9,9 +9,7 @@ class TestDevice(TestCase):
             "deviceType": "Type",
             "deviceManufacturer": "Manufacturer",
             "createdAt": "2015-09-29T14:00:00+03:00",
-            "createdBy": "SomeUser",
             "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-            "lastModifiedBy": "SomeUser",
             "facts": []
         }
 
@@ -33,3 +31,18 @@ class TestDevice(TestCase):
 
     def test_get_all(self):
         self.assertGreater(len(device.get_all()), 0)
+
+    def test_get_or_create(self):
+        before = len(device.get_all())
+        device.get_or_create("ABCD1234567", {"type":"Type", "manufacturer":"Manu"})
+        self.assertEquals(before, len(device.get_all()))
+
+        d = device.get_or_create("TESTTEST", {"type":"Type", "manufacturer":"Manu"})
+        self.assertLess(before, len(device.get_all()))
+
+        d.delete()
+
+
+
+
+

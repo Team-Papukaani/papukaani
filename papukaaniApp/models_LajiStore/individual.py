@@ -62,6 +62,11 @@ def create(individualId, taxon):
     individual = LajiStoreAPI.post_individual(individualId, taxon)
     return Individual(**individual)
 
+def delete_all():
+    '''
+    Deletes all individuals. Can only be used in test enviroment.
+    '''
+    LajiStoreAPI.delete_all_individuals()
 
 def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_individuals(**kwargs)

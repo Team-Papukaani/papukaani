@@ -20,9 +20,9 @@ def choose(request):
         return redirect(choose)
 
     else:
-        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id, "public" : mapPoint.public} for mapPoint in MapPoint.objects.all()]
+        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id,
+                   "public": mapPoint.public} for mapPoint in MapPoint.objects.all()]
         return render(request, 'choose.html', {'points': json.dumps(points)})
-
 
 
 @atomic()

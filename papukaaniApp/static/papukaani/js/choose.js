@@ -32,7 +32,6 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
-    console.log("function called");
     var markers = a.layer.getAllChildMarkers();
     var changepublicityto = true;
     if (getPublicChildCount(a.layer) > 0) {
@@ -41,17 +40,17 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 
     for (var i = 0; i < markers.length; i++) {
         changePublicityTo(markers[i], changepublicityto);
-        this.markers.removeLayer(markers[i]);
-        this.markers.addLayer(markers[i]);
     }
+    this.markers.refreshClusters(markers);
 };
 
+//Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
     marker.pnt.public = !marker.pnt.public;
-    this.markers.removeLayer(marker);
-    this.markers.addLayer(marker);
+    this.markers.refreshClusters(marker);
 };
 
+//Changes the publicity of a marker to the desired value.
 changePublicityTo = function (marker, value) {
     marker.pnt.public = value;
 };

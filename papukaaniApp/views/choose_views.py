@@ -21,21 +21,11 @@ def choose(request):
         return redirect(choose)
 
     else:
-<<<<<<< HEAD
         docs = [d.to_dict() for d in document.get_all()]
 
         return render(request, 'choose.html', {'points': json.dumps(docs)})
 
 
-
-=======
-        points = [{"latlong": [float(mapPoint.latitude), float(mapPoint.longitude)], "id": mapPoint.id,
-                   "public": mapPoint.public} for mapPoint in MapPoint.objects.all()]
-        return render(request, 'choose.html', {'points': json.dumps(points)})
-
-
-@atomic()
->>>>>>> master
 def _set_points_public(request):
     docs = json.loads(request.POST['data'])
     for dict in docs:

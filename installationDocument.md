@@ -1,4 +1,58 @@
-﻿# Asennusdokumentaatio - KESKENERÄINEN
+﻿Ubuntu 14.04
+
+python3.4 asennettu oletuksena
+
+libapache2-mod-wsgi:n oltava Python3:lle:
+sudo apt-get install apache2 libapache2-mod-wsgi-py3 python-virtualenv
+	python-pip?
+
+mkdir ~/pelikaija
+cd ~/pelikaija
+
+virtualenv -p python3 pelikaijaenv
+
+git clone https://github.com/Team-Papukaani/papukaani.git
+
+source pelikaijaenv/bin/activate
+
+cd papukaani
+
+pip install -r requirements.txt
+
+Säädä static kansio pelikaija/papukaani/papukaani/config/common.py ???
+
+./manage.py makemigrations
+./manage.py migrate
+
+deactivate
+
+sudo nano /etc/apache2/sites-available/000-default.conf
+	Lisätään VirtualHostin sisään:
+		Alias /static /home/iivo/pelikaija/papukaani/papukaaniApp/static
+        	<Directory /home/iivo/pelikaija/papukaani/papukaaniApp/static>
+                	Require all granted
+        	</Directory>
+		<Directory /home/iivo/pelikaija/papukaani>
+        		<Files wsgi.py>
+            			Require all granted
+        		</Files>
+    		</Directory>
+		WSGIDaemonProcess satelliitti python-path=/home/iivo/pelikaija:/home/iivo/pelikaija/pelikaijaenv/lib/python3.4/site-packages
+    		WSGIProcessGroup satelliitti
+    		WSGIScriptAlias / /home/iivo/pelikaija/papukaani/papukaani/wsgi.py
+
+Salli apachen päästä tietokantatiedostoon???
+	chmod 664 ~/pelikaija/papukaani/db.sqlite3
+	sudo chown :www-data ~/pelikaija/papukaani/db.sqlite3
+
+chmod +x ~
+sudo chown -R :www-data ~/pelikaija
+
+sudo service apache2 restart
+
+
+
+# Asennusdokumentaatio - KESKENERÄINEN
 
 ## Vaatimukset
 

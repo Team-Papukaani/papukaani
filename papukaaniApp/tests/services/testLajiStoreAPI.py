@@ -22,7 +22,7 @@ class testLajiStoreAPI(TestCase):
             "lastModifiedAt": "2015-09-15T11:25:58+03:00",
             "lastModifiedBy": "SomeUser",
             "documentId": "ABCDTESTTEST",
-
+            "deviceId" : "TestTest",
             "createdAt": "2015-09-15T11:25:58+03:00",
             "createdBy": "SomeUser",
             "facts": [],

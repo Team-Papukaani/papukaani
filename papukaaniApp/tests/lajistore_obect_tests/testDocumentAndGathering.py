@@ -1,27 +1,18 @@
 from django.test import TestCase
-from papukaaniApp.models_LajiStore import document
+from papukaaniApp.models_LajiStore import *
 
 
 class testDocumentAndGathering(TestCase):
     def setUp(self):
+        gatherings = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
+
         dict = {
             "documentId": "TestId0000001",
+            "deviceId" : "TestDevice",
             "createdAt":"2015-09-14T15:29:28+03:00",
             "lastModifiedAt":"2015-09-14T15:29:28+03:00",
             "facts": [],
-            "gatherings": [
-                            {
-                             "timeStart": "2015-09-15T08:00:00+03:00",
-                             "wgs84Geometry": {
-                                "type": "Point",
-                                "coordinates": [68.93023632, 23.19298104]
-                             },
-                             "temperatureCelsius": -3,
-                             "facts": [],
-                             "units": [],
-                             "publicity":"public"
-                           }
-                    ]
+            "gatherings": gatherings
             }
         self.doc = document.create(**dict)
 

@@ -127,8 +127,9 @@ def _put(uri, data):
 def _add_query(**kwargs):
     q = "?q="
     for k in kwargs:
+        k_name = k.replace("_", ".")
         q += "" if q == "?q=" else " AND "
-        q += k +":"+str(kwargs[k])
+        q += k_name +":"+str(kwargs[k])
 
     return q
 

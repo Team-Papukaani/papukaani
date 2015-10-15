@@ -43,13 +43,16 @@ Ohje on kirjoitettu Redhat-palvelimelle. Muissa Linux-jakeluissa mm. httpd ja ap
 	ssh-keygen
 	exit
 4. Lisää julkinen avain Githubiin / Bitbuckettiin
-5. Kirjaudu käyttäjälle ja kloonaa repositorio kotihakemistoon
+5. Kirjaudu käyttäjälle, luo virtualenv ja kloonaa repositorio
 	sudo su -l papukaani
-	umask 077
+	umask 077 (vain omistaja voi koskea)
 	cd ~
+	virtualenv -p python3 papukaanienv
+	cd papukaanienv
+	source bin/activate
+	pip install -r requirements.txt
+	deactivate
 	git clone OSOITE
-
-5.5 Enviromentin tekeminen
 
 6. Cloonataan ohjelmatiedostot hakemistoon, jonne apache-käyttäjällä on luku- ja kirjoitusoikeudet ??
 7. Luodaan Apache-konfiguraatiotiedosto /etc/httpd/conf.d/papukaani.conf seuraavalla sisällöllä:

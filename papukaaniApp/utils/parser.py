@@ -1,8 +1,9 @@
 from datetime import datetime
 import csv, tempfile, uuid
-from papukaaniApp.models_LajiStore import gathering,device,document
+from papukaaniApp.models_LajiStore import gathering, device, document
 
-parserInfo = {"type":"GMS", "manufacturer":"Ecotones"}
+parserInfo = {"type": "GMS", "manufacturer": "Ecotones"}
+
 
 def ecotones_parse(file):
     """
@@ -24,7 +25,8 @@ def ecotones_parse(file):
 
 def ecotones_parse_time(time):
     toks = time.split()
-    return toks[0]+"T"+toks[1]+"+00:00"
+    return toks[0] + "T" + toks[1] + "+00:00"
+
 
 def create_points(data):
     """
@@ -39,18 +41,18 @@ def create_points(data):
         if point['GpsNumber'] not in collections:
             collections[point['GpsNumber']] = []
 
-        device.get_or_create(deviceId = point['GpsNumber'], parserInfo=parserInfo)
+        device.get_or_create(deviceId=point['GpsNumber'], parserInfo=parserInfo)
 
         collections[point['GpsNumber']].append(
             gathering.Gathering(
                 time=ecotones_parse_time(point['GPSTime']),
-                geometry = [float(point["Latitude"]), float(point["Longtitude"])],
+                geometry=[float(point["Longtitude"]), float(point["Latitude"])],
                 temperature=float(point['Temperature'])
             ))
 
     points = []
     for k in collections.keys():
-            points += collections[k]
-            document.create(str(uuid.uuid4()), collections[k], k)
+        points += collections[k]
+        document.create(str(uuid.uuid4()), collections[k], k)
 
     return points

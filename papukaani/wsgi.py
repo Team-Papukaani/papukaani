@@ -15,6 +15,6 @@ from django.core.wsgi import get_wsgi_application
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "papukaani.config.development")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "papukaani.config.production")
 
 application = get_wsgi_application()

@@ -88,11 +88,11 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 //Redraws the markers icon on the map.
 redrawIcon = function (marker) {
     var c = ' marker-cluster';
-    if (marker.pnt.public == true) c += '-small';
+    if (marker.pnt.publicity === "public") c += '-small';
     else c += '-large';
 
     marker.setIcon(new L.DivIcon({
-        html: '<div><span>' + (marker.pnt.public ? 1 : 0) + '/' + 1 + '</span></div>',
+        html: '<div><span>' + (marker.pnt.publicity === "public" ? 1 : 0) + '/' + 1 + '</span></div>',
         className: 'marker-cluster' + c,
         iconSize: new L.Point(40, 40)
     }));

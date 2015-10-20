@@ -2,6 +2,7 @@ import requests
 import json
 from papukaani import secret_settings
 from django.conf import settings
+from time import clock
 
 _URL = settings.LAJISTORE_URL
 _AUTH = (secret_settings.LAJISTORE_USER, secret_settings.LAJISTORE_PASSWORD)
@@ -106,15 +107,23 @@ def _delete(uri):
 
 
 def _get(uri, **kwargs):
+    start = clock()
     url = _URL + uri
+
     if (kwargs):
         url += _add_query(**kwargs)
     response = requests.get(url, auth=_AUTH).json()
+    dt = clock() - start
+    print("GET from LajiStore: "+ url+ " "+str(dt)+"s")
     return response
 
 
 def _post(data, uri):
-    response = requests.post(_URL + uri, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+    start = clock()
+    url = _URL + uri
+    response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+    dt = clock() - start
+    print("POST LajiStore: "+ url + " "+str(dt)+"s")
     return response
 
 

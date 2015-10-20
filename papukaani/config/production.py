@@ -6,5 +6,5 @@ SECRET_KEY = os.environ["PAPUKAANI_SECRET_KEY"]
 
 DEBUG = False
 
-ALLOWED_HOSTS += ["papukaani-test.luomus.fi", "fmnh-ws-test.it.helsinki.fi"]
+ALLOWED_HOSTS += ["*"]
 

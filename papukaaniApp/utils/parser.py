@@ -1,6 +1,7 @@
 from datetime import datetime
 import csv, tempfile, uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
+from time import clock
 
 parserInfo = {"type": "GMS", "manufacturer": "Ecotones"}
 
@@ -35,15 +36,22 @@ def create_points(data):
     :return: A list containing all of the Gatherings found in the file.
     :return: A list containing all of the Gatherings found in the file.
     """
+    start = clock()
     collections = {}
 
+    devices = []
+    
     for point in data:
-        if point['GpsNumber'] not in collections:
-            collections[point['GpsNumber']] = []
+        GpsNumber = point['GpsNumber']
 
-        device.get_or_create(deviceId=point['GpsNumber'], parserInfo=parserInfo)
+        if GpsNumber not in collections:
+            collections[GpsNumber] = []
 
-        collections[point['GpsNumber']].append(
+        if GpsNumber not in devices:
+            device.get_or_create(deviceId=GpsNumber, parserInfo=parserInfo)
+            devices.append(GpsNumber)
+
+        collections[GpsNumber].append(
             gathering.Gathering(
                 time=ecotones_parse_time(point['GPSTime']),
                 geometry=[float(point["Longtitude"]), float(point["Latitude"])],
@@ -55,4 +63,5 @@ def create_points(data):
         points += collections[k]
         document.create(str(uuid.uuid4()), collections[k], k)
 
+    print(clock() - start)
     return points

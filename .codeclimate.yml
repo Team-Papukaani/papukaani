@@ -1,7 +1,8 @@
 languages:
-    python: true
-    javascrpt: true
+    Python: true
+    JavaScript: true
 exclude_paths:
-- "papukaani/papukaaniApp/static/papukaani/js/leaflet.markercluster.js"
-- "papukaani/papukaaniApp/static/papukaani/js/MarkerClusterGroup.Refresh.js"
-- "papukaani/papukaaniApp/static/papukaani/libraries/*"
+- "papukaaniApp/static/papukaani/js/leaflet.markercluster.js"
+- "papukaaniApp/static/papukaani/js/MarkerClusterGroup.Refresh.js"
+- "papukaaniApp/static/papukaani/libraries/*"
+

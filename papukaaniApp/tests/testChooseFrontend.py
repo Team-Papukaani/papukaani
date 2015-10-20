@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import Client
 from selenium.webdriver.common.by import By
@@ -56,7 +56,23 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         with open(_filePath + "big.csv") as file:
             Client().post('/papukaani/upload/', {'file': file})
         self.page.click_save_button()
-        self.assertTrue(not self.page.save_button_is_enabled())
+        self.assertEquals(not self.page.save_button_is_enabled(), True)
+
+    def test_reset_button_returns_marker_state_to_original(self):
+        self.page.double_click_marker()
+        self.page.reset()
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
+        self.page.double_click_marker()
+        self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
+        self.page.reset()
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
+
+    def test_reset_button_clears_time_range_fields(self):
+        self.page.set_start_time("01/01/1234")
+        self.page.set_end_time("01/01/4321")
+        self.page.reset()
+        self.assertEquals(self.page.get_start_time(), '')
+        self.assertEquals(self.page.get_end_time(), '')
 
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01], publicity="public"))

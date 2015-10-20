@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.select import Select
 
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
@@ -92,6 +93,7 @@ class ChoosePage(Page):
     RESET_BUTTON = Element(By.ID, 'reset')
     START_TIME = Element(By.ID, 'start_time')
     END_TIME = Element(By.ID, 'end_time')
+    DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
 
     def click_save_button(self):
         """
@@ -169,3 +171,10 @@ class ChoosePage(Page):
 
     def get_end_time(self):
         return self.END_TIME.get_attribute('value')
+
+    def get_device_selection(self):
+        return self.DEVICE_SELECTOR.get_attribute('value')
+
+    def change_device_selection(self, key):
+        sel = Select(self.DEVICE_SELECTOR)
+        sel.select_by_value(key)

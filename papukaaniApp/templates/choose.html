@@ -28,12 +28,14 @@
 <form id="time_range">
     <div class="input_field">
         <label for="start_time">Start time</label>
-        <input type="text" id="start_time" name="start_time" class="datepicker">
+        <input type="text" id="start_time" name="start_time" class="datepicker"
+               placeholder="yyyy-mm-dd">
     </div>
 
     <div class="input_field">
         <label for="end_time">End time</label>
-        <input type="text" id="end_time" name="end_time" class="datepicker">
+        <input type="text" id="end_time" name="end_time" class="datepicker"
+               placeholder="yyyy-mm-dd">
     </div>
 
     <div class="input_field">
@@ -49,22 +51,20 @@
 <div id="map" class="largeMap"></div>
 
 {% csrf_token %}
-<button id="save" onclick="send('{{csrf_token}}', documents)">Tallenna</button>
+<button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>
 
 <p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>
 
 {% autoescape off %}
     <script>
-         var map = init({{points}})
+        var map = init({{points}})
     </script>
 {% endautoescape %}
 
-
-
 <script>
     $(function () {
-        $(".datepicker").datepicker();
+        $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
     });
 
     var validateTimeRange = function (start_time, end_time) {

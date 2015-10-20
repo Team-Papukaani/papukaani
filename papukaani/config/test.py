@@ -6,8 +6,8 @@ import os
 SECRET_KEY = '098#5x@dnk#)p+kijq(%u@*bsho)*u4mgga1f(u&9*-237z0@j'
 DEBUG = True
 
-secret_settings.LAJISTORE_USER = secret_settings.LAJISTORE_TEST
-secret_settings.LAJISTORE_PASSWORD = secret_settings.LAJISTORE_TEST_PASSWORD
+secret_settings.LAJISTORE_USER = secret_settings.LAJISTORE_UNIT_TEST
+secret_settings.LAJISTORE_PASSWORD = secret_settings.LAJISTORE_UNIT_TEST_PASSWORD
 
 DATABASES = {
     'default': {

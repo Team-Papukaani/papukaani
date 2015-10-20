@@ -1,6 +1,6 @@
-﻿# Asennusdokumentaatio
+﻿## Asennusdokumentaatio
 
-Ohje on kirjotettu Ubuntu 14.04:lle. 
+### Ohjeen komennot on Ubuntu 14.04:lle. 
 
 Asennetaan Python3.4 (valmiiksi Ubuntussa), Apache2.4, sekä libapache2-mod-wsgi:n että python-virtualenv:n Python3-versiot:
 ```sh
@@ -25,7 +25,7 @@ git clone https://github.com/Team-Papukaani/papukaani.git
 Asennetaan ohjelman vaatimukset virtualenviin requirements.txt-tiedostosta Pip:llä
 ```sh
 source pelikaijaenv/bin/activate
-cd papukaani
+cd ~/pelikaija/papukaani
 pip install -r requirements.txt
 ```
 
@@ -35,7 +35,6 @@ Säädä static kansio pelikaija/papukaani/papukaani/config/common.py ???
 
 Tehdään tietokantamigraatiot ja poistutaan virtualenvistä
 ```sh
-./manage.py makemigrations
 ./manage.py migrate
 deactivate
 ```

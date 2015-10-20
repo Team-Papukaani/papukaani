@@ -180,6 +180,8 @@ function init(docs){
     console.log(points);
 
     map = new ChooseMap(points);
+
+    createDeviceSelector(devices)
 }
 
 function getAllPoints(devices){
@@ -191,6 +193,7 @@ function getAllPoints(devices){
     return points;
 }
 
+//Shows the points of a single device. If deviceId not found, all points are shown.
 function changeDeviceSelection(deviceId){
     if(devices[deviceId]){
         points = devices[deviceId];
@@ -212,6 +215,7 @@ function resetMap(map) {
     document.getElementById("end_time").value = "";
 }
 
+//Sorts the points in the documents to a dictionary with device ids as keys.
 function sortIntoDevices(documents){
     var devices = {};
     for(var i = 0; i < documents.length; i++){
@@ -226,3 +230,23 @@ function sortIntoDevices(documents){
 
      return devices;
 }
+//Creates a selector for devices.
+function createDeviceSelector(devices){
+    selector = $("#selectDevice")
+
+    selector.change(function(event){
+        event.preventDefault()
+        changeDeviceSelection(selector.val())
+    })
+
+    selector.addOption = function(option){
+        selector.append("<option value='"+option+"'>"+option+"</option>")
+    }
+
+    selector.addOption("All")
+    deviceIds = Object.keys(devices)
+    for(var i = 0; i < deviceIds.length; i++){
+        selector.addOption(deviceIds[i])
+    }
+}
+

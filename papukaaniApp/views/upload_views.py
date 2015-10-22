@@ -31,7 +31,7 @@ def upload(request):
 
 
 def _render_points(points, request):
-    latlongs = [g.geometry for g in points]
+    latlongs = [[g.geometry[1], g.geometry[0]] for g in points]
     return render(request, 'upload.html', {'points': json.dumps(latlongs)})
 
 

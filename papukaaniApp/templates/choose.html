@@ -23,7 +23,7 @@
 
 </head>
 
-<body onload="init({{ points }})">
+<body onload="var map = init({{ points }})">
 {% include "papukaaniApp/navigation.html" %}
 
 <form id="time_range">
@@ -51,23 +51,15 @@
 </form>
 <select id="selectDevice"></select>
 
-
-<div id="map" class="largeMap">
-</div>
-
-{{ points }}
-
 {% csrf_token %}
 <button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>
 
 <p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>
 
-{% autoescape off %}
-    <script>
-        var map = init({{points}})
-    </script>
-{% endautoescape %}
+
+<div id="map" class="largeMap">
+</div>
 
 <script>
     $(function () {

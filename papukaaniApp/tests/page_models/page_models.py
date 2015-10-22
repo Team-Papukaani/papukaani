@@ -154,7 +154,7 @@ class ChoosePage(PageWithDeviceSelector):
 
     def get_cluster_size(self):
         cluster = self.driver.find_element_by_class_name("marker-cluster")
-        size = cluster.find_element_by_tag_name("div").get_attribute("innerHTML")
+        size = cluster.find_element_by_tag_name("div").find_element_by_tag_name("span").get_attribute("innerHTML")
         return size
 
     def map_zoom_in(self):
@@ -181,6 +181,9 @@ class ChoosePage(PageWithDeviceSelector):
 
     def set_end_time(self, string):
         self.END_TIME.send_keys(string)
+
+    def set_end_time_forced_invalid(self):
+        self.driver.executeScript("document.getElementById('end_time').setAttribute('value', 'notadate')")
 
     def get_start_time(self):
         return self.START_TIME.get_attribute('value')

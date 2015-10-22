@@ -19,8 +19,8 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     try {
         a = (start != "" ? new Date(start) : "");
         b = (end != "" ? new Date(end) : "");
-    }   catch (error) {
-        document.getElementById("formatError").innerHTML="Invalid Date format!";
+    } catch (error) {
+        document.getElementById("formatError").innerHTML = "Invalid Date format!";
         return;
     }
     pointsWithinRange = this.points.filter(function (point) {
@@ -37,9 +37,9 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
 
 //Checks if the date is between the two parameters.
 function dateIsBetween(date, start, end) {
-    date.setHours(0,0,0,0);
-    start.setHours(0,0,0,0);
-    end.setHours(0,0,0,0);
+    date.setHours(0, 0, 0, 0);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
     return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
 }
 
@@ -71,12 +71,12 @@ function createEmptyMarkerClusterGroup() {
     return clusterGroup
 }
 
-ChooseMap.prototype.changePoints = function(points){
+ChooseMap.prototype.changePoints = function (points) {
     this.points = points;
     this.markers.clearLayers();
 
     this.createMarkersFromPoints(this.points, this.markers);
-}
+};
 
 
 ChooseMap.prototype.removeAllMarkers = function () {
@@ -189,11 +189,13 @@ function setLoadingMessage(request, button, messagebox) {
     }
 }
 
-function init(docs){
-    documents = docs
-    sorter = new DeviceSorter(docs)
+function init(docs) {
+    documents = docs;
+    sorter = new DeviceSorter(docs);
     map = new ChooseMap(sorter.points);
-    sorter.setMap(map)
+    sorter.setMap(map);
+
+    return map;
 }
 
 //Resets the map to the state it was in when the page was loaded.

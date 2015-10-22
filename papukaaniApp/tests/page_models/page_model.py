@@ -1,7 +1,7 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from pyvirtualdisplay import Display
 from selenium import webdriver
-from papukaani import settings
+from django.conf import settings
 
 
 class Page:

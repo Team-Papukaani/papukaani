@@ -1,7 +1,6 @@
 
 from django.test.runner import DiscoverRunner
 from papukaaniApp.models_LajiStore import *
-from papukaani import settings
 
 class TestRunner(DiscoverRunner):
 

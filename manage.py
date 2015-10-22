@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
 import sys
-from papukaani import settings
 
 if __name__ == "__main__":
 
@@ -9,6 +8,8 @@ if __name__ == "__main__":
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "papukaani.config.test")
     else:
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "papukaani.config.development")
+
+    from papukaani import settings
 
     if '--visible' in sys.argv:
         settings.XEPHYR_VISIBILITY = 1

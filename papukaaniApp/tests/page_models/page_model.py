@@ -2,7 +2,6 @@ from selenium.common.exceptions import TimeoutException, ElementNotVisibleExcept
 from selenium.webdriver.support.wait import WebDriverWait
 from pyvirtualdisplay import Display
 from selenium import webdriver
-from papukaani import settings
 
 
 class Page:
@@ -13,7 +12,7 @@ class Page:
     url = None
 
     def __init__(self):
-        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(800, 600))
+        self.display = Display(visible=0, size=(800, 600))
         self.display.start()
         self.driver = webdriver.Firefox()
 

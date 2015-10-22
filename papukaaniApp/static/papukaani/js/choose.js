@@ -1,12 +1,12 @@
 //Creates a map where the uploader can select the points which will be published.
-function ChooseMap(points) {
+function ChooseMap(sorter) {
     this.map = create_map("map", [61.0, 20.0], 5);
 
     this.markers = createEmptyMarkerClusterGroup();
 
-    this.originalPoints = JSON.parse(JSON.stringify(points));
+    this.originalPoints = JSON.parse(JSON.stringify(sorter.points));
 
-    this.points = points;
+    this.points = sorter.points;
 
     this.createMarkersFromPoints(this.points, this.markers);
     this.map.addLayer(this.markers);
@@ -32,6 +32,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     });
     this.removeAllMarkers.call(this);
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
+    this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
 };
 
@@ -73,9 +74,9 @@ function createEmptyMarkerClusterGroup() {
 
 ChooseMap.prototype.changePoints = function (points) {
     this.points = points;
-    this.markers.clearLayers();
-
-    this.createMarkersFromPoints(this.points, this.markers);
+    var start = document.getElementById("start_time");
+    var end = document.getElementById("end_time");
+    this.showMarkersWithinTimeRange(start.value, end.value);
 };
 
 
@@ -192,7 +193,7 @@ function setLoadingMessage(request, button, messagebox) {
 function init(docs) {
     documents = docs;
     sorter = new DeviceSorter(docs);
-    map = new ChooseMap(sorter.points);
+    map = new ChooseMap(sorter);
     sorter.setMap(map)
 
     return map

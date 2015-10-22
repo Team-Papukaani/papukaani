@@ -72,6 +72,7 @@ function createEmptyMarkerClusterGroup() {
     return clusterGroup
 }
 
+//Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
     this.points = points;
     var start = document.getElementById("start_time");

@@ -23,7 +23,7 @@
 
 </head>
 
-<body onload="init({{ points }})">
+<body onload="var map = init({{ points }})">
 {% include "papukaaniApp/navigation.html" %}
 
 <form id="time_range">
@@ -58,12 +58,6 @@
 
 <p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>
-
-{% autoescape off %}
-    <script>
-        var map = init({{points}})
-    </script>
-{% endautoescape %}
 
 <script>
     $(function () {

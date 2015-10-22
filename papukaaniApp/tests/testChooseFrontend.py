@@ -14,7 +14,7 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0]), gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01])], "DeviceId")
+        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.0, 61.0]), gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01])], "DeviceId")
 
         self.page = ChoosePage()
         self.page.navigate()
@@ -81,5 +81,5 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
 
     def add_public_point(self):
-        self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01], publicity="public"))
+        self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
         self.A.update()

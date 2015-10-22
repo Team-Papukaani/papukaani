@@ -187,6 +187,8 @@ function init(docs){
     sorter = new DeviceSorter(docs)
     map = new ChooseMap(sorter.points);
     sorter.setMap(map)
+
+    return map
 }
 
 //Resets the map to the state it was in when the page was loaded.

@@ -2,7 +2,7 @@
 import os
 import sys
 
-from papukaani.config import common as settings
+from papukaani.config import common
 
 
 if __name__ == "__main__":
@@ -13,10 +13,10 @@ if __name__ == "__main__":
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "papukaani.config.development")
 
     if '--visible' in sys.argv:
-        settings.XEPHYR_VISIBILITY = 1
+        common.XEPHYR_VISIBILITY = 1
         sys.argv.remove('--visible')
     else:
-        settings.XEPHYR_VISIBILITY = 0
+        common.XEPHYR_VISIBILITY = 0
 
     from django.core.management import execute_from_command_line
 

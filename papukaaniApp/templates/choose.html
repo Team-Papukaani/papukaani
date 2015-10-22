@@ -7,8 +7,7 @@
 
     {% load staticfiles %}
     {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static " papukaaniApp
-    /general.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaaniApp/general.css' %}">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
@@ -44,9 +43,6 @@
 <select id="selectDevice"></select>
 
 
-<div id="map" class="largeMap">
-</div>
-
 {% csrf_token %}
 <button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>
 
@@ -55,7 +51,6 @@
 
 
 {% include "papukaaniApp/include_scripts.html" %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
 <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
@@ -65,10 +60,12 @@
 
 {% autoescape off %}
     <script>
-            var map = init({{points}})
+            var map = new ChooseMap({{points}})
     </script>
 {% endautoescape %}
 
+<div id="map" class="largeMap">
+</div>
 
 <script>
     $(function () {

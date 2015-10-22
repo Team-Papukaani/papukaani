@@ -10,12 +10,12 @@
 
 ### Ohjeen komennot on Ubuntu 14.04:lle. 
 
-Asennetaan Python3.4 (valmiiksi Ubuntussa), Apache2.4, sek‰ libapache2-mod-wsgi:n ett‰ python-virtualenv:n Python3-versiot:
+Asennetaan Python3.4 (valmiiksi Ubuntussa), Apache2.4, sek√§ libapache2-mod-wsgi:n ett√§ python-virtualenv:n Python3-versiot:
 ```sh
 sudo apt-get install apache2 libapache2-mod-wsgi-py3 python-virtualenv
 ```
 
-Luodaan hakemisto ohjelmalle k‰ytt‰j‰n kotihakemistoon
+Luodaan hakemisto ohjelmalle k√§ytt√§j√§n kotihakemistoon
 ```sh
 mkdir ~/pelikaija && cd ~/pelikaija
 ```
@@ -30,7 +30,7 @@ Kloonataan ohjelma hakemistoon
 git clone https://github.com/Team-Papukaani/papukaani.git
 ```
 
-Asennetaan ohjelman vaatimukset virtualenviin requirements.txt-tiedostosta Pip:ll‰
+Asennetaan ohjelman vaatimukset virtualenviin requirements.txt-tiedostosta Pip:ll√§
 ```sh
 source pelikaijaenv/bin/activate
 cd ~/pelikaija/papukaani
@@ -38,16 +38,16 @@ pip install -r requirements.txt
 ```
 
 <!---
-S‰‰d‰ static kansio pelikaija/papukaani/papukaani/config/common.py ???
+S√§√§d√§ static kansio pelikaija/papukaani/papukaani/config/common.py ???
 -->
 
-Tehd‰‰n tietokantamigraatiot ja poistutaan virtualenvist‰
+Tehd√§√§n tietokantamigraatiot ja poistutaan virtualenvist√§
 ```sh
 ./manage.py migrate
 deactivate
 ```
 
-Muokataan /etc/apache2/sites-available/000-default.conf -tiedostoa ja lis‰t‰‰n VirtualHostin sis‰‰n:
+Muokataan /etc/apache2/sites-available/000-default.conf -tiedostoa ja lis√§t√§√§n VirtualHostin sis√§√§n:
 ```apache
 Alias /static /home/iivo/pelikaija/papukaani/papukaaniApp/static
 <Directory /home/iivo/pelikaija/papukaani/papukaaniApp/static>
@@ -59,19 +59,21 @@ Alias /static /home/iivo/pelikaija/papukaani/papukaaniApp/static
 	</Files>
 </Directory>
 
-# Muuta n‰m‰
+# Muuta n√§m√§
 SetEnv LAJISTORE_USER xxxxxx
 SetEnv LAJISTORE_PASSWORD xxxxx
 SetEnv LAJISTORE_TEST xxxxx
 SetEnv LAJISTRORE_TEST_PASSWORD xxxxx
 SetEnv PAPUKAANI_SECRET_KEY xxx
+SetEnv LAJISTRORE_UNIT_TEST_PASSWORD xxxxx
+SetEnv PAPUKAANI_UNIT_SECRET_KEY xxx
 
 WSGIDaemonProcess satelliitti python-path=/home/iivo/pelikaija:/home/iivo/pelikaija/pelikaijaenv/lib/python3.4/site-packages
 WSGIProcessGroup satelliitti
 WSGIScriptAlias / /home/iivo/pelikaija/papukaani/papukaani/wsgi.py
 ```
 <!---
-Salli apachen p‰‰st‰ tietokantatiedostoon???
+Salli apachen p√§√§st√§ tietokantatiedostoon???
 	chmod 664 ~/pelikaija/papukaani/db.sqlite3
 	sudo chown :www-data ~/pelikaija/papukaani/db.sqlite3
 -->
@@ -82,7 +84,7 @@ chmod +x ~
 sudo chown -R :www-data ~/pelikaija
 ```
 
-K‰ynnistet‰‰n Apache uudelleen
+K√§ynnistet√§√§n Apache uudelleen
 ```sh
 sudo service apache2 restart
 ```

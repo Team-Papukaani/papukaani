@@ -172,6 +172,7 @@ function setLoadingMessage(request, button, messagebox) {
 }
 
 function init(docs){
+    documents = docs
     sorter = new DeviceSorter(docs)
     map = new ChooseMap(sorter.points);
     sorter.setMap(map)

@@ -5,7 +5,7 @@ from django.test import Client
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from papukaaniApp.utils.parser import *
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
 
@@ -22,6 +22,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def tearDown(self):
         self.A.delete()
         self.page.close()
+        document.delete_all()
 
     def test_save_with_button(self):
         self.page.click_save_button()
@@ -53,8 +54,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
 
     def test_save_button_is_disabled_while_waiting_for_response(self):
-        with open(_filePath + "ecotones.csv") as file:
-            Client().post('/papukaani/upload/', {'file': file})
         self.page.click_save_button()
         self.assertEquals(not self.page.save_button_is_enabled(), True)
 

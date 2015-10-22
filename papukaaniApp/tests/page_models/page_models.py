@@ -22,6 +22,17 @@ class NavigationPage(Page):
         self.UPLOAD_LINK.click()
 
 
+class PageWithDeviceSelector(Page):
+    DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
+
+    def get_device_selection(self):
+        return self.DEVICE_SELECTOR.get_attribute('value')
+
+    def change_device_selection(self, key):
+        sel = Select(self.DEVICE_SELECTOR)
+        sel.select_by_value(key)
+
+
 class UploadPage(Page):
     """
     Page Object for the upload page.
@@ -53,33 +64,32 @@ class UploadPage(Page):
         return self.POLYLINE
 
 
-class PublicPage(Page):
+class PublicPage(PageWithDeviceSelector):
     """
     Page Object for the public page.
     """
     url = BASE_URL + '/papukaani/public/'
 
-    POINTS_JSON = Element(By.ID, 'mapScript')
-    POLYLINE = Element(By.TAG_NAME, 'g')
-
-    def __init__(self, creature_id):
+    def __init__(self):
         super().__init__()
-        self.url += str(creature_id)
-
-    def get_points_json(self):
-        """
-        :return: The json of the list of points in text form.
-        """
-        return str(self.POINTS_JSON.get_attribute("innerHTML"))
 
     def get_map_polyline_elements(self):
         """
-        :return: The element containing a polyline formed of the points.
+        :return: List of polyline elements
         """
-        return self.POLYLINE
+        return self.driver.find_elements_by_tag_name("g")
+
+    def get_number_of_points(self):
+        plines = self.get_map_polyline_elements()
+        no_of_pts = 0
+        for line in plines:
+            d = line.find_element_by_tag_name("path").get_attribute("d")
+            no_of_pts += (len(d.split()) - 2)
+
+        return no_of_pts
 
 
-class ChoosePage(Page):
+class ChoosePage(PageWithDeviceSelector):
     """
     Page Object for the choose page.
     """
@@ -177,9 +187,6 @@ class ChoosePage(Page):
 
     def get_end_time(self):
         return self.END_TIME.get_attribute('value')
-
-    def get_device_selection(self):
-        return self.DEVICE_SELECTOR.get_attribute('value')
 
     def change_device_selection(self, key):
         sel = Select(self.DEVICE_SELECTOR)

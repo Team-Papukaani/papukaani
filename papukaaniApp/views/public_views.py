@@ -8,19 +8,14 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
 
 @xframe_options_exempt  #Allows the view to be loaded in an iFrame
-def public(request, creature_id):
+def public(request):
     """
     Controller for '/public/'.
     """
 
-    docs = document.find(deviceId=creature_id, gatherings_publicity="public")
-    points = []
-    for doc in docs:
-        points += doc.gatherings
+    docs = [d.to_dict() for d in document.get_all()]
 
-    latlongs = [point.geometry for point in points]
-
-    return render(request, 'papukaaniApp/public.html', {"points": json.dumps(latlongs)})
+    return render(request, 'papukaaniApp/public.html', {"docs": json.dumps(docs)})
 
 
 

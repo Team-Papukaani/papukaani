@@ -36,11 +36,10 @@ def create_points(data):
     :return: A list containing all of the Gatherings found in the file.
     :return: A list containing all of the Gatherings found in the file.
     """
-    start = clock()
     collections = {}
 
     devices = []
-    
+
     for point in data:
         GpsNumber = point['GpsNumber']
 
@@ -63,5 +62,4 @@ def create_points(data):
         points += collections[k]
         document.create(str(uuid.uuid4()), collections[k], k)
 
-    print(clock() - start)
     return points

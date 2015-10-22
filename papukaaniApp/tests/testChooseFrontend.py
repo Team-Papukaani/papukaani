@@ -58,8 +58,8 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(1, self.page.number_of_private_clusters_on_map())
 
     def test_reset_button_clears_time_range_fields(self):
-        self.page.set_start_time("01/01/1234")
-        self.page.set_end_time("01/01/4321")
+        self.page.set_start_time("1234-12-12")
+        self.page.set_end_time("1234-12-13")
         self.page.reset()
         self.assertEquals(self.page.get_start_time(), '')
         self.assertEquals(self.page.get_end_time(), '')

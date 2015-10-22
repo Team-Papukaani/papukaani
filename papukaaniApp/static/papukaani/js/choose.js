@@ -15,15 +15,22 @@ function ChooseMap(points) {
 
 //Updates the map to show all the markers within start and end, which are strings that can be converted to Date,
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
-    this.removeAllMarkers.call(this);
+    var a, b;
+    try {
+        a = (start != "" ? new Date(start) : "");
+        b = (end != "" ? new Date(end) : "");
+    }   catch (error) {
+        document.getElementById("formatError").innerHTML="Invalid Date format!";
+        return;
+    }
     pointsWithinRange = this.points.filter(function (point) {
         var timestring = point.timeStart;
         var timestamp = new Date(timestring);
-        var a, b;
-        a = (start != "" ? new Date(start) : timestamp);
-        b = (end != "" ? new Date(end) : timestamp);
+        a = (start != "" ? a : timestamp);
+        b = (end != "" ? b : timestamp);
         return dateIsBetween(timestamp, a, b);
     });
+    this.removeAllMarkers.call(this);
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
     this.map.addLayer(this.markers);
 };

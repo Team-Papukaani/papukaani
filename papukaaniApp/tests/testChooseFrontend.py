@@ -14,7 +14,7 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0]), gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01])], "DeviceId")
+        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0]), gathering.Gathering("1234-12-13T12:12:12+00:00", [61.01, 23.01])], "DeviceId")
 
         self.page = ChoosePage()
         self.page.navigate()
@@ -23,12 +23,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.A.delete()
         self.page.close()
 
-    def test_save_with_button(self):
-        self.page.click_save_button()
-        WebDriverWait(self.page.driver, 60).until(
-            EC.text_to_be_present_in_element((By.ID, "loading"), "Valmis!")
-        )
-
     def test_icon_changes_when_double_clicked(self):
         markers = self.page.number_of_completely_public_clusters_on_map()
         self.page.double_click_marker()
@@ -36,6 +30,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
 
     def test_cluster_with_only_public_points_is_green(self):
         self.page.double_click_marker()
+        time.sleep(5)
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
         self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
@@ -48,15 +43,10 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def test_cluster_with_mixed_public_and_private_points_is_yellow(self):
         self.add_public_point()
         self.page.navigate()
+        time.sleep(5)
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
-        #self.assertEquals(0, self.page.number_of_private_clusters_on_map())
-        #self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
-
-    def test_save_button_is_disabled_while_waiting_for_response(self):
-        with open(_filePath + "ecotones.csv") as file:
-            Client().post('/papukaani/upload/', {'file': file})
-        self.page.click_save_button()
-        self.assertEquals(not self.page.save_button_is_enabled(), True)
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
 
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()
@@ -80,6 +70,26 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(1, self.page.number_of_private_clusters_on_map())
         self.page.change_device_selection("DeviceId2")
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+
+    def test_filtering_points_with_time_range(self):
+        time.sleep(5)
+        self.page.set_start_time("1234-12-12")
+        self.page.set_end_time("1234-12-12")
+        self.page.show_time_range()
+        self.assertEquals(self.page.get_cluster_size(), "0/1")
+
+    def test_filtering_with_invalid_date_format_causes_error_message_and_current_points_are_unchanged(self):
+        self.page.set_start_time("1234-12-13")
+        self.page.set_end_time("notadate")
+        self.page.show_time_range()
+        self.assertEquals(self.page.get_cluster_size(), "0/2")
+        self.assertEquals(self.page.format_error(), "Invalid Date format!")
+
+    def test_filtering_with_end_time_starting_before_start_time_returns_no_points(self):
+        self.page.set_start_time("1234-12-13")
+        self.page.set_end_time("1234-12-12")
+        self.page.show_time_range()
+        self.assertEquals(self.page.number_of_private_clusters_on_map(), 0)
 
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01], publicity="public"))

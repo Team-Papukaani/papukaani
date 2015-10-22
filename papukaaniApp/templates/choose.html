@@ -28,15 +28,17 @@
 <form id="time_range">
     <div class="input_field">
         <label for="start_time">Start time</label>
-        <input type="text" id="start_time" name="start_time" class="datepicker"
+        <input type="text" id="start_time" name="start_time" class="datepicker" onblur="validateDateFormat(this)"
                placeholder="yyyy-mm-dd">
+
     </div>
 
     <div class="input_field">
         <label for="end_time">End time</label>
-        <input type="text" id="end_time" name="end_time" class="datepicker"
+        <input type="text" id="end_time" name="end_time" class="datepicker" onblur="validateDateFormat(this)"
                placeholder="yyyy-mm-dd">
     </div>
+    <p id="formatError" style="margin:0"></p>
 
     <div class="input_field">
         <br>
@@ -51,6 +53,8 @@
 
 <div id="map" class="largeMap">
 </div>
+
+{{ points }}
 
 {% csrf_token %}
 <button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>
@@ -71,8 +75,17 @@
 
     var validateTimeRange = function (start_time, end_time) {
         return Date.parse(start_time) <= Date.parse(end_time);
+    };
+
+    function validateDateFormat(element) {
+        var format = new RegExp("[0-9]{4}-[0,1][0-9]-[0-3][0-9]");
+        var val = element.value;
+        if (!format.test(val)) {
+            element.value = "";
+        }
     }
 </script>
+
 
 </body>
 </html>

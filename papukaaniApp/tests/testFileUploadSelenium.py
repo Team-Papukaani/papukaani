@@ -2,7 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from django.conf import settings
 from papukaaniApp.tests.page_models.page_models import UploadPage
-
+from papukaaniApp.models_LajiStore import document
 
 class FileUploadSeleniumTest(StaticLiveServerTestCase):
     def setUp(self):
@@ -11,6 +11,7 @@ class FileUploadSeleniumTest(StaticLiveServerTestCase):
 
     def tearDown(self):
         self.upload.close()
+        document.delete_all()
 
     def test_selenium_file_can_be_uploaded_and_points_will_be_shown_on_map(self):
         self.upload.upload_file(settings.BASE_DIR + "/papukaaniApp/tests/test_files/ecotones.csv")

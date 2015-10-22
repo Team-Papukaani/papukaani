@@ -21,6 +21,7 @@ class NavigationPage(Page):
         """
         self.UPLOAD_LINK.click()
 
+
 class PageWithDeviceSelector(Page):
     DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
 
@@ -30,6 +31,7 @@ class PageWithDeviceSelector(Page):
     def change_device_selection(self, key):
         sel = Select(self.DEVICE_SELECTOR)
         sel.select_by_value(key)
+
 
 class UploadPage(Page):
     """
@@ -82,12 +84,9 @@ class PublicPage(PageWithDeviceSelector):
         no_of_pts = 0
         for line in plines:
             d = line.find_element_by_tag_name("path").get_attribute("d")
-            no_of_pts += (len(d.split())-2)
+            no_of_pts += (len(d.split()) - 2)
 
         return no_of_pts
-
-
-
 
 
 class ChoosePage(PageWithDeviceSelector):
@@ -104,6 +103,8 @@ class ChoosePage(PageWithDeviceSelector):
     RESET_BUTTON = Element(By.ID, 'reset')
     START_TIME = Element(By.ID, 'start_time')
     END_TIME = Element(By.ID, 'end_time')
+    SUBMIT_TIME = Element(By.ID, 'show_time_range')
+    DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
 
     def click_save_button(self):
         """
@@ -151,6 +152,11 @@ class ChoosePage(PageWithDeviceSelector):
         """
         return len(self.driver.find_elements_by_class_name("marker-cluster-large"))
 
+    def get_cluster_size(self):
+        cluster = self.driver.find_element_by_class_name("marker-cluster")
+        size = cluster.find_element_by_tag_name("div").find_element_by_tag_name("span").get_attribute("innerHTML")
+        return size
+
     def map_zoom_in(self):
         self.ZOOM_IN.click()
 
@@ -176,11 +182,24 @@ class ChoosePage(PageWithDeviceSelector):
     def set_end_time(self, string):
         self.END_TIME.send_keys(string)
 
+    def set_end_time_forced_invalid(self):
+        self.driver.executeScript("document.getElementById('end_time').setAttribute('value', 'notadate')")
+
     def get_start_time(self):
         return self.START_TIME.get_attribute('value')
 
     def get_end_time(self):
         return self.END_TIME.get_attribute('value')
 
+    def change_device_selection(self, key):
+        sel = Select(self.DEVICE_SELECTOR)
+        sel.select_by_value(key)
 
+    def show_time_range(self):
+        """
+        Show the points that match the selected time range.
+        """
+        self.SUBMIT_TIME.click()
 
+    def format_error(self):
+        return self.driver.find_element_by_id("formatError").get_attribute("innerHTML")

@@ -172,36 +172,9 @@ function setLoadingMessage(request, button, messagebox) {
 }
 
 function init(docs){
-    documents = docs;
-    devices = sortIntoDevices(documents);
-    points = getAllPoints(devices);
-
-    console.log(devices);
-    console.log(points);
-
-    map = new ChooseMap(points);
-
-    createDeviceSelector(devices)
-}
-
-function getAllPoints(devices){
-    var points = [];
-    var device_keys = Object.keys(devices);
-    for(i = 0; i < device_keys.length; i++){
-        points = points.concat(devices[device_keys[i]]);
-    }
-    return points;
-}
-
-//Shows the points of a single device. If deviceId not found, all points are shown.
-function changeDeviceSelection(deviceId){
-    if(devices[deviceId]){
-        points = devices[deviceId];
-    } else {
-        points = getAllPoints(devices);
-    }
-
-    map.changePoints(points)
+    sorter = new DeviceSorter(docs)
+    map = new ChooseMap(sorter.points);
+    sorter.setMap(map)
 }
 
 //Resets the map to the state it was in when the page was loaded.
@@ -215,38 +188,4 @@ function resetMap(map) {
     document.getElementById("end_time").value = "";
 }
 
-//Sorts the points in the documents to a dictionary with device ids as keys.
-function sortIntoDevices(documents){
-    var devices = {};
-    for(var i = 0; i < documents.length; i++){
-        var deviceId = documents[i].deviceId;
-        if(!devices[deviceId]){
-            devices[deviceId] = [];
-        }
-        for(var j = 0; j < documents[i].gatherings.length; j++){
-            devices[deviceId].push(documents[i].gatherings[j]);
-        }
-     }
-
-     return devices;
-}
-//Creates a selector for devices.
-function createDeviceSelector(devices){
-    selector = $("#selectDevice")
-
-    selector.change(function(event){
-        event.preventDefault()
-        changeDeviceSelection(selector.val())
-    })
-
-    selector.addOption = function(option){
-        selector.append("<option value='"+option+"'>"+option+"</option>")
-    }
-
-    selector.addOption("All")
-    deviceIds = Object.keys(devices)
-    for(var i = 0; i < deviceIds.length; i++){
-        selector.addOption(deviceIds[i])
-    }
-}
 

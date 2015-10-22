@@ -11,7 +11,7 @@ class Page:
     url = None
 
     def __init__(self):
-        self.display = Display(visible=1, size=(800, 600))
+        self.display = Display(visible=0, size=(800, 600))
         self.display.start()
         self.driver = webdriver.Firefox()
 

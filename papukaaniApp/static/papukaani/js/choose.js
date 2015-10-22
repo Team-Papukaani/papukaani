@@ -2,6 +2,8 @@
 function ChooseMap(sorter) {
     this.map = create_map("map", [61.0, 20.0], 5);
 
+    this.sorter = sorter;
+
     this.markers = createEmptyMarkerClusterGroup();
 
     this.originalPoints = JSON.parse(JSON.stringify(sorter.points));
@@ -208,6 +210,7 @@ function resetMap(map) {
     map.points = JSON.parse(JSON.stringify(map.originalPoints));
     map.createMarkersFromPoints(map.points, map.markers);
     map.map.addLayer(map.markers);
+    map.sorter.resetOption();
     document.getElementById("start_time").value = "";
     document.getElementById("end_time").value = "";
 }

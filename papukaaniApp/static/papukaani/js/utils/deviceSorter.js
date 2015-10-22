@@ -47,6 +47,13 @@ DeviceSorter.prototype.sortIntoDevices = function (documents) {
     return devices;
 }
 
+//Resets the option selector to the default value.
+DeviceSorter.prototype.resetOption = function () {
+    var selector = document.getElementById("selectDevice");
+
+    selector.value = "All";
+};
+
 //Creates a selector for devices.
 DeviceSorter.prototype.createDeviceSelector = function (devices) {
     var selector = $("#selectDevice")

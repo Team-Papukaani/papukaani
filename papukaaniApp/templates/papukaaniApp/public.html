@@ -12,25 +12,27 @@
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
     {% include "papukaaniApp/include_headers.html" %}
 
+
 </head>
-<body>
-    <h2>Lintu: {{ creature.name }}</h2>
+<body onload="init({{docs}})">
 
+    <select id="selectDevice"></select>
     <div id="map" class="largeMap"></div>
-
-    {% autoescape off %}
-        <script id="mapScript">
-            var mapPoints = {{points}};
-            creatureMapInit(mapPoints);
-        </script>
-    {% endautoescape %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-1.0.0-b1/leaflet.js"></script>
     <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/creature.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
+    <script src="{% static 'papukaani/js/public.js' %}"></script>
     <script src="{% static 'papukaani/libraries/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
+    {% autoescape off %}
+        <script id="mapScript">
+            var mapPoints = {{points}};
+            creatureMapInit(mapPoints);
+        </script>
+    {% endautoescape %}
 </body>
 </html>
 

@@ -7,7 +7,8 @@
 
     {% load staticfiles %}
     {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/general.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static " papukaaniApp
+    /general.css" %}">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
@@ -16,18 +17,20 @@
 
 </head>
 
-<body onload="init({{points}})">
+<body onload="init({{ points }})">
 {% include "papukaaniApp/navigation.html" %}
 
 <form id="time_range">
     <div class="input_field">
         <label for="start_time">Start time</label>
-        <input type="text" id="start_time" name="start_time" class="datepicker">
+        <input type="text" id="start_time" name="start_time" class="datepicker"
+               placeholder="yyyy-mm-dd">
     </div>
 
     <div class="input_field">
         <label for="end_time">End time</label>
-        <input type="text" id="end_time" name="end_time" class="datepicker">
+        <input type="text" id="end_time" name="end_time" class="datepicker"
+               placeholder="yyyy-mm-dd">
     </div>
 
     <div class="input_field">
@@ -45,10 +48,11 @@
 </div>
 
 {% csrf_token %}
-<button id="save" onclick="send('{{csrf_token}}', documents)">Tallenna</button>
+<button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>
 
 <p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>
+
 
 {% include "papukaaniApp/include_scripts.html" %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -58,14 +62,23 @@
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+{% autoescape off %}
+    <script>
+            var map = init({{points}})
+    </script>
+{% endautoescape %}
+
+
 <script>
     $(function () {
-        $(".datepicker").datepicker();
+        $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
     });
 
     var validateTimeRange = function (start_time, end_time) {
         return Date.parse(start_time) <= Date.parse(end_time);
     }
 </script>
+
 </body>
 </html>

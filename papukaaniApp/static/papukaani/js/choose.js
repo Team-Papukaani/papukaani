@@ -13,17 +13,28 @@ function ChooseMap(points) {
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
 }
 
-//Updates the map to show all the markers within start and end, which are strings that Date.parse understands,
+//Updates the map to show all the markers within start and end, which are strings that can be converted to Date,
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.removeAllMarkers.call(this);
     pointsWithinRange = this.points.filter(function (point) {
-        var timestring = point.timestamp.split(' ')[0];
-        var timestamp = Date.parse(timestring);
-        return timestamp >= Date.parse(start) && timestamp <= Date.parse(end)
+        var timestring = point.timeStart;
+        var timestamp = new Date(timestring);
+        var a, b;
+        a = (start != "" ? new Date(start) : timestamp);
+        b = (end != "" ? new Date(end) : timestamp);
+        return dateIsBetween(timestamp, a, b);
     });
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
     this.map.addLayer(this.markers);
 };
+
+//Checks if the date is between the two parameters.
+function dateIsBetween(date, start, end) {
+    date.setHours(0,0,0,0);
+    start.setHours(0,0,0,0);
+    end.setHours(0,0,0,0);
+    return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
+}
 
 //Creates an empty MarkerClusterGroup with initial settings.
 function createEmptyMarkerClusterGroup() {
@@ -55,7 +66,7 @@ function createEmptyMarkerClusterGroup() {
 
 ChooseMap.prototype.changePoints = function(points){
     this.points = points;
-    this.markers.clearLayers()
+    this.markers.clearLayers();
 
     this.createMarkersFromPoints(this.points, this.markers);
 }
@@ -71,7 +82,7 @@ ChooseMap.prototype.removeAllMarkers = function () {
 ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
     for (var i = 0; i < points.length; i++) {
         var ltlgs = points[i].wgs84Geometry.coordinates;
-        var marker = L.marker(new L.LatLng(ltlgs[0], ltlgs[1]));
+        var marker = L.marker(new L.LatLng(ltlgs[1], ltlgs[0]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
 
@@ -181,7 +192,9 @@ function init(docs){
 
     map = new ChooseMap(points);
 
-    createDeviceSelector(devices)
+    createDeviceSelector(devices);
+
+    return map;
 }
 
 function getAllPoints(devices){

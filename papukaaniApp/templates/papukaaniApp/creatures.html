@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Pelikaija</title>
-    <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/general.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaaniApp/general.css' %}">
+    {% include "papukaaniApp/include_headers.html" %}
 </head>
 <body>
     {% include "papukaaniApp/navigation.html" %}
@@ -14,6 +15,7 @@
         <li><a href="{% url 'creature' creature.id %}">{{ creature.name }}</a></li>
     {% endfor %}
     </ul>
+    {% include "papukaaniApp/include_scripts.html" %}
 </body>
 </html>
 

@@ -1,3 +1,4 @@
+from selenium.common.exceptions import TimeoutException, ElementNotVisibleException, NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from pyvirtualdisplay import Display
 from selenium import webdriver
@@ -38,13 +39,20 @@ class Element:
 
     def __get__(self, instance, owner):
         driver = instance.driver
-        WebDriverWait(driver, 100).until(
-            lambda driver: driver.find_element(
-                self.location_strategy, self.locator
-            )
-        )
+        try:
+            self._attempt_finding_element(driver)
+        except(TimeoutException):
+            raise NoSuchElementException(msg="Could not find the element")
+
         found_element =  driver.find_element(
             self.location_strategy, self.locator
         )
 
         return found_element
+
+    def _attempt_finding_element(self, driver):
+        WebDriverWait(driver, 100).until(
+            lambda driver: driver.find_element(
+                self.location_strategy, self.locator
+            )
+        )

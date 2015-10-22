@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
+    {% include "papukaaniApp/include_headers.html" %}
 
 
 </head>
@@ -22,9 +23,16 @@
     <script src="http://cdn.leafletjs.com/leaflet-1.0.0-b1/leaflet.js"></script>
     <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
+    <script src="{% static 'papukaani/js/creature.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
     <script src="{% static 'papukaani/js/public.js' %}"></script>
     <script src="{% static 'papukaani/libraries/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
+    {% autoescape off %}
+        <script id="mapScript">
+            var mapPoints = {{points}};
+            creatureMapInit(mapPoints);
+        </script>
+    {% endautoescape %}
 </body>
 </html>
 

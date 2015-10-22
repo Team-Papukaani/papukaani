@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <title>Papukaija</title>
     {% load staticfiles %}
+
+    {% include "papukaaniApp/include_headers.html" %}
     <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/general.css" %}">
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
-    <script src="{% static 'papukaani/js/map.js' %}"></script>
-    <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 </head>
 <body>
 {% include "papukaaniApp/navigation.html" %}
@@ -28,6 +27,9 @@
     {% endautoescape%}
 </script>
 
-
+<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+<script src="{% static 'papukaani/js/map.js' %}"></script>
+<script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
+{% include "papukaaniApp/include_scripts.html" %}
 </body>
 </html>

@@ -1,25 +1,18 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Pelikaija</title>
 
     {% load staticfiles %}
-
-    <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/general.css" %}">
+    {% include "papukaaniApp/include_headers.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaaniApp/general.css' %}">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
-    <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
-    <script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
-    <script src="{% static 'papukaani/js/map.js' %}"></script>
-    <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
-    <script src="{% static 'papukaani/js/choose.js' %}"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 </head>
 
@@ -56,6 +49,26 @@
 
 <p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>
+
+
+
+{% include "papukaaniApp/include_scripts.html" %}
+<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+<script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
+<script src="{% static 'papukaani/js/map.js' %}"></script>
+<script src="{% static 'papukaani/js/choose.js' %}"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="{% static 'papukaani/js/map.js' %}"></script>
+<script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
+<script src="{% static 'papukaani/js/choose.js' %}"></script>
+
+{% autoescape off %}
+    <script>
+            var map = new ChooseMap({{points}})
+    </script>
+{% endautoescape %}
+
 
 <div id="map" class="largeMap">
 </div>

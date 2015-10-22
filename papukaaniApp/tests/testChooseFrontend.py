@@ -14,8 +14,10 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0]), gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01])], "DeviceId")
 
+        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.0, 61.00]),
+                                           gathering.Gathering("1234-12-13T12:12:12+00:00", [23.01, 61.01])],
+                                 "DeviceId")
         self.page = ChoosePage()
         self.page.navigate()
 
@@ -23,12 +25,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.A.delete()
         self.page.close()
         document.delete_all()
-
-    def test_save_with_button(self):
-        self.page.click_save_button()
-        WebDriverWait(self.page.driver, 60).until(
-            EC.text_to_be_present_in_element((By.ID, "loading"), "Valmis!")
-        )
 
     def test_icon_changes_when_double_clicked(self):
         markers = self.page.number_of_completely_public_clusters_on_map()
@@ -50,8 +46,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.add_public_point()
         self.page.navigate()
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
-        #self.assertEquals(0, self.page.number_of_private_clusters_on_map())
-        #self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
 
     def test_save_button_is_disabled_while_waiting_for_response(self):
         self.page.click_save_button()
@@ -67,8 +61,8 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(1, self.page.number_of_private_clusters_on_map())
 
     def test_reset_button_clears_time_range_fields(self):
-        self.page.set_start_time("01/01/1234")
-        self.page.set_end_time("01/01/4321")
+        self.page.set_start_time("1234-12-12")
+        self.page.set_end_time("1234-12-13")
         self.page.reset()
         self.assertEquals(self.page.get_start_time(), '')
         self.assertEquals(self.page.get_end_time(), '')
@@ -80,6 +74,18 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.change_device_selection("DeviceId2")
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
 
+    def test_filtering_points_with_time_range(self):
+        self.page.set_start_time("1234-12-12")
+        self.page.set_end_time("1234-12-12")
+        self.page.show_time_range()
+        self.assertEquals(self.page.get_cluster_size(), "0/1")
+
+    def test_filtering_with_end_time_starting_before_start_time_returns_no_points(self):
+        self.page.set_start_time("1234-12-13")
+        self.page.set_end_time("1234-12-12")
+        self.page.show_time_range()
+        self.assertEquals(self.page.number_of_private_clusters_on_map(), 0)
+
     def add_public_point(self):
-        self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01], publicity="public"))
+        self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
         self.A.update()

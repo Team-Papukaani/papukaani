@@ -47,13 +47,13 @@ Tehdään tietokantamigraatiot ja poistutaan virtualenvistä
 deactivate
 ```
 
-Muokataan /etc/apache2/sites-available/000-default.conf -tiedostoa ja lisätään VirtualHostin sisään:
+Muokataan /etc/apache2/sites-available/000-default.conf -tiedostoa ja lisätään VirtualHostin sisään (vaihda käyttäjänimet ja salasanat):
 ```apache
-Alias /static /home/iivo/pelikaija/papukaani/papukaaniApp/static
-<Directory /home/iivo/pelikaija/papukaani/papukaaniApp/static>
+Alias /static /home/KÄYTTÄJÄNIMI/pelikaija/papukaani/papukaaniApp/static
+<Directory /home/KÄYTTÄJÄNIMI/pelikaija/papukaani/papukaaniApp/static>
 	Require all granted
 </Directory>
-<Directory /home/iivo/pelikaija/papukaani>
+<Directory /home/KÄYTTÄJÄNIMI/pelikaija/papukaani>
 	<Files wsgi.py>
 		Require all granted
 	</Files>
@@ -68,9 +68,9 @@ SetEnv PAPUKAANI_SECRET_KEY xxx
 SetEnv LAJISTRORE_UNIT_TEST_PASSWORD xxxxx
 SetEnv PAPUKAANI_UNIT_SECRET_KEY xxx
 
-WSGIDaemonProcess satelliitti python-path=/home/iivo/pelikaija:/home/iivo/pelikaija/pelikaijaenv/lib/python3.4/site-packages
+WSGIDaemonProcess satelliitti python-path=/home/KÄYTTÄJÄNIMI/pelikaija:/home/KÄYTTÄJÄNIMI/pelikaija/pelikaijaenv/lib/python3.4/site-packages
 WSGIProcessGroup satelliitti
-WSGIScriptAlias / /home/iivo/pelikaija/papukaani/papukaani/wsgi.py
+WSGIScriptAlias / /home/KÄYTTÄJÄNIMI/pelikaija/papukaani/papukaani/wsgi.py
 ```
 <!---
 Salli apachen päästä tietokantatiedostoon???

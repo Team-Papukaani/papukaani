@@ -5,6 +5,7 @@ from papukaaniApp.utils.view_utils import *
 import json, uuid
 from papukaaniApp.models_LajiStore import *
 import time
+from django.contrib import messages
 
 def upload(request):
     """
@@ -22,13 +23,13 @@ def upload(request):
                 data = ecotones_parse(file)
 
             except:
-                return redirect_with_param(upload, "?m=Tiedostosi formaatti ei ole kelvollinen!")
+                messages.add_message(request, messages.ERROR, 'Tiedostosi formaati ei ole kelvollinen!')
+                return redirect(upload)
             points = create_points(data)
-
             return _render_points(points, request)
 
-        return redirect_with_param(upload, "?m=Et valinnut ladattavaa tiedostoa!")
-
+        messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")
+        return redirect(upload)
 
 def _render_points(points, request):
     latlongs = [[g.geometry[1], g.geometry[0]] for g in points]

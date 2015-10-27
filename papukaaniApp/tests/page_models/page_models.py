@@ -41,7 +41,7 @@ class UploadPage(Page):
     url = BASE_URL + '/papukaani/upload/'
 
     UPLOAD_FIELD = Element(By.NAME, 'file')
-    MESSAGE = Element(By.ID, 'message')
+    MESSAGE = Element(By.ID, 'messages')
     POLYLINE = Element(By.TAG_NAME, 'g')
 
     def upload_file(self, filepath):
@@ -63,6 +63,11 @@ class UploadPage(Page):
         :return: The element containing a polyline formed of the points.
         """
         return self.POLYLINE
+
+    def push_upload_button(self):
+        upload = self.UPLOAD_FIELD
+        upload.submit()
+
 
 
 class PublicPage(PageWithDeviceSelector):

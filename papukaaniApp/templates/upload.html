@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
 </head>
 <body>
+
+<p>
 {% include "papukaaniApp/navigation.html" %}
 <h2>Lataa tiedosto</h2>
 
@@ -18,8 +20,13 @@
     <input type="file" id="file" name="file">
     <input type="submit" value="Lähetä" name="submitButton">
 </form>
-<p id="message">{{ message }}</p>
 
+
+<p id="messages">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</p>
 
 {% include "papukaaniApp/include_scripts.html" %}
 <div id="map" class="largeMap"></div>
@@ -31,6 +38,5 @@
         create_map_with_points('{{points}}')
     {% endautoescape%}
 </script>
-
 </body>
 </html>

@@ -1,12 +1,14 @@
 //Creates a map where the uploader can select the points which will be published.
-function ChooseMap(points) {
+function ChooseMap(sorter) {
     this.map = create_map("map", [61.0, 20.0], 5);
+
+    this.sorter = sorter;
 
     this.markers = createEmptyMarkerClusterGroup();
 
-    this.originalPoints = JSON.parse(JSON.stringify(points));
+    this.originalPoints = JSON.parse(JSON.stringify(sorter.points));
 
-    this.points = points;
+    this.points = sorter.points;
 
     this.createMarkersFromPoints(this.points, this.markers);
     this.map.addLayer(this.markers);
@@ -32,6 +34,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     });
     this.removeAllMarkers.call(this);
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
+    this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
 };
 
@@ -71,11 +74,12 @@ function createEmptyMarkerClusterGroup() {
     return clusterGroup
 }
 
+//Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
     this.points = points;
-    this.markers.clearLayers();
-
-    this.createMarkersFromPoints(this.points, this.markers);
+    var start = document.getElementById("start_time");
+    var end = document.getElementById("end_time");
+    this.showMarkersWithinTimeRange(start.value, end.value);
 };
 
 
@@ -192,7 +196,7 @@ function setLoadingMessage(request, button, messagebox) {
 function init(docs) {
     documents = docs;
     sorter = new DeviceSorter(docs);
-    map = new ChooseMap(sorter.points);
+    map = new ChooseMap(sorter);
     sorter.setMap(map)
 
     return map
@@ -206,6 +210,7 @@ function resetMap(map) {
     map.points = JSON.parse(JSON.stringify(map.originalPoints));
     map.createMarkersFromPoints(map.points, map.markers);
     map.map.addLayer(map.markers);
+    map.sorter.resetOption();
     document.getElementById("start_time").value = "";
     document.getElementById("end_time").value = "";
 }

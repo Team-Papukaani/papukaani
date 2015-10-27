@@ -46,6 +46,8 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.add_public_point()
         self.page.navigate()
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
 
     def test_save_button_is_disabled_while_waiting_for_response(self):
         self.page.click_save_button()

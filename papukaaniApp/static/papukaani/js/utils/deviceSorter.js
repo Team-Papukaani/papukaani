@@ -3,7 +3,7 @@ function DeviceSorter(documents) {
     this.devices = this.sortIntoDevices(documents);
     this.points = this.getAllPoints(this.devices);
 
-    this.createDeviceSelector(this.devices)
+    this.createDeviceSelector(this.devices);
 
     this.setMap = function (map) {
         this.map = map
@@ -20,7 +20,7 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     }
 
     this.map.changePoints(this.points)
-}
+};
 
 DeviceSorter.prototype.getAllPoints = function (devices) {
     var points = [];
@@ -46,6 +46,13 @@ DeviceSorter.prototype.sortIntoDevices = function (documents) {
 
     return devices;
 }
+
+//Resets the option selector to the default value.
+DeviceSorter.prototype.resetOption = function () {
+    var selector = document.getElementById("selectDevice");
+
+    selector.value = "All";
+};
 
 //Creates a selector for devices.
 DeviceSorter.prototype.createDeviceSelector = function (devices) {

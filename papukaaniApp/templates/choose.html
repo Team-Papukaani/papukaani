@@ -42,7 +42,7 @@
         </button>
     </div>
 </form>
-<select id="selectDevice"></select>
+<select id="selectDevice" value=></select>
 
 {% csrf_token %}
 <button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>

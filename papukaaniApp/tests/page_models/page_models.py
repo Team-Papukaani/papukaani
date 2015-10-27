@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.keys import Keys
 
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
@@ -182,8 +183,8 @@ class ChoosePage(PageWithDeviceSelector):
     def set_end_time(self, string):
         self.END_TIME.send_keys(string)
 
-    def set_end_time_forced_invalid(self):
-        self.driver.executeScript("document.getElementById('end_time').setAttribute('value', 'notadate')")
+    def set_end_time_forced_submit(self, string):
+        self.END_TIME.send_keys(string + Keys.RETURN)
 
     def get_start_time(self):
         return self.START_TIME.get_attribute('value')

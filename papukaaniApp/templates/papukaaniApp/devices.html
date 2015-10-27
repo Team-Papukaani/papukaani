@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "papukaaniApp/include_headers.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/general.css" %}">
+    <title>Pelikaija</title>
+</head>
+<body>
+    {% include "papukaaniApp/navigation.html" %}
+    <h1>Ŝëlèćht0r</h1>
+    {% include "papukaaniApp/include_scripts.html" %}
+
+    {% for device in devices %}
+        {{ device.deviceId }} <br>
+        {% for individual in device.individuals %}
+            <i>{{ individual.individualId }}</i>
+        {% endfor %}
+
+    {% endfor %}
+</body>
+</html>

@@ -19,8 +19,8 @@ function ChooseMap(sorter) {
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     var a, b;
     try {
-        a = (start != "" ? new Date(start) : "");
-        b = (end != "" ? new Date(end) : "");
+        a = (start != "" ? new Date(parseTime(start)) : "");
+        b = (end != "" ? new Date(parseTime(end)) : "");
     } catch (error) {
         document.getElementById("formatError").innerHTML = "Invalid Date format!";
         return;
@@ -30,7 +30,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         var timestamp = new Date(timestring);
         a = (start != "" ? a : timestamp);
         b = (end != "" ? b : timestamp);
-        return dateIsBetween(timestamp, a, b);
+        return dateIsBetween(timestamp, a, b)
     });
     this.removeAllMarkers.call(this);
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
@@ -38,11 +38,13 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.addLayer(this.markers);
 };
 
+function parseTime(timestring) {
+    var parts = timestring.split(' ');
+    return (parts[0] + 'T' + parts[1] + ":00+00:00");
+}
+
 //Checks if the date is between the two parameters.
 function dateIsBetween(date, start, end) {
-    date.setHours(0, 0, 0, 0);
-    start.setHours(0, 0, 0, 0);
-    end.setHours(0, 0, 0, 0);
     return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
 }
 

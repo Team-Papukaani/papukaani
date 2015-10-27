@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/jquery-ui-timepicker-addon.css' %}"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 </head>
@@ -23,14 +24,14 @@
     <div class="input_field">
         <label for="start_time">Start time</label>
         <input type="text" id="start_time" name="start_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="yyyy-mm-dd">
+               placeholder="yyyy-mm-dd HH:mm">
 
     </div>
 
     <div class="input_field">
         <label for="end_time">End time</label>
         <input type="text" id="end_time" name="end_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="yyyy-mm-dd">
+               placeholder="yyyy-mm-dd HH:mm">
     </div>
     <p id="formatError" style="margin:0"></p>
 
@@ -62,6 +63,7 @@
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
+<script src="{% static 'papukaani/js/jquery-ui-timepicker-addon.js' %}"></script>
 
 {% autoescape off %}
     <script>
@@ -75,7 +77,7 @@
 
 <script>
     $(function () {
-        $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+        $(".datepicker").datetimepicker({dateFormat: 'yy-mm-dd', timeFormat: 'HH:mm'});
     });
 
     var validateTimeRange = function (start_time, end_time) {
@@ -83,7 +85,7 @@
     };
 
     function validateDateFormat(element) {
-        var format = new RegExp("[0-9]{4}-[0,1][0-9]-[0-3][0-9]");
+        var format = new RegExp("[0-9]{4}-[0,1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]");
         var val = element.value;
         if (!format.test(val)) {
             element.value = "";

@@ -17,8 +17,7 @@ def choose(request):
     if request.method == 'POST':
         if 'data' in request.POST:
             _set_points_public(request)
-            return redirect_with_param(choose, '?m=Valitut pisteet asetettu julkisiksi!')
-
+            return redirect(choose)
         return redirect(choose)
 
     else:

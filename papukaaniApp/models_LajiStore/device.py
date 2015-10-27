@@ -6,8 +6,8 @@ class Device:
     '''
     Represents the Device table of LajiStore
     '''
-    def __init__(self, id, deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
-                 facts, **kwargs):
+    def __init__(self, deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
+                 facts, individuals = [],  id=None, **kwargs):
         self.id = id
         self.deviceId = deviceId
         self.deviceType = deviceType
@@ -15,6 +15,7 @@ class Device:
         self.createdAt = createdAt
         self.lastModifiedAt = lastModifiedAt
         self.facts = facts
+        self.individuals = individuals
 
     def delete(self):
         '''
@@ -27,6 +28,28 @@ class Device:
         Saves changes to the object to the corresponding LajiStore entry.
         '''
         LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here
+
+    def attach_to(self, individual):
+        '''
+        Attaches this device to an individual. Previously attached device will be removed.
+        '''
+        for indiv in self.individuals:
+            if not indiv["removed"] :
+                indiv["removed"] = current_time_as_lajistore_timestamp()
+
+        self.individuals.append({
+            "individualId" : individual.individualId,
+            "attached" : current_time_as_lajistore_timestamp(),
+            "removed" : None
+        } )
+
+    def remove_from(self, individual):
+        '''
+        Removes this device from an individual. If the individual is allready removed, old removal date will be rewritten.
+        '''
+        for indiv in self.individuals:
+            if indiv["individualId"] == individual.individualId:
+                indiv["removed"] = current_time_as_lajistore_timestamp()
 
 
 def find(**kwargs):
@@ -79,9 +102,11 @@ def create(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, 
     Creates a device instance in LajiStore and a corresponding Device object
     :return: A Device object
     '''
-    device = LajiStoreAPI.post_device(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
-                                     facts)
-    return Device(**device)
+    device = Device(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, facts)
+    data = LajiStoreAPI.post_device(**device.__dict__)
+    device.id = data["id"]
+
+    return device
 
 def delete_all():
     '''
@@ -95,3 +120,4 @@ def _get_many(**kwargs):
     for device in data:  # creates a list of devices to return
         devices.append(Device(**device))
     return devices
+

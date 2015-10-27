@@ -1,5 +1,5 @@
 from django.test import TestCase
-from papukaaniApp.models_LajiStore import device
+from papukaaniApp.models_LajiStore import *
 
 
 class TestDevice(TestCase):
@@ -42,7 +42,37 @@ class TestDevice(TestCase):
 
         d.delete()
 
+    def test_first_attach(self):
+        A, B = self._create_individuals()
+        self.d.attach_to(A)
+        self.assertEquals(self.d.individuals[0]["individualId"], "A")
+        self._delete_individuals([A, B])
 
+    def test_second_attach(self):
+        self.d.individuals = []
+        A, B = self._create_individuals()
 
+        self.d.attach_to(A)
+        self.d.attach_to(B)
 
+        self.assertEquals(len(self.d.individuals), 2)
 
+        self.assertTrue(self.d.individuals[0]["removed"] != None)
+
+        self._delete_individuals([A, B])
+
+    def test_remove(self):
+        self.d.individuals = []
+        A, B = self._create_individuals()
+        self.d.attach_to(A)
+        self.d.remove_from(A)
+
+        self.assertEquals(len(self.d.individuals), 1)
+        self.assertTrue(self.d.individuals[0]["removed"] != None)
+
+    def _create_individuals(self):
+        return individual.create("A", "Taxon"), individual.create("B", "Taxon")
+
+    def _delete_individuals(self, inds):
+        for i in inds:
+            i.delete()

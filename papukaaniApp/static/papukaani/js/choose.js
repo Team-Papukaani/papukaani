@@ -38,9 +38,11 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.addLayer(this.markers);
 };
 
+//Parses the given string into a format appropriate for a Date.
 function parseTime(timestring) {
     var parts = timestring.split(' ');
-    return (parts[0] + 'T' + parts[1] + ":00+00:00");
+    var dateparts = parts[0].split('-');
+    return (dateparts[2] + "-" + dateparts[1] + "-" + dateparts[0] + 'T' + parts[1] + ":00+00:00");
 }
 
 //Checks if the date is between the two parameters.

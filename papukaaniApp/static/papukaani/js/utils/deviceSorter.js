@@ -1,7 +1,7 @@
-function DeviceSorter(documents) {
+function DeviceSorter(devices) {
 
-    this.devices = this.sortIntoDevices(documents);
-    this.points = this.getAllPoints(this.devices);
+    this.devices = devices;
+    this.points = [];
 
     this.createDeviceSelector(this.devices);
 
@@ -13,14 +13,29 @@ function DeviceSorter(documents) {
 
 //Shows the points of a single device. If deviceId not found, all points are shown.
 DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
-    if (this.devices[deviceId]) {
-        this.points = this.devices[deviceId];
-    } else {
-        this.points = this.getAllPoints(this.devices);
+    if (deviceId != 'None') {
+        console.log("called");
+        request = new XMLHttpRequest;
+        request.open("GET", "docs/?devId=" + deviceId, true);
+        request.onreadystatechange = ready.bind(this);
+        request.send(null);
     }
-
-    this.map.changePoints(this.points)
+    else {
+        console.log("not called");
+        this.points = [];
+    }
 };
+
+
+function ready() {
+    if (request.readyState === 4) {
+        console.log(request.responseText);
+        this.points = request.responseText;
+        this.map.changePoints(this.points);
+        console.log("done")
+    }
+}
+
 
 DeviceSorter.prototype.getAllPoints = function (devices) {
     var points = [];
@@ -29,7 +44,7 @@ DeviceSorter.prototype.getAllPoints = function (devices) {
         points = points.concat(devices[device_keys[i]]);
     }
     return points;
-}
+};
 
 //Sorts the points in the documents to a dictionary with device ids as keys.
 DeviceSorter.prototype.sortIntoDevices = function (documents) {
@@ -51,7 +66,7 @@ DeviceSorter.prototype.sortIntoDevices = function (documents) {
 DeviceSorter.prototype.resetOption = function () {
     var selector = document.getElementById("selectDevice");
 
-    selector.value = "All";
+    selector.value = "None";
 };
 
 //Creates a selector for devices.
@@ -67,9 +82,8 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
         selector.append("<option value='" + option + "'>" + option + "</option>")
     }
 
-    selector.addOption("All")
-    var deviceIds = Object.keys(devices)
-    for (var i = 0; i < deviceIds.length; i++) {
-        selector.addOption(deviceIds[i])
+    selector.addOption("None");
+    for (var i = 0; i < this.devices.length; i++) {
+        selector.addOption(this.devices[i])
     }
 }

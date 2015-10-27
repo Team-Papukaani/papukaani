@@ -17,7 +17,7 @@
 
 </head>
 
-<body onload="var map = init({{ points }})">
+<body onload="var map = init({{ devices }})">
 {% include "papukaaniApp/navigation.html" %}
 
 <form id="time_range">
@@ -63,13 +63,6 @@
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
 <script src="{% static 'papukaani/js/jquery-ui-timepicker-addon.js' %}"></script>
-
-{% autoescape off %}
-    <script>
-        var map = new ChooseMap({{points}})
-    </script>
-{% endautoescape %}
-
 
 <div id="map" class="largeMap">
 </div>

@@ -6,12 +6,8 @@ function ChooseMap(sorter) {
 
     this.markers = createEmptyMarkerClusterGroup();
 
-    this.originalPoints = JSON.parse(JSON.stringify(sorter.points));
+    this.points = [];
 
-    this.points = sorter.points;
-
-    this.createMarkersFromPoints(this.points, this.markers);
-    this.map.addLayer(this.markers);
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
 }
 
@@ -197,22 +193,18 @@ function setLoadingMessage(request, button, messagebox) {
     }
 }
 
-function init(docs) {
-    documents = docs;
-    sorter = new DeviceSorter(docs);
+function init(devices) {
+    sorter = new DeviceSorter(devices);
     map = new ChooseMap(sorter);
-    sorter.setMap(map)
+    sorter.setMap(map);
 
     return map
-
 }
 
 //Resets the map to the state it was in when the page was loaded.
 function resetMap(map) {
     map.map.removeLayer(map.markers);
     map.markers = createEmptyMarkerClusterGroup();
-    map.points = JSON.parse(JSON.stringify(map.originalPoints));
-    map.createMarkersFromPoints(map.points, map.markers);
     map.map.addLayer(map.markers);
     map.sorter.resetOption();
     document.getElementById("start_time").value = "";

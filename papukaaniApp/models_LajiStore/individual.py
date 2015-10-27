@@ -6,7 +6,7 @@ class Individual:
     Represents the Individual table of LajiStore
     '''
 
-    def __init__(self, id, individualId, taxon, **kwargs):
+    def __init__(self, individualId, taxon, id=None, **kwargs):
         self.id = id
         self.individualId = individualId
         self.taxon = taxon
@@ -59,8 +59,12 @@ def create(individualId, taxon):
     :param taxon: The LajiStore taxon of the object
     :return: An Individual object
     '''
-    individual = LajiStoreAPI.post_individual(individualId, taxon)
-    return Individual(**individual)
+    individual = Individual(individualId, taxon)
+
+    data = LajiStoreAPI.post_individual(**individual.__dict__)
+    individual.id = data["id"]
+
+    return individual
 
 def delete_all():
     '''

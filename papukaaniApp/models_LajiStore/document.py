@@ -9,13 +9,16 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, id, documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId, **kwargs):
+    def __init__(self, documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId, id=None, **kwargs):
         self.id = id
         self.documentId = documentId
         self.lastModifiedAt = lastModifiedAt
         self.createdAt = createdAt
         self.facts = facts
-        self.gatherings = _parse_gathering(gatherings)
+        if len(gatherings) > 0 and isinstance(gatherings[0], gathering.Gathering):
+            self.gatherings = gatherings
+        else:
+            self.gatherings = _parse_gathering(gatherings)
         self.deviceId = deviceId
 
     def delete(self):
@@ -32,7 +35,7 @@ class Document:
         LajiStoreAPI.update_document(**dict) #__dict__ puts all arguments here
 
     def to_dict(self):
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict["gatherings"] = [g.to_lajistore_json() for g in self.gatherings]
         return dict
 
@@ -77,8 +80,12 @@ def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, crea
     if createdAt == None:
         createdAt = current_time_as_lajistore_timestamp()
 
-    document = LajiStoreAPI.post_document(documentId=documentId, lastModifiedAt=lastModifiedAt, deviceId=deviceId , createdAt=createdAt, facts=facts, gatherings=[g.to_lajistore_json() for g in gatherings])
-    return Document(**document)
+    document = Document(documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId)
+
+    data = LajiStoreAPI.post_document(**document.to_dict())
+    document.id = data["id"]
+
+    return document
 
 def delete_all():
     '''

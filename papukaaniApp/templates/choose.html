@@ -12,25 +12,26 @@
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/jquery-ui-timepicker-addon.css' %}"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 </head>
 
-<body onload="var map = init({{ points }})">
+<body onload="var map = init({{ devices }})">
 {% include "papukaaniApp/navigation.html" %}
 
 <form id="time_range">
     <div class="input_field">
-        <label for="start_time">Start time</label>
+        <label for="start_time">Alku</label>
         <input type="text" id="start_time" name="start_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="yyyy-mm-dd">
+               placeholder="dd-mm-yyyy HH:mm">
 
     </div>
 
     <div class="input_field">
-        <label for="end_time">End time</label>
+        <label for="end_time">Loppu</label>
         <input type="text" id="end_time" name="end_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="yyyy-mm-dd">
+               placeholder="dd-mm-yyyy HH:mm">
     </div>
     <p id="formatError" style="margin:0"></p>
 
@@ -38,18 +39,17 @@
         <br>
         <button type="button"
                 onclick="map.showMarkersWithinTimeRange(time_range.start_time.value, time_range.end_time.value)"
-                id="show_time_range">Show time range
+                id="show_time_range">Näytä pisteet aikavälillä
         </button>
     </div>
 </form>
 <select id="selectDevice" value=></select>
 
 {% csrf_token %}
-<button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>
+<button id="save" onclick="send('{{ csrf_token }}', map)">Tallenna</button>
 
 <p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>
-
 
 
 {% include "papukaaniApp/include_scripts.html" %}
@@ -62,33 +62,55 @@
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
-
-{% autoescape off %}
-    <script>
-            var map = new ChooseMap({{points}})
-    </script>
-{% endautoescape %}
-
+<script src="{% static 'papukaani/js/jquery-ui-timepicker-addon.js' %}"></script>
 
 <div id="map" class="largeMap">
 </div>
 
 <script>
     $(function () {
-        $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+        $(".datepicker").datetimepicker();
     });
-
     var validateTimeRange = function (start_time, end_time) {
         return Date.parse(start_time) <= Date.parse(end_time);
     };
 
     function validateDateFormat(element) {
-        var format = new RegExp("[0-9]{4}-[0,1][0-9]-[0-3][0-9]");
+        var format = new RegExp("[0-3][0-9]-[0,1][0-9]-[0-9]{4} [0-2][0-9]:[0-5][0-9]");
         var val = element.value;
         if (!format.test(val)) {
             element.value = "";
         }
     }
+
+    $.datepicker.regional['fi'] = {
+        prevText: 'Edellinen',
+        nextText: 'Seuraava',
+        monthNames: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu',
+            'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
+        monthNamesShort: ['Tammi', 'Helmi', 'Maalis', 'Huhti', 'Touko', 'Kesä', 'Heinä',
+            'Elo', 'Syys', 'Loka', 'Marras', 'Joulu'],
+        dayNames: ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'],
+        dayNamesMin: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
+        dateFormat: 'dd-mm-yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['fi']);
+
+    $.timepicker.regional['fi'] = {
+        timeOnlyTitle: '',
+        timeText: 'Aika',
+        hourText: 'Tunnit',
+        minuteText: 'Minuutit',
+        currentText: 'Nyt',
+        closeText: 'Sulje',
+        timeFormat: 'HH:mm',
+        isRTL: false
+    };
+    $.timepicker.setDefaults($.timepicker.regional['fi']);
 </script>
 
 

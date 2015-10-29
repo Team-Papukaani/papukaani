@@ -45,7 +45,7 @@ class Element:
         except(TimeoutException):
             raise NoSuchElementException(msg="Could not find the element")
 
-        found_element =  driver.find_element(
+        found_element = driver.find_element(
             self.location_strategy, self.locator
         )
 

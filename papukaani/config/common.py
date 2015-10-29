@@ -32,7 +32,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'papukaaniApp'
+    'papukaaniApp',
+    'rest_framework'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,6 +76,15 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, '../papukaaniApp/static')
 )
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'UNICODE_JSON': True,
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

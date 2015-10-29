@@ -1,6 +1,6 @@
 
-function init(docs){
-    sorter = new DeviceSorter(docs)
+function init(devices){
+    sorter = new DeviceSorter(devices)
     map = new PublicMap(sorter.points)
 
     sorter.setMap(map)

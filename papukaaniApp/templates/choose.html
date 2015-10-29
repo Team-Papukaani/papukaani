@@ -47,9 +47,8 @@
 
 {% csrf_token %}
 <button id="save" onclick="send('{{ csrf_token }}', map)">Tallenna</button>
-
-<p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>
+<p id="loading" style="display:inline"></p>
 
 
 {% include "papukaaniApp/include_scripts.html" %}

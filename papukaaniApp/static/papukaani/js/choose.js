@@ -11,7 +11,7 @@ function ChooseMap(sorter) {
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
 }
 
-//Updates the map to show all the markers within start and end, which are strings that can be converted to Date,
+//Updates the map to show all markers within start and end, which are strings that can be converted to Date.
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     var a, b;
     try {
@@ -34,7 +34,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.addLayer(this.markers);
 };
 
-//Parses the given string into a format appropriate for a Date.
+//Parses the given string into an appropriate Date-format.
 function parseTime(timestring) {
     var parts = timestring.split(' ');
     var dateparts = parts[0].split('-');
@@ -76,13 +76,17 @@ function createEmptyMarkerClusterGroup() {
 
 //Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
-    this.points = points;
+    if (!points.length) this.points = [];
+    else this.points = points[0]["gatherings"];
+    for (var i = 1; i < points.length; i++) {
+        this.points.concat(points[i]["gatherings"]);
+    }
     var start = document.getElementById("start_time");
     var end = document.getElementById("end_time");
     this.showMarkersWithinTimeRange(start.value, end.value);
 };
 
-
+//Removes all markers from the map.
 ChooseMap.prototype.removeAllMarkers = function () {
     this.map.removeLayer(this.markers);
     this.markers = createEmptyMarkerClusterGroup();
@@ -117,7 +121,7 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
     this.markers.refreshClusters(markers);
 };
 
-//Redraws the markers icon on the map.
+//Forces a redraw of the specified marker's icon, as it doesn't necessarily update when changes are made.
 redrawIcon = function (marker) {
     var c = ' marker-cluster';
     if (marker.pnt.publicity === "public") c += '-small';

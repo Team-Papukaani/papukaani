@@ -11,13 +11,17 @@ function DeviceSorter(devices) {
 
 }
 
-//Shows the points of a single device. Or none, if no device is specified.
+//Sends a request to the rest-controller for documents matching the deviceId.
 DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     if (deviceId != 'None') {
+        messagebox = $("#loading");
+        messagebox.text("Tietoja ladataan...");
+        button = $("#selectDevice");
+        button.attr("disable", true);
         request = new XMLHttpRequest;
         var path = "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
         request.open("GET", path, true);
-        request.onreadystatechange = ready.bind(this);
+        request.onreadystatechange = showPointsForDevice.bind(this);
         request.send(null);
     }
     else {
@@ -26,40 +30,21 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     }
 };
 
-
-function ready() {
+//Once the request has a response, changes the sorters points to the ones received in the response.
+function showPointsForDevice() {
     if (request.readyState === 4) {
         this.points = [];
-        this.points = JSON.parse(request.response)[0]["gatherings"];
+        var docs = JSON.parse(request.response);
+        for (var i = 0; i < docs.length; i++) {
+            this.points.push(docs[i]);
+        }
         this.map.changePoints(this.points);
+        messagebox = $("#loading");
+        messagebox.text("");
+        button = $("#selectDevice");
+        button.attr("disable", false);
     }
 }
-
-
-DeviceSorter.prototype.getAllPoints = function (devices) {
-    var points = [];
-    var device_keys = Object.keys(devices);
-    for (var i = 0; i < device_keys.length; i++) {
-        points = points.concat(devices[device_keys[i]]);
-    }
-    return points;
-};
-
-//Sorts the points in the documents to a dictionary with device ids as keys.
-DeviceSorter.prototype.sortIntoDevices = function (documents) {
-    var devices = {};
-    for (var i = 0; i < documents.length; i++) {
-        var deviceId = documents[i].deviceId;
-        if (!devices[deviceId]) {
-            devices[deviceId] = [];
-        }
-        for (var j = 0; j < documents[i].gatherings.length; j++) {
-            devices[deviceId].push(documents[i].gatherings[j]);
-        }
-    }
-
-    return devices;
-};
 
 //Resets the option selector to the default value.
 DeviceSorter.prototype.resetOption = function () {
@@ -70,19 +55,19 @@ DeviceSorter.prototype.resetOption = function () {
 
 //Creates a selector for devices.
 DeviceSorter.prototype.createDeviceSelector = function (devices) {
-    var selector = $("#selectDevice")
+    var selector = $("#selectDevice");
 
     selector.change(function (event) {
-        event.preventDefault()
+        event.preventDefault();
         this.changeDeviceSelection(selector.val())
-    }.bind(this))
+    }.bind(this));
 
     selector.addOption = function (option) {
         selector.append("<option value='" + option + "'>" + option + "</option>")
-    }
+    };
 
     selector.addOption("None");
     for (var i = 0; i < this.devices.length; i++) {
         selector.addOption(this.devices[i])
     }
-}
+};

@@ -1,4 +1,4 @@
-from papukaaniApp.utils.parser import ecotones_parse
+from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models import Creature, MapPoint
@@ -32,3 +32,18 @@ class FileParserTest(TestCase):
                              temperature=entry['Temperature'])
             points.append(point)
         assert len(points) == 5
+
+    def test_create_points_method_correctly_updates_existing_documents(self):
+
+        # points = []
+        #
+        # point = MapPoint(creature=creature,
+        #                      gpsNumber=entry['GpsNumber'],
+        #                      timestamp=entry['GPSTime'],
+        #                      latitude=entry['Latitude'],
+        #                      longitude=entry['Longtitude'],
+        #                      altitude=entry['Altitude'] if entry['Altitude'] != '' else 0,
+        #                      temperature=entry['Temperature'])
+        #     points.append(point)
+
+        create_points()

@@ -13,6 +13,7 @@ _DEVICE_PATH = "devices"
 _DOCUMENT_PATH = "documents"
 _INDIVIDUAL_PATH = "individuals"
 
+
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 # as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
 
@@ -29,14 +30,17 @@ def get_device(id):
 def delete_device(id):
     return _delete(_DEVICE_PATH + "/" + str(id))
 
+
 def post_device(**data):
     return _post(data, _DEVICE_PATH)
 
 def update_device(**data):
     return _put(_DEVICE_PATH + "/" + str(data["id"]), data)
 
+
 def delete_all_devices():
     return _delete(_DEVICE_PATH)
+
 
 # Documents lajistore/documents/
 
@@ -57,6 +61,7 @@ def post_document(**data):
 
 def update_document(**data):
     return _put(_DOCUMENT_PATH + "/" + str(data["id"]), data)
+
 
 def delete_all_documents():
     return _delete(_DOCUMENT_PATH)
@@ -83,8 +88,10 @@ def post_individual(**data):
 def update_individual(**data):
     return _put(_INDIVIDUAL_PATH + "/" + str(data["id"]), data)
 
+
 def delete_all_individuals():
     return _delete(_INDIVIDUAL_PATH)
+
 
 # Private helpers:
 
@@ -120,7 +127,7 @@ def _add_query(**kwargs):
     for k in kwargs:
         k_name = k.replace("_", ".")
         q += "" if q == "?q=" else " AND "
-        q += k_name +":"+str(kwargs[k])
+        q += k_name + ":" + str(kwargs[k])
 
     return q
 

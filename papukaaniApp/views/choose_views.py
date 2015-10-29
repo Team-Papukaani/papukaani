@@ -1,10 +1,9 @@
-import datetime
-from papukaaniApp.utils.view_utils import *
-from papukaaniApp.models import MapPoint
-from django.shortcuts import render, redirect
-from django.db.transaction import atomic
-from papukaaniApp.models_LajiStore import gathering, document
 import json
+
+from django.shortcuts import render, redirect
+
+from papukaaniApp.utils.view_utils import *
+from papukaaniApp.models_LajiStore import device, document
 
 
 def choose(request):
@@ -21,11 +20,14 @@ def choose(request):
         return redirect(choose)
 
     else:
-        docs = [d.to_dict() for d in document.get_all()]
-        return render(request, 'choose.html', {'points': json.dumps(docs)})
+        devices = []
+        for item in device.get_all():
+            devices.append(item.deviceId)
+        return render(request, 'choose.html', {'devices': json.dumps(devices)})
 
 
 def _set_points_public(request):
     docs = json.loads(request.POST['data'])
+    print(docs)
     for dict in docs:
         document.update_from_dict(**dict)

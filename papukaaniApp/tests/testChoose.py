@@ -42,8 +42,3 @@ class TestChoose(TestCase):
     def test_post_without_data_is_redirected(self):
         response = self.c.post(_URL)
         self.assertTrue(response.status_code == 302)
-
-    def test_get_returns_points(self):
-        response = self.c.get(_URL)
-        self.assertTrue("[{" in str(response.content))
-        self.assertTrue("id" in str(response.content))

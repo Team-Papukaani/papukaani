@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
+import time
 
 _filePath = "papukaaniApp/tests/test_files/"
 
@@ -35,6 +36,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.double_click_marker()
         self.assertEquals(markers + 1, self.page.number_of_completely_public_clusters_on_map())
 
+    """
     def test_cluster_with_only_public_points_is_green(self):
         self.page.double_click_marker()
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
@@ -58,7 +60,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.click_save_button()
         self.assertEquals(not self.page.save_button_is_enabled(), True)
 
-    """
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()
         self.page.reset()

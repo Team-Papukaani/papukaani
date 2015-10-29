@@ -100,7 +100,6 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
         var marker = L.marker(new L.LatLng(ltlgs[1], ltlgs[0]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
-
         markers.addLayer(marker);
     }
     clusterGroup.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this));

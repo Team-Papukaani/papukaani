@@ -11,28 +11,27 @@ function DeviceSorter(devices) {
 
 }
 
-//Shows the points of a single device. If deviceId not found, all points are shown.
+//Shows the points of a single device. Or none, if no device is specified.
 DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     if (deviceId != 'None') {
-        console.log("called");
         request = new XMLHttpRequest;
-        request.open("GET", "docs/?devId=" + deviceId, true);
+        var path = "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+        request.open("GET", path, true);
         request.onreadystatechange = ready.bind(this);
         request.send(null);
     }
     else {
-        console.log("not called");
         this.points = [];
+        this.map.changePoints(this.points);
     }
 };
 
 
 function ready() {
     if (request.readyState === 4) {
-        console.log(request.responseText);
-        this.points = request.responseText;
+        this.points = [];
+        this.points = JSON.parse(request.response)[0]["gatherings"];
         this.map.changePoints(this.points);
-        console.log("done")
     }
 }
 
@@ -40,7 +39,7 @@ function ready() {
 DeviceSorter.prototype.getAllPoints = function (devices) {
     var points = [];
     var device_keys = Object.keys(devices);
-    for (i = 0; i < device_keys.length; i++) {
+    for (var i = 0; i < device_keys.length; i++) {
         points = points.concat(devices[device_keys[i]]);
     }
     return points;
@@ -60,7 +59,7 @@ DeviceSorter.prototype.sortIntoDevices = function (documents) {
     }
 
     return devices;
-}
+};
 
 //Resets the option selector to the default value.
 DeviceSorter.prototype.resetOption = function () {

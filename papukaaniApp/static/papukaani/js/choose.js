@@ -156,8 +156,8 @@ getPublicChildCount = function (cluster) {
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
-function send(csrf_token, points) {
-    data = JSON.stringify(points);
+function send(csrf_token, map) {
+    data = JSON.stringify(map.sorter.points);
     messagebox = $("#loading");
     button = $("#save");
 

@@ -46,7 +46,7 @@
 <select id="selectDevice" value=></select>
 
 {% csrf_token %}
-<button id="save" onclick="send('{{ csrf_token }}', documents)">Tallenna</button>
+<button id="save" onclick="send('{{ csrf_token }}', map)">Tallenna</button>
 
 <p id="loading"></p>
 <button id="reset" onclick="resetMap(map)">Reset</button>

@@ -8,7 +8,7 @@
     {% load staticfiles %}
     {% include "papukaaniApp/include_headers.html" %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaaniApp/general.css' %}">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'papukaani/css/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
@@ -52,7 +52,7 @@
 
 
 {% include "papukaaniApp/include_scripts.html" %}
-<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+<script src="{% static 'papukaani/js/leaflet.js' %}"></script>
 <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>

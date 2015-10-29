@@ -68,6 +68,6 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
 
     selector.addOption("None");
     for (var i = 0; i < this.devices.length; i++) {
-        selector.addOption(this.devices[i])
+            selector.addOption(this.devices[i])
     }
 };

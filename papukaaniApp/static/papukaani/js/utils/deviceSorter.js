@@ -9,6 +9,7 @@ function DeviceSorter(devices) {
         this.map = map
     }
 
+    this.currentDevice = 'None'
 }
 
 //Sends a request to the rest-controller for documents matching the deviceId.
@@ -28,6 +29,7 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         this.points = [];
         this.map.changePoints(this.points);
     }
+    this.currentDevice = deviceId
 };
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
@@ -59,7 +61,7 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
 
     selector.change(function (event) {
         event.preventDefault();
-        this.changeDeviceSelection(selector.val())
+        this.showSaveOrCancelPopup(selector.val())
     }.bind(this));
 
     selector.addOption = function (option) {
@@ -70,4 +72,31 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
     for (var i = 0; i < this.devices.length; i++) {
         selector.addOption(this.devices[i])
     }
+};
+
+//Shows and handles the popup box.
+DeviceSorter.prototype.showSaveOrCancelPopup = function(deviceId){
+    if(!this.map.unsaved){
+        this.changeDeviceSelection(deviceId)
+        return
+    }
+
+    popup = $("#popup")
+
+    $("#save_button").click(function(event){
+        this.map.send()
+        this.changeDeviceSelection(deviceId)
+        popup.hide()
+    }.bind(this))
+
+    $("#no_save_button").click(function(event){
+        this.changeDeviceSelection(deviceId)
+        popup.hide()
+    }.bind(this))
+
+    $("#cancel_button").click(function(event){
+        $("#selectDevice").val(this.currentDevice)
+        popup.hide()
+    }.bind(this))
+    popup.show()
 };

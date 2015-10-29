@@ -1,11 +1,5 @@
-from datetime import datetime
-import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import Client
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from papukaaniApp.utils.parser import *
+
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
 
@@ -14,7 +8,6 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-
         self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.0, 61.00]),
                                            gathering.Gathering("1234-12-12T12:13:14+00:00", [23.01, 61.01])],
                                  "DeviceId")
@@ -49,7 +42,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
 
     def test_cluster_initially_contains_only_private_points_and_is_grey(self):
-        time.sleep(20)
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
         self.assertEquals(1, self.page.number_of_private_clusters_on_map())
         self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())

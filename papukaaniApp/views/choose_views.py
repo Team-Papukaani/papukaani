@@ -29,5 +29,6 @@ def choose(request):
 
 def _set_points_public(request):
     docs = json.loads(request.POST['data'])
+    print(docs)
     for dict in docs:
         document.update_from_dict(**dict)

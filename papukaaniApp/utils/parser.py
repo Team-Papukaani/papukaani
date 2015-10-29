@@ -58,8 +58,15 @@ def create_points(data):
             ))
 
     points = []
+
     for k in collections.keys():
+        doc = document.get(k)
         points += collections[k]
-        document.create(str(uuid.uuid4()), collections[k], k)
+        if(doc == None):
+            document.create(str(uuid.uuid4()), collections[k], k)
+        else:
+            doc.gatherings += collections[k]
+            doc.update()
+
 
     return points

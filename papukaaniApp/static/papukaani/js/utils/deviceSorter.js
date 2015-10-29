@@ -17,7 +17,7 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         messagebox = $("#loading");
         messagebox.text("Tietoja ladataan...");
         button = $("#selectDevice");
-        button.attr("disable", true);
+        button.attr("disabled", true);
         request = new XMLHttpRequest;
         var path = "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
         request.open("GET", path, true);
@@ -42,7 +42,7 @@ function showPointsForDevice() {
         messagebox = $("#loading");
         messagebox.text("");
         button = $("#selectDevice");
-        button.attr("disable", false);
+        button.attr("disabled", false);
     }
 }
 

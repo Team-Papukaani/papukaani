@@ -9,7 +9,7 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.0, 61.00]),
+        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00]),
                                            gathering.Gathering("1234-12-12T12:13:14+00:00", [23.01, 61.01])],
                                  "DeviceId")
         dev = {
@@ -36,7 +36,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.double_click_marker()
         self.assertEquals(markers + 1, self.page.number_of_completely_public_clusters_on_map())
 
-    """
     def test_cluster_with_only_public_points_is_green(self):
         self.page.double_click_marker()
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
@@ -60,6 +59,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.click_save_button()
         self.assertEquals(not self.page.save_button_is_enabled(), True)
 
+    """
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()
         self.page.reset()

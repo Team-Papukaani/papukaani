@@ -8,11 +8,11 @@
     {% load staticfiles %}
     {% include "papukaaniApp/include_headers.html" %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaaniApp/general.css' %}">
-    <link rel="stylesheet" href="{% static 'papukaani/css/leaflet.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/jquery-ui-timepicker-addon.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
 
 </head>
@@ -52,16 +52,16 @@
 
 
 {% include "papukaaniApp/include_scripts.html" %}
-<script src="{% static 'papukaani/js/leaflet.js' %}"></script>
-<script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
-<script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
+<script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'papukaani/libraries/leaflet/markercluster/MarkerClusterGroup.Refresh.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
-<script src="{% static 'papukaani/js/jquery-ui-timepicker-addon.js' %}"></script>
+<script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
 
 <div id="map" class="largeMap">
 </div>

@@ -7,8 +7,8 @@
 
     {% load staticfiles %}
     {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaaniApp/general.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
@@ -17,46 +17,46 @@
 
 </head>
 
-<body onload="var map = init({{ devices }})">
+<body onload="var map = init({{ devices }}, '{{ csrf_token}}')">
 {% include "papukaaniApp/navigation.html" %}
 
-<form id="time_range">
-    <div class="input_field">
+<div id="popup" class="overlay" hidden="true">
+       <p>Tallennetaanko muutokset?</p>
+        <button id="save_button" class="btn btn-default"> Kyllä </button>
+        <button id="no_save_button" class="btn btn-default">  Ei </button>
+        <button id="cancel_button" class="btn btn-default"> Peruuta</button>
+</div>
+
+<div class="choose_actions">
+    <form id="time_range">
         <label for="start_time">Alku</label>
         <input type="text" id="start_time" name="start_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="dd-mm-yyyy HH:mm">
+                   placeholder="dd-mm-yyyy HH:mm">
 
-    </div>
-
-    <div class="input_field">
         <label for="end_time">Loppu</label>
         <input type="text" id="end_time" name="end_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="dd-mm-yyyy HH:mm">
-    </div>
-    <p id="formatError" style="margin:0"></p>
+                   placeholder="dd-mm-yyyy HH:mm">
 
-    <div class="input_field">
-        <br>
-        <button type="button"
-                onclick="map.showMarkersWithinTimeRange(time_range.start_time.value, time_range.end_time.value)"
-                id="show_time_range">Näytä pisteet aikavälillä
+        <span id="formatError" style="margin:0"></span>
+
+        <button type="button" class="btn btn-default"
+            onclick="map.showMarkersWithinTimeRange(time_range.start_time.value, time_range.end_time.value)"
+            id="show_time_range">Näytä pisteet aikavälillä
         </button>
-    </div>
-</form>
-<select id="selectDevice" value=></select>
+    </form>
 
-{% csrf_token %}
-<button id="save" onclick="send('{{ csrf_token }}', map)">Tallenna</button>
-<button id="reset" onclick="resetMap(map)">Reset</button>
-<p id="loading" style="display:inline"></p>
+    <select id="selectDevice"></select>
 
+    {% csrf_token %}
+    <button id="save" onclick="map.send()" class="btn btn-default">Tallenna</button>
+    <button id="reset" onclick="resetMap(map)" class="btn btn-default">Reset</button>
+    <p id="loading" style="display:inline"></p>
+</div>
 
 {% include "papukaaniApp/include_scripts.html" %}
 <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/markercluster/MarkerClusterGroup.Refresh.js' %}"></script>
-<script src="{% static 'papukaani/js/map.js' %}"></script>
-<script src="{% static 'papukaani/js/choose.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>

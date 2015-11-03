@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from django.conf import settings
 from papukaaniApp.tests.page_models.page_models import UploadPage
+from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 
 
 class FileUploadSeleniumTest(StaticLiveServerTestCase):
@@ -10,6 +11,7 @@ class FileUploadSeleniumTest(StaticLiveServerTestCase):
         self.upload.navigate()
 
     def tearDown(self):
+        take_screenshot_of_test_case(self, self.upload.driver)
         self.upload.close()
 
     def test_selenium_file_can_be_uploaded_and_points_will_be_shown_on_map(self):

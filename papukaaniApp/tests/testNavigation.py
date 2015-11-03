@@ -1,6 +1,7 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from papukaaniApp.tests.page_models.page_models import NavigationPage
+from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 
 
 class TestNavigation(StaticLiveServerTestCase):
@@ -9,6 +10,7 @@ class TestNavigation(StaticLiveServerTestCase):
         self.nav.navigate()
 
     def tearDown(self):
+        take_screenshot_of_test_case(self, self.nav.driver)
         self.nav.close()
 
     def test(self):

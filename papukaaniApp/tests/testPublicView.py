@@ -4,6 +4,7 @@ from django.test import Client
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from django.conf import settings
 from papukaaniApp.models_LajiStore import *
+from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 
 
 class PublicView(StaticLiveServerTestCase):
@@ -25,6 +26,7 @@ class PublicView(StaticLiveServerTestCase):
         self.page.navigate()
 
     def tearDown(self):
+        take_screenshot_of_test_case(self, self.page.driver)
         self.page.close()
         self.A.delete()
         self.D.delete()

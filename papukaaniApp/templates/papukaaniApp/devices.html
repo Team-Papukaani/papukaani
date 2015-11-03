@@ -10,20 +10,22 @@
     {% include "papukaaniApp/navigation.html" %}
 
     {% include "papukaaniApp/include_scripts.html" %}
+    <script src="{% static 'papukaani/js/jquery-dateFormat.min.js' %}"></script>
 
-    <h1>Valitse linnun lähetin</h1>
+    <h1>Hallitse lähettimiä</h1>
 
     <form>
-        <p>Valitse lähetin</p>
+        <p>
+            Valitse lähetin
+            <select onchange="displayIndividuals(this.value)">
+                <option selected disabled>Valitse lähetin</option>
+                {% for device in devices %}
+                    <option>{{ device.deviceId }}</option>
+                {% endfor %}
+            </select>
+        </p>
 
-        <select onchange="displayIndividuals(this.value)">
-            <option selected disabled>Valitse lähetin</option>
-            {% for device in devices %}
-                <option>{{ device.deviceId }}</option>
-            {% endfor %}
-        </select>
-
-        <table id="table" class="table table-stripped">
+        <table id="table" class="table table-stripped table-nonfluid">
             <tr>
                 <th>Lintu</th>
                 <th>Kiinnitetty</th>
@@ -34,26 +36,28 @@
             <tr>
                 <td>
                     <select>
+                        <option disabled selected>Valitse kiinnitettävä lintu</option>
                         {% for individual in individuals %}
-                            <option>{{ individual.individualId }}</option>
+                            <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
                         {% endfor %}
                     </select>
                 </td>
                 <td>
                     <input type="text" id="start_time" name="start_time" class="datepicker"
-                           onblur="validateDateFormat(this)" placeholder="dd-mm-yyyy HH:mm"> TODO:siirrä JS</td>
+                           onblur="validateDateFormat(this)" placeholder="dd-mm-yyyy HH:mm"></td>
                 <td></td>
                 <td><a class="btn btn-sm btn-primary">Kiinnitä</a></td>
             </tr>
         </table>
 
     </form>
-    TODO: siirrä datepicker JS, ota jquery-dateformat käyttöön ja formatoi päivämäärät, hae lintujen nimet
+
     <script>
         $('#table').hide()
 
         {% autoescape off %}
-            var devices_and_individuals = {{ json }};
+            var devices_and_individuals = {{ device_json }};
+            var individuals = {{ individual_json }};
         {% endautoescape %}
 
         function displayIndividuals(device) {
@@ -61,10 +65,17 @@
             var rows = '';
             $.each(devices_and_individuals[device], function(index, individual) {
                 var row = '<tr>';
-                row += '<td>' + individual.individualId + '</td>'
-                row += '<td>' + individual.attached + '</td>'
-                row += '<td>' + individual.removed + '</td>'
-                row += '<td><a class="btn btn-sm btn-danger">Irroita</a></td>'
+                row += '<td>' + individuals[individual.individualId] + '</td>'
+                row += '<td>' + $.format.date(individual.attached, "dd.MM.yyyy HH:mm") + '</td>'
+
+                if( individual.removed == undefined) {
+                    row += '<td>Vielä kiinni</td>'
+                    row += '<td><a class="btn btn-sm btn-danger">Irroita</a></td>'
+                } else {
+                    row += '<td>' + $.format.date(individual.removed, "dd.MM.yyyy HH:mm") + '</td>'
+                    row += '<td></td>'
+                }
+
                 rows += row + '<tr>';
             });
             $('#individuals').html(rows);

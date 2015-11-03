@@ -34,7 +34,6 @@ def create_points(data):
     Creates a new entry for every Gathering not already in the database.
     :param data: The contents of the uploaded file.
     :return: A list containing all of the Gatherings found in the file.
-    :return: A list containing all of the Gatherings found in the file.
     """
     collections = {}
 
@@ -60,14 +59,12 @@ def create_points(data):
     points = []
 
     for k in collections.keys():
-        doc = document.get(k)
+        docArray = document.find(deviceId=k)
         points += collections[k]
-        if(doc == None):
+        if len(docArray) is 0:
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
-            doc.gatherings += collections[k]
-            doc.update()
-
-
+            docArray[0].gatherings += collections[k]
+            docArray[0].update()
     return points
 

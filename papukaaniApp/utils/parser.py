@@ -64,7 +64,10 @@ def create_points(data):
         if len(docArray) is 0:
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
-            docArray[0].gatherings += collections[k]
-            docArray[0].update()
+            for i in docArray
+            _append_points_not_yet_included(docArray[i])
+            docArray[i].gatherings += collections[k]
+            docArray[i].update()
     return points
 
+def _append_points_not_yet_included(document,new_points):

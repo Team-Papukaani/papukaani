@@ -17,7 +17,7 @@
     <form>
         <p>
             Valitse lähetin
-            <select onchange="displayIndividuals(this.value)">
+            <select id="deviceId" onchange="displayIndividuals(this.value)">
                 <option selected disabled>Valitse lähetin</option>
                 {% for device in devices %}
                     <option>{{ device.deviceId }}</option>
@@ -35,7 +35,7 @@
             <tbody id="individuals"></tbody>
             <tr>
                 <td>
-                    <select>
+                    <select id="individualId">
                         <option disabled selected>Valitse kiinnitettävä lintu</option>
                         {% for individual in individuals %}
                             <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
@@ -46,7 +46,7 @@
                     <input type="text" id="start_time" name="start_time" class="datepicker"
                            onblur="validateDateFormat(this)" placeholder="dd-mm-yyyy HH:mm"></td>
                 <td></td>
-                <td><a class="btn btn-sm btn-primary">Kiinnitä</a></td>
+                <td><a class="btn btn-sm btn-primary" onclick="attachDevice()">Kiinnitä</a></td>
             </tr>
         </table>
 
@@ -60,6 +60,10 @@
             var individuals = {{ individual_json }};
         {% endautoescape %}
 
+        headers = {
+            "X-CSRFToken" :  "{{ csrf_token }}"
+        }
+
         function displayIndividuals(device) {
             $('#table').show()
             var rows = '';
@@ -70,7 +74,7 @@
 
                 if( individual.removed == undefined) {
                     row += '<td>Vielä kiinni</td>'
-                    row += '<td><a class="btn btn-sm btn-danger">Irroita</a></td>'
+                    row += '<td><a class="btn btn-sm btn-danger" onclick="removeDevice('+ index +')">Irroita</a></td>'
                 } else {
                     row += '<td>' + $.format.date(individual.removed, "dd.MM.yyyy HH:mm") + '</td>'
                     row += '<td></td>'
@@ -85,6 +89,62 @@
             }
 
         }
+
+        function attachDevice(){
+            var deviceId = $("#deviceId").val();
+            var individualId = $("#individualId").val();
+            var timestamp = $("#start_time").val()
+
+            if(deviceId && individualId){
+
+                $.each(devices_and_individuals[deviceId], function(index, individual){
+                    if(!individual.removed){
+                        individual.removed = timestamp
+                    }
+                })
+
+                devices_and_individuals[deviceId].push({
+                    individualId : individualId,
+                    attached : timestamp
+                })
+
+                $.ajax({
+                    url : deviceId + "/attach/",
+                    method : "POST",
+                    data : {
+                            individualId : individualId,
+                            timestamp : timestamp
+                        },
+                    headers : headers
+                });
+
+                displayIndividuals(deviceId);
+            }
+        }
+
+        function removeDevice(index){
+
+            var deviceId = $("#deviceId").val();
+            var individualId = devices_and_individuals[deviceId][index].individualId;
+
+            if(deviceId && individualId){
+
+                devices_and_individuals[deviceId][index].removed = Date.now();
+
+                $.ajax({
+                    url : deviceId + "/remove/",
+                    method : "POST",
+                    data : {
+                            individualId : individualId,
+                        },
+                    headers : headers
+                });
+
+                displayIndividuals(deviceId);
+            }
+        }
+
+
     </script>
 </body>
 </html>

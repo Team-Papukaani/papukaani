@@ -218,15 +218,13 @@ function init(devices, token) {
 
 //Resets the map to the state it was in when the page was loaded.
 function resetMap(map) {
-    if(confirm("Oletko varma?")){
-        map.unsaved = false
-        map.map.removeLayer(map.markers);
-        map.markers = createEmptyMarkerClusterGroup();
-        map.map.addLayer(map.markers);
-        map.sorter.resetOption();
-        document.getElementById("start_time").value = "";
-        document.getElementById("end_time").value = "";
-    }
+     map.unsaved = false
+     map.map.removeLayer(map.markers);
+     map.markers = createEmptyMarkerClusterGroup();
+     map.map.addLayer(map.markers);
+     map.sorter.resetOption();
+     document.getElementById("start_time").value = "";
+     document.getElementById("end_time").value = "";
 }
 
 

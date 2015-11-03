@@ -22,6 +22,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         }
         self.D = device.create(**dev)
         self.page = ChoosePage()
+
         self.page.navigate()
         self.page.change_device_selection("DeviceId")
 
@@ -94,6 +95,44 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.show_time_range()
         self.assertEquals(self.page.number_of_private_clusters_on_map(), 0)
 
+    def test_popup_is_not_shown_when_no_changes(self):
+        self.page.change_device_selection("None")
+        self.assertFalse(self.page.popup_displayed())
+
+    def test_popup_is_shown_when_changes(self):
+        self.page.double_click_marker()
+        self.page.change_device_selection("None")
+        self.assertTrue(self.page.popup_displayed())
+
+    def test_changes_are_saved_when_yes_is_pressed(self):
+        self.page.double_click_marker()
+        self.page.change_device_selection("None")
+
+        self.page.popup_click_yes()
+        self.page.change_device_selection("DeviceId")
+
+        self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
+
+    def test_changes_are_not_saved_when_no_is_pressed(self):
+        self.page.double_click_marker()
+        self.page.change_device_selection("None")
+
+        self.page.popup_click_no()
+        self.page.change_device_selection("DeviceId")
+
+        self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 0)
+
+    def test_device_selection_does_not_change_when_cancel_is_pressed(self):
+        self.page.double_click_marker()
+        self.page.change_device_selection("None")
+
+        self.page.popup_click_cancel()
+        self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
+
+        self.assertTrue("DeviceId", self.page.get_device_selection())
+
+
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
         self.A.update()
+

@@ -12,3 +12,7 @@
 #time_range input, label {
     display: block;
 }
+
+.table-nonfluid {
+   width: auto !important;
+}

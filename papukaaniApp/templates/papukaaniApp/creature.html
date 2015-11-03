@@ -6,10 +6,10 @@
     <title>Pelikaija</title>
     <link rel="stylesheet" type="text/css" href="{% static "papukaaniApp/general.css" %}">
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-1.0.0-b1/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
     {% include "papukaaniApp/include_headers.html" %}
 
 </head>
@@ -32,11 +32,11 @@
             creatureMapInit(mapPoints);
         </script>
     {% endautoescape %}
-    <script src="http://cdn.leafletjs.com/leaflet-1.0.0-b1/leaflet.js"></script>
-    <script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/creature.js' %}"></script>
-    <script src="{% static 'papukaani/libraries/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
     {% include "papukaaniApp/include_scripts.html" %}
 </body>
 </html>

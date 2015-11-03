@@ -23,6 +23,7 @@ def choose(request):
             devices.append(item.deviceId)
         if "Dev" in devices:
             devices.remove("Dev")
+        devices.sort()
         return render(request, 'choose.html', {'devices': json.dumps(devices)})
 
 

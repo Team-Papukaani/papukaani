@@ -209,3 +209,26 @@ class ChoosePage(PageWithDeviceSelector):
 
     def format_error(self):
         return self.driver.find_element_by_id("formatError").get_attribute("innerHTML")
+
+
+class DevicePage(PageWithDeviceSelector):
+    """
+    Page Object for the device page.
+    """
+    url = BASE_URL + '/papukaani/devices/'
+
+    def __init__(self):
+        super().__init__()
+
+    def get_individual_name(self, individualId):
+        return self.driver.find_element_by_id("name" + individualId)
+
+    #
+    # def get_number_of_points(self):
+    #     plines = self.get_map_polyline_elements()
+    #     no_of_pts = 0
+    #     for line in plines:
+    #         d = line.find_element_by_tag_name("path").get_attribute("d")
+    #         no_of_pts += (len(d.split()) - 2)
+    #
+    #     return no_of_pts

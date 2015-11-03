@@ -17,7 +17,7 @@
     <form>
         <p>
             Valitse lähetin
-            <select onchange="displayIndividuals(this.value)">
+            <select id="selectDevice" onchange="displayIndividuals(this.value)">
                 <option selected disabled>Valitse lähetin</option>
                 {% for device in devices %}
                     <option>{{ device.deviceId }}</option>
@@ -35,7 +35,7 @@
             <tbody id="individuals"></tbody>
             <tr>
                 <td>
-                    <select>
+                    <select id="selectIndividual">
                         <option disabled selected>Valitse kiinnitettävä lintu</option>
                         {% for individual in individuals %}
                             <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
@@ -65,7 +65,7 @@
             var rows = '';
             $.each(devices_and_individuals[device], function(index, individual) {
                 var row = '<tr>';
-                row += '<td>' + individuals[individual.individualId] + '</td>'
+                row += '<td><span id="name' + individual.individualId + '">' + individuals[individual.individualId] + '</span></td>'
                 row += '<td>' + $.format.date(individual.attached, "dd.MM.yyyy HH:mm") + '</td>'
 
                 if( individual.removed == undefined) {

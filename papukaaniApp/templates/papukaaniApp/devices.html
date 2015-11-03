@@ -10,32 +10,141 @@
     {% include "papukaaniApp/navigation.html" %}
 
     {% include "papukaaniApp/include_scripts.html" %}
+    <script src="{% static 'papukaani/js/jquery-dateFormat.min.js' %}"></script>
 
-    <h1>Valitse linnun lähetin</h1>
+    <h1>Hallitse lähettimiä</h1>
 
     <form>
-        <p>Valitse lähetin</p>
+        <p>
+            Valitse lähetin
+            <select id="deviceId" onchange="displayIndividuals(this.value)">
+                <option selected disabled>Valitse lähetin</option>
+                {% for device in devices %}
+                    <option>{{ device.deviceId }}</option>
+                {% endfor %}
+            </select>
+        </p>
 
-        <select>
-            {% for device in devices %}
-                <option>{{ device.deviceId }}</option>
-            {% endfor %}
-        </select>
+        <table id="table" class="table table-stripped table-nonfluid">
+            <tr>
+                <th>Lintu</th>
+                <th>Kiinnitetty</th>
+                <th>Irroitettu</th>
+                <th> </th>
+            </tr>
+            <tbody id="individuals"></tbody>
+            <tr>
+                <td>
+                    <select id="individualId">
+                        <option disabled selected>Valitse kiinnitettävä lintu</option>
+                        {% for individual in individuals %}
+                            <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="start_time" name="start_time" class="datepicker"
+                           onblur="validateDateFormat(this)" placeholder="dd-mm-yyyy HH:mm"></td>
+                <td></td>
+                <td><a class="btn btn-sm btn-primary" onclick="attachDevice()">Kiinnitä</a></td>
+            </tr>
+        </table>
 
-        <input type="submit" value="OK">
     </form>
 
-<pre>
-    var devices = [
-    {% for device in devices %}
-        {deviceId:"{{ device.deviceId }}", individual:[
-        {% for individual in device.individuals %}
-            plaa
-        {% endfor %}
+    <script>
+        $('#table').hide()
+
+        {% autoescape off %}
+            var devices_and_individuals = {{ device_json }};
+            var individuals = {{ individual_json }};
+        {% endautoescape %}
+
+        headers = {
+            "X-CSRFToken" :  "{{ csrf_token }}"
         }
-        ]},
-    {% endfor %}
-    ]
-</pre>
+
+        function displayIndividuals(device) {
+            $('#table').show()
+            var rows = '';
+            $.each(devices_and_individuals[device], function(index, individual) {
+                var row = '<tr>';
+                row += '<td>' + individuals[individual.individualId] + '</td>'
+                row += '<td>' + $.format.date(individual.attached, "dd.MM.yyyy HH:mm") + '</td>'
+
+                if( individual.removed == undefined) {
+                    row += '<td>Vielä kiinni</td>'
+                    row += '<td><a class="btn btn-sm btn-danger" onclick="removeDevice('+ index +')">Irroita</a></td>'
+                } else {
+                    row += '<td>' + $.format.date(individual.removed, "dd.MM.yyyy HH:mm") + '</td>'
+                    row += '<td></td>'
+                }
+
+                rows += row + '<tr>';
+            });
+            $('#individuals').html(rows);
+
+            if(devices_and_individuals[device].length == 0) {
+                $('#individuals').html('<tr><td colspan="4">Ei lintuja</td></tr>');
+            }
+
+        }
+
+        function attachDevice(){
+            var deviceId = $("#deviceId").val();
+            var individualId = $("#individualId").val();
+            var timestamp = $("#start_time").val()
+
+            if(deviceId && individualId){
+
+                $.each(devices_and_individuals[deviceId], function(index, individual){
+                    if(!individual.removed){
+                        individual.removed = timestamp
+                    }
+                })
+
+                devices_and_individuals[deviceId].push({
+                    individualId : individualId,
+                    attached : timestamp
+                })
+
+                $.ajax({
+                    url : deviceId + "/attach/",
+                    method : "POST",
+                    data : {
+                            individualId : individualId,
+                            timestamp : timestamp
+                        },
+                    headers : headers
+                });
+
+                displayIndividuals(deviceId);
+            }
+        }
+
+        function removeDevice(index){
+
+            var deviceId = $("#deviceId").val();
+            var individualId = devices_and_individuals[deviceId][index].individualId;
+
+            if(deviceId && individualId){
+
+                devices_and_individuals[deviceId][index].removed = Date.now();
+
+                $.ajax({
+                    url : deviceId + "/remove/",
+                    method : "POST",
+                    data : {
+                            individualId : individualId,
+                        },
+                    headers : headers
+                });
+
+                displayIndividuals(deviceId);
+            }
+        }
+
+
+    </script>
 </body>
 </html>

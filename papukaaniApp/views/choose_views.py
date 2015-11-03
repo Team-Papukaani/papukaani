@@ -1,18 +1,15 @@
-import datetime
-from papukaaniApp.utils.view_utils import *
-from papukaaniApp.models import MapPoint
-from django.shortcuts import render, redirect
-from django.db.transaction import atomic
-from papukaaniApp.models_LajiStore import gathering, document
 import json
+
+from django.shortcuts import render, redirect
+
+from papukaaniApp.utils.view_utils import *
+from papukaaniApp.models_LajiStore import device, document
 
 
 def choose(request):
     """
     Controller for '/choose/'. GET renders view,
     POST receives point publicity data as JSON and saves changes to database.
-
-    JSON format ; {"latlong" : [x,y], "id" : int}
     """
     if request.method == 'POST':
         if 'data' in request.POST:
@@ -21,8 +18,12 @@ def choose(request):
         return redirect(choose)
 
     else:
-        docs = [d.to_dict() for d in document.get_all()]
-        return render(request, 'choose.html', {'points': json.dumps(docs)})
+        devices = []
+        for item in device.get_all():
+            devices.append(item.deviceId)
+        if "Dev" in devices:
+            devices.remove("Dev")
+        return render(request, 'choose.html', {'devices': json.dumps(devices)})
 
 
 def _set_points_public(request):

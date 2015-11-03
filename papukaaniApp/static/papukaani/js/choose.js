@@ -6,21 +6,17 @@ function ChooseMap(sorter) {
 
     this.markers = createEmptyMarkerClusterGroup();
 
-    this.originalPoints = JSON.parse(JSON.stringify(sorter.points));
+    this.points = [];
 
-    this.points = sorter.points;
-
-    this.createMarkersFromPoints(this.points, this.markers);
-    this.map.addLayer(this.markers);
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
 }
 
-//Updates the map to show all the markers within start and end, which are strings that can be converted to Date,
+//Updates the map to show all markers within start and end, which are strings that can be converted to Date.
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     var a, b;
     try {
-        a = (start != "" ? new Date(start) : "");
-        b = (end != "" ? new Date(end) : "");
+        a = (start != "" ? new Date(parseTime(start)) : "");
+        b = (end != "" ? new Date(parseTime(end)) : "");
     } catch (error) {
         document.getElementById("formatError").innerHTML = "Invalid Date format!";
         return;
@@ -30,7 +26,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         var timestamp = new Date(timestring);
         a = (start != "" ? a : timestamp);
         b = (end != "" ? b : timestamp);
-        return dateIsBetween(timestamp, a, b);
+        return dateIsBetween(timestamp, a, b)
     });
     this.removeAllMarkers.call(this);
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
@@ -38,11 +34,15 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.addLayer(this.markers);
 };
 
+//Parses the given string into an appropriate Date-format.
+function parseTime(timestring) {
+    var parts = timestring.split(' ');
+    var dateparts = parts[0].split('-');
+    return (dateparts[2] + "-" + dateparts[1] + "-" + dateparts[0] + 'T' + parts[1] + ":00+00:00");
+}
+
 //Checks if the date is between the two parameters.
 function dateIsBetween(date, start, end) {
-    date.setHours(0, 0, 0, 0);
-    start.setHours(0, 0, 0, 0);
-    end.setHours(0, 0, 0, 0);
     return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
 }
 
@@ -76,13 +76,17 @@ function createEmptyMarkerClusterGroup() {
 
 //Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
-    this.points = points;
+    if (!points.length) this.points = [];
+    else this.points = points[0]["gatherings"];
+    for (var i = 1; i < points.length; i++) {
+        this.points.concat(points[i]["gatherings"]);
+    }
     var start = document.getElementById("start_time");
     var end = document.getElementById("end_time");
     this.showMarkersWithinTimeRange(start.value, end.value);
 };
 
-
+//Removes all markers from the map.
 ChooseMap.prototype.removeAllMarkers = function () {
     this.map.removeLayer(this.markers);
     this.markers = createEmptyMarkerClusterGroup();
@@ -117,7 +121,7 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
     this.markers.refreshClusters(markers);
 };
 
-//Redraws the markers icon on the map.
+//Forces a redraw of the specified marker's icon, as it doesn't necessarily update when changes are made.
 redrawIcon = function (marker) {
     var c = ' marker-cluster';
     if (marker.pnt.publicity === "public") c += '-small';
@@ -156,8 +160,8 @@ getPublicChildCount = function (cluster) {
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
-function send(csrf_token, points) {
-    data = JSON.stringify(points);
+function send(csrf_token, map) {
+    data = JSON.stringify(map.sorter.points);
     messagebox = $("#loading");
     button = $("#save");
 
@@ -193,22 +197,18 @@ function setLoadingMessage(request, button, messagebox) {
     }
 }
 
-function init(docs) {
-    documents = docs;
-    sorter = new DeviceSorter(docs);
+function init(devices) {
+    sorter = new DeviceSorter(devices);
     map = new ChooseMap(sorter);
-    sorter.setMap(map)
+    sorter.setMap(map);
 
     return map
-
 }
 
 //Resets the map to the state it was in when the page was loaded.
 function resetMap(map) {
     map.map.removeLayer(map.markers);
     map.markers = createEmptyMarkerClusterGroup();
-    map.points = JSON.parse(JSON.stringify(map.originalPoints));
-    map.createMarkersFromPoints(map.points, map.markers);
     map.map.addLayer(map.markers);
     map.sorter.resetOption();
     document.getElementById("start_time").value = "";

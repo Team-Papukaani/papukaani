@@ -7,15 +7,14 @@ from papukaaniApp.utils.view_utils import extract_latlongs
 from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
 
-@xframe_options_exempt  #Allows the view to be loaded in an iFrame
+
+@xframe_options_exempt  # Allows the view to be loaded in an iFrame
 def public(request):
     """
     Controller for '/public/'.
     """
 
-    docs = [d.to_dict() for d in document.get_all()]
-
-    return render(request, 'papukaaniApp/public.html', {"docs": json.dumps(docs)})
-
-
-
+    devices = []
+    for item in device.get_all():
+        devices.append(item.deviceId)
+    return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(devices)})

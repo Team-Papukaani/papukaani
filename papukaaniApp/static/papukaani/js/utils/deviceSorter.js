@@ -1,7 +1,7 @@
-function DeviceSorter(documents) {
+function DeviceSorter(devices) {
 
-    this.devices = this.sortIntoDevices(documents);
-    this.points = this.getAllPoints(this.devices);
+    this.devices = devices;
+    this.points = [];
 
     this.createDeviceSelector(this.devices);
 
@@ -11,65 +11,63 @@ function DeviceSorter(documents) {
 
 }
 
-//Shows the points of a single device. If deviceId not found, all points are shown.
+//Sends a request to the rest-controller for documents matching the deviceId.
 DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
-    if (this.devices[deviceId]) {
-        this.points = this.devices[deviceId];
-    } else {
-        this.points = this.getAllPoints(this.devices);
+    if (deviceId != 'None') {
+        messagebox = $("#loading");
+        messagebox.text("Tietoja ladataan...");
+        button = $("#selectDevice");
+        button.attr("disabled", true);
+        request = new XMLHttpRequest;
+        var path = "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+        request.open("GET", path, true);
+        request.onreadystatechange = showPointsForDevice.bind(this);
+        request.send(null);
     }
-
-    this.map.changePoints(this.points)
+    else {
+        this.points = [];
+        this.map.changePoints(this.points);
+    }
 };
 
-DeviceSorter.prototype.getAllPoints = function (devices) {
-    var points = [];
-    var device_keys = Object.keys(devices);
-    for (i = 0; i < device_keys.length; i++) {
-        points = points.concat(devices[device_keys[i]]);
-    }
-    return points;
-}
-
-//Sorts the points in the documents to a dictionary with device ids as keys.
-DeviceSorter.prototype.sortIntoDevices = function (documents) {
-    var devices = {};
-    for (var i = 0; i < documents.length; i++) {
-        var deviceId = documents[i].deviceId;
-        if (!devices[deviceId]) {
-            devices[deviceId] = [];
+//Once the request has a response, changes the sorters points to the ones received in the response.
+function showPointsForDevice() {
+    if (request.readyState === 4) {
+        this.points = [];
+        var docs = JSON.parse(request.response);
+        for (var i = 0; i < docs.length; i++) {
+            this.points.push(docs[i]);
         }
-        for (var j = 0; j < documents[i].gatherings.length; j++) {
-            devices[deviceId].push(documents[i].gatherings[j]);
-        }
+        this.map.changePoints(this.points);
+        messagebox = $("#loading");
+        messagebox.text("");
+        button = $("#selectDevice");
+        button.attr("disabled", false);
     }
-
-    return devices;
 }
 
 //Resets the option selector to the default value.
 DeviceSorter.prototype.resetOption = function () {
     var selector = document.getElementById("selectDevice");
 
-    selector.value = "All";
+    selector.value = "None";
 };
 
 //Creates a selector for devices.
 DeviceSorter.prototype.createDeviceSelector = function (devices) {
-    var selector = $("#selectDevice")
+    var selector = $("#selectDevice");
 
     selector.change(function (event) {
-        event.preventDefault()
+        event.preventDefault();
         this.changeDeviceSelection(selector.val())
-    }.bind(this))
+    }.bind(this));
 
     selector.addOption = function (option) {
         selector.append("<option value='" + option + "'>" + option + "</option>")
-    }
+    };
 
-    selector.addOption("All")
-    var deviceIds = Object.keys(devices)
-    for (var i = 0; i < deviceIds.length; i++) {
-        selector.addOption(deviceIds[i])
+    selector.addOption("None");
+    for (var i = 0; i < this.devices.length; i++) {
+            selector.addOption(this.devices[i])
     }
-}
+};

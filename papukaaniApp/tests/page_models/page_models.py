@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
+import time
 
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
@@ -200,6 +201,8 @@ class ChoosePage(PageWithDeviceSelector):
     def change_device_selection(self, key):
         sel = Select(self.DEVICE_SELECTOR)
         sel.select_by_value(key)
+        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
 
     def show_time_range(self):
         """

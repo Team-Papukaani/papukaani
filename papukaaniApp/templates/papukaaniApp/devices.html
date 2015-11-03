@@ -8,15 +8,34 @@
 </head>
 <body>
     {% include "papukaaniApp/navigation.html" %}
-    <h1>Ŝëlèćht0r</h1>
+
     {% include "papukaaniApp/include_scripts.html" %}
 
-    {% for device in devices %}
-        {{ device.deviceId }} <br>
-        {% for individual in device.individuals %}
-            <i>{{ individual.individualId }}</i>
-        {% endfor %}
+    <h1>Valitse linnun lähetin</h1>
 
+    <form>
+        <p>Valitse lähetin</p>
+
+        <select>
+            {% for device in devices %}
+                <option>{{ device.deviceId }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="OK">
+    </form>
+
+<pre>
+    var devices = [
+    {% for device in devices %}
+        {deviceId:"{{ device.deviceId }}", individual:[
+        {% for individual in device.individuals %}
+            plaa
+        {% endfor %}
+        }
+        ]},
     {% endfor %}
+    ]
+</pre>
 </body>
 </html>

@@ -17,7 +17,7 @@
     <form>
         <p>
             Valitse lähetin
-            <select id="deviceId" onchange="displayIndividuals(this.value)">
+            <select id="selectDevice" onchange="displayIndividuals(this.value)">
                 <option selected disabled>Valitse lähetin</option>
                 {% for device in devices %}
                     <option>{{ device.deviceId }}</option>
@@ -69,7 +69,7 @@
             var rows = '';
             $.each(devices_and_individuals[device], function(index, individual) {
                 var row = '<tr>';
-                row += '<td>' + individuals[individual.individualId] + '</td>'
+                row += '<td><span id="name' + individual.individualId + '">' + individuals[individual.individualId] + '</span></td>'
                 row += '<td>' + $.format.date(individual.attached, "dd.MM.yyyy HH:mm") + '</td>'
 
                 if( individual.removed == undefined) {
@@ -91,7 +91,7 @@
         }
 
         function attachDevice(){
-            var deviceId = $("#deviceId").val();
+            var deviceId = $("#selectDevice").val();
             var individualId = $("#individualId").val();
             var timestamp = $("#start_time").val()
 
@@ -124,7 +124,7 @@
 
         function removeDevice(index){
 
-            var deviceId = $("#deviceId").val();
+            var deviceId = $("#selectDevice").val();
             var individualId = devices_and_individuals[deviceId][index].individualId;
 
             if(deviceId && individualId){

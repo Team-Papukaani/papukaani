@@ -29,17 +29,17 @@ class Device:
         '''
         LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here
 
-    def attach_to(self, individual, timestamp):
+    def attach_to(self, individual):
         '''
         Attaches this device to an individual. Previously attached device will be removed.
         '''
         for indiv in self.individuals:
             if not indiv["removed"] :
-                indiv["removed"] = timestamp
+                indiv["removed"] = current_time_as_lajistore_timestamp()
 
         self.individuals.append({
             "individualId" : individual.individualId,
-            "attached" : timestamp,
+            "attached" : current_time_as_lajistore_timestamp(),
             "removed" : None
         } )
 

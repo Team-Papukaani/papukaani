@@ -3,3 +3,5 @@
 *.sqlite3
 db.sqlite3
 *~
+ghostdriver.log
+test_screenshots/*

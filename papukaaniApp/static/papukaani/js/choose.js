@@ -9,9 +9,11 @@ function ChooseMap(sorter) {
     this.points = [];
 
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
+
+    this.unsaved = false
 }
 
-//Updates the map to show all the markers within start and end, which are strings that can be converted to Date,
+//Updates the map to show all markers within start and end, which are strings that can be converted to Date.
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     var a, b;
     try {
@@ -34,7 +36,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.addLayer(this.markers);
 };
 
-//Parses the given string into a format appropriate for a Date.
+//Parses the given string into an appropriate Date-format.
 function parseTime(timestring) {
     var parts = timestring.split(' ');
     var dateparts = parts[0].split('-');
@@ -76,13 +78,18 @@ function createEmptyMarkerClusterGroup() {
 
 //Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
-    this.points = points;
+    this.unsaved = false
+    if (!points.length) this.points = [];
+    else this.points = points[0]["gatherings"];
+    for (var i = 1; i < points.length; i++) {
+        this.points.concat(points[i]["gatherings"]);
+    }
     var start = document.getElementById("start_time");
     var end = document.getElementById("end_time");
     this.showMarkersWithinTimeRange(start.value, end.value);
 };
 
-
+//Removes all markers from the map.
 ChooseMap.prototype.removeAllMarkers = function () {
     this.map.removeLayer(this.markers);
     this.markers = createEmptyMarkerClusterGroup();
@@ -96,7 +103,6 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
         var marker = L.marker(new L.LatLng(ltlgs[1], ltlgs[0]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
-
         markers.addLayer(marker);
     }
     clusterGroup.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this));
@@ -104,6 +110,8 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
+    this.unsaved = true
+
     var markers = a.layer.getAllChildMarkers();
     var changepublicityto = "public";
     if (getPublicChildCount(a.layer) > 0) {
@@ -117,7 +125,30 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
     this.markers.refreshClusters(markers);
 };
 
-//Redraws the markers icon on the map.
+//Posts publicity data to server. Shows a message and disables the save button while waiting for response.
+ChooseMap.prototype.send = function(){
+    data = JSON.stringify(this.sorter.points);
+    messagebox = $("#loading");
+    button = $("#save");
+
+    messagebox.text("Tallennetaan...");
+    button.attr("disabled", true);
+
+    request = new XMLHttpRequest;
+
+    request.onreadystatechange = function () {
+        setLoadingMessage(request, button, messagebox)
+    };
+
+    request.open("POST", "", true);
+    set_headers(csrf_token, request);
+    request.send("data=" + encodeURIComponent(data));
+
+    this.unsaved = false
+};
+
+
+//Forces a redraw of the specified marker's icon, as it doesn't necessarily update when changes are made.
 redrawIcon = function (marker) {
     var c = ' marker-cluster';
     if (marker.pnt.publicity === "public") c += '-small';
@@ -132,6 +163,8 @@ redrawIcon = function (marker) {
 
 //Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
+    this.unsaved = true
+
     marker.pnt.publicity = (marker.pnt.publicity) === "public" ? "private" : "public";
     redrawIcon(marker);
     this.markers.refreshClusters(marker);
@@ -155,25 +188,6 @@ getPublicChildCount = function (cluster) {
     return pubcount;
 };
 
-//Posts publicity data to server. Shows a message and disables the save button while waiting for response.
-function send(csrf_token, map) {
-    data = JSON.stringify(map.sorter.points);
-    messagebox = $("#loading");
-    button = $("#save");
-
-    messagebox.text("Tallennetaan...");
-    button.attr("disabled", true);
-
-    request = new XMLHttpRequest;
-
-    request.onreadystatechange = function () {
-        setLoadingMessage(request, button, messagebox)
-    };
-
-    request.open("POST", "", true);
-    set_headers(csrf_token, request);
-    request.send("data=" + encodeURIComponent(data));
-}
 
 //Sets the content type and CSRF token cookie headers.
 function set_headers(csrf_token, request) {
@@ -193,22 +207,24 @@ function setLoadingMessage(request, button, messagebox) {
     }
 }
 
-function init(devices) {
+function init(devices, token) {
     sorter = new DeviceSorter(devices);
     map = new ChooseMap(sorter);
     sorter.setMap(map);
+    csrf_token = token
 
     return map
 }
 
 //Resets the map to the state it was in when the page was loaded.
 function resetMap(map) {
-    map.map.removeLayer(map.markers);
-    map.markers = createEmptyMarkerClusterGroup();
-    map.map.addLayer(map.markers);
-    map.sorter.resetOption();
-    document.getElementById("start_time").value = "";
-    document.getElementById("end_time").value = "";
+     map.unsaved = false
+     map.map.removeLayer(map.markers);
+     map.markers = createEmptyMarkerClusterGroup();
+     map.map.addLayer(map.markers);
+     map.sorter.resetOption();
+     document.getElementById("start_time").value = "";
+     document.getElementById("end_time").value = "";
 }
 
 

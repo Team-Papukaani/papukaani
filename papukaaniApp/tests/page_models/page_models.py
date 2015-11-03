@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
+import time
 
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
@@ -111,6 +112,10 @@ class ChoosePage(PageWithDeviceSelector):
     END_TIME = Element(By.ID, 'end_time')
     SUBMIT_TIME = Element(By.ID, 'show_time_range')
     DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
+    ALERT = Element(By.ID, 'popup')
+    ALERT_YES = Element(By.ID, 'save_button')
+    ALERT_NO = Element(By.ID, 'no_save_button')
+    ALERT_CANCEL = Element(By.ID, 'cancel_button')
 
     def click_save_button(self):
         """
@@ -200,6 +205,11 @@ class ChoosePage(PageWithDeviceSelector):
     def change_device_selection(self, key):
         sel = Select(self.DEVICE_SELECTOR)
         sel.select_by_value(key)
+        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
+
+    def get_selected_device(self):
+        self.DEVICE_SELECTOR.get_first_selected_option()
 
     def show_time_range(self):
         """
@@ -209,3 +219,15 @@ class ChoosePage(PageWithDeviceSelector):
 
     def format_error(self):
         return self.driver.find_element_by_id("formatError").get_attribute("innerHTML")
+
+    def popup_displayed(self):
+        return self.ALERT.is_displayed()
+
+    def popup_click_yes(self):
+        self.ALERT_YES.click()
+
+    def popup_click_no(self):
+        self.ALERT_NO.click()
+
+    def popup_click_cancel(self):
+        self.ALERT_CANCEL.click()

@@ -7,112 +7,72 @@
 
     {% load staticfiles %}
     {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaaniApp/general.css' %}">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/MarkerCluster.Default.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/css/jquery-ui-timepicker-addon.css' %}"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
 
 </head>
 
-<body onload="var map = init({{ devices }})">
+<body onload="var map = init({{ devices }}, '{{ csrf_token}}')">
 {% include "papukaaniApp/navigation.html" %}
 
-<form id="time_range">
-    <div class="input_field">
+<div id="popup" class="overlay" hidden="true">
+       <p>Tallennetaanko muutokset?</p>
+        <button id="save_button" class="btn btn-default"> Kyllä </button>
+        <button id="no_save_button" class="btn btn-default">  Ei </button>
+        <button id="cancel_button" class="btn btn-default"> Peruuta</button>
+</div>
+
+<div class="choose_actions">
+    <form id="time_range">
         <label for="start_time">Alku</label>
         <input type="text" id="start_time" name="start_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="dd-mm-yyyy HH:mm">
+                   placeholder="dd-mm-yyyy HH:mm" maxlength="16">
 
-    </div>
-
-    <div class="input_field">
         <label for="end_time">Loppu</label>
         <input type="text" id="end_time" name="end_time" class="datepicker" onblur="validateDateFormat(this)"
-               placeholder="dd-mm-yyyy HH:mm">
-    </div>
-    <p id="formatError" style="margin:0"></p>
+                   placeholder="dd-mm-yyyy HH:mm" maxlength="16">
 
-    <div class="input_field">
-        <br>
-        <button type="button"
-                onclick="map.showMarkersWithinTimeRange(time_range.start_time.value, time_range.end_time.value)"
-                id="show_time_range">Näytä pisteet aikavälillä
+        <span id="formatError" style="margin:0"></span>
+
+        <button type="button" class="btn btn-default"
+            onclick="map.showMarkersWithinTimeRange(time_range.start_time.value, time_range.end_time.value)"
+            id="show_time_range">Näytä pisteet aikavälillä
         </button>
-    </div>
-</form>
-<select id="selectDevice" value=></select>
+    </form>
 
-{% csrf_token %}
-<button id="save" onclick="send('{{ csrf_token }}', map)">Tallenna</button>
+    <select id="selectDevice"></select>
 
-<p id="loading"></p>
-<button id="reset" onclick="resetMap(map)">Reset</button>
-
+    {% csrf_token %}
+    <button id="save" onclick="map.send()" class="btn btn-default">Tallenna</button>
+    <button id="reset" onclick="resetMap(map)" class="btn btn-default">Reset</button>
+    <p id="loading" style="display:inline"></p>
+</div>
 
 {% include "papukaaniApp/include_scripts.html" %}
-<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
-<script src="{% static 'papukaani/js/leaflet.markercluster.js' %}"></script>
-<script src="{% static 'papukaani/js/MarkerClusterGroup.Refresh.js' %}"></script>
-<script src="{% static 'papukaani/js/map.js' %}"></script>
-<script src="{% static 'papukaani/js/choose.js' %}"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'papukaani/libraries/leaflet/markercluster/MarkerClusterGroup.Refresh.js' %}"></script>
+<script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
+<script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
-<script src="{% static 'papukaani/js/jquery-ui-timepicker-addon.js' %}"></script>
-
-<div id="map" class="largeMap">
-</div>
+<script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
 
 <script>
     $(function () {
         $(".datepicker").datetimepicker();
+        $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}})
     });
-    var validateTimeRange = function (start_time, end_time) {
-        return Date.parse(start_time) <= Date.parse(end_time);
-    };
-
-    function validateDateFormat(element) {
-        var format = new RegExp("[0-3][0-9]-[0,1][0-9]-[0-9]{4} [0-2][0-9]:[0-5][0-9]");
-        var val = element.value;
-        if (!format.test(val)) {
-            element.value = "";
-        }
-    }
-
-    $.datepicker.regional['fi'] = {
-        prevText: 'Edellinen',
-        nextText: 'Seuraava',
-        monthNames: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu',
-            'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
-        monthNamesShort: ['Tammi', 'Helmi', 'Maalis', 'Huhti', 'Touko', 'Kesä', 'Heinä',
-            'Elo', 'Syys', 'Loka', 'Marras', 'Joulu'],
-        dayNames: ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'],
-        dayNamesMin: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
-        dateFormat: 'dd-mm-yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: ''
-    };
-    $.datepicker.setDefaults($.datepicker.regional['fi']);
-
-    $.timepicker.regional['fi'] = {
-        timeOnlyTitle: '',
-        timeText: 'Aika',
-        hourText: 'Tunnit',
-        minuteText: 'Minuutit',
-        currentText: 'Nyt',
-        closeText: 'Sulje',
-        timeFormat: 'HH:mm',
-        isRTL: false
-    };
-    $.timepicker.setDefaults($.timepicker.regional['fi']);
 </script>
 
+<div id="map" class="largeMap">
+</div>
 
 </body>
 </html>

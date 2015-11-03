@@ -60,58 +60,19 @@
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
+<script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
-
-<div id="map" class="largeMap">
-</div>
 
 <script>
     $(function () {
         $(".datepicker").datetimepicker();
+        $.extend($.datepicker,{_checkOffset:function(inst,offset,isFixed){return offset}})
     });
-    var validateTimeRange = function (start_time, end_time) {
-        return Date.parse(start_time) <= Date.parse(end_time);
-    };
-
-    function validateDateFormat(element) {
-        var format = new RegExp("[0-3][0-9]-[0,1][0-9]-[0-9]{4} [0-2][0-9]:[0-5][0-9]");
-        var val = element.value;
-        if (!format.test(val)) {
-            element.value = "";
-        }
-    }
-
-    $.datepicker.regional['fi'] = {
-        prevText: 'Edellinen',
-        nextText: 'Seuraava',
-        monthNames: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu',
-            'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
-        monthNamesShort: ['Tammi', 'Helmi', 'Maalis', 'Huhti', 'Touko', 'Kesä', 'Heinä',
-            'Elo', 'Syys', 'Loka', 'Marras', 'Joulu'],
-        dayNames: ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'],
-        dayNamesMin: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
-        dateFormat: 'dd-mm-yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: ''
-    };
-    $.datepicker.setDefaults($.datepicker.regional['fi']);
-
-    $.timepicker.regional['fi'] = {
-        timeOnlyTitle: '',
-        timeText: 'Aika',
-        hourText: 'Tunnit',
-        minuteText: 'Minuutit',
-        currentText: 'Nyt',
-        closeText: 'Sulje',
-        timeFormat: 'HH:mm',
-        isRTL: false
-    };
-    $.timepicker.setDefaults($.timepicker.regional['fi']);
 </script>
 
+<div id="map" class="largeMap">
+</div>
 
 </body>
 </html>

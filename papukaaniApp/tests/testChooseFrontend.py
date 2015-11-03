@@ -1,5 +1,5 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-
+from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
 import time
@@ -26,6 +26,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.change_device_selection("DeviceId")
 
     def tearDown(self):
+        take_screenshot_of_test_case(self, self.page.driver)
         self.A.delete()
         self.D.delete()
         self.page.close()

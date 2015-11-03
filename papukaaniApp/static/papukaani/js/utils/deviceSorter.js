@@ -7,7 +7,7 @@ function DeviceSorter(devices) {
 
     this.setMap = function (map) {
         this.map = map
-    }
+    };
 
     this.currentDevice = 'None'
 }
@@ -17,8 +17,7 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     if (deviceId != 'None') {
         messagebox = $("#loading");
         messagebox.text("Tietoja ladataan...");
-        button = $("#selectDevice");
-        button.attr("disabled", true);
+        lockButtons();
         request = new XMLHttpRequest;
         var path = "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
         request.open("GET", path, true);
@@ -43,8 +42,7 @@ function showPointsForDevice() {
         this.map.changePoints(this.points);
         messagebox = $("#loading");
         messagebox.text("");
-        button = $("#selectDevice");
-        button.attr("disabled", false);
+        unlockButtons();
     }
 }
 
@@ -70,33 +68,33 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
 
     selector.addOption("None");
     for (var i = 0; i < this.devices.length; i++) {
-            selector.addOption(this.devices[i])
+        selector.addOption(this.devices[i])
     }
 };
 
 //Shows and handles the popup box.
-DeviceSorter.prototype.showSaveOrCancelPopup = function(deviceId){
-    if(!this.map.unsaved){
-        this.changeDeviceSelection(deviceId)
+DeviceSorter.prototype.showSaveOrCancelPopup = function (deviceId) {
+    if (!this.map.unsaved) {
+        this.changeDeviceSelection(deviceId);
         return
     }
 
-    popup = $("#popup")
+    popup = $("#popup");
 
-    $("#save_button").click(function(event){
-        this.map.send()
-        this.changeDeviceSelection(deviceId)
+    $("#save_button").click(function (event) {
+        this.map.send();
+        this.changeDeviceSelection(deviceId);
         popup.hide()
-    }.bind(this))
+    }.bind(this));
 
-    $("#no_save_button").click(function(event){
-        this.changeDeviceSelection(deviceId)
+    $("#no_save_button").click(function (event) {
+        this.changeDeviceSelection(deviceId);
         popup.hide()
-    }.bind(this))
+    }.bind(this));
 
-    $("#cancel_button").click(function(event){
-        $("#selectDevice").val(this.currentDevice)
+    $("#cancel_button").click(function (event) {
+        $("#selectDevice").val(this.currentDevice);
         popup.hide()
-    }.bind(this))
+    }.bind(this));
     popup.show()
 };

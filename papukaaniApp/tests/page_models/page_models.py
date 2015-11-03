@@ -242,7 +242,7 @@ class DevicePage(PageWithDeviceSelector):
         super().__init__()
 
     def get_individual_name(self, individualId):
-        return self.driver.find_element_by_id("name" + individualId)
+        return self.driver.find_element_by_id("name" + individualId).text
 
     #
     # def get_number_of_points(self):

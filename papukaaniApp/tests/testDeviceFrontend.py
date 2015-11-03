@@ -19,9 +19,12 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         }
         self.D = device.create(**dev)
         self.I = individual.create("12345TESTINDIVIDUAL","Birdie")
-        self.D.attach_to(self.I)
+        self.D.attach_to(self.I, "2015-11-02T14:00:00+03:00")
+        self.D.update()
+
         self.page = DevicePage()
         self.page.navigate()
+
         self.page.change_device_selection("DeviceId")
 
     def tearDown(self):
@@ -45,3 +48,4 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         - lähetin löytyy listasta
         - lähettimellä näkyy lintu formatoituna
         """
+

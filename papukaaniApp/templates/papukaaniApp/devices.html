@@ -20,7 +20,7 @@
             <select id="selectDevice" onchange="displayIndividuals(this.value)">
                 <option selected disabled>Valitse lähetin</option>
                 {% for device in devices %}
-                    <option>{{ device.deviceId }}</option>
+                    <option value="{{ device.deviceId }}">{{ device.deviceId }}</option>
                 {% endfor %}
             </select>
         </p>

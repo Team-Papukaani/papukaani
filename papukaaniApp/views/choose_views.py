@@ -21,6 +21,8 @@ def choose(request):
         devices = []
         for item in device.get_all():
             devices.append(item.deviceId)
+        if "Dev" in devices:
+            devices.remove("Dev")
         return render(request, 'choose.html', {'devices': json.dumps(devices)})
 
 

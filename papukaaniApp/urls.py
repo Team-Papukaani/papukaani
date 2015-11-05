@@ -15,5 +15,7 @@ urlpatterns = [
     url(r'^choose/$', views.choose, name='choose'),
     # ex: /papukaani/devices/
     url(r'^devices/$', views.devices, name='devices'),
+    # ex: /papukaani/individuals/
+    url(r'^individuals/$', views.individuals, name='individuals'),
     url(r'^rest/documentsForDevice$', views.getDocumentsForDevice)
 ]

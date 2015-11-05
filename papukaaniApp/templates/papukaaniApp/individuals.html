@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "papukaaniApp/include_headers.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+    <title>Pelikaija</title>
+</head>
+<body>
+    {% include "papukaaniApp/navigation.html" %}
+
+    {% include "papukaaniApp/include_scripts.html" %}
+
+    <h1>Luo lintu</h1>
+
+    <form class="form-inline" action='{% url "individuals" %}' method="post">
+        {% csrf_token %}
+        <input class="form-control" type="text" name="taxon" placeholder="Nimi" />
+        <button type="submit" class="btn btn-default">Luo</button>
+    </form>
+
+    <h1>Muokkaa lintua</h1>
+    {% for individual in individuals %}
+        <form class="form-inline" action='{% url "individuals" %}' method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ individual.id }}" />
+            <input class="form-control" type="text" name="taxon" placeholder="Nimi" value="{{ individual.taxon }}" />
+            <button type="submit" name="modify" value="1" class="btn btn-default">Muokkaa</button>
+            <button type="submit" name="delete" value="1" class="btn btn-danger">Poista</button>
+        </form>
+        <br>
+    {% endfor %}
+</body>
+</html>

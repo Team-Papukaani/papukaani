@@ -34,6 +34,11 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
     this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
+    try {
+        this.map.fitBounds(this.markers.getBounds())
+    } catch (e) {
+        
+    }
 };
 
 //Parses the given string into an appropriate Date-format.

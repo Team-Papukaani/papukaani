@@ -54,7 +54,7 @@ function showPointsForDevice() {
         this.map.changePoints(extractPoints(this.documents));
         messagebox = $("#loading");
         messagebox.text("");
-        if (this.documents.length === 0) {
+        if (this.documents.length == 0) {
             $("#selectDevice").attr("disabled", false);
             $("#reset").attr("disabled", false);
         }

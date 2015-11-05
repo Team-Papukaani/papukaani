@@ -13,15 +13,15 @@
 
     <h1>Luo lintu</h1>
 
-    <form class="form-inline" action='{% url "individuals" %}' method="post">
+    <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
         {% csrf_token %}
-        <input class="form-control" type="text" name="taxon" placeholder="Nimi" />
+        <input class="form-control" type="text" name="taxon" id="new_individual_taxon" placeholder="Nimi" />
         <button type="submit" class="btn btn-default">Luo</button>
     </form>
 
     <h1>Muokkaa lintua</h1>
     {% for individual in individuals %}
-        <form class="form-inline" action='{% url "individuals" %}' method="post">
+        <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
             {% csrf_token %}
             <input type="hidden" name="id" value="{{ individual.id }}" />
             <input class="form-control" type="text" name="taxon" placeholder="Nimi" value="{{ individual.taxon }}" />

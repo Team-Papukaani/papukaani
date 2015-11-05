@@ -6,36 +6,57 @@
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
     <title>Pelikaija</title>
 </head>
-<body>
+{% autoescape off %}
+<body onload='init({{ device_json }}, {{individual_json}}, "{{ csrf_token }}")'>
+{% endautoescape %}
+
     {% include "papukaaniApp/navigation.html" %}
 
-    {% include "papukaaniApp/include_scripts.html" %}
+    <h1>Hallitse lähettimiä</h1>
 
-    <h1>Valitse linnun lähetin</h1>
 
     <form>
-        <p>Valitse lähetin</p>
+        <p>
+            Valitse lähetin
+            <select id="selectDevice" onchange="displayIndividuals(this.value)">
+                <option selected disabled>Valitse lähetin</option>
+                {% for device in devices %}
+                    <option value="{{ device.deviceId }}">{{ device.deviceId }}</option>
+                {% endfor %}
+            </select>
+        </p>
 
-        <select>
-            {% for device in devices %}
-                <option>{{ device.deviceId }}</option>
-            {% endfor %}
-        </select>
+        <table id="table" class="table table-stripped table-nonfluid">
+            <tr>
+                <th>Lintu</th>
+                <th>Kiinnitetty</th>
+                <th>Irroitettu</th>
+                <th> </th>
+            </tr>
+            <tbody id="individuals"></tbody>
+            <tr>
+                <td>
+                    <select id="individualId">
+                        <option disabled selected>Valitse kiinnitettävä lintu</option>
+                        {% for individual in individuals %}
+                            <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="start_time" name="start_time" class="datepicker"
+                           onblur="validateDateFormat(this)" placeholder="dd-mm-yyyy HH:mm"></td>
+                <td></td>
+                <td><a id="attach" class="btn btn-sm btn-primary" onclick="attachDevice()">Kiinnitä</a></td>
+            </tr>
+        </table>
 
-        <input type="submit" value="OK">
     </form>
 
-<pre>
-    var devices = [
-    {% for device in devices %}
-        {deviceId:"{{ device.deviceId }}", individual:[
-        {% for individual in device.individuals %}
-            plaa
-        {% endfor %}
-        }
-        ]},
-    {% endfor %}
-    ]
-</pre>
+
+     {% include "papukaaniApp/include_scripts.html" %}
+    <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
+    <script src="{% static 'papukaani/js/devices.js' %}"></script>
+
 </body>
 </html>

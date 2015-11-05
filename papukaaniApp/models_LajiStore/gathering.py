@@ -2,12 +2,15 @@ class Gathering:
     '''
     Represets the gatherings in a Document table in LajiStore
     '''
-    def __init__(self, time, geometry, temperature  = 0, publicity="private", facts=[]):
+    def __init__(self, time, geometry, temperature = 0, publicity="private", facts=None):
         self.time = time
         self.geometry = geometry
         self.temperature = temperature
         self.facts = facts
         self.publicity = publicity
+
+        if not facts:
+            self.facts = []
 
     def to_lajistore_json(self):
         '''

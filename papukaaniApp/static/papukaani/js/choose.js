@@ -79,11 +79,7 @@ function createEmptyMarkerClusterGroup() {
 //Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
     this.unsaved = false;
-    if (!points.length) this.points = [];
-    else this.points = points[0]["gatherings"];
-    for (var i = 1; i < points.length; i++) {
-        this.points.concat(points[i]["gatherings"]);
-    }
+    this.points = points;
     var start = document.getElementById("start_time");
     var end = document.getElementById("end_time");
     this.showMarkersWithinTimeRange(start.value, end.value);
@@ -127,7 +123,7 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
 ChooseMap.prototype.send = function () {
-    data = JSON.stringify(this.sorter.points);
+    data = JSON.stringify(this.sorter.documents);
     messagebox = $("#loading");
     messagebox.text("Tallennetaan...");
 
@@ -222,7 +218,7 @@ function resetMap(map) {
     map.markers = createEmptyMarkerClusterGroup();
     map.map.addLayer(map.markers);
     map.sorter.resetOption();
-    map.sorter.points = [];
+    map.sorter.documents = [];
     map.points = [];
     document.getElementById("start_time").value = "";
     document.getElementById("end_time").value = "";

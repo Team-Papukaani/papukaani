@@ -51,8 +51,8 @@
     display : inline-block;
 }
 
-.form-control {
-    width: 170px;
+.dateinput {
+    width: 160px !important;
 }
 
 .padded2 {

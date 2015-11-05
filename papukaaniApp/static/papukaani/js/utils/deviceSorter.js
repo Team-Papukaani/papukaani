@@ -1,7 +1,7 @@
 function DeviceSorter(devices) {
 
     this.devices = devices;
-    this.points = [];
+    this.documents = [];
 
     this.createDeviceSelector(this.devices);
 
@@ -25,24 +25,36 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         request.send(null);
     }
     else {
-        this.points = [];
-        this.map.changePoints(this.points);
+        this.documents = [];
+        this.map.changePoints(extractPoints(this.documents));
     }
     this.currentDevice = deviceId
+};
+
+//Extracts a list of points from the documents.
+extractPoints = function (documents) {
+    var points = [];
+    if (documents.length != 0) {
+        points = documents[0]["gatherings"];
+        for (var p = 1; p < documents.length; p++) {
+            points.concat(documents[p]["gatherings"]);
+        }
+    }
+    return points;
 };
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForDevice() {
     if (request.readyState === 4) {
-        this.points = [];
+        this.documents = [];
         var docs = JSON.parse(request.response);
         for (var i = 0; i < docs.length; i++) {
-            this.points.push(docs[i]);
+            this.documents.push(docs[i]);
         }
-        this.map.changePoints(this.points);
+        this.map.changePoints(extractPoints(this.documents));
         messagebox = $("#loading");
         messagebox.text("");
-        if (this.points.length === 0) {
+        if (this.documents.length === 0) {
             $("#selectDevice").attr("disabled", false);
             $("#reset").attr("disabled", false);
         }

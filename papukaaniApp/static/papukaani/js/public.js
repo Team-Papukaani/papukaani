@@ -1,6 +1,6 @@
 function init(devices) {
     this.sorter = new DeviceSorter(devices);
-    map = new PublicMap(sorter.points);
+    map = new PublicMap(sorter.documents);
 
     sorter.setMap(map)
 }
@@ -32,17 +32,16 @@ PublicMap.prototype.draw = function (points) {
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
-    this.draw(points)
+    this.draw(points);
 };
+
 
 //Creates latLng objects from points
 PublicMap.prototype.createLatlngsFromPoints = function (points) {
     var latlngs = [];
     for (var p = 0; p < points.length; p++) {
-        for (var i = 0; i < points[p]["gatherings"].length; i++) {
-            var ltlgs = points[p]["gatherings"][i].wgs84Geometry.coordinates;
-            latlngs.push([ltlgs[1], ltlgs[0]]);
-        }
+        var ltlgs = points[p].wgs84Geometry.coordinates;
+        latlngs.push([ltlgs[1], ltlgs[0]]);
     }
     return latlngs;
 };

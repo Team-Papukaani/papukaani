@@ -1,7 +1,5 @@
-from datetime import datetime
-import csv, tempfile, uuid
+import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
-from time import clock
 
 parserInfo = {"type": "GMS", "manufacturer": "Ecotones"}
 
@@ -9,7 +7,7 @@ parserInfo = {"type": "GMS", "manufacturer": "Ecotones"}
 def ecotones_parse(file):
     """
     Reads the given file and extracts the values of individual events.
-    :param file: An Ecotones-format file.
+    :param file: An Ecotone file.
     :return: A dictionary containing every event as named values.
     """
     with file as f:
@@ -64,23 +62,25 @@ def create_points(data):
         if len(doc_array) == 0:
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
-            _append_points(doc_array[0].gatherings, collections[k])
+            doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, collections[k])
 
             # old      doc_array[0].gatherings += collections[k]
 
             if len(doc_array) > 1:  # if LajiStore contains redundant documents (more than one document for one device)
                 for i in range(1, len(doc_array)):
-                    doc_array[0].gatherings += doc_array[i].gatherings  # append points from redundant into first document
+                    doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, doc_array[i].gatherings)
+                    # append points from redundant into first document
                     doc_array[i].delete()  # delete redundant document
 
             doc_array[0].update()
 
     return points
 
-def _append_points(LajiStore_gatherings, new_gatherings):
-    hashed_gathering = []
-    for g in LajiStore_gatherings
-        hashed_gatheringg.
-
-
-
+def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
+    """
+    unites lists given in parameters using sets
+    :param lajiStore_gatherings: list containing gatherings from LajiStore
+    :param new_gatherings: list containing gatherings to add
+    :return: A list containing all gatherings from both lists excluding duplicates
+    """
+    return list(set().union(set(lajiStore_gatherings), set(new_gatherings)))

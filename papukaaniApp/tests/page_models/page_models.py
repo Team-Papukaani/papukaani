@@ -225,6 +225,8 @@ class ChoosePage(PageWithDeviceSelector):
 
     def popup_click_yes(self):
         self.ALERT_YES.click()
+        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
 
     def popup_click_no(self):
         self.ALERT_NO.click()

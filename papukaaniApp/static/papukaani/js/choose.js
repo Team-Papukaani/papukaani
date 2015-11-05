@@ -78,12 +78,8 @@ function createEmptyMarkerClusterGroup() {
 
 //Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
-    this.unsaved = false
-    if (!points.length) this.points = [];
-    else this.points = points[0]["gatherings"];
-    for (var i = 1; i < points.length; i++) {
-        this.points.concat(points[i]["gatherings"]);
-    }
+    this.unsaved = false;
+    this.points = points;
     var start = document.getElementById("start_time");
     var end = document.getElementById("end_time");
     this.showMarkersWithinTimeRange(start.value, end.value);
@@ -110,7 +106,7 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 
 //Changes the publicity of every marker in marker cluster a.
 ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
-    this.unsaved = true
+    this.unsaved = true;
 
     var markers = a.layer.getAllChildMarkers();
     var changepublicityto = "public";
@@ -126,18 +122,17 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
-ChooseMap.prototype.send = function(){
-    data = JSON.stringify(this.sorter.points);
+ChooseMap.prototype.send = function () {
+    data = JSON.stringify(this.sorter.documents);
     messagebox = $("#loading");
-    button = $("#save");
-
     messagebox.text("Tallennetaan...");
-    button.attr("disabled", true);
+
+    lockButtons();
 
     request = new XMLHttpRequest;
 
     request.onreadystatechange = function () {
-        setLoadingMessage(request, button, messagebox)
+        setLoadingMessage(request, messagebox)
     };
 
     request.open("POST", "", true);
@@ -163,7 +158,7 @@ redrawIcon = function (marker) {
 
 //Reverses the publicity of a marker and updates it.
 ChooseMap.prototype.changePublicity = function (marker) {
-    this.unsaved = true
+    this.unsaved = true;
 
     marker.pnt.publicity = (marker.pnt.publicity) === "public" ? "private" : "public";
     redrawIcon(marker);
@@ -196,9 +191,9 @@ function set_headers(csrf_token, request) {
 }
 
 //Callback function for post request. Shows a message depending on response status.
-function setLoadingMessage(request, button, messagebox) {
+function setLoadingMessage(request, messagebox) {
     if (request.readyState == 4) {
-        button.attr("disabled", false);
+        unlockButtons();
         if (request.status == 200) {
             messagebox.text("Valmis!");
         } else {
@@ -211,20 +206,34 @@ function init(devices, token) {
     sorter = new DeviceSorter(devices);
     map = new ChooseMap(sorter);
     sorter.setMap(map);
-    csrf_token = token
+    csrf_token = token;
 
     return map
 }
 
 //Resets the map to the state it was in when the page was loaded.
 function resetMap(map) {
-     map.unsaved = false
-     map.map.removeLayer(map.markers);
-     map.markers = createEmptyMarkerClusterGroup();
-     map.map.addLayer(map.markers);
-     map.sorter.resetOption();
-     document.getElementById("start_time").value = "";
-     document.getElementById("end_time").value = "";
+    map.unsaved = false;
+    map.map.removeLayer(map.markers);
+    map.markers = createEmptyMarkerClusterGroup();
+    map.map.addLayer(map.markers);
+    map.sorter.resetOption();
+    map.sorter.documents = [];
+    map.points = [];
+    document.getElementById("start_time").value = "";
+    document.getElementById("end_time").value = "";
 }
 
+//Disables the select, save and reset buttons.
+function lockButtons() {
+    $("#selectDevice").attr("disabled", true);
+    $("#save").attr("disabled", true);
+    $("#reset").attr("disabled", true);
+}
 
+//Enables the select, save and reset buttons.
+function unlockButtons() {
+    $("#selectDevice").attr("disabled", false);
+    $("#save").attr("disabled", false);
+    $("#reset").attr("disabled", false);
+}

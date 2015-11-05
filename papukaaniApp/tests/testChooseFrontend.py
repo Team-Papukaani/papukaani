@@ -61,16 +61,13 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.click_save_button()
         self.assertEquals(not self.page.save_button_is_enabled(), True)
 
-    """
     def test_reset_button_returns_marker_state_to_original(self):
-        self.page.double_click_marker()
-        self.page.reset()
-        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
         self.page.double_click_marker()
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
         self.page.reset()
-        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
-    """
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
 
     def test_reset_button_clears_time_range_fields(self):
         self.page.set_start_time("12-12-1234 00:00")
@@ -132,8 +129,35 @@ class TestChooseFrontend(StaticLiveServerTestCase):
 
         self.assertTrue("DeviceId", self.page.get_device_selection())
 
+    def test_save_button_is_initially_disabled(self):
+        self.page.navigate()
+        self.assertEquals(self.page.save_button_is_enabled(), False)
+
+    def test_save_button_is_enabled_when_device_with_points_is_selected(self):
+        self.assertEquals(self.page.save_button_is_enabled(), True)
+
+    def test_save_button_is_disabled_when_device_with_no_points_is_selected(self):
+        self.add_device()
+        self.page.navigate()
+        self.page.change_device_selection("Empty")
+        self.assertEquals(self.page.save_button_is_enabled(), False)
+        self.E.delete()
+
+    def test_save_button_is_disabled_after_reset(self):
+        self.page.reset()
+        self.assertEquals(self.page.save_button_is_enabled(), False)
 
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
         self.A.update()
 
+    def add_device(self):
+        dev = {
+            "deviceId": "Empty",
+            "deviceType": "Type",
+            "deviceManufacturer": "Manufacturer",
+            "createdAt": "2015-09-29T14:00:00+03:00",
+            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
+            "facts": []
+        }
+        self.E = device.create(**dev)

@@ -50,3 +50,11 @@
 #time_range input{
     display : inline-block;
 }
+
+.dateinput {
+    width: 160px !important;
+}
+
+.padded2 {
+    padding:4px;
+}

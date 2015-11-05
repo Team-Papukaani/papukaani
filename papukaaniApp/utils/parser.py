@@ -59,12 +59,18 @@ def create_points(data):
     points = []
 
     for k in collections.keys():
-        docArray = document.find(deviceId=k)
+        doc_array = document.find(deviceId=k)
         points += collections[k]
-        if len(docArray) is 0:
+        if len(doc_array) == 0:
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
-            docArray[0].gatherings += collections[k]
-            docArray[0].update()
-    return points
+            doc_array[0].gatherings += collections[k]
 
+            if len(doc_array) > 1:  # if LajiStore contains redundant documents (more than one document for one device)
+                for i in range(1, len(doc_array)):
+                    doc_array[0].gatherings += doc_array[i].gatherings  # append points from redundant into first document
+                    doc_array[i].delete()  # delete redundant document
+
+            doc_array[0].update()
+
+    return points

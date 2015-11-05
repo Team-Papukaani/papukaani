@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^devices/$', views.devices, name='devices'),
 
     url(r'^devices/(?P<device_id>.+)/attach/$', views.attach_to),
-
     url(r'^devices/(?P<device_id>.+)/remove/$', views.remove_from),
 
     url(r'^rest/documentsForDevice$', views.getDocumentsForDevice)

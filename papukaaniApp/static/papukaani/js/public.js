@@ -11,27 +11,27 @@ function PublicMap(points){
 
     this.draw(points)
 
-    this.map.fitBounds(this.arrow.getBounds());
 }
 
 //Draws the polyline
 PublicMap.prototype.draw = function(points){
     var latlngs = this.createLatlngsFromPoints(points);
 
-    // --- Arrow, with animation to demonstrate the use of setPatterns ---
-    this.arrow = L.polyline(latlngs, {color: 'blue', dashArray: '20,15', smoothFactor:50.0}).addTo(this.map);
-    if(points.length > 1){
-        this.arrowHead = L.polylineDecorator(this.arrow).addTo(this.map);
+    polylines = []
+    i = 0;
+    window.setInterval(function() {
+        polyline = L.polyline([latlngs[i], latlngs[++i]], {color: 'blue', opacity: 1.0})
+        polylines.push(polyline)
+        polyline.addTo(this.map);
+        this.map.panTo(latlngs[i])
+        if(polylines.length > 15) {
+            polylines.splice(0, 1);
+        }
+        for(j=0; j < polylines.length; j++) {
+            polylines[j].setStyle({color: 'blue', opacity: (j/15.0)});
+        }
+    }.bind(this), 700);
 
-        var arrowOffset = 0;
-        var anim = window.setInterval(function() {
-            this.arrowHead.setPatterns([
-                {offset: arrowOffset+'%', repeat: 0, symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {stroke: true}})}
-            ])
-            if(++arrowOffset > 100)
-                arrowOffset = 0;
-        }.bind(this), 100);
-    }
 }
 //Redraws the polyline
 PublicMap.prototype.changePoints = function(points){

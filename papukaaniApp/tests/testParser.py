@@ -1,7 +1,8 @@
-from papukaaniApp.utils.parser import ecotones_parse
+from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models import Creature, MapPoint
+from papukaaniApp.models_LajiStore import document
 
 
 class FileParserTest(TestCase):
@@ -32,3 +33,15 @@ class FileParserTest(TestCase):
                              temperature=entry['Temperature'])
             points.append(point)
         assert len(points) == 5
+
+    def test_create_points_method_correctly_updates_existing_documents(self):
+        _create_points_from_ecotone("/Ecotones_gps_pos_doc_create_test.csv")
+        _create_points_from_ecotone("/Ecotones_gps_pos_doc_create_test2.csv")
+        assert len(document.get_all()) == 3
+
+
+def _create_points_from_ecotone(filename):
+        path = settings.OTHER_ROOT + filename
+        file = open(path, "rb")
+        entries = ecotones_parse(file)
+        create_points(entries)

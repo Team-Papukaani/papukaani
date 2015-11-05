@@ -61,6 +61,11 @@ class FileParserTest(TestCase):
         _create_points_from_ecotone("/Ecotones_gps_pos_test.csv")
         assert len(document.get_all()) == 1
 
+    def test_document_does_not_contain_duplicate_gathering(self):
+        _create_points_from_ecotone("/Ecotones_gps_pos_gathering_duplicate_test.csv")
+        _create_points_from_ecotone("/Ecotones_gps_pos_gathering_duplicate_test2.csv")
+        documents = document.get_all()
+        self.assertEqual(len(documents[0].gatherings), 1)
 
 def _create_points_from_ecotone(filename):
         path = settings.OTHER_ROOT + filename

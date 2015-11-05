@@ -233,3 +233,37 @@ class ChoosePage(PageWithDeviceSelector):
 
     def popup_click_cancel(self):
         self.ALERT_CANCEL.click()
+
+class DevicePage(PageWithDeviceSelector):
+    """
+    Page Object for the device page.
+    """
+    url = BASE_URL + '/papukaani/devices/'
+
+    def __init__(self):
+        super().__init__()
+
+    def get_individual_name(self, individualId):
+        return self.driver.find_element_by_id("name" + individualId).text
+
+    #
+    # def get_number_of_points(self):
+    #     plines = self.get_map_polyline_elements()
+    #     no_of_pts = 0
+    #     for line in plines:
+    #         d = line.find_element_by_tag_name("path").get_attribute("d")
+    #         no_of_pts += (len(d.split()) - 2)
+    #
+    #     return no_of_pts
+
+    def attach_individual(self, bird):
+        selector = self.driver.find_element_by_id("individualId")
+        sel = Select(selector)
+        sel.select_by_value(bird)
+
+        self.driver.find_element_by_id("start_time").send_keys("2015-11-05T15:00:00+00:00")
+
+        self.driver.find_element_by_id("attach").click()
+
+
+

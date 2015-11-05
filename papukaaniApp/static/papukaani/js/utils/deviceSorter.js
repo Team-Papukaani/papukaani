@@ -42,7 +42,11 @@ function showPointsForDevice() {
         this.map.changePoints(this.points);
         messagebox = $("#loading");
         messagebox.text("");
-        unlockButtons();
+        if (this.points.length === 0) {
+            $("#selectDevice").attr("disabled", false);
+            $("#reset").attr("disabled", false);
+        }
+        else unlockButtons()
     }
 }
 
@@ -51,6 +55,7 @@ DeviceSorter.prototype.resetOption = function () {
     var selector = document.getElementById("selectDevice");
 
     selector.value = "None";
+    $("#save").attr("disabled", false);
 };
 
 //Creates a selector for devices.

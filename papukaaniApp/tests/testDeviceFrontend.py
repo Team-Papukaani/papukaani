@@ -49,3 +49,17 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         - lähettimellä näkyy lintu formatoituna
         """
 
+    def test_only_currently_attached_bird_has_remove_button(self):
+
+        self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
+
+
+    def test_when_device_is_attached_other_devices_are_removed(self):
+
+        self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
+
+        self.page.attach_individual("12345TESTINDIVIDUAL")
+
+        self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
+
+    

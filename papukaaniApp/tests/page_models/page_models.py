@@ -254,4 +254,14 @@ class DevicePage(PageWithDeviceSelector):
     #
     #     return no_of_pts
 
+    def attach_individual(self, bird):
+        selector = self.driver.find_element_by_id("individualId")
+        sel = Select(selector)
+        sel.select_by_value(bird)
+
+        self.driver.find_element_by_id("start_time").send_keys("2015-11-05T15:00:00+00:00")
+
+        self.driver.find_element_by_id("attach").click()
+
+
 

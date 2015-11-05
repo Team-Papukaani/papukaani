@@ -11,9 +11,11 @@ function PublicMap() {
 
 //Draws the polyline
 PublicMap.prototype.draw = function (points) {
-    var latlngs = this.createLatlngsFromPoints(points);
-
+    doc = points[0];
+    pi = new PathIterator(doc.gatherings);
     polylines = [];
+    time = pi.getStartTime();
+
     i = 0;
     window.setInterval(function () {
         polyline = L.polyline([latlngs[i], latlngs[++i]], {color: 'blue', opacity: 1.0})
@@ -29,6 +31,33 @@ PublicMap.prototype.draw = function (points) {
     }.bind(this), 700);
 
 };
+
+
+function pointsToLatLngTime(points) {
+    return points.map(function(point) {
+        return {
+            lat: point.wgs84Geometry.coordinates[1],
+            lng: point.wgs84Geometry.coordinates[0],
+            time: Date.parse(point.timeStart)
+        };
+    });
+}
+
+var PathIterator = function(points) {
+    var latLngTimes = pointsToLatLngTime(points);
+    var orderedPoints = latLngTimes.sort(function(a, b) {
+        return a.time - b.time
+    });
+    var currentIndex = 0;
+    this.getPointAtTime = function(time) {
+        while(time > orderedPoints[currentIndex+1].time) currentIndex++;
+        return orderedPoints[currentIndex];
+    }
+
+    this.getStartTime = function() {
+        return orderedPoints[0].time;
+    }
+}
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {

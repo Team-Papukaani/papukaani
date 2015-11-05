@@ -234,6 +234,7 @@ class ChoosePage(PageWithDeviceSelector):
     def popup_click_cancel(self):
         self.ALERT_CANCEL.click()
 
+
 class DevicePage(PageWithDeviceSelector):
     """
     Page Object for the device page.
@@ -266,4 +267,42 @@ class DevicePage(PageWithDeviceSelector):
         self.driver.find_element_by_id("attach").click()
 
 
+class IndividualPage(Page):
+    """
+    Page Object for the individual page.
+    """
+    url = BASE_URL + '/papukaani/individuals/'
 
+    NEW_FORM = Element(By.ID, 'new_individual_form')
+    NEW_TAXON_FIELD = Element(By.ID, 'new_individual_taxon')
+    FIRST_MODIFY_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="taxon"]')
+    MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
+    DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
+
+    def create_new_individual(self, taxon):
+        """
+        Inputs the name of the new individual and submits the form.
+        """
+        create = self.NEW_TAXON_FIELD
+        create.send_keys(taxon)
+        create.submit()
+
+    def get_first_individual_taxon(self):
+        return self.FIRST_MODIFY_FIELD.get_attribute("value")
+
+    def modify_individual(self, taxon):
+        """
+        Inputs the name of the new individual and submits the form.
+        """
+        modify_button = self.MODIFY_BUTTON
+        taxon_field = self.FIRST_MODIFY_FIELD
+        taxon_field.clear()
+        taxon_field.send_keys(taxon)
+        modify_button.click()
+
+    def delete_individual(self):
+        """
+        Clicks the delete button.
+        """
+        delete_button = self.DELETE_BUTTON
+        delete_button.click()

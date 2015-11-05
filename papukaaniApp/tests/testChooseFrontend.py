@@ -61,7 +61,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.click_save_button()
         self.assertEquals(not self.page.save_button_is_enabled(), True)
 
-    """
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()
         self.page.reset()
@@ -70,7 +69,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
         self.page.reset()
         self.assertEquals(1, self.page.number_of_private_clusters_on_map())
-    """
 
     def test_reset_button_clears_time_range_fields(self):
         self.page.set_start_time("12-12-1234 00:00")
@@ -105,7 +103,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.change_device_selection("None")
         self.assertTrue(self.page.popup_displayed())
 
-    """
     def test_changes_are_saved_when_yes_is_pressed(self):
         self.page.double_click_marker()
         self.page.change_device_selection("None")
@@ -114,8 +111,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.change_device_selection("DeviceId")
 
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
-    """
-    
+
     def test_changes_are_not_saved_when_no_is_pressed(self):
         self.page.double_click_marker()
         self.page.change_device_selection("None")
@@ -134,8 +130,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
 
         self.assertTrue("DeviceId", self.page.get_device_selection())
 
-
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
         self.A.update()
-

@@ -12,9 +12,6 @@
 
     {% include "papukaaniApp/navigation.html" %}
 
-    {% include "papukaaniApp/include_scripts.html" %}
-    <script src="{% static 'papukaani/js/jquery-dateFormat.min.js' %}"></script>
-
     <h1>Hallitse lähettimiä</h1>
 
     <form>
@@ -55,6 +52,8 @@
 
     </form>
 
+     {% include "papukaaniApp/include_scripts.html" %}
+    <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
     <script src="{% static 'papukaani/js/devices.js' %}"></script>
 </body>
 </html>

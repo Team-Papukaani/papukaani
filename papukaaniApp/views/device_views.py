@@ -17,6 +17,7 @@ def devices(request):
 
     return render(request, 'papukaaniApp/devices.html', context)
 
+
 _RESPONSE_BASE = {"errors" : []}
 
 @api_view(['POST'])

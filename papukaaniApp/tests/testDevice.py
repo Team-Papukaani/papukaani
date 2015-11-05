@@ -18,6 +18,7 @@ class TestDevice(TestCase):
     def tearDown(self):
         self.A.delete()
         self.B.delete()
+        self.indiv.delete()
 
     def test_devices_are_listed(self):
         response = self.c.get(_URL)
@@ -25,10 +26,13 @@ class TestDevice(TestCase):
         self.assertTrue("1234TEST_B" in str(response.content))
 
     def test_post_to_attach_attaches_individual(self):
+
         response = self.c.post(_URL + "1234TEST_A/attach/", data={
             "individualId" : "Indiv",
             "timestamp" : "2015-10-10T10:10:10+00:00"
         })
+
+        self.A = device.find(deviceId=self.A.deviceId)[0]
 
         self.assertEquals(1, len(self.A.individuals))
 
@@ -38,6 +42,8 @@ class TestDevice(TestCase):
         response = self.c.post(_URL + "1234TEST_A/remove/", data={
             "individualId" : "Indiv"
         })
+
+        self.A = device.find(deviceId=self.A.deviceId)[0]
 
         self.assertEquals(0, len(self.A.individuals))
 

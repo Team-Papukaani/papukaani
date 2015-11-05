@@ -7,7 +7,7 @@ class Device:
     Represents the Device table of LajiStore
     '''
     def __init__(self, deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
-                 facts=None, individuals = [],  id=None, **kwargs):
+                 facts=None, individuals = None,  id=None, **kwargs):
         self.id = id
         self.deviceId = deviceId
         self.deviceType = deviceType
@@ -16,6 +16,12 @@ class Device:
         self.lastModifiedAt = lastModifiedAt
         self.facts = facts
         self.individuals = individuals
+
+        if not facts:
+            self.facts = []
+
+        if not individuals:
+            self.individuals = []
 
     def delete(self):
         '''

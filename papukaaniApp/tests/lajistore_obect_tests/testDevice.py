@@ -70,6 +70,8 @@ class TestDevice(TestCase):
         self.assertEquals(len(self.d.individuals), 1)
         self.assertTrue(self.d.individuals[0]["removed"] != None)
 
+        self._delete_individuals([A,B])
+
     def _create_individuals(self):
         return individual.create("A", "Taxon"), individual.create("B", "Taxon")
 

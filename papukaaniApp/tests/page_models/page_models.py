@@ -100,7 +100,7 @@ class ChoosePage(PageWithDeviceSelector):
     """
     Page Object for the choose page.
     """
-    url = BASE_URL + '/papukaani/choose'
+    url = BASE_URL + '/papukaani/choose/?nofit=1'
 
     SAVE_BUTTON = Element(By.ID, 'save')
     MESSAGE_BOX = Element(By.ID, 'loading')

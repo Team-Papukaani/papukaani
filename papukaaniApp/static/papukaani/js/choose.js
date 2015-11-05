@@ -35,10 +35,18 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
     try {
-        this.map.fitBounds(this.markers.getBounds(), {padding:[6, 6]})
+        if (get('nofit') == 1) {
+        }   else {
+            this.map.fitBounds(this.markers.getBounds(), {padding: [6, 6]})
+        }
     } catch (e) {
     }
 };
+
+function get(name) {
+    if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+        return decodeURIComponent(name[1]);
+}
 
 //Parses the given string into an appropriate Date-format.
 function parseTime(timestring) {

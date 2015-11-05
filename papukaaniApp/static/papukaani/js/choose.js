@@ -35,9 +35,8 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
     try {
-        this.map.fitBounds(this.markers.getBounds())
+        this.map.fitBounds(this.markers.getBounds(), {padding:[6, 6]})
     } catch (e) {
-        
     }
 };
 

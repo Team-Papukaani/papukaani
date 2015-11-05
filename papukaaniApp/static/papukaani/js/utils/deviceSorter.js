@@ -55,7 +55,7 @@ DeviceSorter.prototype.resetOption = function () {
     var selector = document.getElementById("selectDevice");
 
     selector.value = "None";
-    $("#save").attr("disabled", false);
+    $("#save").attr("disabled", true);
 };
 
 //Creates a selector for devices.

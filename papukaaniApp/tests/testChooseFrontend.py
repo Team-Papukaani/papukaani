@@ -63,9 +63,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
 
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()
-        self.page.reset()
-        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
-        self.page.double_click_marker()
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
         self.page.reset()
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
@@ -139,12 +136,16 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def test_save_button_is_enabled_when_device_with_points_is_selected(self):
         self.assertEquals(self.page.save_button_is_enabled(), True)
 
-    def test_save_button_is_disable_when_device_with_no_points_is_selected(self):
+    def test_save_button_is_disabled_when_device_with_no_points_is_selected(self):
         self.add_device()
         self.page.navigate()
         self.page.change_device_selection("Empty")
         self.assertEquals(self.page.save_button_is_enabled(), False)
         self.E.delete()
+
+    def test_save_button_is_disabled_after_reset(self):
+        self.page.reset()
+        self.assertEquals(self.page.save_button_is_enabled(), False)
 
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))

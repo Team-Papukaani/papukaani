@@ -23,11 +23,18 @@ PublicMap.prototype.draw = function (points) {
         if (polylines.length > 4) {
             polylines.splice(0, 1);
         }
-        for (j = 1; j <= polylines.length; j++) {
-            polylines[j-1].setStyle({color: 'blue', opacity: ((j/polylines.length) >= 0.5 ? j/polylines.length:0.4)});
+        for (j = 0; j < polylines.length; j++) {
+            polylines[j].setStyle({color: 'blue', opacity: polylineFade(j, polylines.length)});
         }
     }.bind(this), 700);
 
+};
+
+//Picks the opacity-value based on position in the polyline (closer to the head, more opaque).
+polylineFade = function(j, length) {
+    if (j == length-1) return 1.0;
+    else if (j > 0) return 0.8;
+    else return 0.5
 };
 
 //Redraws the polyline

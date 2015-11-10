@@ -2,7 +2,7 @@ function init(devices) {
     this.sorter = new DeviceSorter(devices);
     map = new PublicMap(sorter.documents);
 
-    sorter.setMap(map)
+    this.sorter.setMap(map)
 }
 
 function PublicMap() {
@@ -11,14 +11,13 @@ function PublicMap() {
 
 //Draws the polyline
 PublicMap.prototype.draw = function (points) {
-    doc = points[0];
-    pi = new PathIterator(doc.gatherings);
-    polylines = [];
-    time = pi.getStartTime();
+    var latlngs = this.createLatlngsFromPoints(points);
+
+    var polylines = [];
 
     i = 0;
     window.setInterval(function () {
-        polyline = L.polyline([latlngs[i], latlngs[++i]], {color: 'blue', opacity: 1.0});
+        var polyline = L.polyline([latlngs[i], latlngs[++i]], {color: 'blue', opacity: 1.0});
         polylines.push(polyline);
         polyline.addTo(this.map);
         this.map.panTo(latlngs[i]);

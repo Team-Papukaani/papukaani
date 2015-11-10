@@ -13,14 +13,16 @@ function init(devices, indivs, csrf_token){
 
 function displayIndividuals(device) {
       $('#table').show()
+      $("#attacher").show()
       var rows = '';
       $.each(devices_and_individuals[device], function(index, individual) {
             var row = '<tr>';
             row += '<td><span id="name' + individual.individualId + '">' + individuals[individual.individualId] + '</span></td>'
             row += '<td>' + $.format.date(individual.attached, "dd.MM.yyyy HH:mm") + '</td>'
 
-            if( individual.removed == undefined) {
-                row += '<td>Vielä kiinni</td>'
+            if(!individual.removed) {
+                $("#attacher").hide();
+                row += '<td><input type="text" id="remove_time" name="remove_time" class="datepicker" placeholder="dd-mm-yyyy HH:mm"></td>'
                 row += '<td><a class="btn btn-sm btn-danger" onclick="removeDevice('+ index +')">Irroita</a></td>'
             } else {
                 row += '<td>' + $.format.date(individual.removed, "dd.MM.yyyy HH:mm") + '</td>'
@@ -39,56 +41,60 @@ function displayIndividuals(device) {
 }
 
 function attachDevice(){
-            var deviceId = $("#selectDevice").val();
-            var individualId = $("#individualId").val();
-            var timestamp = $("#start_time").val()
+    var deviceId = $("#selectDevice").val();
+    var individualId = $("#individualId").val();
+    var timestamp = $("#start_time").val();
 
-            if(deviceId && individualId){
+    if(deviceId && individualId){
+        $("#attacher").hide();
 
-                $.each(devices_and_individuals[deviceId], function(index, individual){
-                    if(!individual.removed){
-                        individual.removed = timestamp
-                    }
-                })
-
-                devices_and_individuals[deviceId].push({
+        $.ajax({
+            url : deviceId + "/attach/",
+            method : "POST",
+            data : {
                     individualId : individualId,
-                    attached : timestamp
-                })
+                    timestamp : timestamp
+                },
+            headers : headers
+        });
 
-                $.ajax({
-                    url : deviceId + "/attach/",
-                    method : "POST",
-                    data : {
-                            individualId : individualId,
-                            timestamp : timestamp
-                        },
-                    headers : headers
-                });
-
-                displayIndividuals(deviceId);
+        $.each(devices_and_individuals[deviceId], function(index, individual){
+            if(!individual.removed){
+                individual.removed = timestamp
             }
+        })
+
+        devices_and_individuals[deviceId].push({
+            individualId : individualId,
+            attached : timestamp
+        })
+
+        displayIndividuals(deviceId);
+    }
 }
 
 function removeDevice(index){
 
-            var deviceId = $("#selectDevice").val();
-            var individualId = devices_and_individuals[deviceId][index].individualId;
+    var deviceId = $("#selectDevice").val();
+    var individualId = devices_and_individuals[deviceId][index].individualId;
+    var timestamp = $("#remove_time").val()
 
-            if(deviceId && individualId){
+    if(deviceId && individualId){
+        $("#attacher").show()
 
-                devices_and_individuals[deviceId][index].removed = Date.now();
+        devices_and_individuals[deviceId][index].removed = timestamp;
 
-                $.ajax({
-                    url : deviceId + "/remove/",
-                    method : "POST",
-                    data : {
-                            individualId : individualId,
-                        },
-                    headers : headers
-                });
+        $.ajax({
+            url : deviceId + "/remove/",
+            method : "POST",
+            data : {
+                    individualId : individualId,
+                    timestamp : timestamp
+                },
+            headers : headers
+        });
 
-                displayIndividuals(deviceId);
-            }
+        displayIndividuals(deviceId);
+    }
 }
 

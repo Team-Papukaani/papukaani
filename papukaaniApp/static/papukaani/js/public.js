@@ -43,17 +43,23 @@ function pointsToLatLngTime(points) {
     });
 }
 
+// Iterates efficiently over objects that have latitude (lat),
+// longitude (lng) and time (time) (as milliseconds) as members.
 var PathIterator = function(points) {
-    var latLngTimes = pointsToLatLngTime(points);
-    var orderedPoints = latLngTimes.sort(function(a, b) {
+    var orderedPoints = points.sort(function(a, b) {
         return a.time - b.time
     });
     var currentIndex = 0;
+
+    //Returns the last passed point based on time. If time equals
+    //the timestamp of a point, it returns that point.
     this.getPointAtTime = function(time) {
-        while(time > orderedPoints[currentIndex+1].time) currentIndex++;
+        if(time < this.getStartTime()) return null
+        while(currentIndex < orderedPoints.length - 1 && time >= orderedPoints[currentIndex+1].time) currentIndex++;
         return orderedPoints[currentIndex];
     }
 
+    //Returns the time (as milliseconds) of the earliest point.
     this.getStartTime = function() {
         return orderedPoints[0].time;
     }

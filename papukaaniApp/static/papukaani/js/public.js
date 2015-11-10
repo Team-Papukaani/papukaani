@@ -32,17 +32,6 @@ PublicMap.prototype.draw = function (points) {
 
 };
 
-
-function pointsToLatLngTime(points) {
-    return points.map(function(point) {
-        return {
-            lat: point.wgs84Geometry.coordinates[1],
-            lng: point.wgs84Geometry.coordinates[0],
-            time: Date.parse(point.timeStart)
-        };
-    });
-}
-
 // Iterates efficiently over objects that have latitude (lat),
 // longitude (lng) and time (time) (as milliseconds) as members.
 var PathIterator = function(points) {

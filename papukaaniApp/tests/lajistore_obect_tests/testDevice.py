@@ -44,7 +44,7 @@ class TestDevice(TestCase):
 
     def test_first_attach(self):
         A, B = self._create_individuals()
-        self.d.attach_to(A)
+        self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
         self.assertEquals(self.d.individuals[0]["individualId"], "A")
         self._delete_individuals([A, B])
 
@@ -52,8 +52,8 @@ class TestDevice(TestCase):
         self.d.individuals = []
         A, B = self._create_individuals()
 
-        self.d.attach_to(A)
-        self.d.attach_to(B)
+        self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
+        self.d.attach_to(B, "2015-10-10T10:10:10+00:00")
 
         self.assertEquals(len(self.d.individuals), 2)
 
@@ -64,11 +64,13 @@ class TestDevice(TestCase):
     def test_remove(self):
         self.d.individuals = []
         A, B = self._create_individuals()
-        self.d.attach_to(A)
+        self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
         self.d.remove_from(A)
 
         self.assertEquals(len(self.d.individuals), 1)
         self.assertTrue(self.d.individuals[0]["removed"] != None)
+
+        self._delete_individuals([A,B])
 
     def _create_individuals(self):
         return individual.create("A", "Taxon"), individual.create("B", "Taxon")

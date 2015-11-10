@@ -12,3 +12,6 @@ def getDocumentsForDevice(request):
     """
     docs = [d.to_dict() for d in document.find(deviceId=request.GET.get('devId'))]
     return Response(docs)
+
+
+

@@ -18,7 +18,7 @@ class Device:
         self.individuals = individuals
 
         if not facts:
-            self.facts = []
+            self.facts = [{"name":"status", "value":"not attached"}]
 
         if not individuals:
             self.individuals = []
@@ -39,24 +39,31 @@ class Device:
         '''
         Attaches this device to an individual. Previously attached device will be removed.
         '''
-        for indiv in self.individuals:
-            if not indiv["removed"] :
-                indiv["removed"] = timestamp
+        if self.facts[0]["value"] == "not attached":
+            self.individuals.append({
+                "individualId" : individual.individualId,
+                "attached" : timestamp,
+                "removed" : None
+            } )
+            self.change_status()
+            return True
+        return False
 
-        self.individuals.append({
-            "individualId" : individual.individualId,
-            "attached" : timestamp,
-            "removed" : None
-        } )
-
-    def remove_from(self, individual):
+    def remove_from(self, individual, timestamp):
         '''
         Removes this device from an individual. If the individual is allready removed, old removal date will be rewritten.
         '''
         for indiv in self.individuals:
-            if indiv["individualId"] == individual.individualId:
-                indiv["removed"] = current_time_as_lajistore_timestamp()
+            if indiv["individualId"] == individual.individualId and indiv["removed"] == None:
+                indiv["removed"] = timestamp
 
+        self.change_status()
+
+    def change_status(self):
+        '''
+        Changes the status of the device to attached if not attached and vice versa.
+        '''
+        self.facts[0]["value"] = "attached" if self.facts[0]["value"] == "not attached" else "not attached"
 
 def find(**kwargs):
     '''

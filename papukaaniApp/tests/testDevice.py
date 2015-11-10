@@ -40,7 +40,8 @@ class TestDevice(TestCase):
         self.A.attach_to(self.indiv,"2015-10-10T10:10:10+00:00" )
 
         response = self.c.post(_URL + "1234TEST_A/remove/", data={
-            "individualId" : "Indiv"
+            "individualId" : "Indiv",
+            "timestamp" : "2015-10-10T10:10:10+00:00"
         })
 
         self.A = device.find(deviceId=self.A.deviceId)[0]

@@ -1,5 +1,6 @@
 from papukaaniApp.models import *
 from papukaaniApp.utils.parser import *
+from papukaaniApp.utils.file_peparer import *
 from django.shortcuts import render
 from papukaaniApp.utils.view_utils import *
 import json, uuid
@@ -13,6 +14,7 @@ def upload(request):
     Point data is parsed from file and saved to database.
     Point data for Leaflet returned in response.
     """
+    format = "ecotone" #change later!!
     if request.method == 'GET':
         return _render_with_message(request)
     if request.method == 'POST':
@@ -20,12 +22,12 @@ def upload(request):
 
             file = request.FILES['file']
             try:
-                data = ecotones_parse(file)
+                data = prepare_file(file, format)
 
             except:
                 messages.add_message(request, messages.ERROR, 'Tiedostosi formaati ei ole kelvollinen!')
                 return redirect(upload)
-            points = create_points(data)
+            points = create_points(data, format)
             return _render_points(points, request)
 
         messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")

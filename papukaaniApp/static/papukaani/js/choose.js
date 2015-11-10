@@ -23,7 +23,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         document.getElementById("formatError").innerHTML = "Invalid Date format!";
         return;
     }
-    pointsWithinRange = this.points.filter(function (point) {
+    var pointsWithinRange = this.points.filter(function (point) {
         var timestring = point.timeStart;
         var timestamp = new Date(timestring);
         a = (start != "" ? a : timestamp);

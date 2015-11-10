@@ -16,15 +16,15 @@ PublicMap.prototype.draw = function (points) {
     polylines = [];
     i = 0;
     window.setInterval(function () {
-        polyline = L.polyline([latlngs[i], latlngs[++i]], {color: 'blue', opacity: 1.0})
+        polyline = L.polyline([latlngs[i], latlngs[++i]], {color: 'blue', opacity: 1.0});
         polylines.push(polyline);
         polyline.addTo(this.map);
         this.map.panTo(latlngs[i]);
-        if (polylines.length > 15) {
+        if (polylines.length > 4) {
             polylines.splice(0, 1);
         }
-        for (j = 0; j < polylines.length; j++) {
-            polylines[j].setStyle({color: 'blue', opacity: (j / 15.0)});
+        for (j = 1; j <= polylines.length; j++) {
+            polylines[j-1].setStyle({color: 'blue', opacity: ((j/polylines.length) >= 0.5 ? j/polylines.length:0.4)});
         }
     }.bind(this), 700);
 

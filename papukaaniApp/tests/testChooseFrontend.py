@@ -112,8 +112,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
 
     def test_changes_are_not_saved_when_no_is_pressed(self):
-        self.page.double_click_marker()
-        self.page.change_device_selection("None")
+        self.change_publicity_and_selection_without_saving_first(self)
 
         self.page.popup_click_no()
         self.page.change_device_selection("DeviceId")
@@ -121,8 +120,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 0)
 
     def test_device_selection_does_not_change_when_cancel_is_pressed(self):
-        self.page.double_click_marker()
-        self.page.change_device_selection("None")
+        self.change_publicity_and_selection_without_saving_first(self)
 
         self.page.popup_click_cancel()
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
@@ -161,3 +159,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
             "facts": []
         }
         self.E = device.create(**dev)
+
+    def change_publicity_and_selection_without_saving_first(self, test):
+        test.page.double_click_marker()
+        test.page.change_device_selection("None")

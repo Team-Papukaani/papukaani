@@ -25,12 +25,12 @@ def devices(request):
 
     return render(request, 'papukaaniApp/devices.html', context)
 
-_RESPONSE_BASE = {"errors" : []}
+_RESPONSE_BASE = {"errors" : [], "status" : ""}
 
 @api_view(['POST'])
 def attach_to(request, device_id):
     '''
-    Attach a device to an individual.
+    Attach a device to an individual. Response field "status" is "attached" if attach was succesfull, "not attached" otherwise.
     '''
     response = _RESPONSE_BASE.copy()
 
@@ -41,8 +41,11 @@ def attach_to(request, device_id):
     dev = device.find(deviceId = device_id)[0]
     indiv = individual.find(individualId = request.POST['individualId'])[0]
 
-    dev.attach_to(indiv, request.POST['timestamp'])
+    attached = dev.attach_to(indiv, request.POST['timestamp'])
     dev.update()
+
+    response["status"] == "attached" if attached else "not attached"
+
     return Response(response)
 
 @api_view(['POST'])
@@ -52,14 +55,14 @@ def remove_from(request, device_id):
     '''
     response = _RESPONSE_BASE.copy()
 
-    missing = _check_missing_params(request.POST, 'individualId')
+    missing = _check_missing_params(request.POST, 'individualId', 'timestamp')
     if _append_missing_to_erros(response, missing):
         return Response(response)
 
     dev = device.find(deviceId = device_id)[0]
     indiv = individual.find(individualId = request.POST['individualId'])[0]
 
-    dev.remove_from(indiv)
+    dev.remove_from(indiv, request.POST['timestamp'])
     dev.update()
 
     return Response(response)

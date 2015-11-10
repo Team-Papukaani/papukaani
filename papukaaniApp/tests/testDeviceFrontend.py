@@ -37,29 +37,24 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
     def test_individual_info_visible(self):
         self.assertEquals("Birdie", self.page.get_individual_name("12345TESTINDIVIDUAL"))
 
-    # def test_cluster_with_only_public_points_is_green(self):
-    #     self.page.double_click_marker()
-    #     self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
-    #     self.assertEquals(0, self.page.number_of_private_clusters_on_map())
-    #     self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
-
-        """
-        - lintu löytyy listasta
-        - lähetin löytyy listasta
-        - lähettimellä näkyy lintu formatoituna
-        """
-
     def test_only_currently_attached_bird_has_remove_button(self):
 
         self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
 
 
-    def test_when_device_is_attached_other_devices_are_removed(self):
+    def test_if_unremoved_birds_attach_button_is_not_visible(self):
 
-        self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
+        self.assertFalse(self.page.driver.find_element_by_id("attacher").is_displayed())
 
-        self.page.attach_individual("12345TESTINDIVIDUAL")
+        self.page.driver.find_element_by_id("remove_time").send_keys("2015-11-02T14:00:00+03:00")
+        self.page.driver.find_element_by_class_name("btn-danger").click()
 
-        self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
+        self.assertTrue(self.page.driver.find_element_by_id("attacher").is_displayed())
 
-    
+    def test_attach_button_is_disabled_after_attach(self):
+
+        self.page.driver.find_element_by_id("remove_time").send_keys("2015-11-02T14:00:00+03:00")
+        self.page.driver.find_element_by_class_name("btn-danger").click()
+
+        self.page.driver.find_element_by_id("attach").send_keys("2015-11-02T14:00:00+03:00")
+        self.page.driver.find_element_by_id("attach").click()

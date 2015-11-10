@@ -112,7 +112,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
 
     def test_changes_are_not_saved_when_no_is_pressed(self):
-        self.change_publicity_and_selection_without_saving_first(self)
+        self.change_publicity_and_selection_without_saving(self)
 
         self.page.popup_click_no()
         self.page.change_device_selection("DeviceId")
@@ -120,7 +120,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 0)
 
     def test_device_selection_does_not_change_when_cancel_is_pressed(self):
-        self.change_publicity_and_selection_without_saving_first(self)
+        self.change_publicity_and_selection_without_saving(self)
 
         self.page.popup_click_cancel()
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
@@ -145,6 +145,11 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.reset()
         self.assertEquals(self.page.save_button_is_enabled(), False)
 
+    def test_disabled_button_cannot_be_clicked(self):
+        self.page.driver.execute_script("arguments[0].disabled = 'true';", self.page.RESET_BUTTON)
+        self.page.reset()
+        self.assertEquals(self.page.number_of_private_clusters_on_map(), 1)
+
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
         self.A.update()
@@ -160,6 +165,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         }
         self.E = device.create(**dev)
 
-    def change_publicity_and_selection_without_saving_first(self, test):
+    def change_publicity_and_selection_without_saving(self, test):
         test.page.double_click_marker()
         test.page.change_device_selection("None")

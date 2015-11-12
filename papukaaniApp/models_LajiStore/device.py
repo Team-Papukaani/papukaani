@@ -21,6 +21,9 @@ class Device:
         if not facts:
             self.facts = [{"name": "status", "value": "not attached"}]
 
+        if len(self.facts) == 0:
+            self.facts = [{"name":"status", "value":"not attached"}]
+
         if not individuals:
             self.individuals = []
 

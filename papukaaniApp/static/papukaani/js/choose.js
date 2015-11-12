@@ -17,8 +17,8 @@ function ChooseMap(sorter) {
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     var a, b;
     try {
-        a = (start != "" ? new Date(parseTime(start)) : "");
-        b = (end != "" ? new Date(parseTime(end)) : "");
+        a = (start != "" ? new Date(parseTime(start, "+00:00")) : "");
+        b = (end != "" ? new Date(parseTime(end, "+00:00")) : "");
     } catch (error) {
         document.getElementById("formatError").innerHTML = "Invalid Date format!";
         return;
@@ -46,18 +46,6 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
 function get(name) {
     if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
         return decodeURIComponent(name[1]);
-}
-
-//Parses the given string into an appropriate Date-format.
-function parseTime(timestring) {
-    var parts = timestring.split(' ');
-    var dateparts = parts[0].split('-');
-    return (dateparts[2] + "-" + dateparts[1] + "-" + dateparts[0] + 'T' + parts[1] + ":00+00:00");
-}
-
-//Checks if the date is between the two parameters.
-function dateIsBetween(date, start, end) {
-    return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
 }
 
 //Creates an empty MarkerClusterGroup with initial settings.

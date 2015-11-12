@@ -13,6 +13,7 @@ _DEVICE_PATH = "devices"
 _DOCUMENT_PATH = "documents"
 _INDIVIDUAL_PATH = "individuals"
 
+_ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 # as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
@@ -108,18 +109,23 @@ def _get(uri, **kwargs):
     if (kwargs):
         url += _add_query(**kwargs)
     response = requests.get(url, auth=_AUTH).json()
+
     return response
 
 
 def _post(data, uri):
     url = _URL + uri
     response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+    _check_error(response)
+
     return response
 
 
 def _put(uri, data):
     url = _URL + uri
     response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+    _check_error(response)
+
     return response
 
 
@@ -148,3 +154,7 @@ def _get_all_pages(uri, key, list=None, **kwargs):
     else:
         uri = links["next"]["href"].split("/")[-1]
         return _get_all_pages(uri, key, list)
+
+def _check_error(response):
+    if "id" not in response:
+        raise ValueError(_ERROR_MSG)

@@ -17,14 +17,17 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
             "facts": []
         }
         self.D = device.create(**dev)
+
         self.I = individual.create("12345TESTINDIVIDUAL", "Birdie")
-        self.D.attach_to(self.I, "2015-11-02T14:00:00+03:00")
+        self.D.attach_to(self.I, "2015-11-02T14:00:00+02:00")
+
         self.D.update()
 
         self.page = DevicePage()
         self.page.navigate()
 
         self.page.change_device_selection("DeviceId")
+        self.page.find_controls()
 
     def tearDown(self):
         self.D.delete()
@@ -39,22 +42,71 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
 
     def test_if_unremoved_birds_attach_button_is_not_visible(self):
-        self.assertFalse(self.page.driver.find_element_by_id("attacher").is_displayed())
+        self.assertFalse(self.page.ATTACHER.is_displayed())
 
-        self.page.driver.find_element_by_id("remove_time").send_keys("2015-11-02T14:00:00+03:00")
-        self.page.driver.find_element_by_class_name("btn-danger").click()
+        self.page.REMOVE_TIME.send_keys("03-11-2015 00:00")
+        self.page.REMOVE.click()
 
-        self.assertTrue(self.page.driver.find_element_by_id("attacher").is_displayed())
-
-    def test_attach_button_is_disabled_after_attach(self):
-        self.page.driver.find_element_by_id("remove_time").send_keys("2015-11-02T14:00:00+03:00")
-        self.page.driver.find_element_by_class_name("btn-danger").click()
-
-        self.page.driver.find_element_by_id("attach").send_keys("2015-11-02T14:00:00+03:00")
-        self.page.driver.find_element_by_id("attach").click()
+        self.assertTrue(self.page.ATTACHER.is_displayed())
 
     def test_removed_individuals_are_not_selectable(self):
         self.I.deleted = True
         self.I.update()
         with self.assertRaises(NoSuchElementException):
-            self.page.attach_individual("Birdie")
+            self.page.attach_individual("Birdie", "12-11-2015 00:00")
+
+    def test_attacher_is_hidden_after_attach(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 00:00")
+        self.page.REMOVE.click()
+
+        self.page.attach_individual("12345TESTINDIVIDUAL", "12-11-2015 00:00")
+
+        self.assertFalse(self.page.ATTACHER.is_displayed())
+
+    def test_attacher_is_shown_after_remove(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 00:00")
+        self.page.REMOVE.click()
+
+        self.assertTrue(self.page.ATTACHER.is_displayed())
+
+    def test_cant_remove_if_remove_time_is_before_attach_time(self):
+        self.page.REMOVE_TIME.send_keys("01-10-2015 02:00")
+        self.page.REMOVE.click()
+
+        self.assertFalse(self.page.ATTACHER.is_displayed())
+
+    def test_cant_remove_if_remove_time_is_in_the_future(self):
+        self.page.REMOVE_TIME.send_keys("13-12-2114 00:00")
+        self.page.REMOVE.click()
+
+        self.assertFalse(self.page.ATTACHER.is_displayed())
+
+    def test_can_remove_when_all_conditions_are_met(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
+        self.page.REMOVE.click()
+
+        self.assertTrue(self.page.ATTACHER.is_displayed())
+
+    def test_cant_attach_if_start_time_is_in_future(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
+        self.page.REMOVE.click()
+
+        self.page.attach_individual("12345TESTINDIVIDUAL", "13-12-2114 00:00")
+
+        self.assertTrue(self.page.ATTACHER.is_displayed())
+
+    def test_cant_attach_if_start_time_overlaps_with_another_device(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
+        self.page.REMOVE.click()
+
+        self.page.attach_individual("12345TESTINDIVIDUAL", "02-11-2015 16:00")
+
+        self.assertTrue(self.page.ATTACHER.is_displayed())
+
+    def test_can_attach_id_all_conditions_are_met(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
+        self.page.REMOVE.click()
+
+        self.page.attach_individual("12345TESTINDIVIDUAL", "04-11-2015 16:00")
+
+        self.assertFalse(self.page.ATTACHER.is_displayed())

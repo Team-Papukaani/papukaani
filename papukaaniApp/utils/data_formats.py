@@ -2,10 +2,10 @@
 
 ecotone = {}
 ecotone["gpsNumber"] = "GpsNumber"
-ecotone["GPSTime"] = "GPSTime"
+ecotone["gpsTime"] = "GPSTime"
 ecotone["longitude"] = "Longtitude"
 ecotone["latitude"] = "Latitude"
-ecotone["altitude"] = "altitude"
+ecotone["altitude"] = "Altitude"
 ecotone["temperature"] = "Temperature"
 ecotone["type"] = "GMS"
 ecotone["manufacturer"] = "manufacturer"
@@ -13,11 +13,11 @@ ecotone["split_mark"] = ","
 ecotone["coding"] = "utf-8"
 
 byholm = {}
-byholm["gpsNumber"] = "GpsNumber"
-byholm["GPSTime"] = "DateTime"
+byholm["gpsNumber"] = "gpsNumber"
+byholm["gpsTime"] = "DateTime"
 byholm["longitude"] = "Longitude_E"
 byholm["latitude"] = "Latitude_N"
-byholm["altitude"] = "altitude"
+byholm["altitude"] = "Altitude_m"
 byholm["temperature"] = "temperature"
 byholm["type"] = "GMS"
 byholm["manufacturer"] = "manufacturer"

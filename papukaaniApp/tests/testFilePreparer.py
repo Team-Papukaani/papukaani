@@ -27,10 +27,10 @@ class FilePreparerTest(TestCase):
             creature, was_created = Creature.objects.get_or_create(name="Pekka")
             point = MapPoint(creature=creature,
                              gpsNumber=entry['gpsNumber'],
-                             timestamp=entry['GPSTime'],
+                             timestamp=entry['gpsTime'],
                              latitude=entry['latitude'],
                              longitude=entry['longitude'],
-                             altitude=entry['Altitude'] if entry['Altitude'] != '' else 0,
+                             altitude=entry['altitude'] if entry['altitude'] != '' else 0,
                              temperature=entry['temperature'])
             points.append(point)
         assert len(points) == 5
@@ -54,7 +54,7 @@ class FilePreparerTest(TestCase):
             creature, was_created = Creature.objects.get_or_create(name="Pekka")
             point = MapPoint(creature=creature,
                              gpsNumber="0",
-                             timestamp=entry['GPSTime'],
+                             timestamp=entry['gpsTime'],
                              latitude=entry['latitude'],
                              longitude=entry['longitude'],
                              altitude=entry['altitude'] if entry['altitude'] != '' else 0,

@@ -23,7 +23,7 @@ def _to_dictionary(lines, format):
     if "GpsNumber" not in lines[0] and format == "ecotone":
         raise TypeError("a")
 
-    args = ["gpsNumber", "GPSTime", "longitude", "latitude", "temperature", "altitude"]
+    args = ["gpsNumber", "gpsTime", "longitude", "latitude", "temperature", "altitude"]
 
     for arg in args:
         for x in range(0, len(lines[0])):
@@ -40,13 +40,13 @@ def _to_dictionary(lines, format):
             parsed_line["gpsNumber"] = 0
         if "temperature" not in parsed_line:
             parsed_line["temperature"] = -373.15
-        if "altitude" not in parsed_line:
-            parsed_line["altitude"] = 0
+        if "altitude" not in parsed_line    :
+            parsed_line["altitude"] = -0
+
 
         parsed.append(parsed_line)
     return parsed
 
 def parser_Info(format):
     type = get_attribute_name(format, "type")
-    manufacturer = get_attribute_name(format, "manufacturer")
     return {"type": type, "manufacturer" : format}

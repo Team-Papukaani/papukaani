@@ -28,7 +28,7 @@ def create_points(data, format):
 
         collections[GpsNumber].append(
             gathering.Gathering(
-                time=parse_time(point['GPSTime']),
+                time=parse_time(point['gpsTime']),
                 geometry=[float(point["longitude"]), float(point["latitude"])],
                 temperature=float(point['temperature'])
             ))

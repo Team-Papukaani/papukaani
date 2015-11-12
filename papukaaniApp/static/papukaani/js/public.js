@@ -43,9 +43,30 @@ var PathIterator = function(points) {
     //Returns the last passed point based on time. If time equals
     //the timestamp of a point, it returns that point.
     this.getPointAtTime = function(time) {
+        var pointIndex = this.getPointIndexAtTime(time);
+        if(pointIndex == undefined) return null;
+        return orderedPoints[pointIndex];
+    }
+
+    this.getPointIndexAtTime = function(time) {
         if(time < this.getStartTime()) return null
         while(currentIndex < orderedPoints.length - 1 && time >= orderedPoints[currentIndex+1].time) currentIndex++;
-        return orderedPoints[currentIndex];
+        return currentIndex;
+    }
+
+    this.getPositionAtTime = function(time) {
+        var pointAIndex = this.getPointIndexAtTime(time);
+        var pointA = points[pointAIndex]
+        var pointB = points[pointAIndex + 1]
+
+        var pointAVector = new Victor(pointA.lat, pointA.lng);
+        var pointBVector = new Victor(pointB.lat, pointB.lng);
+
+        var directionVector = pointBVector.clone().subtract(pointAVector);
+        var timeSincePointA = time - pointA.time;
+        var pointTimeDifference = pointB.time - pointA.time;
+        var directionVectorScalar = timeSincePointA/pointTimeDifference;
+        return pointAVector.add(directionVector.multiplyScalar(directionVectorScalar));
     }
 
     //Returns the time (as milliseconds) of the earliest point.

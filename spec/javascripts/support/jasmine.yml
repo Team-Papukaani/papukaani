@@ -12,7 +12,8 @@
 #   - dist/**/*.js
 #
 src_files:
-  - papukaaniApp/static/papukaani/js/public.js
+  - papukaaniApp/static/papukaani/js/**/*.js
+  - papukaaniApp/static/papukaani/libraries/**/*.js
 
 # stylesheets
 #

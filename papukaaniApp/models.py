@@ -27,3 +27,13 @@ class MapPoint(models.Model):
     class Meta:
         unique_together = ("gpsNumber", "timestamp", "latitude", "longitude")
 
+class GeneralParser(models.Model):
+    gpsNumber = models.CharField(max_length=40)
+    gpsTime = models.DateTimeField()
+    longitude = models.DecimalField(max_digits=12, decimal_places=9)  # decimals are important, float approximates
+    latitude = models.DecimalField(max_digits=12, decimal_places=9)  # decimals are important, float approximates
+    temperature = models.DecimalField(max_digits=5, decimal_places=2)
+    type = models.CharField(max_length=20)
+    manufacturer = models.CharField(max_length=20)
+    split_mark = models.CharField(max_length=10)
+    coding = models.CharField(max_length=10)

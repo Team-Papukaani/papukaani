@@ -1,6 +1,6 @@
 import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
-from papukaaniApp.utils.file_peparer import *
+from papukaaniApp.utils.file_preparer import *
 
 def parse_time(time):
     toks = time.split()

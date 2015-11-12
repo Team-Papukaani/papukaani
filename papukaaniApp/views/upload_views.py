@@ -1,6 +1,6 @@
 from papukaaniApp.models import *
 from papukaaniApp.utils.parser import *
-from papukaaniApp.utils.file_peparer import *
+from papukaaniApp.utils.file_preparer import *
 from django.shortcuts import render
 from papukaaniApp.utils.view_utils import *
 import json, uuid

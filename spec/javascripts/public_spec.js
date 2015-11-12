@@ -2,12 +2,12 @@
 describe("PathIterator", function() {
   beforeEach(function() {
     testPoints = [
-      {lat: 20, lng: 20, time: Date.UTC(2012, 1, 1, 1, 1, 1)},
-      {lat: 26, lng: 18, time: Date.UTC(2012, 1, 1, 1, 3, 1)},
-      {lat: 11, lng: 66, time: Date.UTC(2012, 1, 1, 6, 4, 1)},
-      {lat: 20, lng: 20, time: Date.UTC(2012, 1, 3, 6, 4, 1)},
-      {lat: 20, lng: 40, time: Date.UTC(2012, 7, 3, 6, 4, 1)},
-      {lat: 22, lng: 20, time: Date.UTC(2014, 7, 3, 6, 4, 1)}
+      {coordinates: new Victor(20, 20), time: Date.UTC(2012, 1, 1, 1, 1, 1)},
+      {coordinates: new Victor(26, 18), time: Date.UTC(2012, 1, 1, 1, 3, 1)},
+      {coordinates: new Victor(11, 66), time: Date.UTC(2012, 1, 1, 6, 4, 1)},
+      {coordinates: new Victor(20, 20), time: Date.UTC(2012, 1, 3, 6, 4, 1)},
+      {coordinates: new Victor(20, 40), time: Date.UTC(2012, 7, 3, 6, 4, 1)},
+      {coordinates: new Victor(22, 20), time: Date.UTC(2014, 7, 3, 6, 4, 1)}
     ];
     pathIterator = new PathIterator(testPoints);
   });

@@ -39,8 +39,8 @@ polylineFade = function (j, length) {
     else return 0.5
 };
 
-// Iterates efficiently over objects that have latitude (lat),
-// longitude (lng) and time (time) (as milliseconds) as members.
+// Iterates efficiently over objects that have coordinates as a Victor
+// and time (time) (as milliseconds) as members.
 var PathIterator = function (points) {
     var orderedPoints = points.sort(function (a, b) {
         return a.time - b.time
@@ -55,25 +55,25 @@ var PathIterator = function (points) {
         return orderedPoints[pointIndex];
     };
 
+    //Helper function
     this.getPointIndexAtTime = function(time) {
         if(time < this.getStartTime()) return null
         while(currentIndex < orderedPoints.length - 1 && time >= orderedPoints[currentIndex+1].time) currentIndex++;
         return currentIndex;
     };
 
+    //Returns a linear interpolation of the position
+    //of the marker at a given time.
     this.getPositionAtTime = function(time) {
         var pointAIndex = this.getPointIndexAtTime(time);
         var pointA = points[pointAIndex]
         var pointB = points[pointAIndex + 1]
 
-        var pointAVector = new Victor(pointA.lat, pointA.lng);
-        var pointBVector = new Victor(pointB.lat, pointB.lng);
-
-        var directionVector = pointBVector.clone().subtract(pointAVector);
+        var directionVector = pointB.coordinates.clone().subtract(pointA.coordinates);
         var timeSincePointA = time - pointA.time;
         var pointTimeDifference = pointB.time - pointA.time;
         var directionVectorScalar = timeSincePointA/pointTimeDifference;
-        return pointAVector.add(directionVector.multiplyScalar(directionVectorScalar));
+        return pointA.coordinates.clone().add(directionVector.multiplyScalar(directionVectorScalar));
     };
 
     //Returns the time (as milliseconds) of the earliest point.
@@ -86,7 +86,6 @@ var PathIterator = function (points) {
 PublicMap.prototype.changePoints = function (points) {
 
     var latlngs = this.createLatlngsFromPoints(points);
-
     this.polylines = [];
 
 //    doc = points[0];
@@ -99,11 +98,14 @@ PublicMap.prototype.changePoints = function (points) {
 
 //Creates latLng objects from points
 PublicMap.prototype.createLatlngsFromPoints = function (points) {
-    var latlngs = [];
-    for (var p = 0; p < points.length; p++) {
-        var ltlgs = points[p].wgs84Geometry.coordinates;
-        latlngs.push([ltlgs[1], ltlgs[0]]);
-    }
+    return points.map(function(point) {
+        var coordinates = point.wgs84Geometry.coordinates;
+        return {
+            coordinates: Victor.fromArray(coordinates),
+            time: Date.parse(point.timeStart)
+        };
+    });
+
     return latlngs;
 };
 

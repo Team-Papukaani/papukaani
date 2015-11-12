@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test import Client
 from papukaaniApp.models_LajiStore import *
+from papukaaniApp.models import *
 from datetime import datetime
 
 _filePath = "papukaaniApp/tests/test_files/"
@@ -11,6 +12,13 @@ class FileUploadTest(TestCase):
 
     def setUp(self):
         self.c = Client()
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber", gpsTime="GPSTime",
+                                              longitude="Longtitude", latitude="Latitude", altitude="Altitude",
+                                              temperature="Temperature", split_mark=",", coding="utf-8")
+        self.ecotone_parser.save()
+
+    def tearDown(self):
+        self.ecotone_parser.delete()
 
     def test_get_to_upload_returns_200(self):
         response = self.c.get(_URL)

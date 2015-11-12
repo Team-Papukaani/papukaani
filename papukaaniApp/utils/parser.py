@@ -6,7 +6,7 @@ def parse_time(time):
     toks = time.split()
     return toks[0] + "T" + toks[1] + "+00:00"
 
-def create_points(data, format):
+def create_points(data, parser):
     """
     Creates a new entry for every Gathering not already in the database.
     :param data: The contents of the uploaded file.
@@ -23,7 +23,7 @@ def create_points(data, format):
             collections[GpsNumber] = []
 
         if GpsNumber not in devices:
-            device.get_or_create(deviceId=GpsNumber, parserInfo=parser_Info(format))
+            device.get_or_create(deviceId=GpsNumber, parserInfo=parser_Info(parser))
             devices.append(GpsNumber)
 
         collections[GpsNumber].append(

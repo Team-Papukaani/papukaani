@@ -14,7 +14,7 @@ def upload(request):
     Point data is parsed from file and saved to database.
     Point data for Leaflet returned in response.
     """
-    format = "ecotone" #change later!!
+    parser = GeneralParser.objects.filter(formatName="ecotone") #change later!!
     if request.method == 'GET':
         return _render_with_message(request)
     if request.method == 'POST':
@@ -22,12 +22,12 @@ def upload(request):
 
             file = request.FILES['file']
             try:
-                data = prepare_file(file, format)
+                data = prepare_file(file, parser)
 
             except:
                 messages.add_message(request, messages.ERROR, 'Tiedostosi formaati ei ole kelvollinen!')
                 return redirect(upload)
-            points = create_points(data, format)
+            points = create_points(data, parser)
             return _render_points(points, request)
 
         messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")

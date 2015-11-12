@@ -1,33 +1,33 @@
 from papukaaniApp.utils.data_formats import *
 
-def prepare_file(file, format):
+def prepare_file(file, parser):
     """
     Reads the given file and extracts the values of individual events.
     :param file: data file
-    :param format: type of given data, ecotone, for example
+    :param parser: instance of GeneralParser
     :return: A dictionary containing every event as named values.
     """
     with file as f:
         lines = [line for line in f]
     decoded = []
-    split_mark = get_attribute_name(format, "split_mark")
-    coding = get_attribute_name(format, "coding")
+    split_mark = parser.split_mark
+    coding = parser.coding
     for line in lines:
         decoded.append(line.decode(coding).rstrip().split(split_mark))
-    return _to_dictionary(decoded, format)
+    return _to_dictionary(decoded, parser)
 
 
-def _to_dictionary(lines, format):
+def _to_dictionary(lines, parser):
     parsed = []
 
-    if "GpsNumber" not in lines[0] and format == "ecotone":
+    if "GpsNumber" not in lines[0] and parser.formatName == "ecotone":
         raise TypeError("a")
 
     args = ["gpsNumber", "gpsTime", "longitude", "latitude", "temperature", "altitude"]
 
     for arg in args:
         for x in range(0, len(lines[0])):
-            if lines[0][x] == get_attribute_name(format, arg):
+            if lines[0][x] == getattr(parser, arg):
                 lines[0][x] = arg
 
 
@@ -47,6 +47,5 @@ def _to_dictionary(lines, format):
         parsed.append(parsed_line)
     return parsed
 
-def parser_Info(format):
-    type = get_attribute_name(format, "type")
-    return {"type": type, "manufacturer" : format}
+def parser_Info(parser):
+    return {"type": "GMS", "manufacturer" : parser.formatName}

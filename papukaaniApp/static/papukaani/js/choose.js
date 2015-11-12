@@ -23,7 +23,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         document.getElementById("formatError").innerHTML = "Invalid Date format!";
         return;
     }
-    pointsWithinRange = this.points.filter(function (point) {
+    var pointsWithinRange = this.points.filter(function (point) {
         var timestring = point.timeStart;
         var timestamp = new Date(timestring);
         a = (start != "" ? a : timestamp);
@@ -136,7 +136,7 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
 ChooseMap.prototype.send = function () {
     data = JSON.stringify(this.sorter.documents);
-    messagebox = $("#loading");
+    var messagebox = $("#loading");
     messagebox.text("Tallennetaan...");
 
     lockButtons();
@@ -215,9 +215,9 @@ function setLoadingMessage(request, messagebox) {
 }
 
 function init(devices, token) {
-    sorter = new DeviceSorter(devices);
+    this.sorter = new DeviceSorter(devices);
     map = new ChooseMap(sorter);
-    sorter.setMap(map);
+    this.sorter.setMap(map);
     csrf_token = token;
 
     return map

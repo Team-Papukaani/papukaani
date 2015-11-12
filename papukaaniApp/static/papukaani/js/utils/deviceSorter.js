@@ -15,7 +15,7 @@ function DeviceSorter(devices) {
 //Sends a request to the rest-controller for documents matching the deviceId.
 DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     if (deviceId != 'None') {
-        messagebox = $("#loading");
+        var messagebox = $("#loading");
         messagebox.text("Tietoja ladataan...");
         lockButtons();
         request = new XMLHttpRequest;
@@ -52,7 +52,7 @@ function showPointsForDevice() {
             this.documents.push(docs[i]);
         }
         this.map.changePoints(extractPoints(this.documents));
-        messagebox = $("#loading");
+        var messagebox = $("#loading");
         messagebox.text("");
         if (this.documents.length == 0) {
             $("#selectDevice").attr("disabled", false);
@@ -96,7 +96,7 @@ DeviceSorter.prototype.showSaveOrCancelPopup = function (deviceId) {
         return
     }
 
-    popup = $("#popup");
+    var popup = $("#popup");
 
     $("#save_button").click(function (event) {
         this.map.send();

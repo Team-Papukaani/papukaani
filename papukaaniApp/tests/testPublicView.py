@@ -31,11 +31,9 @@ class PublicView(StaticLiveServerTestCase):
         self.A.delete()
         self.D.delete()
 
-    """
     def test_no_points_are_shown_on_map(self):
         self.assertEquals(self.page.get_number_of_points(), 0)
 
     def test_can_choose_points_by_device(self):
         self.page.change_device_selection("DeviceId")
-        self.assertGreater(self.page.get_number_of_points(), 0)
-    """
+        self.assertNotEquals(self.page.POLYLINE, None)

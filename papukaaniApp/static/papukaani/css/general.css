@@ -62,3 +62,9 @@ html,body {
 .padded2 {
     padding:4px;
 }
+
+.small-slider {
+    width:150px;
+    margin-left: 20px;
+    margin-top: 10px;
+}

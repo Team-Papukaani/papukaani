@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.min.css' %}"/>
     {% include "papukaaniApp/include_headers.html" %}
 
 
@@ -17,11 +18,21 @@
 <body onload=" var map = init({{ devices }})">
 {% include "papukaaniApp/navigation.html" %}
 
-<select id="selectDevice"></select>
+<div class="choose_actions form-inline padded2">
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Lähetin:</span>
+        <select id="selectDevice" class="form-control"></select>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">Nopeus:</span>
+        <div id="speedSlider" class="small-slider"></div>
+    </div>
+</div>
 
 <div id="map" class="largeMap"></div>
 
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
@@ -29,6 +40,10 @@
 <script src="{% static 'papukaani/js/public.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
 <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
+
+<script>
+
+</script>
 
 </body>
 </html>

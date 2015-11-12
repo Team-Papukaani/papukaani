@@ -1,13 +1,13 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import DevicePage
+from selenium.common.exceptions import NoSuchElementException
 
 _filePath = "papukaaniApp/tests/test_files/"
 
 
 class TestDeviceFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        # self.A = device.create('1234TEST_A','type','manufact','2015-10-27T16:32:01+00:00', '2015-10-27T16:32:01+00:00', [])
         dev = {
             "deviceId": "DeviceId",
             "deviceType": "Type",
@@ -27,7 +27,6 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.page.change_device_selection("DeviceId")
 
     def tearDown(self):
-        # self.A.delete()
         self.D.delete()
         self.I.delete()
         self.page.close()
@@ -53,3 +52,9 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
 
         self.page.driver.find_element_by_id("attach").send_keys("2015-11-02T14:00:00+03:00")
         self.page.driver.find_element_by_id("attach").click()
+
+    def test_removed_individuals_are_not_selectable(self):
+        self.I.deleted = True
+        self.I.update()
+        with self.assertRaises(NoSuchElementException):
+            self.page.attach_individual("Birdie")

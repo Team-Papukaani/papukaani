@@ -34,7 +34,7 @@ _RESPONSE_BASE = {"errors": [], "status": ""}
 @api_view(['POST'])
 def attach_to(request, device_id):
     '''
-    Attach a device to an individual. Response field "status" is "attached" if attach was succesful, "not attached" otherwise.
+    Attach a device to an individual. Response field "status" is "attached" if attach was successful, "not attached" otherwise.
     '''
     response = _RESPONSE_BASE.copy()
 

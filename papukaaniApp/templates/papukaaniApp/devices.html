@@ -4,10 +4,12 @@
 <head>
     {% include "papukaaniApp/include_headers.html" %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
     <title>Pelikaija</title>
 </head>
 {% autoescape off %}
-    <body onload='init({{ device_json }}, {{ individual_json }}, "{{ csrf_token }}")'>
+<body onload='init({{ device_json }}, {{ individual_json }}, "{{ csrf_token }}")'>
 {% endautoescape %}
 
 {% include "papukaaniApp/navigation.html" %}
@@ -44,7 +46,7 @@
                 </select>
             </td>
             <td>
-                <input type="text" id="start_time" name="start_time" class="datepicker"
+                <input type="text" id="start_time" name="start_time" class="dateinput datepicker"
                        onblur="validateDateFormat(this)" placeholder="dd-mm-yyyy HH:mm"></td>
             <td></td>
             <td><a id="attach" class="btn btn-sm btn-primary" onclick="attachDevice()">Kiinnitä</a></td>
@@ -54,9 +56,14 @@
 </form>
 
 
+
+
 {% include "papukaaniApp/include_scripts.html" %}
+<script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
+<script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
 <script src="{% static 'papukaani/js/devices.js'  %}"></script>
+<script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
 
 </body>
 </html>

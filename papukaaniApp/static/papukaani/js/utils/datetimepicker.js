@@ -6,7 +6,43 @@ function validateDateFormat(element) {
     }
 }
 
-$(function () {
+//Parses the given string into an appropriate Date-format.
+function parseTime(timestring) {
+    var parts = timestring.split(' ');
+    var dateparts = parts[0].split('-');
+
+    var offset = new Date().getTimezoneOffset()
+    offset = ((offset<0? '+':'-')+ // Note the reversed sign!
+          pad(parseInt(Math.abs(offset/60)), 2)+ ":" +
+          pad(Math.abs(offset%60), 2)) //+ ":00"
+
+    return (dateparts[2] + "-" + dateparts[1] + "-" + dateparts[0] + 'T' + parts[1] + ":00" + offset);
+}
+
+function pad(number, length){
+    var str = "" + number
+    while (str.length < length) {
+        str = '0'+str
+    }
+    return str
+}
+
+//Checks if the date is between the two parameters.
+function dateIsBetween(date, start, end) {
+    return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
+}
+
+function initDatepicker(){
+    $(function () {
+            $(".datepicker").datetimepicker();
+            $.extend($.datepicker, {
+                _checkOffset: function (inst, offset, isFixed) {
+                    return offset
+                }
+            })
+        });
+
+    $(function () {
     $.datepicker.regional['fi'] = {
         prevText: 'Edellinen',
         nextText: 'Seuraava',
@@ -35,4 +71,10 @@ $(function () {
         isRTL: false
     };
     $.timepicker.setDefaults($.timepicker.regional['fi']);
-});
+    });
+}
+
+initDatepicker()
+
+
+

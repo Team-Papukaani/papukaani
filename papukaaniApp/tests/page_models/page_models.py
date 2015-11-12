@@ -244,6 +244,13 @@ class DevicePage(PageWithDeviceSelector):
     def __init__(self):
         super().__init__()
 
+    def find_controls(self):
+        self.START_TIME = self.driver.find_element_by_id("start_time")
+        self.REMOVE_TIME = self.driver.find_element_by_id("remove_time")
+        self.ATTACH = self.driver.find_element_by_id("attach")
+        self.REMOVE = self.driver.find_element_by_class_name("btn-danger")
+        self.ATTACHER = self.driver.find_element_by_id("attacher")
+
     def get_individual_name(self, individualId):
         return self.driver.find_element_by_id("name" + individualId).text
 
@@ -257,14 +264,14 @@ class DevicePage(PageWithDeviceSelector):
     #
     #     return no_of_pts
 
-    def attach_individual(self, bird):
+    def attach_individual(self, bird, timestamp):
         selector = self.driver.find_element_by_id("individualId")
         sel = Select(selector)
         sel.select_by_value(bird)
 
-        self.driver.find_element_by_id("start_time").send_keys("2015-11-05T15:00:00+00:00")
+        self.START_TIME.send_keys(timestamp)
 
-        self.driver.find_element_by_id("attach").click()
+        self.ATTACH.click()
 
 
 class IndividualPage(Page):

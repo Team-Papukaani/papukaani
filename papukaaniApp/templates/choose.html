@@ -68,17 +68,6 @@
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
 
-<script>
-    $(function () {
-        $(".datepicker").datetimepicker();
-        $.extend($.datepicker, {
-            _checkOffset: function (inst, offset, isFixed) {
-                return offset
-            }
-        })
-    });
-</script>
-
 <div id="map" class="largeMap">
 </div>
 

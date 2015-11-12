@@ -44,7 +44,7 @@ def attach_to(request, device_id):
     attached = dev.attach_to(indiv, request.POST['timestamp'])
     dev.update()
 
-    response["status"] == "attached" if attached else "not attached"
+    response["status"] = "attached" if attached else "not attached"
 
     return Response(response)
 

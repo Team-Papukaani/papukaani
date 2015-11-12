@@ -48,18 +48,6 @@ function get(name) {
         return decodeURIComponent(name[1]);
 }
 
-//Parses the given string into an appropriate Date-format.
-function parseTime(timestring) {
-    var parts = timestring.split(' ');
-    var dateparts = parts[0].split('-');
-    return (dateparts[2] + "-" + dateparts[1] + "-" + dateparts[0] + 'T' + parts[1] + ":00+00:00");
-}
-
-//Checks if the date is between the two parameters.
-function dateIsBetween(date, start, end) {
-    return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
-}
-
 //Creates an empty MarkerClusterGroup with initial settings.
 function createEmptyMarkerClusterGroup() {
     customCluster = function (cluster) {

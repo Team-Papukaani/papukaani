@@ -32,6 +32,7 @@ class GeneralParser(models.Model):
     gpsTime = models.DateTimeField()
     longitude = models.DecimalField(max_digits=12, decimal_places=9)  # decimals are important, float approximates
     latitude = models.DecimalField(max_digits=12, decimal_places=9)  # decimals are important, float approximates
+    altitude = models.DecimalField(max_digits=8, decimal_places=3)
     temperature = models.DecimalField(max_digits=5, decimal_places=2)
     type = models.CharField(max_length=20)
     manufacturer = models.CharField(max_length=20)

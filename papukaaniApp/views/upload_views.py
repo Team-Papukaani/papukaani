@@ -14,7 +14,7 @@ def upload(request):
     Point data is parsed from file and saved to database.
     Point data for Leaflet returned in response.
     """
-    parser = GeneralParser.objects.filter(formatName="ecotone") #change later!!
+    parser = GeneralParser.objects.filter(formatName="ecotone")[0] #change later!!
     if request.method == 'GET':
         return _render_with_message(request)
     if request.method == 'POST':

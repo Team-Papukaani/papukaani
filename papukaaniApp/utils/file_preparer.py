@@ -7,6 +7,7 @@ def prepare_file(file, parser):
     :param parser: instance of GeneralParser
     :return: A dictionary containing every event as named values.
     """
+
     with file as f:
         lines = [line for line in f]
     decoded = []
@@ -19,6 +20,8 @@ def prepare_file(file, parser):
 
 def _to_dictionary(lines, parser):
     parsed = []
+
+    # MAKE THIS BETTER, NOT BUTTER, MANGUSTO
 
     if "GpsNumber" not in lines[0] and parser.formatName == "ecotone":
         raise TypeError("a")
@@ -45,6 +48,7 @@ def _to_dictionary(lines, parser):
 
 
         parsed.append(parsed_line)
+
     return parsed
 
 def parser_Info(parser):

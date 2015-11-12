@@ -80,9 +80,9 @@ function createEmptyMarkerClusterGroup() {
 
     clusterGroup = L.markerClusterGroup({
         zoomToBoundsOnClick: false,
-        maxClusterRadius: 40,
-        disableClusteringAtZoom: 13,
+        maxClusterRadius: 35,
         singleMarkerMode: true,
+        spiderfyOnMaxZoom: true,
         iconCreateFunction: customCluster
     });
     return clusterGroup

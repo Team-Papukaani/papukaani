@@ -77,6 +77,8 @@ class PublicPage(PageWithDeviceSelector):
     """
     url = BASE_URL + '/papukaani/public/'
 
+    POLYLINE = Element(By.TAG_NAME, 'g')
+
     def __init__(self):
         super().__init__()
 

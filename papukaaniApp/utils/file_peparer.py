@@ -1,53 +1,52 @@
-
+from papukaaniApp.utils.data_formats import *
 
 def prepare_file(file, format):
     """
     Reads the given file and extracts the values of individual events.
-    :param file: An Ecotone file.
+    :param file: data file
+    :param format: type of given data, ecotone, for example
     :return: A dictionary containing every event as named values.
     """
-    if format == "ecotone":
-        return ecotone(file)
-    if format == 'byholm':
-        return byholm(file)
-
-
-def ecotone(file):
     with file as f:
         lines = [line for line in f]
     decoded = []
+    split_mark = get_attribute_name(format, "split_mark")
+    coding = get_attribute_name(format, "coding")
     for line in lines:
-        decoded.append(line.decode("utf-8").rstrip().split(','))
-    if "GpsNumber" not in decoded[0]:
-        raise TypeError("a")
-    return to_dictionary(decoded)
+        decoded.append(line.decode(coding).rstrip().split(split_mark))
+    return _to_dictionary(decoded, format)
 
-def byholm(file):
-    with file as f:
-        lines = [line for line in f]
-    decoded = []
-    for line in lines:
-        decoded.append(line.decode("utf-8").rstrip().split('\t'))
-    return to_dictionary(decoded)
 
-def to_dictionary(lines):
+def _to_dictionary(lines, format):
     parsed = []
+
+    if "GpsNumber" not in lines[0] and format == "ecotone":
+        raise TypeError("a")
+
+    args = ["gpsNumber", "GPSTime", "longitude", "latitude", "temperature", "altitude"]
+
+    for arg in args:
+        for x in range(0, len(lines[0])):
+            if lines[0][x] == get_attribute_name(format, arg):
+                lines[0][x] = arg
+
+
+
+
     for line in lines[1:]:
         parsed_line = dict(zip(lines[0], line))
 
-
-        if "GpsNumber" not in parsed_line:
-            parsed_line["GpsNumber"] = 0
-
-        if "GPSTime" not in parsed_line:
-            parsed_line["GPSTime"] = parsed_line["DateTime"]
-            del parsed_line["DateTime"]
+        if "gpsNumber" not in parsed_line:
+            parsed_line["gpsNumber"] = 0
+        if "temperature" not in parsed_line:
+            parsed_line["temperature"] = -373.15
+        if "altitude" not in parsed_line:
+            parsed_line["altitude"] = 0
 
         parsed.append(parsed_line)
     return parsed
 
 def parser_Info(format):
-    if format == "ecotone":
-        return {"type": "GMS", "manufacturer": "Ecotones"}
-    if format == "byholm":
-        return {"type": "GMS", "manufacturer": "byholm"}
+    type = get_attribute_name(format, "type")
+    manufacturer = get_attribute_name(format, "manufacturer")
+    return {"type": type, "manufacturer" : format}

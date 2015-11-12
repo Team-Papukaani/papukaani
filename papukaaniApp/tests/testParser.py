@@ -1,7 +1,6 @@
 from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
-from papukaaniApp.models import Creature, MapPoint
 from papukaaniApp.models_LajiStore import document, gathering
 
 
@@ -46,7 +45,8 @@ class FileParserTest(TestCase):
         entries = prepare_file(file, "byholm")
         create_points(entries, "byholm")
         documents = document.get_all()
-        self.assertEqual(len(documents), 5)
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(len(documents[0].gatherings), 5)
 
 
 def _create_points_from_ecotone(filename):

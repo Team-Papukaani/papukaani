@@ -2,16 +2,9 @@ import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_peparer import *
 
-
-#def ecotones_parse(file):
-
-    #return ecotone(file)
-
-
-def ecotones_parse_time(time):
+def parse_time(time):
     toks = time.split()
     return toks[0] + "T" + toks[1] + "+00:00"
-
 
 def create_points(data, format):
     """
@@ -24,7 +17,7 @@ def create_points(data, format):
     devices = []
 
     for point in data:
-        GpsNumber = point['GpsNumber']
+        GpsNumber = point['gpsNumber']
 
         if GpsNumber not in collections:
             collections[GpsNumber] = []
@@ -35,9 +28,9 @@ def create_points(data, format):
 
         collections[GpsNumber].append(
             gathering.Gathering(
-                time=ecotones_parse_time(point['GPSTime']),
-                geometry=[float(point["Longtitude"]), float(point["Latitude"])],
-                temperature=float(point['Temperature'])
+                time=parse_time(point['GPSTime']),
+                geometry=[float(point["longitude"]), float(point["latitude"])],
+                temperature=float(point['temperature'])
             ))
 
     points = []

@@ -7,14 +7,16 @@ function validateDateFormat(element) {
 }
 
 //Parses the given string into an appropriate Date-format.
-function parseTime(timestring) {
+function parseTime(timestring, offset) {
     var parts = timestring.split(' ');
     var dateparts = parts[0].split('-');
 
-    var offset = new Date().getTimezoneOffset()
-    offset = ((offset<0? '+':'-')+ // Note the reversed sign!
-          pad(parseInt(Math.abs(offset/60)), 2)+ ":" +
-          pad(Math.abs(offset%60), 2)) //+ ":00"
+    if(!offset){
+        var offset = new Date().getTimezoneOffset()
+        offset = ((offset<0? '+':'-')+ // Note the reversed sign!
+        pad(parseInt(Math.abs(offset/60)), 2)+ ":" +
+        pad(Math.abs(offset%60), 2)) //+ ":00"
+    }
 
     return (dateparts[2] + "-" + dateparts[1] + "-" + dateparts[0] + 'T' + parts[1] + ":00" + offset);
 }

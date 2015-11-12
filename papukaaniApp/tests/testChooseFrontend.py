@@ -9,8 +9,8 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+02:00", [23.00, 61.00]),
-                                           gathering.Gathering("1234-12-12T12:13:14+02:00", [23.01, 61.01])],
+        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00]),
+                                           gathering.Gathering("1234-12-12T12:13:14+00:00", [23.01, 61.01])],
                                  "DeviceId")
         dev = {
             "deviceId": "DeviceId",

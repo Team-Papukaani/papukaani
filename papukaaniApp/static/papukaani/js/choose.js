@@ -17,8 +17,8 @@ function ChooseMap(sorter) {
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     var a, b;
     try {
-        a = (start != "" ? new Date(parseTime(start)) : "");
-        b = (end != "" ? new Date(parseTime(end)) : "");
+        a = (start != "" ? new Date(parseTime(start, "+00:00")) : "");
+        b = (end != "" ? new Date(parseTime(end, "+00:00")) : "");
     } catch (error) {
         document.getElementById("formatError").innerHTML = "Invalid Date format!";
         return;

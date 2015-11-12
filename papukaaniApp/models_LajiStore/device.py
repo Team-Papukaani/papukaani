@@ -6,8 +6,9 @@ class Device:
     '''
     Represents the Device table of LajiStore
     '''
+
     def __init__(self, deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
-                 facts=None, individuals = None,  id=None, **kwargs):
+                 facts=None, individuals=None, id=None, **kwargs):
         self.id = id
         self.deviceId = deviceId
         self.deviceType = deviceType
@@ -18,7 +19,7 @@ class Device:
         self.individuals = individuals
 
         if not facts:
-            self.facts = [{"name":"status", "value":"not attached"}]
+            self.facts = [{"name": "status", "value": "not attached"}]
 
         if not individuals:
             self.individuals = []
@@ -39,19 +40,20 @@ class Device:
         '''
         Attaches this device to an individual. Previously attached device will be removed.
         '''
+        print(self.facts)
         if self.facts[0]["value"] == "not attached":
             self.individuals.append({
-                "individualId" : individual.individualId,
-                "attached" : timestamp,
-                "removed" : None
-            } )
+                "individualId": individual.individualId,
+                "attached": timestamp,
+                "removed": None
+            })
             self.change_status()
             return True
         return False
 
-    def remove_from(self, individual, timestamp):
+    def detach_from(self, individual, timestamp):
         '''
-        Removes this device from an individual. If the individual is allready removed, old removal date will be rewritten.
+        Removes this device from an individual. If the individual is already removed, old removal date will be rewritten.
         '''
         for indiv in self.individuals:
             if indiv["individualId"] == individual.individualId and indiv["removed"] == None:
@@ -64,6 +66,7 @@ class Device:
         Changes the status of the device to attached if not attached and vice versa.
         '''
         self.facts[0]["value"] = "attached" if self.facts[0]["value"] == "not attached" else "not attached"
+
 
 def find(**kwargs):
     '''
@@ -81,6 +84,7 @@ def get_all():
     '''
     return _get_many()
 
+
 def get_or_create(deviceId, parserInfo):
     '''
     Gets the device with the given deviceId, or creates it if not found.
@@ -92,8 +96,8 @@ def get_or_create(deviceId, parserInfo):
             deviceId=deviceId,
             deviceType=parserInfo["type"],
             deviceManufacturer=parserInfo["manufacturer"],
-            createdAt= current_time_as_lajistore_timestamp(),
-            lastModifiedAt= current_time_as_lajistore_timestamp(),
+            createdAt=current_time_as_lajistore_timestamp(),
+            lastModifiedAt=current_time_as_lajistore_timestamp(),
             facts=[]
         )
     else:
@@ -121,11 +125,13 @@ def create(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, 
 
     return device
 
+
 def delete_all():
     '''
     Deletes all devices. Can only be used in test enviroment.
     '''
     LajiStoreAPI.delete_all_devices()
+
 
 def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_devices(**kwargs)
@@ -133,4 +139,3 @@ def _get_many(**kwargs):
     for device in data:  # creates a list of devices to return
         devices.append(Device(**device))
     return devices
-

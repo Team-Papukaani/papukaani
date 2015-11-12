@@ -6,7 +6,6 @@ import sys
 
 class testLajiStoreAPI(TestCase):
     def setUp(self):
-
         self.device = {
             "deviceId": "ABCD1234567",
             "deviceType": "Type",
@@ -22,7 +21,7 @@ class testLajiStoreAPI(TestCase):
             "lastModifiedAt": "2015-09-15T11:25:58+03:00",
             "lastModifiedBy": "SomeUser",
             "documentId": "ABCDTESTTEST",
-            "deviceId" : "TestTest",
+            "deviceId": "TestTest",
             "createdAt": "2015-09-15T11:25:58+03:00",
             "createdBy": "SomeUser",
             "facts": [],
@@ -74,11 +73,17 @@ class testLajiStoreAPI(TestCase):
         response = LajiStoreAPI.update_individual(**self.individual)
         self.assertEquals(True, "id" in response)
 
+        self.canBeMarkedDeleted()
+
         response = LajiStoreAPI.delete_individual(response["id"])
         self.assertEquals(204, response.status_code)
 
-    def testSingleArgumentQueries(self):
+    def canBeMarkedDeleted(self):
+        self.individual["deleted"] = True
+        response = LajiStoreAPI.update_individual(**self.individual)
+        self.assertEquals(True, "deleted" in response)
 
+    def testSingleArgumentQueries(self):
         response = LajiStoreAPI.get_all_devices(deviceId="ABCD1234567")
         self.assertGreaterEqual(len(response), 0)
 
@@ -91,8 +96,6 @@ class testLajiStoreAPI(TestCase):
         response = LajiStoreAPI.get_all_documents(documentId="NOTFOUND")
         self.assertEqual(len(response), 0)
 
-
-
     def testGetAll(self):
         response = LajiStoreAPI.get_all_documents()
         self.assertGreaterEqual(len(response), 0)
@@ -104,7 +107,7 @@ class testLajiStoreAPI(TestCase):
         self.assertGreaterEqual(len(response), 0)
 
     def testAddQuery(self):
-        q = LajiStoreAPI._add_query(arg1 = "test")
+        q = LajiStoreAPI._add_query(arg1="test")
         self.assertEquals(q, "?q=arg1:test")
         self.assertTrue(" AND " not in q)
 

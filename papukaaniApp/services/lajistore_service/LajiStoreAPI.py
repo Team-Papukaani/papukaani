@@ -34,6 +34,7 @@ def delete_device(id):
 def post_device(**data):
     return _post(data, _DEVICE_PATH)
 
+
 def update_device(**data):
     return _put(_DEVICE_PATH + "/" + str(data["id"]), data)
 
@@ -58,6 +59,7 @@ def delete_document(id):
 
 def post_document(**data):
     return _post(data, _DOCUMENT_PATH)
+
 
 def update_document(**data):
     return _put(_DOCUMENT_PATH + "/" + str(data["id"]), data)
@@ -103,7 +105,6 @@ def _delete(uri):
 
 def _get(uri, **kwargs):
     url = _URL + uri
-
     if (kwargs):
         url += _add_query(**kwargs)
     response = requests.get(url, auth=_AUTH).json()

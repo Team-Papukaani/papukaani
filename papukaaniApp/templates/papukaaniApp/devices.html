@@ -38,7 +38,7 @@
             <td>
                 <select id="individualId">
                     <option disabled selected>Valitse kiinnitettävä lintu</option>
-                    {% for individual in individuals %}
+                    {% for individual in selection %}
                         <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
                     {% endfor %}
                 </select>

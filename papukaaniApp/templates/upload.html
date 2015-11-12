@@ -8,7 +8,7 @@
     {% include "papukaaniApp/include_headers.html" %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
-    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>z
 </head>
 <body>
 
@@ -36,7 +36,7 @@
 <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 <script>
     {% autoescape off %}
-        create_map_with_points('{{points}}')
+        create_map_with_points('{{points}}');
     {% endautoescape%}
 </script>
 </body>

@@ -67,7 +67,7 @@ class TestDevice(TestCase):
         A, B = self._create_individuals()
         self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
 
-        self.d.remove_from(A, "2015-10-10T10:10:10+00:00")
+        self.d.detach_from(A, "2015-10-10T10:10:10+00:00")
 
         self.assertTrue(self.d.attach_to(B, "2015-10-10T10:10:10+00:00"))
 
@@ -78,7 +78,7 @@ class TestDevice(TestCase):
         self.d.individuals = []
         A, B = self._create_individuals()
         self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
-        self.d.remove_from(A, "2015-10-10T10:10:10+00:00")
+        self.d.detach_from(A, "2015-10-10T10:10:10+00:00")
 
         self.assertEquals(len(self.d.individuals), 1)
         self.assertTrue(self.d.individuals[0]["removed"] != None)

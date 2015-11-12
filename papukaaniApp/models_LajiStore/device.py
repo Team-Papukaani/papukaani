@@ -40,7 +40,6 @@ class Device:
         '''
         Attaches this device to an individual. Previously attached device will be removed.
         '''
-        print(self.facts)
         if self.facts[0]["value"] == "not attached":
             self.individuals.append({
                 "individualId": individual.individualId,
@@ -56,9 +55,8 @@ class Device:
         Removes this device from an individual. If the individual is already removed, old removal date will be rewritten.
         '''
         for indiv in self.individuals:
-            if indiv["individualId"] == individual.individualId and indiv["removed"] == None:
+            if indiv["individualId"] == individual.individualId and indiv["removed"] is None:
                 indiv["removed"] = timestamp
-
         self.change_status()
 
     def change_status(self):

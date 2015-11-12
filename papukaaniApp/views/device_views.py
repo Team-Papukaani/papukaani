@@ -12,7 +12,6 @@ def devices(request):
 
     # Directory, where key is deviceId and value is an array of individual data
     individuals_of_devices = {device2.deviceId: device2.individuals for device2 in devices}
-    print(individuals_of_devices)
 
     # Directory, where key is individualId and value is it's name (taxon)
     individual_names = {individual2.individualId: individual2.taxon for individual2 in individuals}

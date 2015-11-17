@@ -161,3 +161,23 @@ function addInput(divName) {
 
     $(".datepicker").datetimepicker();
 }
+
+//Updates the map to show all markers within start and end, which are strings that can be converted to Date.
+PublicMap.prototype.showMarkersWithinTimeRange = function (start, end) {
+    var a, b;
+    try {
+        a = (start != "" ? new Date(parseTime(start, "+00:00")) : "");
+        b = (end != "" ? new Date(parseTime(end, "+00:00")) : "");
+    } catch (error) {
+        document.getElementById("formatError").innerHTML = "Invalid Date format!";
+        return;
+    }
+    var pointsWithinRange = this.points.filter(function (point) {
+        var timestring = point.timeStart;
+        var timestamp = new Date(timestring);
+        a = (start != "" ? a : timestamp);
+        b = (end != "" ? b : timestamp);
+        return dateIsBetween(timestamp, a, b)
+    });
+
+};

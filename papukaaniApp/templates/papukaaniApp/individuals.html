@@ -26,6 +26,7 @@
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ individual.id }}"/>
         <input class="form-control" type="text" name="taxon" placeholder="Nimi" value="{{ individual.taxon }}"/>
+        <p>{{ individual.deleted }}</p>
         <button type="submit" name="modify" value="1" class="btn btn-default">Muokkaa</button>
         <button type="submit" name="delete" value="1" class="btn btn-danger">Poista</button>
     </form>

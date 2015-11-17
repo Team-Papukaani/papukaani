@@ -17,4 +17,5 @@ def public(request):
     devices = []
     for item in device.get_all():
         devices.append(item.deviceId)
+    devices.sort()
     return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(devices)})

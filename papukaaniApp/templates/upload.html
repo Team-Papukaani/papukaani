@@ -12,7 +12,6 @@
 </head>
 <body>
 
-<p>
 {% include "papukaaniApp/navigation.html" %}
 <h2>Lataa tiedosto</h2>
 
@@ -36,7 +35,7 @@
 <script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
 <script>
     {% autoescape off %}
-        create_map_with_points('{{points}}')
+        create_map_with_points('{{points}}');
     {% endautoescape%}
 </script>
 </body>

@@ -138,3 +138,26 @@ L.Map.include({
         }, this);
     }
 });
+
+counter = 2;
+function addInput(divName) {
+    var newdiv = document.createElement('div');
+
+    newdiv.innerHTML = "<div class='input-group'>\
+                <span class='input-group-addon' id='basic-addon1'>Alku:</span>\
+                <input type='text' id='start_time" + counter + "' name='start_time" + counter + "' class='dateinput datepicker form-control'\
+                       onblur='validateDateFormat(this)'\
+                       placeholder='dd-mm-yyyy HH:mm' maxlength='16'>\
+            </div>\
+            <div class='input-group'>\
+                <span class='input-group-addon' id='basic-addon1'>Loppu:</span>\
+                <input type='text' id='end_time" + counter + "' name='end_time" + counter + "' class='dateinput datepicker form-control'\
+                       onblur='validateDateFormat(this)'\
+                       placeholder='dd-mm-yyyy HH:mm' maxlength='16'>\
+            </div>";
+
+    counter++;
+    document.getElementById(divName).appendChild(newdiv);
+
+    $(".datepicker").datetimepicker();
+}

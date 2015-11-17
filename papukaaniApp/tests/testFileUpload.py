@@ -32,25 +32,25 @@ class FileUploadTest(TestCase):
     def test_post_to_upload_with_file_creates_database_entry(self):
         before = len(document.get_all())
         with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post(_URL, {'file': file})
+            response = self.c.post(_URL, {'file': file, 'fileFormat': 'ecotone'})
 
         after = len(document.get_all())
-        #self.assertTrue(after > before)
+        self.assertTrue(after > before)
 
     def test_invalid_file_does_not_cause_exception(self):
         with open(_filePath + "invalid.txt") as file:
-            response = self.c.post(_URL, {'file': file})
+            response = self.c.post(_URL, {'file': file, 'fileFormat': 'ecotone'})
 
         self.assertTrue(response.status_code == 302)
 
     def test_the_same_points_will_not_be_added_to_database_multiple_times(self):
         with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post('/papukaani/upload/', {'file': file})
+            response = self.c.post('/papukaani/upload/', {'file': file, 'fileFormat': 'ecotone'})
         before = len(document.get_all())
         with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post('/papukaani/upload/', {'file': file})
+            response = self.c.post('/papukaani/upload/', {'file': file, 'fileFormat': 'ecotone'})
 
         after = len(document.get_all())
-        #self.assertTrue(after == before)
+        self.assertTrue(after == before)
 
 

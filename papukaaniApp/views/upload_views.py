@@ -22,13 +22,14 @@ def upload(request):
         if 'file' in request.FILES:
 
             file = request.FILES['file']
-            parser = GeneralParser.objects.filter(formatName=request.POST.get('formatName'))[0]
+            parser = GeneralParser.objects.filter(formatName=request.POST.get('fileFormat'))[0]
 
             try:
                 if parser.gpsNumber == '':
                     data = prepare_file(file, parser, request.POST.get('gpsNumber'))
                 else:
                     data = prepare_file(file, parser)
+
 
             except:
                 messages.add_message(request, messages.ERROR, 'Tiedostosi formaatti ei ole kelvollinen!')

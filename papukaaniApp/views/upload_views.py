@@ -14,31 +14,32 @@ def upload(request):
     Point data is parsed from file and saved to database.
     Point data for Leaflet returned in response.
     """
-    parser = GeneralParser.objects.filter(formatName="ecotone")[0] #change later!!
+    parsers = GeneralParser.objects.all()
+
     if request.method == 'GET':
-        return _render_with_message(request)
+        return render(request, 'upload.html', {'parsers': parsers})
     if request.method == 'POST':
         if 'file' in request.FILES:
 
             file = request.FILES['file']
+            parser = GeneralParser.objects.filter(formatName=request.POST.get('formatName'))[0]
+
             try:
-                data = prepare_file(file, parser)
+                if parser.gpsNumber == '':
+                    data = prepare_file(file, parser, request.POST.get('gpsNumber'))
+                else:
+                    data = prepare_file(file, parser)
 
             except:
-                messages.add_message(request, messages.ERROR, 'Tiedostosi formaati ei ole kelvollinen!')
+                messages.add_message(request, messages.ERROR, 'Tiedostosi formaatti ei ole kelvollinen!')
                 return redirect(upload)
             points = create_points(data, parser)
-            return _render_points(points, request)
+            return _render_points(points, parsers, request)
 
         messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")
         return redirect(upload)
 
-def _render_points(points, request):
+
+def _render_points(points, parsers, request):
     latlongs = [[g.geometry[1], g.geometry[0]] for g in points]
-    return render(request, 'upload.html', {'points': json.dumps(latlongs)})
-
-
-def _render_with_message(request):
-    message = request.GET['m'] if 'm' in request.GET else ''
-    return render(request, 'upload.html', {"message": message})
-
+    return render(request, 'upload.html', {'points': json.dumps(latlongs), 'parsers': parsers})

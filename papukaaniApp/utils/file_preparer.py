@@ -1,6 +1,6 @@
 from papukaaniApp.utils.data_formats import *
 
-def prepare_file(file, parser):
+def prepare_file(file, parser, static_gps_number = False):
     """
     Reads the given file and extracts the values of individual events.
     :param file: data file

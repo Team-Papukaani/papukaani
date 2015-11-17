@@ -13,7 +13,7 @@ class FileParserTest(TestCase):
                                               temperature="Temperature", split_mark=",", coding="utf-8")
         self.ecotone_parser.save()
 
-        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsNumber="gpsNumber", gpsTime="DateTime",
+        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
                                               longitude="Longitude_E", latitude="Latitude_N", altitude="Altitude_m",
                                               temperature="temperature", split_mark="\t", coding="utf-8")
         self.byholm_parser.save()

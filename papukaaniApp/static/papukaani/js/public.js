@@ -2,34 +2,32 @@ function init(devices) {
     this.sorter = new DeviceSorter(devices);
     map = new PublicMap(sorter.documents);
 
-    this.sorter.setMap(map)
+    this.sorter.setMap(map);
 }
 
 function PublicMap() {
     this.map = create_map("map", [61.0, 20.0], 5);
+    this.i = 0;
+    this.paused = 1;
 }
 
 //Draws the polyline animation. i = starting point
-PublicMap.prototype.animate = function (latlngs, i) {
+PublicMap.prototype.animate = function (latlngs) {
     return setTimeout(function () {
-
-        var polyline = L.polyline([latlngs[i], latlngs[++i]], {color: 'blue', opacity: 1.0})
-        this.polylines.push(polyline);
-        polyline.addTo(this.map);
-        this.map.panTo(latlngs[i]);
-        if (this.polylines.length > 4) {
-            this.polylines.splice(0, 1);
+        if (latlngs.length > (this.i + 1)) {
+            var polyline = L.polyline([latlngs[this.i], latlngs[++this.i]], {color: 'blue', opacity: 1.0});
+            this.polylines.push(polyline);
+            polyline.addTo(this.map);
+            this.map.panTo(latlngs[this.i]);
+            if (this.polylines.length > 4) {
+                this.polylines.splice(0, 1);
+            }
+            for (var j = 0; j < this.polylines.length; j++) {
+                this.polylines[j].setStyle({color: 'blue', opacity: polylineFade(j, this.polylines.length)});
+            }
+            this.animate(latlngs);
         }
-        for (var j = 0; j < this.polylines.length; j++) {
-            this.polylines[j].setStyle({color: 'blue', opacity: polylineFade(j, this.polylines.length)});
-        }
-
-        if (latlngs.length > (i + 1)) {
-            this.animate(latlngs, i);
-        }
-
-
-    }.bind(this), 1000 - $('#speedSlider').slider("option", "value"))
+    }.bind(this), 1000 - $('#speedSlider').slider("option", "value"));
 };
 
 //Picks the opacity-value based on position in the polyline (closer to the head, more opaque).
@@ -64,15 +62,16 @@ var PathIterator = function (points) {
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
 
-    var latlngs = this.createLatlngsFromPoints(points);
-
+    latlngs = this.createLatlngsFromPoints(points);
+    this.i = 0;
+    this.paused = 1;
+    this.map.clearLayers();
     this.polylines = [];
-
 //    doc = points[0];
 //    pi = new PathIterator(doc.gatherings);
 //    time = pi.getStartTime();
 
-    var id = this.animate(latlngs, 0);
+
 };
 
 
@@ -86,14 +85,39 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
     return latlngs;
 };
 
+function pause(map) {
+    if (!map.paused) {
+        clearAllTimeout();
+        map.paused = 1;
+        $("#selectDevice").attr("disabled", false);
+        $("#play").attr("disabled", false);
+        $("#pause").attr("disabled", true);
+    }
+}
+
+function play(map) {
+    if (map.paused) {
+        map.animate(latlngs);
+        map.paused = 0;
+        $("#selectDevice").attr("disabled", true);
+        $("#play").attr("disabled", true);
+        $("#pause").attr("disabled", false);
+    }
+}
+
+
 //Disables the select, save and reset buttons.
 function lockButtons() {
     $("#selectDevice").attr("disabled", true);
+    $("#play").attr("disabled", true);
+    $("#pause").attr("disabled", true);
 }
 
 //Enables the select, save and reset buttons.
 function unlockButtons() {
     $("#selectDevice").attr("disabled", false);
+    $("#play").attr("disabled", false);
+    $("#pause").attr("disabled", false);
 }
 
 //SpeedSlider settings
@@ -103,4 +127,14 @@ $(function () {
         min: 100,
         max: 1000
     });
+});
+
+L.Map.include({
+    'clearLayers': function () {
+        this.eachLayer(function (layer) {
+            if (layer._container.toString().indexOf("SVGG") > -1) {
+                this.removeLayer(layer);
+            }
+        }, this);
+    }
 });

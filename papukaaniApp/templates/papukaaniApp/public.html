@@ -25,8 +25,12 @@
     </div>
     <div class="input-group">
         <span class="input-group-addon">Nopeus:</span>
+
         <div id="speedSlider" class="small-slider"></div>
     </div>
+    <button id="play" onclick="play(map)" class="btn btn-default">Play</button>
+    <button id="pause" onclick="pause(map)" class="btn btn-default">Pause</button>
+    <span id="loading" class="help-block" style="display:inline"></span>
 </div>
 
 <div id="map" class="largeMap"></div>
@@ -37,6 +41,7 @@
 <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
+<script src="{% static 'papukaani/js/utils/clearTimeouts.js' %}"></script>
 <script src="{% static 'papukaani/js/public.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
 

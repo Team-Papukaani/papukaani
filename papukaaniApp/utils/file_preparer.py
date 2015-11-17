@@ -33,9 +33,6 @@ def _to_dictionary(lines, parser):
             if lines[0][x] == getattr(parser, arg):
                 lines[0][x] = arg
 
-
-
-
     for line in lines[1:]:
         parsed_line = dict(zip(lines[0], line))
 
@@ -43,7 +40,7 @@ def _to_dictionary(lines, parser):
             parsed_line["gpsNumber"] = 0
         if "temperature" not in parsed_line:
             parsed_line["temperature"] = -373.15
-        if "altitude" not in parsed_line    :
+        if "altitude" not in parsed_line:
             parsed_line["altitude"] = -0
 
 

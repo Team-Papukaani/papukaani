@@ -1,4 +1,5 @@
 $('#table').hide()
+errors = []
 
 function init(devices, indivs, csrf_token){
     devices_and_individuals = devices
@@ -38,6 +39,8 @@ function displayIndividuals(device) {
             $('#individuals').html('<tr><td colspan="4">Ei lintuja</td></tr>');
       }
 
+      showErrors()
+
 }
 
 function attachDevice(){
@@ -71,6 +74,9 @@ function attachDevice(){
 
         displayIndividuals(deviceId);
     }
+
+    showErrors()
+
 }
 
 function removeDevice(index){
@@ -97,13 +103,17 @@ function removeDevice(index){
 
         displayIndividuals(deviceId);
     }
+    showErrors()
 }
 
 function attachedBeforeRemoved(removed, attached){
     var a = new Date(pruneTimestring(attached))
     var b = new Date(pruneTimestring(removed))
 
-    if(b.getTime() < a.getTime()) return false;
+    if(b.getTime() < a.getTime()){
+        errors.push("Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. ")
+        return false;
+    }
     return true;
 }
 
@@ -118,6 +128,7 @@ function noOverlappingTimeSlices(timestring){
             var end = new Date(pruneTimestring(individual.removed))
 
             if(dateIsBetween(time, start, end)){
+                errors.push("Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite on jo merkitty kiinnitetyksi. ")
                 valid = false;
             }
         }
@@ -130,20 +141,25 @@ function notInFuture(timestring){
     time = new Date(pruneTimestring(timestring))
 
     if(time.getTime() > Date.now()){
+        errors.push("Päivämäärä ei saa olla tulevaisuudessa. ")
         return false;
     }
 
     return true;
 }
 
-function validate(timestring, removed){
+function validate(timestring, attached){
     valid = true
 
-    for(var i = 2; i < arguments.length; i++){
-        valid &= arguments[i](timestring, removed);
+    if(!validTimestring(timestring)){
+        errors.push("Päivämäärä ei määritelty! ")
+        return false
     }
 
-    console.log(valid)
+    for(var i = 2; i < arguments.length; i++){
+        valid &= arguments[i](timestring, attached);
+    }
+
     return valid
 }
 
@@ -154,4 +170,23 @@ function pruneTimestring(timestring){
         return timestring.slice(0, last);
     }
     return timestring
+}
+
+function validTimestring(timestring){
+    if(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+(?:[0-9][0-9]:)+00$/.test(timestring)){
+        return true
+    }
+    return false
+}
+
+function showErrors(){
+    errorMessage = ""
+    if(errors.length > 0){
+        for(var i = 0; i < errors.length; i++){
+            errorMessage += errors[i]
+        }
+
+    }
+    errors = []
+    $("#errors").text(errorMessage)
 }

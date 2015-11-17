@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css"
           href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'papukaani/css/devices.css' %}">
     <title>Pelikaija</title>
 </head>
 {% autoescape off %}
@@ -15,10 +16,10 @@
 
 {% include "papukaaniApp/navigation.html" %}
 
-<h1>Hallitse lähettimiä</h1>
+<h1 class="heading">Hallitse lähettimiä</h1>
 
 <form>
-    <p>
+    <p class="heading">
         Valitse lähetin
         <select id="selectDevice" class="form-control form-field" style="display:inline"
                 onchange="displayIndividuals(this.value)">
@@ -27,6 +28,8 @@
                 <option value="{{ device.deviceId }}">{{ device.deviceId }}</option>
             {% endfor %}
         </select>
+
+        <span id="errors"></span>
     </p>
 
     <table id="table" class="table table-stripped table-nonfluid">

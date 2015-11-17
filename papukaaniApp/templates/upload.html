@@ -16,15 +16,39 @@
 {% include "papukaaniApp/navigation.html" %}
 <h2>Lataa tiedosto</h2>
 
-<form enctype="multipart/form-data" method="post"> {% csrf_token %}
-    <input type="file" id="file" name="file">
-    <input type="submit" value="Lähetä" name="submitButton">
-</form>
+<div class="choose_actions form-inline padded2">
+    <form enctype="multipart/form-data" method="post"> {% csrf_token %}
+        <div class="input-group">
+            <span class="input-group-addon">Tiedosto:</span>
+            <input type="file" id="file" name="file">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon">Tiedostomuoto:</span>
+            <select name="fileFormat" id="fileFormat" onchange="displayGpsField()" class="form-control form-field">
+                {% for parser in parsers %}
+                    <option value="{{ parser.formatName }}">{{ parser.formatName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="gpsInputDiv" style="display: inline">
+            <div class="input-group">
+                <span class="input-group-addon">GPS-numero:</span>
+                <input type="text" name="gpsNumber" id="gpsNumber" class="form-control form-field">
+            </div>
+        </div>
+
+        <input type="submit" class="btn btn-default" value="Lähetä" name="submitButton">
+    </form>
+</div>
+
+
 
 
 <p id="messages">
     {% for message in messages %}
-    {{ message }}
+        {{ message }}
     {% endfor %}
 </p>
 
@@ -33,11 +57,14 @@
 
 <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
-<script src="{% static 'papukaani/js/uploadmap.js' %}"></script>
+<script src="{% static 'papukaani/js/upload.js' %}"></script>
 <script>
     {% autoescape off %}
-        create_map_with_points('{{points}}')
+        create_map_with_points('{{points}}');
+        fileFormats = { {% for parser in parsers %} "{{ parser.formatName }}": "{{ parser.gpsNumber }}", {% endfor %} };
     {% endautoescape%}
+
+    $("#gpsInputDiv").hide();
 </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from papukaaniApp.models_LajiStore import document
+from datetime import datetime
 
 
 @api_view(['GET'])
@@ -12,6 +13,3 @@ def getDocumentsForDevice(request):
     """
     docs = [d.to_dict() for d in document.find(deviceId=request.GET.get('devId'))]
     return Response(docs)
-
-
-

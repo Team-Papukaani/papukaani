@@ -112,3 +112,24 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.page.attach_individual("12345TESTINDIVIDUAL","04-11-2015 16:00")
 
         self.assertFalse(self.page.ATTACHER.is_displayed())
+
+    def test_errors_messages_are_shown_when_validation_fails(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
+        self.page.REMOVE.click()
+
+        self.page.attach_individual("12345TESTINDIVIDUAL", "13-12-2114 00:00")
+
+        self.assertTrue(len(self.page.driver.find_element_by_id("errors").text) > 0)
+
+    def test_cant_attach_if_time_field_is_empty(self):
+        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
+        self.page.REMOVE.click()
+
+        self.page.ATTACH.click()
+
+        self.assertTrue(self.page.ATTACHER.is_displayed())
+
+    def test_cant_remove_if_time_field_is_empty(self):
+        self.page.REMOVE.click()
+
+        self.assertFalse(self.page.ATTACHER.is_displayed())

@@ -4,13 +4,14 @@
 <head>
     {% include "papukaaniApp/include_headers.html" %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/css/devices.css' %}">
     <title>Pelikaija</title>
 </head>
 {% autoescape off %}
-<body onload='init({{ device_json }}, {{ individual_json }}, "{{ csrf_token }}")'>
+    <body onload='init({{ device_json }}, {{ individual_json }}, "{{ csrf_token }}")'>
 {% endautoescape %}
 
 {% include "papukaaniApp/navigation.html" %}
@@ -43,7 +44,7 @@
             <td>
                 <select id="individualId">
                     <option disabled selected>Valitse kiinnitettävä lintu</option>
-                    {% for individual in individuals %}
+                    {% for individual in selection %}
                         <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
                     {% endfor %}
                 </select>
@@ -59,13 +60,11 @@
 </form>
 
 
-
-
 {% include "papukaaniApp/include_scripts.html" %}
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
+<script src="{% static 'papukaani/js/devices.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
-<script src="{% static 'papukaani/js/devices.js'  %}"></script>
 <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
 
 </body>

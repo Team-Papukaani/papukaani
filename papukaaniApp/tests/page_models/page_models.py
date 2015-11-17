@@ -33,6 +33,8 @@ class PageWithDeviceSelector(Page):
     def change_device_selection(self, key):
         sel = Select(self.DEVICE_SELECTOR)
         sel.select_by_value(key)
+        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
 
 
 class UploadPage(Page):
@@ -98,6 +100,10 @@ class PublicPage(PageWithDeviceSelector):
             no_of_pts += (len(d.split()) - 2)
 
         return no_of_pts
+
+    def play(self):
+        self.PLAY.click()
+        time.sleep(0.5)
 
 
 class ChoosePage(PageWithDeviceSelector):

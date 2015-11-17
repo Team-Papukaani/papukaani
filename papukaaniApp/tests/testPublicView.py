@@ -37,7 +37,7 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_can_choose_points_by_device(self):
         self.page.change_device_selection("DeviceId")
-        self.page.PLAY.click()
+        self.page.play()
         self.assertNotEquals(self.page.POLYLINE, None)
 
     def test_polylines_are_cleared_on_selection_change(self):

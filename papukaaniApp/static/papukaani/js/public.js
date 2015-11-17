@@ -163,21 +163,33 @@ function addInput(divName) {
 }
 
 //Updates the map to show all markers within start and end, which are strings that can be converted to Date.
-PublicMap.prototype.showMarkersWithinTimeRange = function (start, end) {
-    var a, b;
-    try {
-        a = (start != "" ? new Date(parseTime(start, "+00:00")) : "");
-        b = (end != "" ? new Date(parseTime(end, "+00:00")) : "");
-    } catch (error) {
-        document.getElementById("formatError").innerHTML = "Invalid Date format!";
-        return;
+PublicMap.prototype.showMarkersWithinTimeRange = function () {
+    var count = 0;
+    this.llgroups = [];
+    for (var i = 1; i < 10; i++) {
+        var latlngs = [];
+        try {
+            var start = document.getElementById("start_time" + i);
+            var end = document.getElementById("end_time" + i);
+            counter++;
+            messagebox = $("#loading");
+            messagebox.text("Tietoja ladataan...");
+            lockButtons();
+            request = new XMLHttpRequest;
+            var path = "../rest/documentsForDevice?devId=" + deviceId + "&start=" + start + "&end=" + end + "&format=json";
+            request.open("GET", path, true);
+            request.onreadystatechange = addToLLs.bind(this);
+            request.send(null);
+        } catch (e) {
+            messagebox.text("An error has occurred while retrieving information");
+            break;
+        }
     }
-    var pointsWithinRange = this.points.filter(function (point) {
-        var timestring = point.timeStart;
-        var timestamp = new Date(timestring);
-        a = (start != "" ? a : timestamp);
-        b = (end != "" ? b : timestamp);
-        return dateIsBetween(timestamp, a, b)
-    });
+};
 
+addToLLs = function() {
+    if (request.readyState === 4) {
+        var latlongs = JSON.parse(request.response);
+        this.llgroups.push(latlongs);
+    }
 };

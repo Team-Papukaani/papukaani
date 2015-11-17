@@ -20,7 +20,7 @@ PublicMap.prototype.animate = function (latlngs) {
     var time = pathIterator.getStartTime();
     var lastPosition = pathIterator.getPositionAtTime(time);
     var markerPosition = lastPosition;
-    var marker = L.marker(markerPosition.toArray());
+    var marker = L.marker(markerPosition.toArray(), {zIndexOffset: 1000});
     marker.addTo(this.map);
 
     var loop = setInterval(function () {

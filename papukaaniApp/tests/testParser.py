@@ -56,7 +56,7 @@ class FileParserTest(TestCase):
 
     def test_byholm_data_goes_lajiStroe_succesfully(self):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
-        file = open(path, "rb")
+        file = open(path, "rt")
         entries = prepare_file(file, self.byholm_parser)
         create_points(entries, self.byholm_parser)
         documents = document.get_all()
@@ -66,6 +66,6 @@ class FileParserTest(TestCase):
 
 def _create_points_from_ecotone(self, filename):
         path = settings.OTHER_ROOT + filename
-        file = open(path, "rb")
+        file = open(path, "rt")
         entries = prepare_file(file, self.ecotone_parser)
         create_points(entries, self.ecotone_parser)

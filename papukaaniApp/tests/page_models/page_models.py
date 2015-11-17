@@ -80,8 +80,6 @@ class PublicPage(PageWithDeviceSelector):
     url = BASE_URL + '/papukaani/public/'
 
     POLYLINE = Element(By.TAG_NAME, 'g')
-    PLAY = Element(By.ID, 'play')
-    PAUSE = Element(By.ID, 'pause')
 
     def __init__(self):
         super().__init__()

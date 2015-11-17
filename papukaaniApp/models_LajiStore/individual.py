@@ -84,10 +84,16 @@ def delete_all():
 
 
 def _get_many(mode=1, **kwargs):
+    """
+    :param mode: default 1 for ALL, 0 for non-deleted.
+    """
     data = LajiStoreAPI.get_all_individuals(**kwargs)
     individuals = []
     for individual in data:  # creates a list of individuals to return
-        if mode == 0 and not individual['deleted']:
+        if mode == 0:
+            if 'deleted' not in individual:
+                individuals.append(Individual(**individual))
+            elif not individual['deleted']:
                 individuals.append(Individual(**individual))
         elif mode == 1:
             individuals.append(Individual(**individual))

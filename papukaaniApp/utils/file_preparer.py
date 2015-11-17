@@ -17,14 +17,14 @@ def prepare_file(file, parser, static_gps_number = False):
 
 
 
-    with file as f:
-        lines = [line for line in f]
-    decoded = []
-    split_mark = parser.split_mark
-    coding = parser.coding
-    for line in lines:
-        decoded.append(line.decode(coding).rstrip().split(split_mark))
-    return _to_dictionary(decoded, parser)
+    #with file as f:
+    #    lines = [line for line in f]
+    #decoded = []
+    #split_mark = parser.split_mark
+    #coding = parser.coding
+    #for line in lines:
+    #    decoded.append(line.decode(coding).rstrip().split(split_mark))
+    #return _to_dictionary(decoded, parser)
 
 def _to_dictionary(lines, parser):
     #if _is_not_valid_file_type(lines, parser):
@@ -50,7 +50,7 @@ def _is_not_valid_file_type(lines, parser):
 
 def _rename_attributes(lines, parser):
     headers= lines[0]
-    general_attributes = ["gpsNumber", "gpsTime", "longitude", "latitude", "temperature", "altitude"]
+    general_attributes = ["gpsTime", "longitude", "latitude", "temperature", "altitude"]
     for attribute in general_attributes:
         for x in range(0, len(headers)):
             if headers[x] == getattr(parser, attribute):

@@ -1,9 +1,9 @@
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import Client
+import time
 
-from papukaaniApp.tests.page_models.page_models import PublicPage
-from django.conf import settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
 from papukaaniApp.models_LajiStore import *
+from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 
 
@@ -36,4 +36,18 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_can_choose_points_by_device(self):
         self.page.change_device_selection("DeviceId")
+        self.page.PLAY.click()
+        self.page.play()
         self.assertNotEquals(self.page.POLYLINE, None)
+
+    def test_polylines_are_cleared_on_selection_change(self):
+        self.test_can_choose_points_by_device()
+        self.page.PAUSE.click()
+        self.page.change_device_selection("None")
+
+    def test_pause_stops_polyline_drawing(self):
+        self.test_can_choose_points_by_device()
+        self.page.PAUSE.click()
+        start = self.page.get_map_polyline_elements()
+        time.sleep(1)
+        self.assertEquals(start, self.page.get_map_polyline_elements())

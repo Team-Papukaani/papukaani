@@ -11,7 +11,7 @@ class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         self.A = document.create("TestA",
                                  [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0], publicity="public"),
-                                  gathering.Gathering("1234-12-12T12:12:12+00:00", [61.01, 23.01],
+                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [61.01, 23.01],
                                                       publicity="private")], "DeviceId")
         dev = {
             "deviceId": "DeviceId",

@@ -1,18 +1,33 @@
+import chardet
+from pprint import pprint
+from io import StringIO
 from papukaaniApp.utils.data_formats import *
 import csv
 
 
-def prepare_file(file, parser, static_gps_number = False):
+def prepare_file(uploaded_file, parser, static_gps_number = False):
     """
     Reads the given file and extracts the values of individual events.
     :param file: data file
     :param parser: instance of GeneralParser
     :return: A dictionary containing every event as named values.
     """
-    spamReader = csv.reader(file, delimiter=parser.split_mark)
+
+    content = uploaded_file.read()
+
+    encoding = chardet.detect(content)['encoding']
+
+    content = content.decode(encoding)
+
+    filestream = StringIO(content)
+
+    reader = csv.reader(filestream.read().splitlines(), delimiter=parser.split_mark)
+    results = [row for row in reader]
+
     lines = []
-    for line in spamReader:
+    for line in results:
         lines.append(line)
+        print(line)
     return _to_dictionary(lines, parser)
 
 

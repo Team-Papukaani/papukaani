@@ -4,6 +4,12 @@ from io import StringIO
 from papukaaniApp.utils.data_formats import *
 import csv
 
+def _upload_to_filestream(file):
+    content = file.read()
+    encoding = chardet.detect(content)['encoding']
+    content = content.decode(encoding)
+    filestream = StringIO(content)
+    return filestream
 
 def prepare_file(uploaded_file, parser, static_gps_number = False):
     """
@@ -13,59 +19,44 @@ def prepare_file(uploaded_file, parser, static_gps_number = False):
     :return: A dictionary containing every event as named values.
     """
 
-    content = uploaded_file.read()
-
-    encoding = chardet.detect(content)['encoding']
-
-    content = content.decode(encoding)
-
-    filestream = StringIO(content)
-
+    filestream = _upload_to_filestream(uploaded_file)
     reader = csv.reader(filestream.read().splitlines(), delimiter=parser.split_mark)
     results = [row for row in reader]
 
     lines = []
     for line in results:
         lines.append(line)
-        print(line)
-    return _to_dictionary(lines, parser)
+    return _to_dictionary(lines, parser, static_gps_number)
 
-
-
-    #with file as f:
-    #    lines = [line for line in f]
-    #decoded = []
-    #split_mark = parser.split_mark
-    #coding = parser.coding
-    #for line in lines:
-    #    decoded.append(line.decode(coding).rstrip().split(split_mark))
-    #return _to_dictionary(decoded, parser)
-
-def _to_dictionary(lines, parser):
-    #if _is_not_valid_file_type(lines, parser):
-    #    raise TypeError("a")
+def _to_dictionary(lines, parser, static_gps_number = False):
+    if _is_not_valid_file_type(lines, parser):
+        raise TypeError("a")
     headers = _rename_attributes(lines, parser)
 
     parsed = []
     for line in lines[1:]:
         parsed_line = dict(zip(headers, line))
         if "gpsNumber" not in parsed_line:
-            parsed_line["gpsNumber"] = 0
+            parsed_line["gpsNumber"] = static_gps_number
         if "temperature" not in parsed_line:
             parsed_line["temperature"] = -373.15
         if "altitude" not in parsed_line:
-            parsed_line["altitude"] = -0
+            parsed_line["altitude"] = 0
 
         parsed.append(parsed_line)
     return parsed
 
 def _is_not_valid_file_type(lines, parser):
-    if "GpsNumber" not in lines[0] and parser.formatName == "ecotone":
+    if parser.gpsTime not in lines[0]:
+        return True
+    if parser.longitude not in lines[0]:
+        return True
+    if parser.latitude not in lines[0]:
         return True
 
 def _rename_attributes(lines, parser):
     headers= lines[0]
-    general_attributes = ["gpsTime", "longitude", "latitude", "temperature", "altitude"]
+    general_attributes = ["gpsNumber", "gpsTime", "longitude", "latitude", "temperature", "altitude"]
     for attribute in general_attributes:
         for x in range(0, len(headers)):
             if headers[x] == getattr(parser, attribute):

@@ -36,4 +36,3 @@ class GeneralParser(models.Model):
     altitude = models.CharField(max_length=50, blank=True)
     temperature = models.CharField(max_length=50, blank=True)
     split_mark = models.CharField(max_length=50)
-    coding = models.CharField(max_length=50, blank=True)

@@ -1,33 +1,12 @@
 import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
+from papukaaniApp.utils.file_preparer import *
 
-parserInfo = {"type": "GMS", "manufacturer": "Ecotones"}
-
-
-def ecotones_parse(file):
-    """
-    Reads the given file and extracts the values of individual events.
-    :param file: An Ecotone file.
-    :return: A dictionary containing every event as named values.
-    """
-    with file as f:
-        lines = [line for line in f]
-    headers = lines[0].decode("utf-8").rstrip().split(',')
-    if "GpsNumber" not in headers:
-        raise TypeError("a")
-    parsed = []
-    for line in lines[1:]:
-        parsed_line = dict(zip(headers, line.decode("utf-8").rstrip().split(',')))
-        parsed.append(parsed_line)
-    return parsed
-
-
-def ecotones_parse_time(time):
+def parse_time(time):
     toks = time.split()
     return toks[0] + "T" + toks[1] + "+00:00"
 
-
-def create_points(data):
+def create_points(data, parser):
     """
     Creates a new entry for every Gathering not already in the database.
     :param data: The contents of the uploaded file.
@@ -38,20 +17,19 @@ def create_points(data):
     devices = []
 
     for point in data:
-        GpsNumber = point['GpsNumber']
-
+        GpsNumber = point['gpsNumber']
         if GpsNumber not in collections:
             collections[GpsNumber] = []
 
         if GpsNumber not in devices:
-            device.get_or_create(deviceId=GpsNumber, parserInfo=parserInfo)
+            device.get_or_create(deviceId=GpsNumber, parserInfo=parser_Info(parser))
             devices.append(GpsNumber)
 
         collections[GpsNumber].append(
             gathering.Gathering(
-                time=ecotones_parse_time(point['GPSTime']),
-                geometry=[float(point["Longtitude"]), float(point["Latitude"])],
-                temperature=float(point['Temperature'])
+                time=parse_time(point['gpsTime']),
+                geometry=[float(point["longitude"]), float(point["latitude"])],
+                temperature=float(point['temperature'])
             ))
 
     points = []
@@ -63,8 +41,6 @@ def create_points(data):
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
             doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, collections[k])
-
-            # old      doc_array[0].gatherings += collections[k]
 
             if len(doc_array) > 1:  # if LajiStore contains redundant documents (more than one document for one device)
                 for i in range(1, len(doc_array)):

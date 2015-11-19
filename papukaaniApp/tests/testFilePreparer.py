@@ -4,16 +4,20 @@ from django.conf import settings
 from papukaaniApp.models import *
 from papukaaniApp.models_LajiStore import document, gathering
 
+
 class FilePreparerTest(TestCase):
     def setUp(self):
-        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber", gpsTime="GPSTime",
-                                              longitude="Longtitude", latitude="Latitude", altitude="Altitude",
-                                              temperature="Temperature", split_mark=",")
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
+                                                           gpsTime="GPSTime",
+                                                           longitude="Longtitude", latitude="Latitude",
+                                                           altitude="Altitude",
+                                                           temperature="Temperature", split_mark=",")
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
-                                              longitude="Longitude_E", latitude="Latitude_N", altitude="Altitude_m",
-                                              temperature="temperature", split_mark="\t")
+                                                          longitude="Longitude_E", latitude="Latitude_N",
+                                                          altitude="Altitude_m",
+                                                          temperature="temperature", split_mark="\t")
         self.byholm_parser.save()
 
     def tearDown(self):
@@ -53,7 +57,7 @@ class FilePreparerTest(TestCase):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
         file = open(path, "rb")
         entries = prepare_file(file, self.byholm_parser, "1010")
-        lats = [62.86704, 62.86670, 62.86648, 62.86658, 62.86647    ]
+        lats = [62.86704, 62.86670, 62.86648, 62.86658, 62.86647]
         i = 0
         for entry in entries:
             assert float(lats[i]) == float(entry["latitude"])
@@ -75,5 +79,3 @@ class FilePreparerTest(TestCase):
                              temperature="0")
             points.append(point)
         assert len(points) == 5
-
-

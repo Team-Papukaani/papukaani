@@ -3,7 +3,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
 import time
-
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
 BASE_URL = "http://127.0.0.1:8081"
@@ -46,6 +45,7 @@ class UploadPage(Page):
     UPLOAD_FIELD = Element(By.NAME, 'file')
     MESSAGE = Element(By.ID, 'messages')
     POLYLINE = Element(By.TAG_NAME, 'g')
+    FORMAT_SELECTOR = Element(By.ID, 'fileFormat')
 
     def upload_file(self, filepath):
         """
@@ -71,6 +71,9 @@ class UploadPage(Page):
         upload = self.UPLOAD_FIELD
         upload.submit()
 
+    def change_format_selection(self, key):
+        sel = Select(self.FORMAT_SELECTOR)
+        sel.select_by_value(key)
 
 
 class PublicPage(PageWithDeviceSelector):

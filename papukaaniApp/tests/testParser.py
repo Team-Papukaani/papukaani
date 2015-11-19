@@ -6,16 +6,18 @@ from papukaaniApp.models import *
 
 
 class FileParserTest(TestCase):
-
     def setUp(self):
-        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber", gpsTime="GPSTime",
-                                              longitude="Longtitude", latitude="Latitude", altitude="Altitude",
-                                              temperature="Temperature", split_mark=",")
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
+                                                           gpsTime="GPSTime",
+                                                           longitude="Longtitude", latitude="Latitude",
+                                                           altitude="Altitude",
+                                                           temperature="Temperature", split_mark=",")
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
-                                              longitude="Longitude_E", latitude="Latitude_N", altitude="Altitude_m",
-                                              temperature="temperature", split_mark="\t")
+                                                          longitude="Longitude_E", latitude="Latitude_N",
+                                                          altitude="Altitude_m",
+                                                          temperature="temperature", split_mark="\t")
         self.byholm_parser.save()
 
     def tearDown(self):
@@ -30,16 +32,15 @@ class FileParserTest(TestCase):
         assert len(document.get_all()) == 3
 
     def test_merge_and_delete_if_three_documents_found_for_same_device(self):
-
         gatherings = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
         dict = {
             "documentId": "TestId0000001",
-            "deviceId" : "48500691564",
-            "createdAt":"2015-09-14T15:29:28+03:00",
-            "lastModifiedAt":"2015-09-14T15:29:28+03:00",
+            "deviceId": "48500691564",
+            "createdAt": "2015-09-14T15:29:28+03:00",
+            "lastModifiedAt": "2015-09-14T15:29:28+03:00",
             "facts": [],
             "gatherings": gatherings
-            }
+        }
         document.create(**dict)
         document.create(**dict)
         document.create(**dict)
@@ -55,6 +56,7 @@ class FileParserTest(TestCase):
         self.assertEqual(len(documents[0].gatherings), 1)
 
     def test_byholm_data_goes_lajiStroe_succesfully(self):
+        document.delete_all()
         path = settings.OTHER_ROOT + "/byholm_test.txt"
         file = open(path, "rb")
         entries = prepare_file(file, self.byholm_parser, "1010")
@@ -65,7 +67,7 @@ class FileParserTest(TestCase):
 
 
 def _create_points_from_ecotone(self, filename):
-        path = settings.OTHER_ROOT + filename
-        file = open(path, "rb")
-        entries = prepare_file(file, self.ecotone_parser)
-        create_points(entries, self.ecotone_parser)
+    path = settings.OTHER_ROOT + filename
+    file = open(path, "rb")
+    entries = prepare_file(file, self.ecotone_parser)
+    create_points(entries, self.ecotone_parser)

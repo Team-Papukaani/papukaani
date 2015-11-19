@@ -13,14 +13,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Creature',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=300)),
             ],
         ),
         migrations.CreateModel(
             name='GeneralParser',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('formatName', models.CharField(max_length=50)),
                 ('gpsNumber', models.CharField(max_length=50, blank=True)),
                 ('gpsTime', models.CharField(max_length=50)),
@@ -29,13 +29,12 @@ class Migration(migrations.Migration):
                 ('altitude', models.CharField(max_length=50, blank=True)),
                 ('temperature', models.CharField(max_length=50, blank=True)),
                 ('split_mark', models.CharField(max_length=50)),
-                ('coding', models.CharField(max_length=50, blank=True)),
             ],
         ),
         migrations.CreateModel(
             name='MapPoint',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('gpsNumber', models.CharField(max_length=20)),
                 ('timestamp', models.DateTimeField()),
                 ('latitude', models.DecimalField(decimal_places=9, max_digits=12)),

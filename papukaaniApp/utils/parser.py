@@ -18,7 +18,6 @@ def create_points(data, parser):
 
     for point in data:
         GpsNumber = point['gpsNumber']
-
         if GpsNumber not in collections:
             collections[GpsNumber] = []
 

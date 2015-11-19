@@ -24,7 +24,7 @@ class FilePreparerTest(TestCase):
 
     def test_file_parsing(self):
         path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
-        file = open(path, "rt")
+        file = open(path, "rb")
         entries = prepare_file(file, self.ecotone_parser)
         lats = [61.757366, 61.757366, 61.758000, 61.757200, 61.758050]
         i = 0
@@ -34,7 +34,7 @@ class FilePreparerTest(TestCase):
 
     def test_points_can_be_succesfully_created_from_parsed_contents(self):
         path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
-        file = open(path, "rt")
+        file = open(path, "rb")
         entries = prepare_file(file, self.ecotone_parser)
         points = []
         for entry in entries:
@@ -51,8 +51,8 @@ class FilePreparerTest(TestCase):
 
     def test_byholm_file_parsing(self):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
-        file = open(path, "rt")
-        entries = prepare_file(file, self.byholm_parser)
+        file = open(path, "rb")
+        entries = prepare_file(file, self.byholm_parser, "1010")
         lats = [62.86704, 62.86670, 62.86648, 62.86658, 62.86647    ]
         i = 0
         for entry in entries:
@@ -61,8 +61,8 @@ class FilePreparerTest(TestCase):
 
     def test_byholm_points_can_be_succesfully_created_from_parsed_contents(self):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
-        file = open(path, "rt")
-        entries = prepare_file(file, self.byholm_parser)
+        file = open(path, "rb")
+        entries = prepare_file(file, self.byholm_parser, "1010")
         points = []
         for entry in entries:
             creature, was_created = Creature.objects.get_or_create(name="Pekka")

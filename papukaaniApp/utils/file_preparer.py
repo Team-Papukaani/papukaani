@@ -4,7 +4,7 @@ from io import StringIO
 from papukaaniApp.utils.data_formats import *
 import csv
 
-def _upload_to_filestream(file):
+def _uploaded_file_to_filestream(file):
     content = file.read()
     encoding = chardet.detect(content)['encoding']
     content = content.decode(encoding)
@@ -19,7 +19,7 @@ def prepare_file(uploaded_file, parser, static_gps_number = False):
     :return: A dictionary containing every event as named values.
     """
 
-    filestream = _upload_to_filestream(uploaded_file)
+    filestream = _uploaded_file_to_filestream(uploaded_file)
     reader = csv.reader(filestream.read().splitlines(), delimiter=parser.split_mark)
     results = [row for row in reader]
 
@@ -62,8 +62,6 @@ def _rename_attributes(lines, parser):
             if headers[x] == getattr(parser, attribute):
                 headers[x] = attribute
     return headers
-
-
 
 def parser_Info(parser):
     return {"type": "GMS", "manufacturer" : parser.formatName}

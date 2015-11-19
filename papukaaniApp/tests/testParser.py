@@ -10,12 +10,12 @@ class FileParserTest(TestCase):
     def setUp(self):
         self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber", gpsTime="GPSTime",
                                               longitude="Longtitude", latitude="Latitude", altitude="Altitude",
-                                              temperature="Temperature", split_mark=",", coding="utf-8")
+                                              temperature="Temperature", split_mark=",")
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
                                               longitude="Longitude_E", latitude="Latitude_N", altitude="Altitude_m",
-                                              temperature="temperature", split_mark="\t", coding="utf-8")
+                                              temperature="temperature", split_mark="\t")
         self.byholm_parser.save()
 
     def tearDown(self):
@@ -27,7 +27,7 @@ class FileParserTest(TestCase):
     def test_create_points_method_correctly_updates_existing_documents(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
-        assert len(document.get_all()) == 1
+        assert len(document.get_all()) == 3
 
     def test_merge_and_delete_if_three_documents_found_for_same_device(self):
 
@@ -56,8 +56,8 @@ class FileParserTest(TestCase):
 
     def test_byholm_data_goes_lajiStroe_succesfully(self):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
-        file = open(path, "rt")
-        entries = prepare_file(file, self.byholm_parser)
+        file = open(path, "rb")
+        entries = prepare_file(file, self.byholm_parser, "1010")
         create_points(entries, self.byholm_parser)
         documents = document.get_all()
         self.assertEqual(len(documents), 1)
@@ -66,6 +66,6 @@ class FileParserTest(TestCase):
 
 def _create_points_from_ecotone(self, filename):
         path = settings.OTHER_ROOT + filename
-        file = open(path, "rt")
+        file = open(path, "rb")
         entries = prepare_file(file, self.ecotone_parser)
         create_points(entries, self.ecotone_parser)

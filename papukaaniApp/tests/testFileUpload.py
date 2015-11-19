@@ -14,7 +14,7 @@ class FileUploadTest(TestCase):
         self.c = Client()
         self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber", gpsTime="GPSTime",
                                               longitude="Longtitude", latitude="Latitude", altitude="Altitude",
-                                              temperature="Temperature", split_mark=",", coding="utf-8")
+                                              temperature="Temperature", split_mark=",")
         self.ecotone_parser.save()
 
     def tearDown(self):

@@ -1,45 +1,32 @@
 from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
-from papukaaniApp.models import Creature, MapPoint
 from papukaaniApp.models_LajiStore import document, gathering
+from papukaaniApp.models import *
 
 
 class FileParserTest(TestCase):
+
+    def setUp(self):
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber", gpsTime="GPSTime",
+                                              longitude="Longtitude", latitude="Latitude", altitude="Altitude",
+                                              temperature="Temperature", split_mark=",")
+        self.ecotone_parser.save()
+
+        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
+                                              longitude="Longitude_E", latitude="Latitude_N", altitude="Altitude_m",
+                                              temperature="temperature", split_mark="\t")
+        self.byholm_parser.save()
+
     def tearDown(self):
         document.delete_all()
 
-    def test_file_parsing(self):
-        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
-        file = open(path, "rb")
-        entries = ecotones_parse(file)
-        lats = [61.757366, 61.757366, 61.758000, 61.757200, 61.758050]
-        i = 0
-        for entry in entries:
-            assert float(lats[i]) == float(entry["Latitude"])
-            assert float(lats[i]) == float(entry["Latitude"])
-            i += 1
-
-    def test_points_can_be_succesfully_created_from_parsed_contents(self):
-        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
-        file = open(path, "rb")
-        entries = ecotones_parse(file)
-        points = []
-        for entry in entries:
-            creature, was_created = Creature.objects.get_or_create(name="Pekka")
-            point = MapPoint(creature=creature,
-                             gpsNumber=entry['GpsNumber'],
-                             timestamp=entry['GPSTime'],
-                             latitude=entry['Latitude'],
-                             longitude=entry['Longtitude'],
-                             altitude=entry['Altitude'] if entry['Altitude'] != '' else 0,
-                             temperature=entry['Temperature'])
-            points.append(point)
-        assert len(points) == 5
+        self.ecotone_parser.delete()
+        self.byholm_parser.delete()
 
     def test_create_points_method_correctly_updates_existing_documents(self):
-        _create_points_from_ecotone("/Ecotones_gps_pos_doc_create_test.csv")
-        _create_points_from_ecotone("/Ecotones_gps_pos_doc_create_test2.csv")
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
         assert len(document.get_all()) == 3
 
     def test_merge_and_delete_if_three_documents_found_for_same_device(self):
@@ -58,17 +45,27 @@ class FileParserTest(TestCase):
         document.create(**dict)
         assert len(document.get_all()) == 3
 
-        _create_points_from_ecotone("/Ecotones_gps_pos_test.csv")
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_test.csv")
         assert len(document.get_all()) == 1
 
     def test_document_does_not_contain_duplicate_gathering(self):
-        _create_points_from_ecotone("/Ecotones_gps_pos_gathering_duplicate_test.csv")
-        _create_points_from_ecotone("/Ecotones_gps_pos_gathering_duplicate_test2.csv")
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv")
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test2.csv")
         documents = document.get_all()
         self.assertEqual(len(documents[0].gatherings), 1)
 
-def _create_points_from_ecotone(filename):
+    def test_byholm_data_goes_lajiStroe_succesfully(self):
+        path = settings.OTHER_ROOT + "/byholm_test.txt"
+        file = open(path, "rb")
+        entries = prepare_file(file, self.byholm_parser, "1010")
+        create_points(entries, self.byholm_parser)
+        documents = document.get_all()
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(len(documents[0].gatherings), 5)
+
+
+def _create_points_from_ecotone(self, filename):
         path = settings.OTHER_ROOT + filename
         file = open(path, "rb")
-        entries = ecotones_parse(file)
-        create_points(entries)
+        entries = prepare_file(file, self.ecotone_parser)
+        create_points(entries, self.ecotone_parser)

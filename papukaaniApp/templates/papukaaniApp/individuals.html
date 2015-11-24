@@ -41,25 +41,10 @@
     <br>
 {% endfor %}
 
-<script>
-    function confirm (form) {
+{% for specie in species %}
+    {{ specie.name }} <br >
+{% endfor %}
 
-    var popup = $("#delete_confirm_popup");
-
-    $("#yes_button").click(function (event) {
-        var deleteField = document.createElement("input");
-        deleteField.type = "hidden";
-        deleteField.name = "delete";
-        deleteField.value = "1";
-        form.appendChild(deleteField)
-        form.submit()
-    });
-
-    $("#cancel_button").click(function (event) {
-        popup.hide()
-    });
-    popup.show()
-};
-</script>
+<script src="{% static 'papukaani/js/individuals.js' %}"></script>
 </body>
 </html>

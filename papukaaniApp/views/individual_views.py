@@ -1,7 +1,7 @@
 import random
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from papukaaniApp.models_LajiStore import gathering, document, device, individual
+from papukaaniApp.models_LajiStore import gathering, document, device, individual, species
 from django.template.defaulttags import register
 
 def individuals(request):
@@ -33,8 +33,11 @@ def individuals(request):
 
     populate_facts(individual_list)
 
+    species_list = species.get_all()
+
     context = {
-        'individuals': individual_list
+        'individuals': individual_list,
+        'species': species_list
     }
 
     return render(request, 'papukaaniApp/individuals.html', context)

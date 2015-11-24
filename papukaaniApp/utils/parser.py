@@ -17,7 +17,7 @@ def create_points(data, parser, name_of_file, time):
 
     devices = []
 
-    gathering_facts= _gathering_fact_dics(name_of_file, time)
+    gathering_facts = _gathering_fact_dics(name_of_file, time)
 
     for point in data:
         GpsNumber = point['gpsNumber']
@@ -64,11 +64,35 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     :param new_gatherings: list containing gatherings to add
     :return: A list containing all gatherings from both lists excluding duplicates
     """
+
+    # duplicates_from_new_gatherings = set(new_gatherings).intersection_update(lajiStore_gatherings)
+    # if not duplicates_from_new_gatherings:
+    #     duplicates_from_new_gatherings = {}
+    # duplicates_from_lajiStore_gatherings = set(lajiStore_gatherings).intersection_update(duplicates_from_new_gatherings)
+    # if not duplicates_from_lajiStore_gatherings:
+    #     duplicates_from_lajiStore_gatherings = {}
+    # _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings)
+    #
+    # if not lajiStore_gatherings:
+    #     lajiStore_gatherings = {}
+    # if not new_gatherings:
+    #     new_gatherings = {}
+    #
+    # return list(set(lajiStore_gatherings).update(new_gatherings))
+
+
     new_gatherings = set(new_gatherings)
     no_duplicates = new_gatherings.symmetric_difference(set(lajiStore_gatherings))
     duplicates = new_gatherings.difference(no_duplicates)
     result = list(set().union(duplicates, no_duplicates))
     return result
+
+def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings):
+    for g in duplicates_from_new_gatherings:
+        for g2 in duplicates_from_lajiStore_gatherings:
+            if g == g2:
+                g.facts = g.facts.update(g2.facts)
+            break
 
 def _gathering_fact_dics(name_of_file, time):
     gathering_facts = []

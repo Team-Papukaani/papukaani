@@ -1,8 +1,8 @@
-from django.test import TestCase
 from django.test import Client
-from papukaaniApp.models_LajiStore import *
+from django.test import TestCase
+
 from papukaaniApp.models import *
-from datetime import datetime
+from papukaaniApp.models_LajiStore import *
 
 _filePath = "papukaaniApp/tests/test_files/"
 _URL = '/papukaani/upload/'
@@ -24,33 +24,26 @@ class FileUploadTest(TestCase):
         response = self.c.get(_URL)
         self.assertTrue(response.status_code == 200)
 
-    def test_post_to_upload_is_redirected(self):
-        response = self.c.get(_URL)
-
-        self.assertTrue(response.status_code == 200)
-
     def test_post_to_upload_with_file_creates_database_entry(self):
         before = len(document.get_all())
-        with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post(_URL, {'file': file, 'fileFormat': 'ecotone'})
+        self.submit_file("ecotones.csv", "ecotone")
 
         after = len(document.get_all())
         self.assertTrue(after > before)
 
     def test_invalid_file_does_not_cause_exception(self):
-        with open(_filePath + "invalid.txt") as file:
-            response = self.c.post(_URL, {'file': file, 'fileFormat': 'ecotone'})
+        response = self.submit_file("invalid.txt", "ecotone")
 
         self.assertTrue(response.status_code == 302)
 
     def test_the_same_points_will_not_be_added_to_database_multiple_times(self):
-        with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post('/papukaani/upload/', {'file': file, 'fileFormat': 'ecotone'})
+        self.submit_file("ecotones.csv", "ecotone")
         before = len(document.get_all())
-        with open(_filePath + "ecotones.csv") as file:
-            response = self.c.post('/papukaani/upload/', {'file': file, 'fileFormat': 'ecotone'})
+        self.submit_file("ecotones.csv", "ecotone")
 
         after = len(document.get_all())
         self.assertTrue(after == before)
 
-
+    def submit_file(self, filename, formatname):
+        with open(_filePath + filename) as file:
+            return self.c.post('/papukaani/upload/', {'file': file, 'fileFormat': formatname})

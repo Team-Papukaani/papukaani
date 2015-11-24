@@ -12,7 +12,6 @@ function PublicMap() {
 
 //Draws the polyline animation.
 PublicMap.prototype.animate = function (latlngs) {
-    console.log(latlngs);
     this.animation = new Animator(latlngs, this.map);
 };
 

@@ -17,7 +17,7 @@ def create_points(data, parser, name_of_file):
 
     devices = []
 
-    gathering_facts= _gathering_dics(name_of_file)
+    gathering_facts= _gathering_fact_dics(name_of_file)
 
     for point in data:
         GpsNumber = point['gpsNumber']
@@ -66,7 +66,7 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     """
     return list(set().union(set(lajiStore_gatherings), set(new_gatherings)))
 
-def _gathering_dics(name_of_file):
+def _gathering_fact_dics(name_of_file):
     gathering_facts = []
     fact1 = {}
     fact1["name"] = "filename"

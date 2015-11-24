@@ -20,8 +20,11 @@ PublicMap.prototype.changePoints = function (points) {
     if (this.animation) {
         this.animation.clear();
     }
-    this.latlngs = this.createLatlngsFromPoints(points);
-    this.animate(this.latlngs);
+    try {
+        this.latlngs = this.createLatlngsFromPoints(points);
+        this.animate(this.latlngs);
+    }   catch (e) {
+    }
 
 //    doc = points[0];
 //    pi = new PathIterator(doc.gatherings);

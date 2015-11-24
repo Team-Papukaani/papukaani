@@ -108,6 +108,12 @@ class PublicPage(PageWithDeviceSelector):
         self.PLAY.click()
         time.sleep(0.5)
 
+    def get_marker(self):
+        return self.driver.find_element_by_class_name("leaflet-marker-icon")
+
+    def get_popup(self):
+        return self.driver.find_element_by_class_name("leaflet-popup-content-wrapper")
+
 
 class ChoosePage(PageWithDeviceSelector):
     """

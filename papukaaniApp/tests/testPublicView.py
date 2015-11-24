@@ -1,7 +1,5 @@
 import time
-
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
@@ -10,8 +8,8 @@ from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         self.A = document.create("TestA",
-                                 [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0], publicity="public"),
-                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [61.01, 23.01],
+                                 [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
+                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [23.01, 61.01],
                                                       publicity="private")], "DeviceId")
         dev = {
             "deviceId": "DeviceId",
@@ -51,3 +49,8 @@ class PublicView(StaticLiveServerTestCase):
         start = self.page.get_map_polyline_elements()
         time.sleep(1)
         self.assertEquals(start, self.page.get_map_polyline_elements())
+
+    def test_marker_has_popup(self):
+        self.page.change_device_selection("DeviceId")
+        self.page.get_marker().click()
+        self.assertNotEquals(self.page.get_popup(), None)

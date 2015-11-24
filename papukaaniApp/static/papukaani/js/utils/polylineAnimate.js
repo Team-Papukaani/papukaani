@@ -10,9 +10,16 @@ function Animator(latlngs, map) {
     this.markerPosition = this.lastPosition;
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
     this.marker.addTo(this.map);
+    this.marker.bindPopup(this.getMarkerTimeStamp());
 
     this.paused = true;
 }
+
+dtf = new Intl.DateTimeFormat('fi-FI', {weekday: 'short', day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short'});
+Animator.prototype.getMarkerTimeStamp = function () {
+    var date = new Date(this.time);
+    return dtf.format(date);
+};
 
 //Animates the polylines and the marker on the map.
 Animator.prototype.animate = function () {
@@ -53,6 +60,7 @@ Animator.prototype.animate = function () {
         updatePolylines(this.polylines);
 
         this.marker.setLatLng(this.markerPosition.toArray());
+        this.marker._popup.setContent(this.getMarkerTimeStamp());
         this.time += timeStep;
         if (this.time >= this.pathIterator.getEndTime()) clearTimeout(this.interval);
     }.bind(this), 100);
@@ -139,13 +147,8 @@ var PathIterator = function (points) {
     };
 };
 
-//Picks the opacity-value based on position in the polyline (closer to the head, more opaque).
-Animator.prototype.polylineFade = function (j) {
-    return Math.max(j / 200, 0.1);
-};
-
 //Removes the animation, effectively removing all markers and polylines created by it.
-Animator.prototype.clear = function() {
+Animator.prototype.clear = function () {
     this.stop();
     this.map.removeLayer(this.marker);
     this.map.clearLayers();

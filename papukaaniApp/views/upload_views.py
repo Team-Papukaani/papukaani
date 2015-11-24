@@ -4,8 +4,7 @@ from papukaaniApp.utils.file_preparer import *
 from django.shortcuts import render
 from papukaaniApp.utils.view_utils import *
 import json, uuid
-from papukaaniApp.models_LajiStore import *
-import time
+import datetime
 from django.contrib import messages
 
 def upload(request):
@@ -23,7 +22,8 @@ def upload(request):
 
             uploaded_file = request.FILES['file']
             parser = GeneralParser.objects.filter(formatName=request.POST.get('fileFormat'))[0]
-
+            print("uploaded from: " + uploaded_file.name)
+            print(datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
             try:
                 if parser.gpsNumber == '':
                     data = prepare_file(uploaded_file, parser, request.POST.get('gpsNumber'))

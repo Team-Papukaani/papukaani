@@ -15,10 +15,9 @@ function Animator(latlngs, map) {
     this.paused = true;
 }
 
-dtf = new Intl.DateTimeFormat('fi-FI', {weekday: 'short', day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short'});
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
-    return dtf.format(date);
+    return new Intl.DateTimeFormat('fi-FI', {weekday: 'short', day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short'}).format(date);
 };
 
 //Animates the polylines and the marker on the map.

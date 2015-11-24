@@ -60,14 +60,18 @@ class FileParserTest(TestCase):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
         file = open(path, "rb")
         entries = prepare_file(file, self.byholm_parser, "1010")
-        create_points(entries, self.byholm_parser)
+        create_points(entries, self.byholm_parser, "byholm_test.txt")
         documents = document.get_all()
         self.assertEqual(len(documents), 1)
         self.assertEqual(len(documents[0].gatherings), 5)
 
+    def test_filename_and_datetime_goes_to_facts(self):
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
+        documents = document.get_all()
+        self.assertEqual(len(documents[0].gatherings[0].facts), 2)
 
 def _create_points_from_ecotone(self, filename):
     path = settings.OTHER_ROOT + filename
     file = open(path, "rb")
     entries = prepare_file(file, self.ecotone_parser)
-    create_points(entries, self.ecotone_parser)
+    create_points(entries, self.ecotone_parser, filename)

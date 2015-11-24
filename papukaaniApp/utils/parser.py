@@ -1,12 +1,13 @@
 import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
+import datetime
 
 def parse_time(time):
     toks = time.split()
     return toks[0] + "T" + toks[1] + "+00:00"
 
-def create_points(data, parser):
+def create_points(data, parser, name_of_file):
     """
     Creates a new entry for every Gathering not already in the database.
     :param data: The contents of the uploaded file.
@@ -15,6 +16,10 @@ def create_points(data, parser):
     collections = {}
 
     devices = []
+
+    gathering_facts=[]
+    gathering_facts.append(name_of_file)
+    gathering_facts.append(datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
 
     for point in data:
         GpsNumber = point['gpsNumber']
@@ -25,11 +30,13 @@ def create_points(data, parser):
             device.get_or_create(deviceId=GpsNumber, parserInfo=parser_Info(parser))
             devices.append(GpsNumber)
 
+
         collections[GpsNumber].append(
             gathering.Gathering(
                 time=parse_time(point['gpsTime']),
                 geometry=[float(point["longitude"]), float(point["latitude"])],
-                temperature=float(point['temperature'])
+                temperature=float(point['temperature']),
+                facts=gathering_facts
             ))
 
     points = []

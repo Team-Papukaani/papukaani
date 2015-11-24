@@ -22,8 +22,7 @@ def upload(request):
 
             uploaded_file = request.FILES['file']
             parser = GeneralParser.objects.filter(formatName=request.POST.get('fileFormat'))[0]
-            print("uploaded from: " + uploaded_file.name)
-            print(datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
+
             try:
                 if parser.gpsNumber == '':
                     data = prepare_file(uploaded_file, parser, request.POST.get('gpsNumber'))
@@ -34,7 +33,7 @@ def upload(request):
             except:
                 messages.add_message(request, messages.ERROR, 'Tiedostosi formaatti ei ole kelvollinen!')
                 return redirect(upload)
-            points = create_points(data, parser)
+            points = create_points(data, parser, uploaded_file.name)
             return _render_points(points, parsers, request)
 
         messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")

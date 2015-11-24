@@ -1,6 +1,7 @@
 import time
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver.support.wait import WebDriverWait
 
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
@@ -10,9 +11,9 @@ from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         self.A = document.create("TestA",
-                                 [gathering.Gathering("1234-12-12T12:12:12+00:00", [61.0, 23.0], publicity="public"),
-                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [61.01, 23.01],
-                                                      publicity="private")], "DeviceId")
+                                 [gathering.Gathering("1234-12-12T12:12:12+00:00", [64.0, 26.0].reverse(), publicity="public"),
+                                  gathering.Gathering("1235-12-12T12:13:12+00:00", [40.01, 13.01].reverse(), publicity="public"),
+                                  gathering.Gathering("1235-12-12T12:13:12+00:00", [61.01, 43.01].reverse(), publicity="public")], "DeviceId")
         dev = {
             "deviceId": "DeviceId",
             "deviceType": "Type",
@@ -30,6 +31,16 @@ class PublicView(StaticLiveServerTestCase):
         self.page.close()
         self.A.delete()
         self.D.delete()
+
+    def test_marker_moves_when_play_is_pressed(self):
+        self.page.play_animation_for_device('DeviceId')
+        start_location = self.page.SINGLE_MARKER.location
+
+        def marker_moving():
+            print(self.page.SINGLE_MARKER.location)
+            return start_location != self.page.SINGLE_MARKER.location
+
+        WebDriverWait(self.page.driver, 15).until(marker_moving)
 
     def test_no_points_are_shown_on_map(self):
         self.assertEquals(self.page.get_number_of_points(), 0)

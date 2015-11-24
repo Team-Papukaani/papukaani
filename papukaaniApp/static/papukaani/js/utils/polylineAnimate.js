@@ -18,20 +18,6 @@ function Animator(latlngs, map) {
 Animator.prototype.animate = function () {
     this.interval = setInterval(function () {
 
-        function calculateTimeStep(time) {
-            return $('#speedSlider').slider("option", "value") * time / 24000;
-        }
-
-        function updatePolylines(polylines) {
-            for (var j = 0; j < Math.min(polylines.length, 40); j++) {
-                var line = polylines[j];
-
-                var oldOpacity = line.options.opacity;
-                var newOpacity = oldOpacity - 0.02;
-                line.setStyle({color: 'blue', opacity: newOpacity});
-            }
-        }
-
         function addNewPolyline(polyline) {
             this.polylines.push(polyline);
             if (this.polylines.length >= 40) {
@@ -57,6 +43,19 @@ Animator.prototype.animate = function () {
         if (this.time >= this.pathIterator.getEndTime()) clearTimeout(this.interval);
     }.bind(this), 100);
 };
+
+function updatePolylines(polylines) {
+    for (var j = 0; j < Math.min(polylines.length, 40); j++) {
+        var line = polylines[j];
+
+        var oldOpacity = line.options.opacity;
+        var newOpacity = oldOpacity - 0.02;
+        line.setStyle({color: 'blue', opacity: newOpacity});
+    }
+}
+function calculateTimeStep(time) {
+    return $('#speedSlider').slider("option", "value") * time / 24000;
+}
 
 //Starts the animation.
 Animator.prototype.start = function () {
@@ -137,11 +136,6 @@ var PathIterator = function (points) {
     this.getEndTime = function () {
         return orderedPoints[orderedPoints.length - 1].time;
     };
-};
-
-//Picks the opacity-value based on position in the polyline (closer to the head, more opaque).
-Animator.prototype.polylineFade = function (j) {
-    return Math.max(j / 200, 0.1);
 };
 
 //Removes the animation, effectively removing all markers and polylines created by it.

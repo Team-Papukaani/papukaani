@@ -85,6 +85,7 @@ class PublicPage(PageWithDeviceSelector):
     POLYLINE = Element(By.TAG_NAME, 'g')
     PLAY = Element(By.ID, 'play')
     PAUSE = Element(By.ID, 'pause')
+    SINGLE_MARKER = Element(By.XPATH, './/div[@class=leaflet-marker-pane]')
 
     def __init__(self):
         super().__init__()
@@ -103,6 +104,10 @@ class PublicPage(PageWithDeviceSelector):
             no_of_pts += (len(d.split()) - 2)
 
         return no_of_pts
+
+    def play_animation_for_device(self, key):
+        self.change_device_selection(key)
+        self.play()
 
     def play(self):
         self.PLAY.click()

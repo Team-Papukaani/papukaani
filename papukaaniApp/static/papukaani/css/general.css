@@ -73,3 +73,16 @@ html,body {
     margin-left: 20px;
     margin-top: 10px;
 }
+
+.centered{
+    margin-left: 10%;
+    margin-top: 2em;
+    width: 80%;
+}
+
+.centered p{
+    padding: 1em;
+}
+
+.centered p a img{
+}

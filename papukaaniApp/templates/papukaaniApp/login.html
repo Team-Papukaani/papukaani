@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pelikaija</title>
+    {% include "papukaaniApp/include_headers.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+</head>
+<body>
+    {% include "papukaaniApp/navigation.html" %}
+
+    <div class="centered">
+        <h3>Kirjaudu sisään:</h3>
+        <br>
+        <p>
+            <a href="https://login.laji.fi/auth-sources/LTKM?target=KE.341&next={% url 'login' %}">
+                <img src="https://login.laji.fi/static/luomus.png" alt="LUOMUS" />
+            </a>
+        </p>
+
+        <p>
+            <a href="https://login.laji.fi/auth-sources/shibboleth/HAKA?target=KE.341&next={% url 'login' %}">
+                <img src="https://login.laji.fi/static/haka.gif" alt="HAKA" />
+            </a>
+        </p>
+    </div>
+</body>
+</html>

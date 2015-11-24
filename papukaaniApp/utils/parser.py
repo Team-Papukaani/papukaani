@@ -7,7 +7,7 @@ def parse_time(time):
     toks = time.split()
     return toks[0] + "T" + toks[1] + "+00:00"
 
-def create_points(data, parser, name_of_file):
+def create_points(data, parser, name_of_file, time):
     """
     Creates a new entry for every Gathering not already in the database.
     :param data: The contents of the uploaded file.
@@ -17,7 +17,7 @@ def create_points(data, parser, name_of_file):
 
     devices = []
 
-    gathering_facts= _gathering_fact_dics(name_of_file)
+    gathering_facts= _gathering_fact_dics(name_of_file, time)
 
     for point in data:
         GpsNumber = point['gpsNumber']
@@ -64,16 +64,20 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     :param new_gatherings: list containing gatherings to add
     :return: A list containing all gatherings from both lists excluding duplicates
     """
-    return list(set().union(set(lajiStore_gatherings), set(new_gatherings)))
+    new_gatherings = set(new_gatherings)
+    no_duplicates = new_gatherings.symmetric_difference(set(lajiStore_gatherings))
+    duplicates = new_gatherings.difference(no_duplicates)
+    result = list(set().union(duplicates, no_duplicates))
+    return result
 
-def _gathering_fact_dics(name_of_file):
+def _gathering_fact_dics(name_of_file, time):
     gathering_facts = []
     fact1 = {}
     fact1["name"] = "filename"
     fact1["value"] = name_of_file
     fact2 = {}
     fact2["name"] = "upload_time"
-    fact2["value"] = datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")
+    fact2["value"] = time
     gathering_facts.append(fact1)
     gathering_facts.append(fact2)
     return gathering_facts

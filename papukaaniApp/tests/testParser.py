@@ -55,12 +55,18 @@ class FileParserTest(TestCase):
         documents = document.get_all()
         self.assertEqual(len(documents[0].gatherings), 1)
 
+    def test(self):
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
+        documents = document.get_all()
+        self.assertEquals(documents[0].gatherings[0].facts[1]["value"], "24-11-2015, 00-00-00")
+
     def test_byholm_data_goes_lajiStroe_succesfully(self):
         document.delete_all()
         path = settings.OTHER_ROOT + "/byholm_test.txt"
         file = open(path, "rb")
         entries = prepare_file(file, self.byholm_parser, "1010")
-        create_points(entries, self.byholm_parser, "byholm_test.txt")
+        create_points(entries, self.byholm_parser, "byholm_test.txt", datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
         documents = document.get_all()
         self.assertEqual(len(documents), 1)
         self.assertEqual(len(documents[0].gatherings), 5)
@@ -70,8 +76,8 @@ class FileParserTest(TestCase):
         documents = document.get_all()
         self.assertEqual(len(documents[0].gatherings[0].facts), 2)
 
-def _create_points_from_ecotone(self, filename):
+def _create_points_from_ecotone(self, filename, time=datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")):
     path = settings.OTHER_ROOT + filename
     file = open(path, "rb")
     entries = prepare_file(file, self.ecotone_parser)
-    create_points(entries, self.ecotone_parser, filename)
+    create_points(entries, self.ecotone_parser, filename, time)

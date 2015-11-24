@@ -33,7 +33,7 @@ def upload(request):
             except:
                 messages.add_message(request, messages.ERROR, 'Tiedostosi formaatti ei ole kelvollinen!')
                 return redirect(upload)
-            points = create_points(data, parser, uploaded_file.name)
+            points = create_points(data, parser, uploaded_file.name, datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
             return _render_points(points, parsers, request)
 
         messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")

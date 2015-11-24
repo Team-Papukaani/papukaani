@@ -17,9 +17,7 @@ def create_points(data, parser, name_of_file):
 
     devices = []
 
-    gathering_facts=[]
-    gathering_facts.append(name_of_file)
-    gathering_facts.append(datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
+    gathering_facts= _gathering_dics(name_of_file)
 
     for point in data:
         GpsNumber = point['gpsNumber']
@@ -36,7 +34,7 @@ def create_points(data, parser, name_of_file):
                 time=parse_time(point['gpsTime']),
                 geometry=[float(point["longitude"]), float(point["latitude"])],
                 temperature=float(point['temperature']),
-                facts=gathering_facts
+                facts = gathering_facts
             ))
 
     points = []
@@ -67,3 +65,15 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     :return: A list containing all gatherings from both lists excluding duplicates
     """
     return list(set().union(set(lajiStore_gatherings), set(new_gatherings)))
+
+def _gathering_dics(name_of_file):
+    gathering_facts = []
+    fact1 = {}
+    fact1["name"] = "filename"
+    fact1["value"] = name_of_file
+    fact2 = {}
+    fact2["name"] = "upload_time"
+    fact2["value"] = datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")
+    gathering_facts.append(fact1)
+    gathering_facts.append(fact2)
+    return gathering_facts

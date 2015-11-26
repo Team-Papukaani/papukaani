@@ -67,6 +67,8 @@ SetEnv LAJISTRORE_TEST_PASSWORD xxxxx
 SetEnv PAPUKAANI_SECRET_KEY xxx
 SetEnv LAJISTRORE_UNIT_TEST_PASSWORD xxxxx
 SetEnv PAPUKAANI_UNIT_SECRET_KEY xxx
+SetEnv TIPUAPI_USER xxxx
+SetEnv TIPUAPI_PASSWORD xxxx
 
 WSGIDaemonProcess satelliitti python-path=/home/KÄYTTÄJÄNIMI/pelikaija:/home/KÄYTTÄJÄNIMI/pelikaija/pelikaijaenv/lib/python3.4/site-packages
 WSGIProcessGroup satelliitti

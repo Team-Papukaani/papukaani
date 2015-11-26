@@ -4,6 +4,8 @@
 <head>
     {% include "papukaaniApp/include_headers.html" %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/individuals.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.css' %}">
     <title>Pelikaija</title>
 </head>
 <body>
@@ -34,17 +36,20 @@
         <input class="form-control" type="text" name="taxon" placeholder="Nimi" value="{{ individual.taxon }}"/>
         <input class="form-control" type="text" name="ring_id" placeholder="Rengastunnus" value="{{ individual.ring_id }}"/>
         <input class="form-control" type="text" name="nickname" placeholder="Lempinimi" value="{{ individual.nickname }}"/>
-        <input class="form-control" type="text" name="species" placeholder="Laji" value="{{ individual.species }}"/>
+        <select class="form-control combobox" name="species" placeholder="Laji">
+            <option></option>
+            {% for s in species %}
+            <option value="{{ s.id }}" {% if individual.species == s.id %} selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
         <button type="submit" name="modify" value="1" class="btn btn-default">Muokkaa</button>
         <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">Poista</button>
     </form>
     <br>
 {% endfor %}
 
-{% for specie in species %}
-    {{ specie.name }} <br >
-{% endfor %}
-
+<script src="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.js' %}"></script>
 <script src="{% static 'papukaani/js/individuals.js' %}"></script>
+
 </body>
 </html>

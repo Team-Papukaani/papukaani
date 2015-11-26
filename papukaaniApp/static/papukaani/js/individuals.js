@@ -16,3 +16,7 @@ function confirm (form) {
     });
     popup.show()
 };
+
+$(document).ready(function(){
+    $('.combobox').combobox();
+});

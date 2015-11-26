@@ -23,7 +23,8 @@ PublicMap.prototype.changePoints = function (points) {
     try {
         this.latlngs = this.createLatlngsFromPoints(points);
         this.animate(this.latlngs);
-    }   catch (e) {
+        this.setSliderValues();
+    } catch (e) {
     }
 
 //    doc = points[0];
@@ -58,6 +59,10 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
     });
 };
 
+PublicMap.prototype.setSliderValues = function () {
+
+};
+
 //Disables the select, save and reset buttons.
 function lockButtons() {
     $("#selectDevice").attr("disabled", true);
@@ -81,3 +86,36 @@ $(function () {
     });
 });
 
+//Prevents Leaflet onclick and mousewheel events from triggering when slider is used.
+$(function () {
+    var div = L.DomUtil.get('playSlider');
+    if (!L.Browser.touch) {
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation);
+    } else {
+        L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
+    }
+});
+
+//Initializes a slider with an attached label showing current value.
+$(function () {
+    $("#playSlider").slider({
+        min: 0,
+        max: 0,
+        step: 0,
+        values: [0],
+        slide: function (event, ui) {
+            var delay = function () {
+                var label = '#playLabel';
+                $(label).html(ui.value).position({
+                    my: 'center top',
+                    at: 'center bottom',
+                    of: ui.handle
+                }).css({visibility: 'visible'});
+            };
+
+            // wait for the ui.handle to set its position
+            setTimeout(delay, 5);
+        }
+    });
+});

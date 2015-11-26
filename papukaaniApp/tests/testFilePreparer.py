@@ -26,16 +26,6 @@ class FilePreparerTest(TestCase):
         self.ecotone_parser.delete()
         self.byholm_parser.delete()
 
-    def test_file_parsing(self):
-        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
-        file = open(path, "rb")
-        entries = prepare_file(file, self.ecotone_parser)
-        lats = [61.757366, 61.757366, 61.758000, 61.757200, 61.758050]
-        i = 0
-        for entry in entries:
-            assert float(lats[i]) == float(entry["latitude"])
-            i += 1
-
     def test_points_can_be_succesfully_created_from_parsed_contents(self):
         path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
         file = open(path, "rb")

@@ -3,6 +3,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
+from datetime import datetime
 
 
 class PublicView(StaticLiveServerTestCase):
@@ -59,4 +60,12 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_slider_is_created_when_device_is_selected(self):
         self.page.change_device_selection("DeviceId")
-        self.assertNotEquals(len(self.page.driver.find_elements_by_class_name("ui-slider")), 2)
+        self.assertEquals(len(self.page.driver.find_elements_by_class_name("ui-slider")), 2)
+        self.assertEquals(self.page.driver.find_element_by_id("playLabel").get_attribute("innerHTML"),
+                          "1234/12/12 12:12:12")
+
+    def test_slider_label_value_changes_when_playing(self):
+        self.select_device_and_play()
+        time.sleep(1)
+        label = self.page.driver.find_element_by_id("playLabel")
+        self.assertEquals(label.get_attribute("innerHTML"), "1234/12/12 12:13:12")

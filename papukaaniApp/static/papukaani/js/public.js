@@ -36,6 +36,7 @@ PublicMap.prototype.play = function () {
     if (this.animation.start()) {
         $("#play").attr("disabled", true);
         $("#pause").attr("disabled", false);
+        $("#skip").attr("disabled", true);
     }
 };
 
@@ -43,7 +44,12 @@ PublicMap.prototype.pause = function () {
     if (this.animation.stop()) {
         $("#play").attr("disabled", false);
         $("#pause").attr("disabled", true);
+        $("#skip").attr("disabled", false);
     }
+};
+
+PublicMap.prototype.skip = function () {
+    this.animation.skipAnimationUntil();
 };
 
 

@@ -23,7 +23,6 @@ PublicMap.prototype.changePoints = function (points) {
     try {
         this.latlngs = this.createLatlngsFromPoints(points);
         this.animate(this.latlngs);
-        this.setSliderValues();
     } catch (e) {
     }
 
@@ -59,10 +58,6 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
     });
 };
 
-PublicMap.prototype.setSliderValues = function () {
-
-};
-
 //Disables the select, save and reset buttons.
 function lockButtons() {
     $("#selectDevice").attr("disabled", true);
@@ -95,27 +90,4 @@ $(function () {
     } else {
         L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
     }
-});
-
-//Initializes a slider with an attached label showing current value.
-$(function () {
-    $("#playSlider").slider({
-        min: 0,
-        max: 0,
-        step: 0,
-        values: [0],
-        slide: function (event, ui) {
-            var delay = function () {
-                var label = '#playLabel';
-                $(label).html(ui.value).position({
-                    my: 'center top',
-                    at: 'center bottom',
-                    of: ui.handle
-                }).css({visibility: 'visible'});
-            };
-
-            // wait for the ui.handle to set its position
-            setTimeout(delay, 5);
-        }
-    });
 });

@@ -144,6 +144,8 @@ var PathIterator = function (points) {
     this.getEndTime = function () {
         return orderedPoints[orderedPoints.length - 1].time;
     };
+
+    createSlider(this.getStartTime(), this.getEndTime(), 60000);
 };
 
 //Removes the animation, effectively removing all markers and polylines created by it.
@@ -163,3 +165,25 @@ L.Map.include({
         }, this);
     }
 });
+
+//Initializes a slider with an attached label showing current value.
+createSlider = function (min, max, step) {
+    $("#playSlider").slider({
+        min: min,
+        max: max,
+        step: step,
+        slide: function (event, ui) {
+            var delay = function () {
+                var label = '#playLabel';
+                $(label).html(new Date(ui.value).toLocaleString()).position({
+                    my: 'center top',
+                    at: 'center bottom',
+                    of: ui.handle
+                }).css({visibility: 'visible'});
+            };
+
+            // wait for the ui.handle to set its position
+            setTimeout(delay, 5);
+        }
+    });
+};

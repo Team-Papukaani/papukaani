@@ -33,18 +33,16 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(self.page.get_number_of_points(), 0)
 
     def test_can_choose_points_by_device(self):
-        self.page.change_device_selection("DeviceId")
-        self.page.PLAY.click()
-        self.page.play()
+        self.select_device_and_play()
         self.assertNotEquals(self.page.POLYLINE, None)
 
     def test_polylines_are_cleared_on_selection_change(self):
-        self.test_can_choose_points_by_device()
+        self.select_device_and_play()
         self.page.PAUSE.click()
         self.page.change_device_selection("None")
 
     def test_pause_stops_polyline_drawing(self):
-        self.test_can_choose_points_by_device()
+        self.select_device_and_play()
         self.page.PAUSE.click()
         start = self.page.get_map_polyline_elements()
         time.sleep(1)
@@ -54,3 +52,11 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_device_selection("DeviceId")
         self.page.get_marker().click()
         self.assertNotEquals(self.page.get_popup(), None)
+
+    def select_device_and_play(self):
+        self.page.change_device_selection("DeviceId")
+        self.page.play()
+
+    def test_slider_is_created_when_device_is_selected(self):
+        self.page.change_device_selection("DeviceId")
+        self.assertNotEquals(len(self.page.driver.find_elements_by_class_name("ui-slider")), 2)

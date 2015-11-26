@@ -18,8 +18,9 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
         self.assertEquals("Birdie", self.page.get_first_individual_taxon())
 
     def test_modify_individual(self):
-        self.page.modify_individual("Snake")
+        self.page.modify_individual("Snake", "DEM123456")
         self.assertEquals("Snake", self.page.get_first_individual_taxon())
+        self.assertEquals("DEM123456", self.page.get_first_individual_ring_id())
 
     def test_delete_and_create_individual(self):
         self.page.delete_individual()

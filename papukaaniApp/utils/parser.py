@@ -67,22 +67,12 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
 
     new_gatherings = set(new_gatherings)
     lajiStore_gatherings = set(lajiStore_gatherings)
-
     no_duplicates = new_gatherings.symmetric_difference(lajiStore_gatherings)
     duplicates_from_new_gatherings = new_gatherings.difference(no_duplicates)
     duplicates_from_lajiStore_gatherings = lajiStore_gatherings.difference(no_duplicates)
 
-
     _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings)
-
     return list(set().union(no_duplicates, duplicates_from_new_gatherings))
-
-
-    # new_gatherings = set(new_gatherings)
-    # no_duplicates = new_gatherings.symmetric_difference(set(lajiStore_gatherings))
-    # duplicates = new_gatherings.difference(no_duplicates)
-    # result = list(set().union(duplicates, no_duplicates))
-    # return result
 
 def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings):
     for g in duplicates_from_new_gatherings:

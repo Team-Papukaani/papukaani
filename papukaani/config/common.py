@@ -105,8 +105,14 @@ STATIC_URL = '/static/'
 
 LAJISTORE_URL = 'http://fmnh-ws-prod2.it.helsinki.fi/lajistore/'
 
+LAJIAUTH_URL =  "https://fmnh-ws-test.it.helsinki.fi/laji-auth/"
+
+LAJIAUTH_USER = os.environ["LAJIAUTH_USER"]
+
 STATIC_ROOT = os.path.join(PROJECT_DIR, '../../static/')
 
 TEST_RUNNER = "papukaani.test_runner.TestRunner"
 
 XEPHYR_VISIBILITY = 0
+
+MOCK_AUTHENTICATION = "Off"

@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^individuals/$', views.individuals, name='individuals'),
     url(r'^rest/documentsForDevice$', views.getDocumentsForDevice),
 
-    url(r'^login/$', views.login, name='login')
+    url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout')
 ]

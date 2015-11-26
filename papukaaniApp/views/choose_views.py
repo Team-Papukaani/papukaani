@@ -4,8 +4,10 @@ from django.shortcuts import render, redirect
 
 from papukaaniApp.utils.view_utils import *
 from papukaaniApp.models_LajiStore import device, document
+from papukaaniApp.services.laji_auth import require_auth
 
 
+@require_auth
 def choose(request):
     """
     Controller for '/choose/'. GET renders view,

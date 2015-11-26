@@ -14,13 +14,13 @@
         <h3>Kirjaudu sisään:</h3>
         <br>
         <p>
-            <a href="https://login.laji.fi/auth-sources/LTKM?target=KE.341&next={% url 'login' %}">
+            <a href="{{lajiauth}}{{luomus}}{% url 'login' %}">
                 <img src="https://login.laji.fi/static/luomus.png" alt="LUOMUS" />
             </a>
         </p>
 
         <p>
-            <a href="https://login.laji.fi/auth-sources/shibboleth/HAKA?target=KE.341&next={% url 'login' %}">
+            <a href="{{lajiauth}}{{haka}}{% url 'login' %}">
                 <img src="https://login.laji.fi/static/haka.gif" alt="HAKA" />
             </a>
         </p>

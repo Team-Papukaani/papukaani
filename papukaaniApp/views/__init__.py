@@ -6,4 +6,7 @@ from .public_views import *
 from .device_views import *
 from .rest_views import *
 from .individual_views import *
+
 from .login_view import *
+
+from .formats_views import *

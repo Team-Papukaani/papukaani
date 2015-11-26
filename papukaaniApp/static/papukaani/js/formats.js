@@ -1,9 +1,9 @@
 function init(){
-    $("help").each(function(index, element){
-        element.hide()
+    $(".help").each(function(index, element){
+        $(element).hide();
     });
 }
 
-function showElement(id){
-    $find()
+function toggleElement(id){
+    $("#"+id).toggle();
 }

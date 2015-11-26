@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
 </head>
-<body>
+<body onload="init()">
 
 {% include "papukaaniApp/navigation.html" %}
 <div class="margin-container">
@@ -20,40 +20,92 @@
         <div class="input-group">
             <span class="input-group-addon wide">Formaatin nimi</span>
             <input class="form-control" type="text" name="formatName" id="formatName">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"></span>
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_formatName')" id="formatName_helpbutton"></span>
         </div>
+
+        <div id="help_formatName" class="panel panel-default help-box help">
+            <span>Vapaamuotoinen nimi formaatille. Pakollinen kenttä.</span>
+        </div>
+
 
         <div class="input-group">
             <span class="input-group-addon wide">Aikaleima</span>
             <input class="form-control" type="text" name="gpsTime" id="gpsTime">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsTime')"></span>
+        </div>
+
+        <div id="help_gpsTime" class="panel panel-default help-box help">
+            <span>Aikaleima-sarakkeen nimi. Pakollinen kenttä.</span>
         </div>
 
         <div class="input-group">
             <span class="input-group-addon wide">Longitudi</span>
             <input class="form-control" type="text" name="longitude" id="longitude">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_longitude')"></span>
+        </div>
+
+        <div id="help_longitude" class="panel panel-default help-box help">
+            <span>Longitudi-sarakkeen nimi. Pakollinen kenttä.</span>
         </div>
 
         <div class="input-group">
             <span class="input-group-addon wide">Latitudi</span>
             <input class="form-control" type="text" name="latitude" id="latitude">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_latitude')"></span>
+        </div>
+
+        <div id="help_latitude" class="panel panel-default help-box help">
+            <span>Latitudi-sarakkeen nimi. Pakollinen kenttä.</span>
         </div>
 
         <div class="input-group">
             <span class="input-group-addon wide">Erottava merkki</span>
-            <input class="form-control" type="text" name="split_mark" id="split_mark">
+            <input class="form-control" type="text" name="split_mark" id="split_mark" value=" ">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_split_mark')"></span>
         </div>
 
-        <button type="submit" class="btn btn-default">Lähetä</button>
+        <div id="help_split_mark" class="panel panel-default help-box help">
+            <span>Merkki, joka erottaa sarakkeet tiedostossa. Vakiona välilyönti. Pakollinen kenttä.</span>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Lähettimen tunnus</span>
+            <input class="form-control" type="text" name="gpsNumber" id="gpsNumber">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsNumber')"></span>
+        </div>
+
+        <div id="help_gpsNumber" class="panel panel-default help-box help">
+            <span>Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste annetaan latauksen yhteydessä.</span>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Lämpötila</span>
+            <input class="form-control" type="text" name="temperature" id="temperature">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_temperature')"></span>
+        </div>
+
+        <div id="help_temperature" class="panel panel-default help-box help">
+            <span>Merkki, joka erottaa sarakkeet tiedostossa. Vakiona välilyönti, jos vakiota käytetään kenttä tulee jättää tyhjäksi.</span>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Korkeus</span>
+            <input class="form-control" type="text" name="altitude" id="altitude">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_altitude')"></span>
+        </div>
+
+        <div id="help_altitude" class="panel panel-default help-box help">
+            <span>Korkeus-sarakkeen nimi. Valinnainen kenttä.</span>
+        </div>
+
+        <button type="submit" class="btn btn-default" id="submit">Lähetä</button>
 
     </form>
 
-    <help id="help_formatName">
-
-    </help>
-
-
-    {% include "papukaaniApp/include_scripts.html" %}
 </div>
+
+{% include "papukaaniApp/include_scripts.html" %}
+<script src="{% static 'papukaani/js/formats.js' %}"></script>
 
 </body>
 </html>

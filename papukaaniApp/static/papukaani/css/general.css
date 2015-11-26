@@ -80,7 +80,7 @@ html,body {
 }
 
 .input-group-addon.wide{
-    min-width:130px;
+    min-width:12em;
 }
 
 .input-group-addon.button:hover{
@@ -96,4 +96,10 @@ html,body {
     -moz-transition:background-color ease-in 0.2s;
     -o-transition:background-color ease-in 0.2s;
     transition:background-color ease-in 0.2s;
+}
+
+.panel.help-box{
+    padding : 1em;
+    width : 100%;
+    background-color : #F4F4F4;
 }

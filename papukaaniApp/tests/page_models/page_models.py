@@ -336,3 +336,12 @@ class IndividualPage(Page):
         delete_button.click()
         confirm_button = self.DELETE_CONFIRM_BUTTON
         confirm_button.click()
+
+class FormatsPage(Page):
+
+    url = BASE_URL + '/papukaani/formats/'
+
+    SUBMIT = Element(By.ID, "submit")
+    HELP_BUTTON = Element(By.ID, "formatName_helpbutton")
+    HELP_BOX = Element(By.ID, "help_formatName")
+

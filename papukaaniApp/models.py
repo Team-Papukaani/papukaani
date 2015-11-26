@@ -36,4 +36,4 @@ class GeneralParser(models.Model):
     latitude = models.CharField(max_length=50)
     altitude = models.CharField(max_length=50, blank=True)
     temperature = models.CharField(max_length=50, blank=True)
-    split_mark = models.CharField(max_length=50)
+    delimiter = models.CharField(max_length=50)

@@ -48,29 +48,7 @@ Animator.prototype.reInit = function (endtime) {
     }
 
     while (this.time < endtime) {
-        function calculateTimeStep(time) {
-            return $('#speedSlider').slider("option", "value") * time / 24000;
-        }
-
-        function updatePolylines(polylines) {
-            for (var j = 0; j < Math.min(polylines.length, 40); j++) {
-                var line = polylines[j];
-
-                var oldOpacity = line.options.opacity;
-                var newOpacity = oldOpacity - 0.02;
-                line.setStyle({color: 'blue', opacity: newOpacity});
-            }
-        }
-
-        function addNewPolyline(polyline) {
-            this.polylines.push(polyline);
-            if (this.polylines.length >= 40) {
-                this.polylines.shift()
-            }
-            polyline.addTo(this.map);
-        }
-
-        var timeStep = calculateTimeStep(this.timeBetweenFirstAndLast);
+        var timeStep = this.calculateTimeStep();
         this.lastPosition = this.markerPosition;
         this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
 
@@ -79,8 +57,8 @@ Animator.prototype.reInit = function (endtime) {
             opacity: 0.9
         });
 
-        addNewPolyline.call(this, polyline);
-        updatePolylines(this.polylines);
+        this.addNewPolyline(polyline);
+        this.updatePolylines();
 
         this.time += timeStep;
     }
@@ -92,29 +70,7 @@ Animator.prototype.reInit = function (endtime) {
 Animator.prototype.animate = function () {
     this.interval = setInterval(function () {
 
-        function calculateTimeStep(time) {
-            return $('#speedSlider').slider("option", "value") * time / 24000;
-        }
-
-        function updatePolylines(polylines) {
-            for (var j = 0; j < Math.min(polylines.length, 40); j++) {
-                var line = polylines[j];
-
-                var oldOpacity = line.options.opacity;
-                var newOpacity = oldOpacity - 0.02;
-                line.setStyle({color: 'blue', opacity: newOpacity});
-            }
-        }
-
-        function addNewPolyline(polyline) {
-            this.polylines.push(polyline);
-            if (this.polylines.length >= 40) {
-                this.polylines.shift()
-            }
-            polyline.addTo(this.map);
-        }
-
-        var timeStep = calculateTimeStep(this.timeBetweenFirstAndLast);
+        var timeStep = this.calculateTimeStep();
         this.lastPosition = this.markerPosition;
         this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
 
@@ -123,8 +79,8 @@ Animator.prototype.animate = function () {
             opacity: 0.9
         });
 
-        addNewPolyline.call(this, polyline);
-        updatePolylines(this.polylines);
+        this.addNewPolyline(polyline);
+        this.updatePolylines();
 
         this.marker.setLatLng(this.markerPosition.toArray());
         this.marker._popup.setContent(this.getMarkerTimeStamp());
@@ -133,6 +89,29 @@ Animator.prototype.animate = function () {
         if (this.time >= this.pathIterator.getEndTime()) clearTimeout(this.interval);
     }.bind(this), 100);
 };
+
+Animator.prototype.calculateTimeStep = function () {
+    return $('#speedSlider').slider("option", "value") * this.timeBetweenFirstAndLast / 24000;
+};
+
+Animator.prototype.updatePolylines = function () {
+    for (var j = 0; j < Math.min(this.polylines.length, 40); j++) {
+        var line = this.polylines[j];
+
+        var oldOpacity = line.options.opacity;
+        var newOpacity = oldOpacity - 0.02;
+        line.setStyle({color: 'blue', opacity: newOpacity});
+    }
+};
+
+Animator.prototype.addNewPolyline = function (polyline) {
+    this.polylines.push(polyline);
+    if (this.polylines.length >= 40) {
+        this.polylines.shift()
+    }
+    polyline.addTo(this.map);
+};
+
 
 //Starts the animation.
 Animator.prototype.start = function () {

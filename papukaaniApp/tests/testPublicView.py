@@ -69,3 +69,6 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(1)
         label = self.page.driver.find_element_by_id("playLabel")
         self.assertEquals(label.get_attribute("innerHTML"), "1234/12/12 12:13:12")
+
+    def test_polylines_can_be_shown_without_animation(self):
+        self.page.change_device_selection("DeviceId")

@@ -1,12 +1,13 @@
 import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
+import datetime
 
 def parse_time(time):
     toks = time.split()
     return toks[0] + "T" + toks[1] + "+00:00"
 
-def create_points(data, parser):
+def create_points(data, parser, name_of_file, time):
     """
     Creates a new entry for every Gathering not already in the database.
     :param data: The contents of the uploaded file.
@@ -15,6 +16,8 @@ def create_points(data, parser):
     collections = {}
 
     devices = []
+
+    gathering_facts = _gathering_fact_dics(name_of_file, time)
 
     for point in data:
         GpsNumber = point['gpsNumber']
@@ -25,11 +28,13 @@ def create_points(data, parser):
             device.get_or_create(deviceId=GpsNumber, parserInfo=parser_Info(parser))
             devices.append(GpsNumber)
 
+
         collections[GpsNumber].append(
             gathering.Gathering(
                 time=parse_time(point['gpsTime']),
                 geometry=[float(point["longitude"]), float(point["latitude"])],
-                temperature=float(point['temperature'])
+                temperature=float(point['temperature']),
+                facts = gathering_facts
             ))
 
     points = []
@@ -59,4 +64,31 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     :param new_gatherings: list containing gatherings to add
     :return: A list containing all gatherings from both lists excluding duplicates
     """
-    return list(set().union(set(lajiStore_gatherings), set(new_gatherings)))
+
+    new_gatherings = set(new_gatherings)
+    lajiStore_gatherings = set(lajiStore_gatherings)
+    no_duplicates = new_gatherings.symmetric_difference(lajiStore_gatherings)
+    duplicates_from_new_gatherings = new_gatherings.difference(no_duplicates)
+    duplicates_from_lajiStore_gatherings = lajiStore_gatherings.difference(no_duplicates)
+
+    _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings)
+    return list(set().union(no_duplicates, duplicates_from_new_gatherings))
+
+def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings):
+    for g in duplicates_from_new_gatherings:
+        for g2 in duplicates_from_lajiStore_gatherings:
+            if g == g2:
+                g.facts = g.facts + g2.facts
+                break
+
+def _gathering_fact_dics(name_of_file, time):
+    gathering_facts = []
+    fact1 = {}
+    fact1["name"] = "filename"
+    fact1["value"] = name_of_file
+    fact2 = {}
+    fact2["name"] = "upload_time"
+    fact2["value"] = time
+    gathering_facts.append(fact1)
+    gathering_facts.append(fact2)
+    return gathering_facts

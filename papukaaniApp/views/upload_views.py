@@ -4,8 +4,7 @@ from papukaaniApp.utils.file_preparer import *
 from django.shortcuts import render
 from papukaaniApp.utils.view_utils import *
 import json, uuid
-from papukaaniApp.models_LajiStore import *
-import time
+import datetime
 from django.contrib import messages
 
 def upload(request):
@@ -34,7 +33,7 @@ def upload(request):
             except:
                 messages.add_message(request, messages.ERROR, 'Tiedostosi formaatti ei ole kelvollinen!')
                 return redirect(upload)
-            points = create_points(data, parser)
+            points = create_points(data, parser, uploaded_file.name, datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
             return _render_points(points, parsers, request)
 
         messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")

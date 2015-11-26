@@ -1,7 +1,6 @@
 import chardet
 from pprint import pprint
 from io import StringIO
-from papukaaniApp.utils.data_formats import *
 import csv
 
 def _uploaded_file_to_filestream(file):
@@ -19,8 +18,8 @@ def prepare_file(uploaded_file, parser, static_gps_number = False):
     :return: A dictionary containing every event as named values.
     """
 
-    filestream = _uploaded_file_to_filestream(uploaded_file)
-    reader = csv.reader(filestream.read().splitlines(), delimiter=parser.split_mark)
+    filestream = _uploaded_file_to_filestream(uploaded_file).read()
+    reader = csv.reader(filestream.splitlines(), delimiter=parser.delimiter)
     results = [row for row in reader]
 
     lines = []

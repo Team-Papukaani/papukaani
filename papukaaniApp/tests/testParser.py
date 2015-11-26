@@ -3,6 +3,8 @@ from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models_LajiStore import document, gathering
 from papukaaniApp.models import *
+from random import *
+import time
 
 
 class FileParserTest(TestCase):
@@ -11,13 +13,13 @@ class FileParserTest(TestCase):
                                                            gpsTime="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
-                                                           temperature="Temperature", split_mark=",")
+                                                           temperature="Temperature", delimiter=",")
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
                                                           longitude="Longitude_E", latitude="Latitude_N",
                                                           altitude="Altitude_m",
-                                                          temperature="temperature", split_mark="\t")
+                                                          temperature="temperature", delimiter="\t")
         self.byholm_parser.save()
 
     def tearDown(self):
@@ -55,7 +57,8 @@ class FileParserTest(TestCase):
         documents = document.get_all()
         self.assertEqual(len(documents[0].gatherings), 1)
 
-    def test(self):
+    def test_gathering_facts_unite_succesfully(self):
+        document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
         documents = document.get_all()

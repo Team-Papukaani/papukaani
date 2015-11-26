@@ -2,15 +2,17 @@ from django.shortcuts import redirect, render
 from . import index
 from papukaaniApp.services.laji_auth import authenticate, authenticated, log_in, log_out
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
         if not "token" in request.POST:
             return redirect(login)
 
         if authenticate(request, request.POST["token"]):
-            redirect(index)
-        else: redirect(login)
+            return redirect(index)
+        else: return redirect(login)
 
     elif not authenticated(request):
         luomus_uri = "auth-sources/LTKM?target="+settings.LAJIAUTH_USER +"&next="

@@ -10,6 +10,11 @@ function Animator(latlngs, map) {
     this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
     this.markerPosition = this.lastPosition;
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
+    this.polyline = L.polyline([], {
+        color: 'blue',
+        opacity: 0.2
+    });
+    this.polyline.addTo(this.map);
     this.marker.addTo(this.map);
     this.marker.bindPopup(this.getMarkerTimeStamp());
 
@@ -105,9 +110,10 @@ Animator.prototype.updatePolylines = function () {
 };
 
 Animator.prototype.addNewPolyline = function (polyline) {
-    this.polylines.push(polyline);
     if (this.polylines.length >= 40) {
-        this.polylines.shift()
+        this.polyline.addLatLng(this.polylines[0].getLatLngs[1]);
+        this.map.removeLayer(this.polylines[0]);
+        this.polylines.shift();
     }
     polyline.addTo(this.map);
 };

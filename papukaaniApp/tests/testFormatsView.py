@@ -16,7 +16,7 @@ class TestFormatsView(TestCase):
             "gpsTime" : "testTime",
             "latitude": "latitude",
             "longitude" : "longitude",
-            "split_mark" : ","
+            "delimiter" : ","
         })
 
         self.assertEquals(len(GeneralParser.objects.all()), 1)

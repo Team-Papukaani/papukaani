@@ -13,23 +13,29 @@ def create_points(data, parser, name_of_file, time):
     :param data: The contents of the uploaded file.
     :return: A list containing all of the Gatherings found in the file.
     """
+
+    return _create_gatherings(data, parser, name_of_file, time)
+
+def _create_gatherings(data, parser, name_of_file, time):
     collections = {}
-
     devices = []
-
     gathering_facts = _gathering_fact_dics(name_of_file, time)
 
     for point in data:
-        GpsNumber = point['gpsNumber']
-        if GpsNumber not in collections:
-            collections[GpsNumber] = []
+        gpsNumber = point['gpsNumber']
+        _gpsNumberCheck(collections, devices, parser, gpsNumber)
+        _create_one_gathering(collections, gpsNumber, gathering_facts, point)
+    return _update_gatherings_to_lajiStore(collections)
 
-        if GpsNumber not in devices:
-            device.get_or_create(deviceId=GpsNumber, parserInfo=parser_Info(parser))
-            devices.append(GpsNumber)
+def _gpsNumberCheck(collections, devices, parser, gpsNumber):
+    if gpsNumber not in collections:
+        collections[gpsNumber] = []
+    if gpsNumber not in devices:
+        device.get_or_create(deviceId=gpsNumber, parserInfo=parser_Info(parser))
+        devices.append(gpsNumber)
 
-
-        collections[GpsNumber].append(
+def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
+        collections[gpsNumber].append(
             gathering.Gathering(
                 time=parse_time(point['gpsTime']),
                 geometry=[float(point["longitude"]), float(point["latitude"])],
@@ -37,26 +43,30 @@ def create_points(data, parser, name_of_file, time):
                 facts = gathering_facts
             ))
 
+def _update_gatherings_to_lajiStore(collections):
     points = []
-    print(1)
     for k in collections.keys():
         doc_array = document.find(deviceId=k)
         points += collections[k]
         if len(doc_array) == 0:
-            print("2a")
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
             doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, collections[k])
-
             if len(doc_array) > 1:  # if LajiStore contains redundant documents (more than one document for one device)
                 for i in range(1, len(doc_array)):
                     doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, doc_array[i].gatherings)
                     # append points from redundant into first document
                     doc_array[i].delete()  # delete redundant document
-
-            print("2b")
+            _check_redundant_lajiStore_documents(doc_array)
             doc_array[0].update()
     return points
+
+def _check_redundant_lajiStore_documents(doc_array):
+    if len(doc_array) > 1:  # if LajiStore contains redundant documents (more than one document for one device)
+        for i in range(1, len(doc_array)):
+            doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, doc_array[i].gatherings)
+            # append points from redundant into first document
+            doc_array[i].delete()  # delete redundant document
 
 def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     """

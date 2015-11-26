@@ -65,34 +65,31 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     :return: A list containing all gatherings from both lists excluding duplicates
     """
 
-    # duplicates_from_new_gatherings = set(new_gatherings).intersection_update(lajiStore_gatherings)
-    # if not duplicates_from_new_gatherings:
-    #     duplicates_from_new_gatherings = {}
-    # duplicates_from_lajiStore_gatherings = set(lajiStore_gatherings).intersection_update(duplicates_from_new_gatherings)
-    # if not duplicates_from_lajiStore_gatherings:
-    #     duplicates_from_lajiStore_gatherings = {}
-    # _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings)
-    #
-    # if not lajiStore_gatherings:
-    #     lajiStore_gatherings = {}
-    # if not new_gatherings:
-    #     new_gatherings = {}
-    #
-    # return list(set(lajiStore_gatherings).update(new_gatherings))
-
-
     new_gatherings = set(new_gatherings)
-    no_duplicates = new_gatherings.symmetric_difference(set(lajiStore_gatherings))
-    duplicates = new_gatherings.difference(no_duplicates)
-    result = list(set().union(duplicates, no_duplicates))
-    return result
+    lajiStore_gatherings = set(lajiStore_gatherings)
+
+    no_duplicates = new_gatherings.symmetric_difference(lajiStore_gatherings)
+    duplicates_from_new_gatherings = new_gatherings.difference(no_duplicates)
+    duplicates_from_lajiStore_gatherings = lajiStore_gatherings.difference(no_duplicates)
+
+
+    _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings)
+
+    return list(set().union(no_duplicates, duplicates_from_new_gatherings))
+
+
+    # new_gatherings = set(new_gatherings)
+    # no_duplicates = new_gatherings.symmetric_difference(set(lajiStore_gatherings))
+    # duplicates = new_gatherings.difference(no_duplicates)
+    # result = list(set().union(duplicates, no_duplicates))
+    # return result
 
 def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings):
     for g in duplicates_from_new_gatherings:
         for g2 in duplicates_from_lajiStore_gatherings:
             if g == g2:
-                g.facts = g.facts.update(g2.facts)
-            break
+                g.facts = g.facts + g2.facts
+                break
 
 def _gathering_fact_dics(name_of_file, time):
     gathering_facts = []

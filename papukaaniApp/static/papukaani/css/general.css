@@ -73,3 +73,27 @@ html,body {
     margin-left: 20px;
     margin-top: 10px;
 }
+
+.margin-container{
+    width: 80%;
+    margin-left: 10%;
+}
+
+.input-group-addon.wide{
+    min-width:130px;
+}
+
+.input-group-addon.button:hover{
+    background-color : #DDDDDD;
+    -webkit-transition:background-color ease-in 0.2s;
+    -moz-transition:background-color ease-in 0.2s;
+    -o-transition:background-color ease-in 0.2s;
+    transition:background-color ease-in 0.2s;
+}
+
+.input-group-addon.button:not(:hover){
+    -webkit-transition:background-color ease-in 0.2s;
+    -moz-transition:background-color ease-in 0.2s;
+    -o-transition:background-color ease-in 0.2s;
+    transition:background-color ease-in 0.2s;
+}

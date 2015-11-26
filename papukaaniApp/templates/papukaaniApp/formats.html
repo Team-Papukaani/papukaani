@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Papukaija</title>
+    {% load staticfiles %}
+
+    {% include "papukaaniApp/include_headers.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
+</head>
+<body>
+
+{% include "papukaaniApp/navigation.html" %}
+<div class="margin-container">
+    <h1>Määrittele formaatti:</h1>
+
+    <form id="formatForm" class="form" action='{% url "formats" %}' method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <span class="input-group-addon wide">Formaatin nimi</span>
+            <input class="form-control" type="text" name="formatName" id="formatName">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"></span>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Aikaleima</span>
+            <input class="form-control" type="text" name="gpsTime" id="gpsTime">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Longitudi</span>
+            <input class="form-control" type="text" name="longitude" id="longitude">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Latitudi</span>
+            <input class="form-control" type="text" name="latitude" id="latitude">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Erottava merkki</span>
+            <input class="form-control" type="text" name="split_mark" id="split_mark">
+        </div>
+
+        <button type="submit" class="btn btn-default">Lähetä</button>
+
+    </form>
+
+    <help id="help_formatName">
+
+    </help>
+
+
+    {% include "papukaaniApp/include_scripts.html" %}
+</div>
+
+</body>
+</html>

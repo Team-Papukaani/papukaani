@@ -2,7 +2,7 @@ from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models import *
-from papukaaniApp.models_LajiStore import document, gathering
+from papukaaniApp.models_LajiStore import document
 
 
 class FilePreparerTest(TestCase):

@@ -3,6 +3,8 @@ from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models_LajiStore import document, gathering
 from papukaaniApp.models import *
+from random import *
+import time
 
 
 class FileParserTest(TestCase):
@@ -78,6 +80,27 @@ class FileParserTest(TestCase):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
         documents = document.get_all()
         self.assertEqual(len(documents[0].gatherings[0].facts), 2)
+
+
+    def test_parser_speed(self):
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
+        entries = []
+        print("Creating random points..")
+        for x in range(1, 30):
+            entry = {}
+            entry["gpsNumber"] = randint(0,1000)
+            entry["gpsTime"] = datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")
+            entry["longitude"] = randint(0, 1000)
+            entry["latitude"] = randint(0, 1000)
+            entry["altitude"] = randint(0, 1000)
+            entry["temperature"] = randint(0, 1000)
+            entries.append(entry)
+        print("Executing create_points()")
+        start = time.time()
+        create_points(entries, self.ecotone_parser, "ecotone", datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
+        totaltime = time.time() - start
+        print(totaltime)
+
 
 def _create_points_from_ecotone(self, filename, time=datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")):
     path = settings.OTHER_ROOT + filename

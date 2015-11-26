@@ -38,11 +38,12 @@ def create_points(data, parser, name_of_file, time):
             ))
 
     points = []
-
+    print(1)
     for k in collections.keys():
         doc_array = document.find(deviceId=k)
         points += collections[k]
         if len(doc_array) == 0:
+            print("2a")
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
             doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, collections[k])
@@ -53,8 +54,8 @@ def create_points(data, parser, name_of_file, time):
                     # append points from redundant into first document
                     doc_array[i].delete()  # delete redundant document
 
+            print("2b")
             doc_array[0].update()
-
     return points
 
 def _union_of_gatherings(lajiStore_gatherings, new_gatherings):

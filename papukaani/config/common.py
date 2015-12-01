@@ -60,6 +60,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'papukaaniApp.services.laji_auth_service.context_processors.auth'
             ],
         },
     },
@@ -106,8 +107,14 @@ STATIC_URL = '/static/'
 LAJISTORE_URL = 'http://fmnh-ws-prod2.it.helsinki.fi/lajistore/'
 TIPUAPI_URL = 'https://fmnh-ws-test.it.helsinki.fi/tipu-api/species'
 
+LAJIAUTH_URL =  "https://fmnh-ws-test.it.helsinki.fi/laji-auth/"
+
+LAJIAUTH_USER = os.environ["LAJIAUTH_USER"]
+
 STATIC_ROOT = os.path.join(PROJECT_DIR, '../../static/')
 
 TEST_RUNNER = "papukaani.test_runner.TestRunner"
 
 XEPHYR_VISIBILITY = 0
+
+MOCK_AUTHENTICATION = "Off"

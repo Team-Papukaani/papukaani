@@ -64,28 +64,16 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.assertFalse(self.page.ATTACHER.is_displayed())
 
     def test_attacher_is_shown_after_remove(self):
-        self.page.REMOVE_TIME.send_keys("03-11-2015 00:00")
-        self.page.REMOVE.click()
-
-        self.assertTrue(self.page.ATTACHER.is_displayed())
+        self.detach_and_assert("03-11-2015 00:00", True)
 
     def test_cant_remove_if_remove_time_is_before_attach_time(self):
-        self.page.REMOVE_TIME.send_keys("01-10-2015 02:00")
-        self.page.REMOVE.click()
-
-        self.assertFalse(self.page.ATTACHER.is_displayed())
+        self.detach_and_assert("01-10-2015 02:00", False)
 
     def test_cant_remove_if_remove_time_is_in_the_future(self):
-        self.page.REMOVE_TIME.send_keys("13-12-2114 00:00")
-        self.page.REMOVE.click()
-
-        self.assertFalse(self.page.ATTACHER.is_displayed())
+        self.detach_and_assert("13-12-2114 00:00", False)
 
     def test_can_remove_when_all_conditions_are_met(self):
-        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
-        self.page.REMOVE.click()
-
-        self.assertTrue(self.page.ATTACHER.is_displayed())
+        self.detach_and_assert("03-11-2015 14:00", True)
 
     def test_cant_attach_if_start_time_is_in_future(self):
         self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
@@ -131,3 +119,9 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.page.REMOVE.click()
 
         self.assertFalse(self.page.ATTACHER.is_displayed())
+
+    def detach_and_assert(self, time, result):
+        self.page.REMOVE_TIME.send_keys(time)
+        self.page.REMOVE.click()
+
+        self.assertEquals(self.page.ATTACHER.is_displayed(), result)

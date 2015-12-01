@@ -5,4 +5,4 @@ exclude_paths:
 - "papukaaniApp/static/papukaani/js/leaflet.markercluster.js"
 - "papukaaniApp/static/papukaani/js/MarkerClusterGroup.Refresh.js"
 - "papukaaniApp/static/papukaani/libraries/*"
-
+- "papukaaniApp/tests/*"

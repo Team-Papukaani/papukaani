@@ -85,7 +85,7 @@ class PublicPage(PageWithDeviceSelector):
     POLYLINE = Element(By.TAG_NAME, 'g')
     PLAY = Element(By.ID, 'play')
     PAUSE = Element(By.ID, 'pause')
-    SINGLE_MARKER = Element(By.XPATH, './/div[@class=leaflet-marker-pane]')
+    SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
 
     def __init__(self):
         super().__init__()
@@ -219,12 +219,6 @@ class ChoosePage(PageWithDeviceSelector):
 
     def get_end_time(self):
         return self.END_TIME.get_attribute('value')
-
-    def change_device_selection(self, key):
-        sel = Select(self.DEVICE_SELECTOR)
-        sel.select_by_value(key)
-        while self.DEVICE_SELECTOR.get_attribute('disabled'):
-            time.sleep(0.1)
 
     def get_selected_device(self):
         self.DEVICE_SELECTOR.get_first_selected_option()

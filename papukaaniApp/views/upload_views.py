@@ -23,6 +23,8 @@ def upload(request):
             uploaded_file = request.FILES['file']
             parser = GeneralParser.objects.filter(formatName=request.POST.get('fileFormat'))[0]
 
+            #jou
+
             try:
                 if parser.gpsNumber == '':
                     data = prepare_file(uploaded_file, parser, request.POST.get('gpsNumber'))

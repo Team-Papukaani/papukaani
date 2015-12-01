@@ -74,16 +74,6 @@ html,body {
     margin-top: 10px;
 }
 
-.centered{
-    margin-left: 10%;
-    margin-top: 2em;
-    width: 80%;
-}
-
-.centered p{
-    padding: 1em;
-}
-
 .margin-container{
     width: 80%;
     margin-left: 10%;
@@ -112,3 +102,26 @@ html,body {
     padding : 1em;
     width : 100%;
     background-color : #F4F4F4;
+}
+
+.login-body{
+    background-color : #00537C;
+    text-align : center;
+}
+
+.login-container{
+    position : fixed;
+    top:50%;
+    left : 50%;
+    background-color : #FFFFFF;
+    margin-left: -11em;
+    margin-top: -11em;
+    width: 22em;
+    height : 22em;
+    border-radius: 25px;
+    text-align : center;
+}
+
+.login-container p{
+    padding: 1em;
+}

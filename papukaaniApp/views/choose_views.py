@@ -1,10 +1,10 @@
 import json
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from papukaaniApp.utils.view_utils import *
 from papukaaniApp.models_LajiStore import device, document
-from papukaaniApp.services.laji_auth import require_auth
+from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
 
 @require_auth

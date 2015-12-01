@@ -1,8 +1,11 @@
-from django.shortcuts import redirect, render
-from . import index
-from papukaaniApp.services.laji_auth import authenticate, authenticated, log_in, log_out
+from django.shortcuts import render
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+
+from .views import index
+from papukaaniApp.services.laji_auth_service.laji_auth import *
+
 
 @csrf_exempt
 def login(request):
@@ -12,7 +15,9 @@ def login(request):
 
         if authenticate(request, request.POST["token"]):
             return redirect(index)
-        else: return redirect(login)
+        else:
+            messages.add_message(request, messages.ERROR, "Autentikaatio ei onnistunut!")
+            return redirect(login)
 
     elif not authenticated(request):
         luomus_uri = "auth-sources/LTKM?target="+settings.LAJIAUTH_USER +"&next="

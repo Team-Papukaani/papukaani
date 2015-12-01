@@ -7,6 +7,6 @@ from .device_views import *
 from .rest_views import *
 from .individual_views import *
 
-from .login_view import *
+from .login_view import login, logout
 
 from .formats_views import *

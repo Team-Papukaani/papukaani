@@ -1,12 +1,16 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.conf import settings
 import json
 
-
 def validate_token(token):
+    token = token.encode("utf-8")
     url = settings.LAJIAUTH_URL + "validation/"
+    print(token)
     response = requests.post(url, data=token, headers={"Content-Type":"application/json"})
+
+    print(response.status_code)
+    print(response.content)
 
     if response.status_code == 200:
         return True
@@ -24,18 +28,9 @@ def log_out(request):
         return True
     return False
 
-def require_auth(fn):
-    def do_if_auth(request, *args, **kwargs):
-        if authenticated(request):
-            return fn(request, *args, **kwargs)
-        else:
-            return render(request, "papukaaniApp/login.html")
-
-    return do_if_auth
-
 def authenticate(request, token):
     if validate_token(token):
-        log_in(request, json.loads(token)["UserDetails"]["authSourceId"])
+        log_in(request, json.loads(token)["user"]["authSourceId"])
         return True
 
     return False

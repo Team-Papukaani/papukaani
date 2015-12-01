@@ -1,7 +1,9 @@
-from papukaaniApp.services.laji_auth import*
 from django.test import TestCase
 from django.http.request import HttpRequest
 from django.conf import settings
+
+from papukaaniApp.services.laji_auth_service.laji_auth import*
+from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
 class testLajiStoreAPI(TestCase):
 
@@ -9,6 +11,9 @@ class testLajiStoreAPI(TestCase):
         self.request = HttpRequest()
         self.request.session = {}
         settings.MOCK_AUTHENTICATION = "Off"
+
+    def tearDown(self):
+        settings.MOCK_AUTHENTICATION = "Skip"
 
     def test_log_in_returns_true_if_user_not_logged_in(self):
         self.assertTrue(log_in(self.request, "user"))

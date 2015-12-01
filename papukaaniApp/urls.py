@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views
+from papukaaniApp import views
 
 urlpatterns = [
     # ex: /papukaani/
@@ -27,3 +27,4 @@ urlpatterns = [
     url(r'^formats/$', views.formats, name='formats')
 
 ]
+

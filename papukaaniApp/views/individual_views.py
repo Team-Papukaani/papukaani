@@ -3,7 +3,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from papukaaniApp.models_LajiStore import gathering, document, device, individual
 from django.template.defaulttags import register
+from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
+@require_auth
 def individuals(request):
     """
     Controller for '/individuals/'. GET renders view,

@@ -99,16 +99,14 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
         var marker = L.marker(new L.LatLng(ltlgs[1], ltlgs[0]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
-        marker.bindPopup(new Date(marker.pnt.timeStart).toLocaleString());
+        marker.bindPopup(new Date(marker.pnt.timeStart).toLocaleString(), {offset: L.point(0,-12)});
         marker.on('mouseover', function () {
             this.openPopup();
         });
         marker.on('mouseout', function () {
             this.closePopup();
         });
-        marker.on('click', function (event) {
-            event.target.closePopup();
-        });
+        marker.off('click');
         markers.addLayer(marker);
     }
     clusterGroup.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this));

@@ -13,6 +13,10 @@ class Creature(models.Model):
         """
         return MapPoint.objects.filter(creature=self).filter(public=True)
 
+class FileStorage(models.Model):
+    file = models.FileField()
+    filename = models.CharField(max_length=40, blank=True)
+    uploadTime = models.DateTimeField(blank=True)
 
 class MapPoint(models.Model):
     creature = models.ForeignKey(Creature)

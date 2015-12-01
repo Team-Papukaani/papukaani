@@ -2,9 +2,7 @@ function Animator(latlngs, map) {
     this.map = map;
     this.latlngs = latlngs;
     this.pathIterator = new PathIterator(latlngs);
-
     this.polylines = [];
-
     this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
     this.time = this.pathIterator.getStartTime();
     this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
@@ -12,11 +10,14 @@ function Animator(latlngs, map) {
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
     this.marker.addTo(this.map);
     this.marker.bindPopup(this.getMarkerTimeStamp());
-
+    this.polyline = L.polyline([], {color: 'blue', opacity: 0.4});
+    this.polyline.addTo(this.map);
     this.paused = true;
     createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
     setSliderValue(this.pathIterator.getStartTime());
 }
+
+var sliderchanged = false;
 
 //Returns the points timestamp(ms) in the specified datetime format.
 Animator.prototype.getMarkerTimeStamp = function () {
@@ -38,6 +39,7 @@ Animator.prototype.reInit = function (endtime) {
     if (this.time > endtime) {
         this.map.removeLayer(this.marker);
         this.map.clearLayers();
+        this.polylines = [];
         this.pathIterator = new PathIterator(this.latlngs);
         this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
         this.time = this.pathIterator.getStartTime();
@@ -46,6 +48,8 @@ Animator.prototype.reInit = function (endtime) {
         this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
         this.marker.addTo(this.map);
         this.marker.bindPopup(this.getMarkerTimeStamp());
+        this.polyline = L.polyline([], {color: 'blue', opacity: 0.4});
+        this.polyline.addTo(this.map);
         this.paused = true;
     }
 
@@ -84,7 +88,7 @@ Animator.prototype.animate = function () {
         this.time += timeStep;
         if (this.time >= this.pathIterator.getEndTime()) {
             this.stop();
-            unlockButtons();
+            animationEnd();
         }
     }.bind(this), 100);
 };
@@ -93,7 +97,7 @@ Animator.prototype.animate = function () {
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
         color: 'blue',
-        opacity: 0.9
+        opacity: 1.0
     });
 };
 
@@ -102,18 +106,20 @@ Animator.prototype.calculateTimeStep = function () {
 };
 
 Animator.prototype.updatePolylines = function () {
-    for (var j = 0; j < Math.min(this.polylines.length, 40); j++) {
+    for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
         var line = this.polylines[j];
 
         var oldOpacity = line.options.opacity;
-        var newOpacity = oldOpacity - 0.02;
+        var newOpacity = oldOpacity - 0.03;
         line.setStyle({color: 'blue', opacity: newOpacity});
     }
 };
 
 Animator.prototype.addNewPolyline = function (polyline) {
     this.polylines.push(polyline);
-    if (this.polylines.length >= 40) {
+    if (this.polylines.length >= 20) {
+        this.polyline.addLatLng(this.polylines[0].getLatLngs()[1]);
+        this.map.removeLayer(this.polylines[0]);
         this.polylines.shift();
     }
     polyline.addTo(this.map);
@@ -123,14 +129,14 @@ Animator.prototype.addNewPolyline = function (polyline) {
 //Starts the animation.
 Animator.prototype.start = function () {
     if (this.paused) {
-        this.checkIfSelectedTimeIsBeforeCurrent();
+        this.reInitializeIfTimeSelectionChanged();
         this.animate();
         this.paused = false;
         return true;
     }
 };
 
-Animator.prototype.checkIfSelectedTimeIsBeforeCurrent = function () {
+Animator.prototype.reInitializeIfTimeSelectionChanged = function () {
     if ($("#playSlider").slider("option", "value") != this.time) {
         this.skipAnimationUntil();
     }
@@ -138,8 +144,9 @@ Animator.prototype.checkIfSelectedTimeIsBeforeCurrent = function () {
 
 //Skips the animation and draws the polyline at the chosen time.
 Animator.prototype.skipAnimationUntil = function () {
-    if (this.paused) {
+    if (this.paused && sliderchanged) {
         this.reInit($("#playSlider").slider("option", "value"));
+        sliderchanged = false;
     }
 };
 
@@ -192,7 +199,7 @@ var PathIterator = function (points) {
             var pointTimeDifference = pointB.time - pointA.time;
             var directionVectorScalar = timeSincePointA / pointTimeDifference;
             return pointA.coordinates.clone().add(directionVector.multiplyScalar(directionVectorScalar));
-        }   else {
+        } else {
             return points[0].coordinates.clone();
         }
     };
@@ -261,6 +268,7 @@ createSlider = function (min, max, step) {
         },
         slide: function (event, ui) {
             var delay = function () {
+                sliderchanged = true;
                 var label = '#playLabel';
                 $(label).html(new Date(ui.value).toLocaleString()).position({
                     my: 'center top',

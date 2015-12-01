@@ -53,6 +53,12 @@ PublicMap.prototype.pause = function () {
     }
 };
 
+var animationEnd = function () {
+    $("#play").attr("disabled", false);
+    $("#pause").attr("disabled", true);
+    $("#skip").attr("disabled", false);
+};
+
 PublicMap.prototype.skip = function () {
     this.animation.skipAnimationUntil();
 };

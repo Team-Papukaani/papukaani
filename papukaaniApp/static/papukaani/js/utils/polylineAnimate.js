@@ -17,14 +17,16 @@ function Animator(latlngs, map) {
     setSliderValue(this.pathIterator.getStartTime());
 }
 
+//Default options for the main polyline.
 var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
 
+//Indicates if the slider has been moved manually.
 var sliderchanged = false;
 
 //Returns the points timestamp(ms) in the specified datetime format.
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
-    return new Intl.DateTimeFormat('fi-FI', {
+    /*return new Intl.DateTimeFormat('fi-FI', {
         weekday: 'short',
         day: 'numeric',
         month: 'long',
@@ -33,7 +35,8 @@ Animator.prototype.getMarkerTimeStamp = function () {
         minute: 'numeric',
         second: 'numeric',
         timeZoneName: 'short'
-    }).format(date);
+    }).format(date);*/
+    return date.toLocaleString()
 };
 
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.

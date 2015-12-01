@@ -17,13 +17,14 @@ class FileUploadTest(TestCase):
 
     def tearDown(self):
         self.ecotone_parser.delete()
-        FileStorage.objects.all().delete()
-
+        files = FileStorage.objects.all()
+        for f in files:
+            f.file.delete(False)
+        files.delete()
 
     def test_get_to_upload_returns_200(self):
         response = self.c.get(_URL)
         self.assertTrue(response.status_code == 200)
-        FileStorage.objects.all().delete()
 
     def test_post_to_upload_with_file_creates_database_entry(self):
         document.delete_all()
@@ -32,12 +33,10 @@ class FileUploadTest(TestCase):
 
         after = len(document.get_all())
         self.assertTrue(after > before)
-        FileStorage.objects.all().delete()
 
     def test_invalid_file_does_not_cause_exception(self):
         response = self.submit_file("invalid.txt")
         self.assertTrue(response.status_code == 302)
-        FileStorage.objects.all().delete()
 
     def test_the_same_points_will_not_be_added_to_database_multiple_times(self):
         self.submit_file("ecotones.csv")
@@ -46,7 +45,6 @@ class FileUploadTest(TestCase):
 
         after = len(document.get_all())
         self.assertTrue(after == before)
-        FileStorage.objects.all().delete()
 
     def test_file_can_be_found_from_db_after_upload(self):
         FileStorage.objects.all().delete()

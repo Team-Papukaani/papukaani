@@ -15,6 +15,11 @@ PublicMap.prototype.animate = function (latlngs) {
     this.animation = new Animator(latlngs, this.map);
 };
 
+//Path for private points REST.
+var requestPath = function (deviceId) {
+    return "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+};
+
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
     if (this.animation) {

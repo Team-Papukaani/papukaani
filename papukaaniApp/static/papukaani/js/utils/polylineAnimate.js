@@ -10,19 +10,15 @@ function Animator(latlngs, map) {
     this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
     this.markerPosition = this.lastPosition;
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
-    this.polyline = L.polyline([], {
-        color: 'blue',
-        opacity: 0.2
-    });
-    this.polyline.addTo(this.map);
     this.marker.addTo(this.map);
     this.marker.bindPopup(this.getMarkerTimeStamp());
 
     this.paused = true;
-    createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1000);
+    createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
     setSliderValue(this.pathIterator.getStartTime());
 }
 
+//Returns the points timestamp(ms) in the specified datetime format.
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
     return new Intl.DateTimeFormat('fi-FI', {
@@ -37,6 +33,7 @@ Animator.prototype.getMarkerTimeStamp = function () {
     }).format(date);
 };
 
+//Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
 Animator.prototype.reInit = function (endtime) {
     if (this.time > endtime) {
         this.map.removeLayer(this.marker);
@@ -85,10 +82,14 @@ Animator.prototype.animate = function () {
         this.marker._popup.setContent(this.getMarkerTimeStamp());
         setSliderValue(this.time);
         this.time += timeStep;
-        if (this.time >= this.pathIterator.getEndTime()) clearTimeout(this.interval);
+        if (this.time >= this.pathIterator.getEndTime()) {
+            this.stop();
+            unlockButtons();
+        }
     }.bind(this), 100);
 };
 
+//New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
         color: 'blue',
@@ -111,9 +112,8 @@ Animator.prototype.updatePolylines = function () {
 };
 
 Animator.prototype.addNewPolyline = function (polyline) {
+    this.polylines.push(polyline);
     if (this.polylines.length >= 40) {
-        this.polyline.addLatLng(this.polylines[0].getLatLngs[1]);
-        this.map.removeLayer(this.polylines[0]);
         this.polylines.shift();
     }
     polyline.addTo(this.map);
@@ -136,6 +136,7 @@ Animator.prototype.checkIfSelectedTimeIsBeforeCurrent = function () {
     }
 };
 
+//Skips the animation and draws the polyline at the chosen time.
 Animator.prototype.skipAnimationUntil = function () {
     if (this.paused) {
         this.reInit($("#playSlider").slider("option", "value"));
@@ -177,19 +178,23 @@ var PathIterator = function (points) {
     //Returns a linear interpolation of the position
     //of the marker at a given time.
     this.getPositionAtTime = function (time) {
-        var pointAIndex = this.getPointIndexAtTime(time);
-        var pointA = points[pointAIndex];
-        var pointB = points[pointAIndex + 1];
+        if (points.length > 1) {
+            var pointAIndex = this.getPointIndexAtTime(time);
+            var pointA = points[pointAIndex];
+            var pointB = points[pointAIndex + 1];
 
-        if (pointB == undefined) {
-            pointB = pointA;
+            if (pointB == undefined) {
+                pointB = pointA;
+            }
+
+            var directionVector = pointB.coordinates.clone().subtract(pointA.coordinates);
+            var timeSincePointA = time - pointA.time;
+            var pointTimeDifference = pointB.time - pointA.time;
+            var directionVectorScalar = timeSincePointA / pointTimeDifference;
+            return pointA.coordinates.clone().add(directionVector.multiplyScalar(directionVectorScalar));
+        }   else {
+            return points[0].coordinates.clone();
         }
-
-        var directionVector = pointB.coordinates.clone().subtract(pointA.coordinates);
-        var timeSincePointA = time - pointA.time;
-        var pointTimeDifference = pointB.time - pointA.time;
-        var directionVectorScalar = timeSincePointA / pointTimeDifference;
-        return pointA.coordinates.clone().add(directionVector.multiplyScalar(directionVectorScalar));
     };
 
     this.getAllPositions = function (timeStep) {

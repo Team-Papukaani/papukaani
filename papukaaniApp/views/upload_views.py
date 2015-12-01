@@ -45,5 +45,5 @@ def _render_points(points, parsers, request):
     return render(request, 'upload.html', {'points': json.dumps(latlongs), 'parsers': parsers})
 
 def save_file_to_db(file, name):
-    dbFile = FileStorage.objects.create(file = file,name=name, uploadTime=datetime.datetime.now())
+    dbFile = FileStorage.objects.create(file = file,filename=name, uploadTime=datetime.datetime.now())
     dbFile.save()

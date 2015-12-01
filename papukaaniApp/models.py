@@ -15,7 +15,7 @@ class Creature(models.Model):
 
 class FileStorage(models.Model):
     file = models.FileField()
-    name = models.CharField(max_length=40, blank=True)
+    filename = models.CharField(max_length=40, blank=True)
     uploadTime = models.DateTimeField(blank=True)
 
 class MapPoint(models.Model):

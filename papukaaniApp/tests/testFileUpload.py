@@ -46,15 +46,14 @@ class FileUploadTest(TestCase):
         after = len(document.get_all())
         self.assertTrue(after == before)
 
+    def test_file_can_be_found_from_db_after_upload(self):
+        self.submit_file("ecotones.csv", "ecotone")
+        files = FileStorage.objects.get()
+        self.assertEquals(1, len(files))
+        self.assertEquals("test", files[0])
+
     def submit_file(self, filename, formatname):
         with open(_filePath + filename) as file:
             return self.c.post('/papukaani/upload/', {'file': file, 'fileFormat': formatname})
 
-    def file_can_be_found_from_db_after_upload(self):
-        FileStorage.delete_all()
-        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_gathering_duplicate_test.csv"
-        file = open(path, "rb")
-        save_file_to_db(file, "test")
-        files = FileStorage.get_all()
-        self.assertEquals(1, len(files))
-        self.assertEquals("test", files[0])
+

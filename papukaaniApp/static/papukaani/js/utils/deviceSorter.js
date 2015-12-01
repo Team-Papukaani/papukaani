@@ -19,7 +19,7 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         messagebox.text("Tietoja ladataan...");
         lockButtons();
         request = new XMLHttpRequest;
-        var path = "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+        var path = requestPath(deviceId);
         request.open("GET", path, true);
         request.onreadystatechange = showPointsForDevice.bind(this);
         request.send(null);
@@ -29,6 +29,11 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         this.map.changePoints(extractPoints(this.documents));
     }
     this.currentDevice = deviceId
+};
+
+//Path for all points REST.
+var requestPath = function (deviceId) {
+    return "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
 };
 
 //Extracts a list of points from the documents.

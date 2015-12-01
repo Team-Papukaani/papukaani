@@ -85,6 +85,7 @@ class PublicPage(PageWithDeviceSelector):
     POLYLINE = Element(By.TAG_NAME, 'g')
     PLAY = Element(By.ID, 'play')
     PAUSE = Element(By.ID, 'pause')
+    SKIP = Element(By.ID, 'skip')
 
     def __init__(self):
         super().__init__()

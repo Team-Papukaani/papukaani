@@ -10,7 +10,7 @@ class PublicView(StaticLiveServerTestCase):
         self.A = document.create("TestA",
                                  [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
                                   gathering.Gathering("1234-12-12T12:13:12+00:00", [23.01, 61.01],
-                                                      publicity="private")], "DeviceId")
+                                                      publicity="public")], "DeviceId")
         dev = {
             "deviceId": "DeviceId",
             "deviceType": "Type",
@@ -33,18 +33,16 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(self.page.get_number_of_points(), 0)
 
     def test_can_choose_points_by_device(self):
-        self.page.change_device_selection("DeviceId")
-        self.page.PLAY.click()
-        self.page.play()
+        self.select_device_and_play()
         self.assertNotEquals(self.page.POLYLINE, None)
 
     def test_polylines_are_cleared_on_selection_change(self):
-        self.test_can_choose_points_by_device()
+        self.select_device_and_play()
         self.page.PAUSE.click()
         self.page.change_device_selection("None")
 
     def test_pause_stops_polyline_drawing(self):
-        self.test_can_choose_points_by_device()
+        self.select_device_and_play()
         self.page.PAUSE.click()
         start = self.page.get_map_polyline_elements()
         time.sleep(1)
@@ -54,3 +52,19 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_device_selection("DeviceId")
         self.page.get_marker().click()
         self.assertNotEquals(self.page.get_popup(), None)
+
+    def select_device_and_play(self):
+        self.page.change_device_selection("DeviceId")
+        self.page.play()
+
+    def test_slider_label_value_changes_when_playing(self):
+        self.select_device_and_play()
+        time.sleep(1)
+        label = self.page.driver.find_element_by_id("playLabel")
+        self.assertNotEquals(label.get_attribute("innerHTML"), "1234/12/12 12:12:12")
+
+    def test_polyline_is_drawn_when_playing(self):
+        self.select_device_and_play()
+        startcount = len(self.page.driver.find_elements_by_tag_name("g"))
+        time.sleep(1)
+        self.assertGreater(startcount, len(self.page.driver.find_elements_by_class_name("g")))

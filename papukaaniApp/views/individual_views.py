@@ -1,9 +1,9 @@
 import random
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from papukaaniApp.models_LajiStore import gathering, document, device, individual
-from django.template.defaulttags import register
 from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
+from django.shortcuts import render
+
+from papukaaniApp.models_LajiStore import individual
+from papukaaniApp.models_TipuApi import species
 
 @require_auth
 def individuals(request):
@@ -35,8 +35,11 @@ def individuals(request):
 
     populate_facts(individual_list)
 
+    species_list = species.get_all_in_finnish()
+
     context = {
-        'individuals': individual_list
+        'individuals': individual_list,
+        'species': species_list
     }
 
     return render(request, 'papukaaniApp/individuals.html', context)

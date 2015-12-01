@@ -3,12 +3,12 @@
     clear: none;
 }
 
-html,body {
-    font-family:'Ubuntu',sans-serif !important;
-    font-size:14px;
-    line-height:1.42857143;
-    color:#333;
-    background-color:#fff;
+html, body {
+    font-family: 'Ubuntu', sans-serif !important;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
     height: 100%;
     width: 100%;
 }
@@ -22,42 +22,42 @@ html,body {
     display: block;
 }
 
-.overlay{
-    position : fixed;
-    top : 50%;
-    left : 50%;
+.overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
 
-    width : 400px;
-    height : 120px;
+    width: 400px;
+    height: 120px;
 
     padding-top: 10px;
-    margin-top : -50px;
-    margin-left : -200px;
-    text-align : center;
-    line-height : 40px;
-    font-weight : bold;
+    margin-top: -50px;
+    margin-left: -200px;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
 
-    background-color : #00537C;
-    color : #ffffff;
+    background-color: #00537C;
+    color: #ffffff;
 
     z-index: 10;
-    outline: 9999px solid rgba(0,0,0,0.5);
+    outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
 
-.choose_actions{
-    display : inline-block;
+.choose_actions {
+    display: inline-block;
 }
 
-#time_range{
-    display : inline-block;
+#time_range {
+    display: inline-block;
 }
 
-#time_range label{
-    display : inline-block;
+#time_range label {
+    display: inline-block;
 }
 
-#time_range input{
-    display : inline-block;
+#time_range input {
+    display: inline-block;
 }
 
 .form-field {
@@ -65,37 +65,58 @@ html,body {
 }
 
 .padded2 {
-    padding:4px;
+    padding: 4px;
 }
 
 .small-slider {
-    width:150px;
+    width: 150px;
     margin-left: 20px;
     margin-top: 10px;
 }
 
-.margin-container{
+#playSlider {
+    position: absolute;
+    z-index: 9999;
+    width: 40%;
+    max-width: 960px;
+    min-width: 600px;
+    overflow: hidden;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+}
+
+#playLabel {
+    position: absolute;
+    z-index: 9999;
+    white-space: nowrap;
+    width: auto;
+    visibility: hidden;
+}
+
+.margin-container {
     width: 80%;
     margin-left: 10%;
 }
 
-.input-group-addon.wide{
-    min-width:12em;
+.input-group-addon.wide {
+    min-width: 12em;
 }
 
-.input-group-addon.button:hover{
-    background-color : #DDDDDD;
-    -webkit-transition:background-color ease-in 0.2s;
-    -moz-transition:background-color ease-in 0.2s;
-    -o-transition:background-color ease-in 0.2s;
-    transition:background-color ease-in 0.2s;
+.input-group-addon.button:hover {
+    background-color: #DDDDDD;
+    -webkit-transition: background-color ease-in 0.2s;
+    -moz-transition: background-color ease-in 0.2s;
+    -o-transition: background-color ease-in 0.2s;
+    transition: background-color ease-in 0.2s;
 }
 
-.input-group-addon.button:not(:hover){
-    -webkit-transition:background-color ease-in 0.2s;
-    -moz-transition:background-color ease-in 0.2s;
-    -o-transition:background-color ease-in 0.2s;
-    transition:background-color ease-in 0.2s;
+.input-group-addon.button:not(:hover) {
+    -webkit-transition: background-color ease-in 0.2s;
+    -moz-transition: background-color ease-in 0.2s;
+    -o-transition: background-color ease-in 0.2s;
+    transition: background-color ease-in 0.2s;
 }
 
 .panel.help-box{

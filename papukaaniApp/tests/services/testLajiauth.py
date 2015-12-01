@@ -3,7 +3,7 @@ from django.http.request import HttpRequest
 from django.conf import settings
 
 from papukaaniApp.services.laji_auth_service.laji_auth import*
-from papukaaniApp.services.laji_auth_service.require_auth import require_auth
+from papukaaniApp.views.choose_views import *
 
 class testLajiStoreAPI(TestCase):
 

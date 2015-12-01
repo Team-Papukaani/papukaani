@@ -138,7 +138,7 @@ DeviceSorter.prototype.createIndividualSelector = function (individuals) {
         selector.append("<option value='" + individualId + "'>" + taxon + "</option>")
     };
 
-    selector.addOption("None","None");
+    selector.addOption("None","Valitse");
     $.each(individuals, function(species, individualsOfSpecies){
         selector.append("<option disabled='disabled'>" + species + "</option>")
         $.each(individualsOfSpecies, function(key, individual){

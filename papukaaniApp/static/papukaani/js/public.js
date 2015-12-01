@@ -5,7 +5,6 @@ function init(individuals) {
     map = new PublicMap(sorter.documents);
 
     this.sorter.setMap(map)
-    console.log(individuals);
 }
 
 function PublicMap() {

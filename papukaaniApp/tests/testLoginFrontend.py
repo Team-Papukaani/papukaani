@@ -1,5 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from pyvirtualdisplay import Display
+from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from selenium import webdriver
 
 from django.conf import settings
@@ -20,6 +21,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
         self.login_page = self.BASE_URL + '/papukaani/login'
 
     def tearDown(self):
+        take_screenshot_of_test_case(self, self.driver)
         self.driver.get(self.logout_page)
         settings.MOCK_AUTHENTICATION = "Skip"
         self.driver.close()
@@ -35,7 +37,8 @@ class TestLoginFrontend(StaticLiveServerTestCase):
 
     def test_choose_does_not_redirect_if_logged_in(self):
         self.driver.get(self.login_page)
-        self.driver.find_element_by_id("choose_link").click()
+        self.driver.get(self.BASE_URL + '/papukaani/')
+        self.driver.get(self.choose_page)
 
         try:
             self.driver.find_element_by_id("map")

@@ -57,10 +57,7 @@ Animator.prototype.reInit = function (endtime) {
         this.lastPosition = this.markerPosition;
         this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
 
-        var polyline = L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
-            color: 'blue',
-            opacity: 0.9
-        });
+        var polyline = this.newPolyline();
 
         this.addNewPolyline(polyline);
         this.updatePolylines();
@@ -79,10 +76,7 @@ Animator.prototype.animate = function () {
         this.lastPosition = this.markerPosition;
         this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
 
-        var polyline = L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
-            color: 'blue',
-            opacity: 0.9
-        });
+        var polyline = this.newPolyline();
 
         this.addNewPolyline(polyline);
         this.updatePolylines();
@@ -93,6 +87,13 @@ Animator.prototype.animate = function () {
         this.time += timeStep;
         if (this.time >= this.pathIterator.getEndTime()) clearTimeout(this.interval);
     }.bind(this), 100);
+};
+
+Animator.prototype.newPolyline = function () {
+    return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
+        color: 'blue',
+        opacity: 0.9
+    });
 };
 
 Animator.prototype.calculateTimeStep = function () {

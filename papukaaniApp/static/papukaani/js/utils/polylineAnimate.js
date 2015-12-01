@@ -10,12 +10,14 @@ function Animator(latlngs, map) {
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
     this.marker.addTo(this.map);
     this.marker.bindPopup(this.getMarkerTimeStamp());
-    this.polyline = L.polyline([], {color: 'blue', opacity: 0.4});
+    this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
     this.paused = true;
     createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
     setSliderValue(this.pathIterator.getStartTime());
 }
+
+var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
 
 var sliderchanged = false;
 
@@ -48,7 +50,7 @@ Animator.prototype.reInit = function (endtime) {
         this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
         this.marker.addTo(this.map);
         this.marker.bindPopup(this.getMarkerTimeStamp());
-        this.polyline = L.polyline([], {color: 'blue', opacity: 0.4});
+        this.polyline = L.polyline([], polylineOptions);
         this.polyline.addTo(this.map);
         this.paused = true;
     }

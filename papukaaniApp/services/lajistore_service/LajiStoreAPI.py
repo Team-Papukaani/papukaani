@@ -130,12 +130,25 @@ def _put(uri, data):
 
 
 def _add_query(**kwargs):
-    q = "?q="
+    q = ""
+    if 'filter' in kwargs:
+        q += "?filter="
+        q = _parse_query_param(kwargs["filter"], q)
+        kwargs.pop("filter")
+
+    if len(kwargs.keys()) > 0:
+        q += "?q=" if q=="" else "&q="
+        q = _parse_query_param(kwargs, q)
+
+    return q
+
+
+def _parse_query_param(kwargs, q):
+    initial = q
     for k in kwargs:
         k_name = k.replace("_", ".")
-        q += "" if q == "?q=" else " AND "
+        q += "" if q == initial else " AND "
         q += k_name + ":" + str(kwargs[k])
-
     return q
 
 

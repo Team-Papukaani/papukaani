@@ -1,6 +1,9 @@
 import json
 
 from django.shortcuts import render, get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 
 from papukaaniApp.models import *
 from papukaaniApp.utils.view_utils import extract_latlongs
@@ -15,7 +18,9 @@ def public(request):
     """
 
     devices = []
-    for item in device.get_all():
+    for item in device.get_all:
         devices.append(item.deviceId)
     devices.sort()
     return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(devices)})
+
+

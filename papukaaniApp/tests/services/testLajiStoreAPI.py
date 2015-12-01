@@ -121,3 +121,10 @@ class testLajiStoreAPI(TestCase):
         self.assertTrue("arg2:value" in q)
         self.assertTrue("arg3:2" in q)
         self.assertTrue(" AND " in q)
+
+    def testAddFilter(self):
+        q = LajiStoreAPI._add_query(filter={"arg1":"test"})
+        self.assertEquals(q, "?filter=arg1:test")
+
+        q = LajiStoreAPI._add_query(filter={"arg1":"test"}, arg2="test")
+        self.assertEquals(q, "?filter=arg1:test&q=arg2:test")

@@ -1,8 +1,9 @@
 from django.test import Client
 from django.test import TestCase
-
+from django.conf import settings
 from papukaaniApp.models import *
 from papukaaniApp.models_LajiStore import *
+from papukaaniApp.views import *
 
 _filePath = "papukaaniApp/tests/test_files/"
 _URL = '/papukaani/upload/'
@@ -19,6 +20,7 @@ class FileUploadTest(TestCase):
 
     def tearDown(self):
         self.ecotone_parser.delete()
+
 
     def test_get_to_upload_returns_200(self):
         response = self.c.get(_URL)
@@ -47,3 +49,12 @@ class FileUploadTest(TestCase):
     def submit_file(self, filename, formatname):
         with open(_filePath + filename) as file:
             return self.c.post('/papukaani/upload/', {'file': file, 'fileFormat': formatname})
+
+    def file_can_be_found_from_db_after_upload(self):
+        FileStorage.delete_all()
+        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_gathering_duplicate_test.csv"
+        file = open(path, "rb")
+        save_file_to_db(file, "test")
+        files = FileStorage.get_all()
+        self.assertEquals(1, len(files))
+        self.assertEquals("test", files[0])

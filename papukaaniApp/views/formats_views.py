@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from papukaaniApp.models import GeneralParser
+from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
+@require_auth
 def formats(request):
     if request.method == 'POST':
         try:

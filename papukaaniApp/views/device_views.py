@@ -3,8 +3,9 @@ from papukaaniApp.models_LajiStore import gathering, document, device, individua
 import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
-
+@require_auth
 def devices(request):
     devices = device.get_all()
     individuals = individual.get_all()
@@ -31,6 +32,7 @@ _RESPONSE_BASE = {"errors": [], "status": ""}
 
 
 @api_view(['POST'])
+@require_auth
 def attach_to(request, device_id):
     '''
     Attach a device to an individual. Response field "status" is "attached" if attach was successful, "not attached" otherwise.
@@ -53,6 +55,7 @@ def attach_to(request, device_id):
 
 
 @api_view(['POST'])
+@require_auth
 def remove_from(request, device_id):
     '''
     Remove a device from an individual.

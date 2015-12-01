@@ -76,28 +76,13 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.detach_and_assert("03-11-2015 14:00", True)
 
     def test_cant_attach_if_start_time_is_in_future(self):
-        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
-        self.page.REMOVE.click()
-
-        self.page.attach_individual("12345TESTINDIVIDUAL", "13-12-2114 00:00")
-
-        self.assertTrue(self.page.ATTACHER.is_displayed())
+        self.detach_and_attach_and_assert("03-11-2015 14:00", "12345TESTINDIVIDUAL", "13-12-2114 00:00", True)
 
     def test_cant_attach_if_start_time_overlaps_with_another_device(self):
-        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
-        self.page.REMOVE.click()
-
-        self.page.attach_individual("12345TESTINDIVIDUAL", "02-11-2015 16:00")
-
-        self.assertTrue(self.page.ATTACHER.is_displayed())
+        self.detach_and_attach_and_assert("03-11-2015 14:00", "12345TESTINDIVIDUAL", "02-11-2015 16:00", True)
 
     def test_can_attach_id_all_conditions_are_met(self):
-        self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
-        self.page.REMOVE.click()
-
-        self.page.attach_individual("12345TESTINDIVIDUAL", "04-11-2015 16:00")
-
-        self.assertFalse(self.page.ATTACHER.is_displayed())
+        self.detach_and_attach_and_assert("03-11-2015 14:00", "12345TESTINDIVIDUAL", "04-11-2015 16:00", False)
 
     def test_errors_messages_are_shown_when_validation_fails(self):
         self.page.REMOVE_TIME.send_keys("03-11-2015 14:00")
@@ -123,5 +108,13 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
     def detach_and_assert(self, time, result):
         self.page.REMOVE_TIME.send_keys(time)
         self.page.REMOVE.click()
+
+        self.assertEquals(self.page.ATTACHER.is_displayed(), result)
+
+    def detach_and_attach_and_assert(self, timedetached, individualid, timeattached, result):
+        self.page.REMOVE_TIME.send_keys(timedetached)
+        self.page.REMOVE.click()
+
+        self.page.attach_individual(individualid, timeattached)
 
         self.assertEquals(self.page.ATTACHER.is_displayed(), result)

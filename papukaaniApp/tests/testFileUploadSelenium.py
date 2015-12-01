@@ -12,7 +12,7 @@ class FileUploadSeleniumTest(StaticLiveServerTestCase):
                                                            gpsTime="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
-                                                           temperature="Temperature", split_mark=",")
+                                                           temperature="Temperature", delimiter=",")
         self.ecotone_parser.save()
         self.upload = UploadPage()
         self.upload.navigate()

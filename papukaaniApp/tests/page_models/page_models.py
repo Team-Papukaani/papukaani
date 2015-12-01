@@ -86,6 +86,7 @@ class PublicPage(PageWithDeviceSelector):
     PLAY = Element(By.ID, 'play')
     PAUSE = Element(By.ID, 'pause')
     SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
+    SKIP = Element(By.ID, 'skip')
 
     def __init__(self):
         super().__init__()
@@ -112,6 +113,12 @@ class PublicPage(PageWithDeviceSelector):
     def play(self):
         self.PLAY.click()
         time.sleep(0.5)
+
+    def get_marker(self):
+        return self.driver.find_element_by_class_name("leaflet-marker-icon")
+
+    def get_popup(self):
+        return self.driver.find_element_by_class_name("leaflet-popup-content-wrapper")
 
 
 class ChoosePage(PageWithDeviceSelector):
@@ -295,8 +302,10 @@ class IndividualPage(Page):
     NEW_FORM = Element(By.ID, 'new_individual_form')
     NEW_TAXON_FIELD = Element(By.ID, 'new_individual_taxon')
     FIRST_MODIFY_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="taxon"]')
+    FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
+    DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
 
     def create_new_individual(self, taxon):
         """
@@ -309,14 +318,20 @@ class IndividualPage(Page):
     def get_first_individual_taxon(self):
         return self.FIRST_MODIFY_FIELD.get_attribute("value")
 
-    def modify_individual(self, taxon):
+    def get_first_individual_ring_id(self):
+        return self.FIRST_RING_ID_FIELD.get_attribute("value")
+
+    def modify_individual(self, taxon, ring_id):
         """
-        Inputs the name of the new individual and submits the form.
+        Inputs the name and ring_id of an existing individual and submits the form.
         """
         modify_button = self.MODIFY_BUTTON
         taxon_field = self.FIRST_MODIFY_FIELD
         taxon_field.clear()
         taxon_field.send_keys(taxon)
+        ring_id_field = self.FIRST_RING_ID_FIELD
+        ring_id_field.clear()
+        ring_id_field.send_keys(ring_id)
         modify_button.click()
 
     def delete_individual(self):
@@ -325,3 +340,14 @@ class IndividualPage(Page):
         """
         delete_button = self.DELETE_BUTTON
         delete_button.click()
+        confirm_button = self.DELETE_CONFIRM_BUTTON
+        confirm_button.click()
+
+class FormatsPage(Page):
+
+    url = BASE_URL + '/papukaani/formats/'
+
+    SUBMIT = Element(By.ID, "submit")
+    HELP_BUTTON = Element(By.ID, "formatName_helpbutton")
+    HELP_BOX = Element(By.ID, "help_formatName")
+

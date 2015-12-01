@@ -6,8 +6,8 @@
     <title>Pelikaija</title>
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-1.0.0-b1/leaflet.css"/>
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.min.css' %}"/>
@@ -30,10 +30,14 @@
     </div>
     <button id="play" onclick="map.play()" class="btn btn-default">Play</button>
     <button id="pause" onclick="map.pause()" class="btn btn-default">Pause</button>
+    <button id="pause" onclick="map.skip()" class="btn btn-default">Skip animation</button>
     <span id="loading" class="help-block" style="display:inline"></span>
 </div>
 
-<div id="map" class="largeMap"></div>
+<div id="map" class="largeMap">
+        <div id="playLabel" class="form-control">N/A</div>
+        <div id="playSlider" class="input-group ui-slider ui-slider-horizontal"></div>
+</div>
 
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js' %}"></script>

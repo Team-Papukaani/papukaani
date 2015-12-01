@@ -1,8 +1,10 @@
 import time
-
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+<<<<<<< HEAD
 from selenium.webdriver.support.wait import WebDriverWait
 
+=======
+>>>>>>> a19be8f1c7d91f8f8ef83d649e94c793cfd7abeb
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
@@ -12,10 +14,15 @@ class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         self.A = document.create("TestA",
                                  [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
+<<<<<<< HEAD
                                   gathering.Gathering("1234-12-12T12:13:12+00:00", [63.01, 61.01],
                                                       publicity="public")], "DeviceId")
         self.B = document.create("TestB",
                                  [gathering.Gathering("1235-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public")], "DeviceId2")
+=======
+                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [23.01, 61.01],
+                                                      publicity="public")], "DeviceId")
+>>>>>>> a19be8f1c7d91f8f8ef83d649e94c793cfd7abeb
         dev = {
             "deviceId": "DeviceId",
             "deviceType": "Type",
@@ -57,9 +64,7 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(self.page.get_number_of_points(), 0)
 
     def test_can_choose_points_by_device(self):
-        self.page.change_device_selection("DeviceId")
-        self.page.PLAY.click()
-        self.page.play()
+        self.select_device_and_play()
         self.assertNotEquals(self.page.POLYLINE, None)
 
     def test_selection_does_not_jam_when_loading_device_with_only_one_point(self):
@@ -69,13 +74,34 @@ class PublicView(StaticLiveServerTestCase):
         WebDriverWait(self.page.driver, 20).until(lambda driver: "DeviceId2" == self.page.get_device_selection())
 
     def test_polylines_are_cleared_on_selection_change(self):
-        self.test_can_choose_points_by_device()
+        self.select_device_and_play()
         self.page.PAUSE.click()
         self.page.change_device_selection("None")
 
     def test_pause_stops_polyline_drawing(self):
-        self.test_can_choose_points_by_device()
+        self.select_device_and_play()
         self.page.PAUSE.click()
         start = self.page.get_map_polyline_elements()
         time.sleep(1)
         self.assertEquals(start, self.page.get_map_polyline_elements())
+
+    def test_marker_has_popup(self):
+        self.page.change_device_selection("DeviceId")
+        self.page.get_marker().click()
+        self.assertNotEquals(self.page.get_popup(), None)
+
+    def select_device_and_play(self):
+        self.page.change_device_selection("DeviceId")
+        self.page.play()
+
+    def test_slider_label_value_changes_when_playing(self):
+        self.select_device_and_play()
+        time.sleep(1)
+        label = self.page.driver.find_element_by_id("playLabel")
+        self.assertNotEquals(label.get_attribute("innerHTML"), "1234/12/12 12:12:12")
+
+    def test_polyline_is_drawn_when_playing(self):
+        self.select_device_and_play()
+        startcount = len(self.page.driver.find_elements_by_tag_name("g"))
+        time.sleep(1)
+        self.assertGreater(startcount, len(self.page.driver.find_elements_by_class_name("g")))

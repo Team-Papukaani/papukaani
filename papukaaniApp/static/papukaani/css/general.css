@@ -94,3 +94,33 @@ html, body {
     width: auto;
     visibility: hidden;
 }
+
+.margin-container {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.input-group-addon.wide {
+    min-width: 12em;
+}
+
+.input-group-addon.button:hover {
+    background-color: #DDDDDD;
+    -webkit-transition: background-color ease-in 0.2s;
+    -moz-transition: background-color ease-in 0.2s;
+    -o-transition: background-color ease-in 0.2s;
+    transition: background-color ease-in 0.2s;
+}
+
+.input-group-addon.button:not(:hover) {
+    -webkit-transition: background-color ease-in 0.2s;
+    -moz-transition: background-color ease-in 0.2s;
+    -o-transition: background-color ease-in 0.2s;
+    transition: background-color ease-in 0.2s;
+}
+
+.panel.help-box {
+    padding: 1em;
+    width: 100%;
+    background-color: #F4F4F4;
+}

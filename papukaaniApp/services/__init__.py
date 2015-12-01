@@ -1,2 +1,0 @@
-import papukaaniApp.services.lajistore_service
-import papukaaniApp.services.tipuapi_service

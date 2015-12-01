@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pelikaija</title>
+    {% include "papukaaniApp/include_headers.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <h1>Kirjaudu sisään:</h1>
+        <br>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <p>
+            <a href="{{lajiauth}}{{luomus}}/">
+                <img src="https://login.laji.fi/static/luomus.png" alt="LUOMUS" />
+            </a>
+        </p>
+
+        <p>
+            <a href="{{lajiauth}}{{haka}}/">
+                <img src="https://login.laji.fi/static/haka.gif" alt="HAKA" />
+            </a>
+        </p>
+    </div>
+</body>
+</html>

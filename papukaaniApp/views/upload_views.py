@@ -6,7 +6,9 @@ from papukaaniApp.utils.view_utils import *
 import json, uuid
 import datetime
 from django.contrib import messages
+from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
+@require_auth
 def upload(request):
     """
     Controller for '/upload/'. GET shows upload screen, POST uploads file.

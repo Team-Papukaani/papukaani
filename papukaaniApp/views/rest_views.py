@@ -13,3 +13,14 @@ def getDocumentsForDevice(request):
     """
     docs = [d.to_dict() for d in document.find(deviceId=request.GET.get('devId'))]
     return Response(docs)
+
+
+@api_view(['GET'])
+def getDocumentsForIndividual(request):
+    """
+    Get the documents of an individual
+    :return: List of documents that match the individualId.
+    """
+    # Probleema: Haetaan ne devicet, joilla individuals-kentässä kyseinen individual, ja sen aikavälillä haetaan dokumentista pisteet.
+    docs = [d.to_dict() for d in document.find(individualId=request.GET.get('devId'))] # HUOMIOIKO PUBLICIN?? WATWAT???
+    return Response(docs)

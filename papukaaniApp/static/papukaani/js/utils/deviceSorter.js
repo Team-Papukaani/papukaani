@@ -1,9 +1,16 @@
-function DeviceSorter(devices) {
+function DeviceSorter() {
 
-    this.devices = devices;
     this.documents = [];
 
-    this.createDeviceSelector(this.devices);
+    this.setDevices = function (devices) {
+        this.createDeviceSelector(devices);
+        this.type = "Device"
+    };
+
+    this.setIndividuals = function (individuals) {
+        this.createIndividualSelector(individuals);
+        this.type = "Individual"
+    };
 
     this.setMap = function (map) {
         this.map = map
@@ -19,7 +26,7 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         messagebox.text("Tietoja ladataan...");
         lockButtons();
         request = new XMLHttpRequest;
-        var path = "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+        var path = "../rest/documentsFor" + this.type + "?devId=" + deviceId + "&format=json";
         request.open("GET", path, true);
         request.onreadystatechange = showPointsForDevice.bind(this);
         request.send(null);
@@ -84,8 +91,8 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
     };
 
     selector.addOption("None");
-    for (var i = 0; i < this.devices.length; i++) {
-        selector.addOption(this.devices[i])
+    for (var i = 0; i < devices.length; i++) {
+        selector.addOption(devices[i])
     }
 };
 
@@ -114,4 +121,30 @@ DeviceSorter.prototype.showSaveOrCancelPopup = function (deviceId) {
         popup.hide()
     }.bind(this));
     popup.show()
+};
+
+/* Individual spesifics */
+
+//Creates a selector for individuals (individualId:taxon).
+DeviceSorter.prototype.createIndividualSelector = function (individuals) {
+    var selector = $("#selectDevice");
+
+    selector.change(function (event) {
+        event.preventDefault();
+        this.showSaveOrCancelPopup(selector.val())
+    }.bind(this));
+
+    selector.addOption = function (individualId, taxon) {
+        selector.append("<option value='" + individualId + "'>" + taxon + "</option>")
+    };
+
+    selector.addOption("None","None");
+    $.each(individuals, function(species, individualsOfSpecies){
+        selector.append("<option disabled='disabled'>" + species + "</option>")
+        $.each(individualsOfSpecies, function(key, individual){
+            $.each(individual, function(individualId, taxon){
+                selector.addOption(individualId, taxon)
+            })
+        })
+    })
 };

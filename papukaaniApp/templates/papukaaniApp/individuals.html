@@ -42,7 +42,7 @@
             <option value="{{ s.id }}" {% if individual.species == s.id %} selected{% endif %}>{{ s.name }}</option>
             {% endfor %}
         </select>
-        <button type="submit" name="modify" value="1" class="btn btn-default">Muokkaa</button>
+        <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
         <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">Poista</button>
     </form>
     <br>

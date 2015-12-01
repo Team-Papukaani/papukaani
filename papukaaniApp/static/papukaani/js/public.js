@@ -1,8 +1,11 @@
-function init(devices) {
-    this.sorter = new DeviceSorter(devices);
+function init(individuals) {
+    this.sorter = new DeviceSorter();
+    this.sorter.setIndividuals(individuals);
+
     map = new PublicMap(sorter.documents);
 
     this.sorter.setMap(map)
+    console.log(individuals);
 }
 
 function PublicMap() {

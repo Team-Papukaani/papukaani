@@ -20,6 +20,7 @@ urlpatterns = [
     # ex: /papukaani/individuals/
     url(r'^individuals/$', views.individuals, name='individuals'),
     url(r'^rest/documentsForDevice$', views.getDocumentsForDevice),
+    url(r'^rest/documentsForIndividual$', views.getDocumentsForIndividual),
 
     url(r'^formats/$', views.formats, name='formats')
 ]

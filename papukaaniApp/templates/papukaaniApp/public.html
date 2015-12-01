@@ -15,12 +15,15 @@
 
 
 </head>
-<body onload=" var map = init({{ devices }})">
+{% autoescape off %}
+    <body onload='var map = init({{ individuals }})'>
+{% endautoescape %}
+
 {% include "papukaaniApp/navigation.html" %}
 
 <div class="choose_actions form-inline padded2">
     <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Lähetin:</span>
+        <span class="input-group-addon" id="basic-addon1">Lintu:</span>
         <select id="selectDevice" class="form-control"></select>
     </div>
     <div class="input-group">

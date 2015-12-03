@@ -7,8 +7,6 @@ from papukaani.config import common
 
 
 if __name__ == "__main__":
-
-
     if "test" in sys.argv:
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "papukaani.config.test")
     else:
@@ -20,6 +18,16 @@ if __name__ == "__main__":
     else:
         common.XEPHYR_VISIBILITY = 0
 
+    if '--mockauth' in sys.argv:
+        common.MOCK_AUTHENTICATION = "On"
+
+    if '--skipauth' in sys.argv:
+        common.MOCK_AUTHENTICATION = "Skip"
+
     from django.core.management import execute_from_command_line
 
-    execute_from_command_line(sys.argv)
+    sysargs = sys.argv.copy()
+    if "--mockauth" in sysargs : sysargs.remove('--mockauth')
+    if "--skipauth" in sysargs : sysargs.remove('--skipauth')
+
+    execute_from_command_line(sysargs)

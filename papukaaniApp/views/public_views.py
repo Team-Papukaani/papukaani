@@ -19,3 +19,5 @@ def public(request):
         devices.append(item.deviceId)
     devices.sort()
     return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(devices)})
+
+

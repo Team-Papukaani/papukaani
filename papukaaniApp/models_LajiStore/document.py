@@ -87,6 +87,9 @@ def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, crea
 
     return document
 
+def get_document_without_private_gatherings(deviceId):
+    return find(filter={"gatherings_publicity" : "public"}, deviceId = deviceId)[0]
+
 def delete_all():
     '''
     Deletes all documents. Can only be used in test enviroment.
@@ -103,3 +106,6 @@ def _get_many(**kwargs):
 
 def _parse_gathering(data):
     return [gathering.from_lajistore_json(**point) for point in data]
+
+
+

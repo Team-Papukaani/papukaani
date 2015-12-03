@@ -2,12 +2,10 @@
     margin-left : 5%;
     width : 90%;
     outline: 1px solid rgb(150,150,150);
-    font-family : Ubuntu, sans serif;
 }
 
 .heading{
     margin-left : 5%;
-    font-family : Ubuntu
 }
 
 #errors{

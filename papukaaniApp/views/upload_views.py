@@ -6,7 +6,9 @@ from papukaaniApp.utils.view_utils import *
 import json, uuid
 import datetime
 from django.contrib import messages
+from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
+@require_auth
 def upload(request):
     """
     Controller for '/upload/'. GET shows upload screen, POST uploads file.
@@ -29,10 +31,10 @@ def upload(request):
                 else:
                     data = prepare_file(uploaded_file, parser)
 
-
             except:
                 messages.add_message(request, messages.ERROR, 'Tiedostosi formaatti ei ole kelvollinen!')
                 return redirect(upload)
+            _save_file_to_db(uploaded_file, uploaded_file.name)
             points = create_points(data, parser, uploaded_file.name, datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
             return _render_points(points, parsers, request)
 
@@ -43,3 +45,7 @@ def upload(request):
 def _render_points(points, parsers, request):
     latlongs = [[g.geometry[1], g.geometry[0]] for g in points]
     return render(request, 'upload.html', {'points': json.dumps(latlongs), 'parsers': parsers})
+
+def _save_file_to_db(file, name):
+    dbFile = FileStorage.objects.create(file = file,filename=name, uploadTime=datetime.datetime.now())
+    dbFile.save()

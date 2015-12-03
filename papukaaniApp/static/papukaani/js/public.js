@@ -34,7 +34,6 @@ PublicMap.prototype.changePoints = function (points) {
 //    doc = points[0];
 //    pi = new PathIterator(doc.gatherings);
 //    time = pi.getStartTime();
-
 };
 
 PublicMap.prototype.play = function () {

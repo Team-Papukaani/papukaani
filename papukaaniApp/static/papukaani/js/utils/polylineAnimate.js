@@ -88,7 +88,6 @@ Animator.prototype.animate = function () {
         }
     }.bind(this), 100);
 };
-
 //New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
@@ -118,7 +117,6 @@ Animator.prototype.addNewPolyline = function (polyline) {
     }
     polyline.addTo(this.map);
 };
-
 
 //Starts the animation.
 Animator.prototype.start = function () {

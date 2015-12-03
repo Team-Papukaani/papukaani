@@ -13,29 +13,26 @@ function Animator(latlngs, map) {
     this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
     this.paused = true;
-    createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
-    setSliderValue(this.pathIterator.getStartTime());
+    this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
+    this.setSliderValue(this.pathIterator.getStartTime());
 }
 
 //Default options for the main polyline.
 var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
 
-//Indicates if the slider has been moved manually.
-var sliderchanged = false;
-
 //Returns the points timestamp(ms) in the specified datetime format.
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
     /*return new Intl.DateTimeFormat('fi-FI', {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        timeZoneName: 'short'
-    }).format(date);*/
+     weekday: 'short',
+     day: 'numeric',
+     month: 'long',
+     year: 'numeric',
+     hour: 'numeric',
+     minute: 'numeric',
+     second: 'numeric',
+     timeZoneName: 'short'
+     }).format(date);*/
     return date.toLocaleString()
 };
 
@@ -89,7 +86,7 @@ Animator.prototype.animate = function () {
 
         this.marker.setLatLng(this.markerPosition.toArray());
         this.marker._popup.setContent(this.getMarkerTimeStamp());
-        setSliderValue(this.time);
+        this.setSliderValue(this.time);
         this.time += timeStep;
         if (this.time >= this.pathIterator.getEndTime()) {
             this.stop();
@@ -134,24 +131,9 @@ Animator.prototype.addNewPolyline = function (polyline) {
 //Starts the animation.
 Animator.prototype.start = function () {
     if (this.paused) {
-        this.reInitializeIfTimeSelectionChanged();
         this.animate();
         this.paused = false;
         return true;
-    }
-};
-
-Animator.prototype.reInitializeIfTimeSelectionChanged = function () {
-    if ($("#playSlider").slider("option", "value") != this.time) {
-        this.skipAnimationUntil();
-    }
-};
-
-//Skips the animation and draws the polyline at the chosen time.
-Animator.prototype.skipAnimationUntil = function () {
-    if (this.paused && sliderchanged) {
-        this.reInit($("#playSlider").slider("option", "value"));
-        sliderchanged = false;
     }
 };
 
@@ -236,7 +218,7 @@ Animator.prototype.clear = function () {
     this.stop();
     this.map.removeLayer(this.marker);
     this.map.clearLayers();
-    delete this;
+    createDummySlider();
 };
 
 L.Map.include({
@@ -249,39 +231,30 @@ L.Map.include({
     }
 });
 
-setSliderValue = function (value) {
+Animator.prototype.setSliderValue = function (value) {
     var slider = $("#playSlider");
     slider.slider("option", "value", value);
 };
 
 //Initializes a slider with an attached label showing current value.
-createSlider = function (min, max, step) {
+Animator.prototype.createSlider = function (min, max, step) {
     $("#playSlider").slider({
         min: min,
         max: max,
         step: step,
         change: function (event, ui) {
-            var delay = function () {
-                var label = '#playLabel';
-                $(label).html(new Date(ui.value).toLocaleString()).position({
-                    my: 'center top',
-                    at: 'center bottom',
-                    of: ui.handle
-                }).css({visibility: 'visible'});
-            };
-            setTimeout(delay, 5);
+            var label = '#playLabel';
+            $(label).html(new Date(ui.value).toLocaleString()).css({visibility: 'visible'});
         },
         slide: function (event, ui) {
             var delay = function () {
-                sliderchanged = true;
                 var label = '#playLabel';
-                $(label).html(new Date(ui.value).toLocaleString()).position({
-                    my: 'center top',
-                    at: 'center bottom',
-                    of: ui.handle
-                }).css({visibility: 'visible'});
+                $(label).html(new Date(ui.value).toLocaleString()).css({visibility: 'visible'});
             };
             setTimeout(delay, 5);
-        }
+        },
+        stop: function (event, ui) {
+            this.reInit(ui.value);
+        }.bind(this)
     });
 };

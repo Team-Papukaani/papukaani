@@ -28,15 +28,15 @@
 
         <div id="speedSlider" class="small-slider"></div>
     </div>
-    <button id="play" onclick="map.play()" class="btn btn-default">Play</button>
-    <button id="pause" onclick="map.pause()" class="btn btn-default">Pause</button>
-    <button id="pause" onclick="map.skip()" class="btn btn-default">Skip animation</button>
     <span id="loading" class="help-block" style="display:inline"></span>
 </div>
 
 <div id="map" class="largeMap">
-        <div id="playLabel" class="form-control">N/A</div>
+    <div id="in-map" class="form-inline img-rounded">
+        <button id="play" onclick="map.play()" class="btn btn-default">&#9658;</button>
         <div id="playSlider" class="input-group ui-slider ui-slider-horizontal"></div>
+        <div id="playLabel" class="form-control">N/A</div>
+    </div>
 </div>
 
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>

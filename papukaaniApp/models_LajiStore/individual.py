@@ -1,5 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
-
+from . import device
 
 class Individual:
     '''
@@ -83,6 +83,15 @@ def delete_all():
     '''
     LajiStoreAPI.delete_all_individuals()
 
+def get_gatherings(individualId):
+    devices = []
+    for d in device.get_all():
+        if individualId in [i["individualId"] for i in d.individuals  if "individualId" in i]:
+            devices.append(d)
+
+    
+
+
 
 def _get_many(mode=1, **kwargs):
     """
@@ -99,3 +108,4 @@ def _get_many(mode=1, **kwargs):
         elif mode == 1:
             individuals.append(Individual(**individual))
     return individuals
+

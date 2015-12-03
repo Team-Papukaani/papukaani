@@ -24,7 +24,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         return;
     }
     var pointsWithinRange = this.points.filter(function (point) {
-        var timestring = point.timeStart;
+        var timestring = point.dateTimeBegin;
         var timestamp = new Date(timestring);
         a = (start != "" ? a : timestamp);
         b = (end != "" ? b : timestamp);
@@ -99,7 +99,7 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
         var marker = L.marker(new L.LatLng(ltlgs[1], ltlgs[0]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
-        marker.bindPopup(new Date(marker.pnt.timeStart).toLocaleString(), {offset: L.point(0,-12)});
+        marker.bindPopup(new Date(marker.pnt.dateTimeBegin).toLocaleString(), {offset: L.point(0,-12)});
         marker.on('mouseover', function () {
             this.openPopup();
         });

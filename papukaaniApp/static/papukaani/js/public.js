@@ -43,20 +43,17 @@ PublicMap.prototype.play = function () {
     if (this.animation) {
         if (this.animation.start()) {
             $("#play").html("&#9646;&#9646;");
-            $("#playSlider").slider("disable")
         } else {
             if (this.animation.stop()) {
                 $("#play").html("&#9658;");
-                $("#playSlider").slider("enable");
             }
         }
     }
 };
 
+//Performed when the animation reaches its end.
 var animationEnd = function () {
-    $("#play").attr("disabled", false);
-    $("#pause").attr("disabled", true);
-    $("#playSlider").slider("enable")
+    $("#play").html("&#9658;");
 };
 
 //Creates latLng objects from points
@@ -95,28 +92,30 @@ $(function () {
 
 //Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.
 $(function () {
-    var slider = L.DomUtil.get('playSlider');
-    var play = L.DomUtil.get('play');
-    var label = L.DomUtil.get('playLabel');
+    var slider = L.DomUtil.get('in-map-slider');
+    var play = L.DomUtil.get('in-map-control');
     if (!L.Browser.touch) {
-        L.DomEvent.disableClickPropagation(slider);
         L.DomEvent.disableClickPropagation(play);
-        L.DomEvent.disableClickPropagation(label);
-        L.DomEvent.on(slider, 'mousewheel', L.DomEvent.stopPropagation);
         L.DomEvent.on(play, 'mousewheel', L.DomEvent.stopPropagation);
-        L.DomEvent.on(label, 'mousewheel', L.DomEvent.stopPropagation);
+        L.DomEvent.disableClickPropagation(slider);
+        L.DomEvent.on(slider, 'mousewheel', L.DomEvent.stopPropagation);
     } else {
-        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
         L.DomEvent.on(play, 'click', L.DomEvent.stopPropagation);
-        L.DomEvent.on(label, 'click', L.DomEvent.stopPropagation);
+        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
     }
 });
 
+$(function () {
+    $("#in-map").on("mouseover", function () {
+        $(this).children().css("opacity", 1);
+    }).on("mouseout", function () {
+        $(this).children().css("opacity", 0.5);
+    })
+});
+
+//Replaces the slider with a placeholder.
 var createDummySlider = function () {
-    $("#playSlider").slider({
-        min: 0,
-        max: 0,
-        step: 0
-    });
+    $("#playSlider").slider = null;
     $("#playLabel").text("N/A");
 };
+

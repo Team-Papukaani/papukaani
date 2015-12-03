@@ -15,8 +15,11 @@
 
 
 </head>
-<body onload=" var map = init({{ devices }})">
-{% include "papukaaniApp/navigation.html" %}
+<body onload="var map = init({{ devices }}, '{{ device }}', '{{ speed }}')">
+
+{% if display_navigation %}
+    {% include "papukaaniApp/navigation.html" %}
+{% endif %}
 
 <div class="choose_actions form-inline padded2">
     <div class="input-group">
@@ -43,6 +46,11 @@
     </div>
 </div>
 
+
+
+
+
+
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/sliderPadding.js' %}"></script>
@@ -55,9 +63,18 @@
 <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
 <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
 
-<script>
 
-</script>
+{% if display_navigation %}
+    <div class="choose_actions form-inline padded2">
+        <div class="input-group">
+            <span class="input-group-addon">iFrame:</span>
+            <input class="form-control" type="text" size="100" id="iframeSrc" />
+        </div>
+        <div class="input-group">
+            <button type="button" class="btn btn-primary" onclick="generateIframeUrl()" id="generateIframeButton">Luo</button>
+        </div>
+    </div>
+{% endif %}
 
 </body>
 </html>

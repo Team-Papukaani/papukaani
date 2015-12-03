@@ -114,20 +114,21 @@ def _get(uri, **kwargs):
 
 
 def _post(data, uri):
-    url = _URL + uri
-    response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
-    _check_error(response)
-
-    return response
-
+    return create_response(data, uri, True)
 
 def _put(uri, data):
+    return create_response(data, uri, False)
+
+def create_response(data, uri, post):
     url = _URL + uri
-    response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
-    _check_error(response)
+    if(post):
+        response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+    else:
+        response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
 
+    if "id" not in response:
+        raise ValueError(_ERROR_MSG)
     return response
-
 
 def _add_query(**kwargs):
     q = ""
@@ -168,6 +169,3 @@ def _get_all_pages(uri, key, list=None, **kwargs):
         uri = links["next"]["href"].split("/")[-1]
         return _get_all_pages(uri, key, list)
 
-def _check_error(response):
-    if "id" not in response:
-        raise ValueError(_ERROR_MSG)

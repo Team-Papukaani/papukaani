@@ -1,9 +1,15 @@
-function init(devices) {
+function init(devices, defaultDevice, defaultSpeed) {
     this.sorter = new DeviceSorter(devices);
     map = new PublicMap(sorter.documents);
 
     this.sorter.setMap(map);
     createDummySlider();
+
+    if(defaultDevice != '' && devices.indexOf(defaultDevice) != -1)
+        $('#selectDevice').val( defaultDevice )
+
+    if(defaultSpeed != '' && (defaultSpeed % 1) === 0)
+        $('#speedSlider').slider( "option", "value", defaultSpeed );
 }
 
 function PublicMap() {
@@ -118,4 +124,13 @@ var createDummySlider = function () {
     $("#playSlider").slider = null;
     $("#playLabel").text("N/A");
 };
+
+function generateIframeUrl() {
+    var inputBox = $('#iframeSrc')
+    var url = 'http://' + window.location.hostname + window.location.pathname
+    var device = 'device=' + $('#selectDevice').val()
+    var speed = 'speed=' + $('#speedSlider').slider("option", "value")
+    inputBox.val(url + '?' + device + '&' + speed)
+    inputBox.select()
+}
 

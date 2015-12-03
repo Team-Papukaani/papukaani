@@ -16,7 +16,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
         self.driver = webdriver.Firefox()
 
         self.choose_page = self.BASE_URL + '/papukaani/choose'
-        self.public_page = self.BASE_URL + '/papukaani/public'
+        self.index_page = self.BASE_URL + '/papukaani'
         self.logout_page = self.BASE_URL + '/papukaani/logout'
         self.login_page = self.BASE_URL + '/papukaani/login'
 
@@ -45,7 +45,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
             self.fail()
 
     def test_login_link_is_shown_if_not_logged_int(self):
-        self.driver.get(self.public_page)
+        self.driver.get(self.index_page)
         try:
             self.driver.find_element_by_id("login_link")
         except:
@@ -67,7 +67,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
             pass
 
     def test_logout_link_is_not_shown_if_not_logged_in(self):
-        self.driver.get(self.public_page)
+        self.driver.get(self.index_page)
         try:
             self.driver.find_element_by_id("logout_link")
             self.fail()

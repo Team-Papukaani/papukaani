@@ -5,6 +5,8 @@ from django.shortcuts import render
 from papukaaniApp.models_LajiStore import individual
 from papukaaniApp.models_TipuApi import species
 
+from django.contrib import messages
+
 @require_auth
 def individuals(request):
     """
@@ -21,15 +23,22 @@ def individuals(request):
                 {'name': 'species', 'value': request.POST.get('species')},
             ]
             individuale.update()
+            messages.add_message(request, messages.INFO, 'Tiedot tallennettu onnistuneesti!')
         elif 'id' in request.POST and 'delete' in request.POST:
             individuale = individual.get(request.POST.get('id'))
             individuale.deleted = True
             individuale.update()
+            messages.add_message(request, messages.INFO, 'Lintu poistettu onnistuneesti!')
         elif 'taxon' in request.POST:
-            individuale = individual.create(random.randint(10000000, 99999999), request.POST.get('taxon'))
-            individuale.individualId = individuale.id
-            individuale.update()
-            # Success message
+            taxon = request.POST.get('taxon')
+            if taxon == "":
+                messages.add_message(request, messages.ERROR, 'Linnun nimi ei voi olla tyhjä')
+            else:
+                individuale = individual.create(random.randint(10000000, 99999999), request.POST.get('taxon'))
+                individuale.individualId = individuale.id
+                individuale.update()
+                messages.add_message(request, messages.INFO, 'Lintu luotu onnistuneesti!')
+
 
     individual_list = individual.get_all_exclude_deleted()
 
@@ -43,7 +52,6 @@ def individuals(request):
     }
 
     return render(request, 'papukaaniApp/individuals.html', context)
-
 
 def populate_facts(individual_list):
     """

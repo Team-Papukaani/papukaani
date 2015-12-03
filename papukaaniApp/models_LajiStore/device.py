@@ -37,6 +37,7 @@ class Device:
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
+        self.lastModifiedAt = current_time_as_lajistore_timestamp()
         LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here
 
     def attach_to(self, individual, timestamp):

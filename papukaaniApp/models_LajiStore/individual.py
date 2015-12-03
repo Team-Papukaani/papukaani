@@ -1,5 +1,6 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
-from . import device
+from . import device, document
+from papukaaniApp.utils.model_utils import current_time_as_lajistore_timestamp
 
 class Individual:
     '''
@@ -24,7 +25,36 @@ class Individual:
         Saves changes to the object to the corresponding LajiStore entry
         :return:
         '''
+        self.lastModifiedAt = current_time_as_lajistore_timestamp()
         LajiStoreAPI.update_individual(**self.__dict__)  # __dict__ puts all arguments here
+
+    def get_gatherings(self):
+        '''
+        Get all public gatherings related to this individual.
+        :return: a list of gatherings
+        '''
+        devices = []
+        for d in device.get_all():
+            if self.individualId in [i["individualId"] for i in d.individuals  if "individualId" in i]:
+                devices.append(d)
+
+        docs = []
+        for d in devices:
+            timeranges = [(i["attached"], i["removed"] if i["removed"] else "*") for i in d.individuals if i["individualId"] == self.individualId]
+            devices_docs = [dev_doc[0] for dev_doc in [document.find(deviceId=d.deviceId, gatherings_dateTimeBegin="["+ tr[0] +" TO "+ tr[1] +"]", filter={"gatherings_publicity":"public"}) for tr in timeranges] if len(dev_doc) > 0]
+
+            for dd in devices_docs:
+                for doc in docs:
+                    if doc.id == dd.id:
+                        doc.gatherings += dd.gatherings
+                    else:
+                        break
+                docs.append(dd)
+
+        gatherings = []
+        for d in docs: gatherings += d.gatherings
+
+        return gatherings
 
 
 def find(**kwargs):
@@ -82,15 +112,6 @@ def delete_all():
     Deletes all individuals. Can only be used in test enviroment.
     '''
     LajiStoreAPI.delete_all_individuals()
-
-def get_gatherings(individualId):
-    devices = []
-    for d in device.get_all():
-        if individualId in [i["individualId"] for i in d.individuals  if "individualId" in i]:
-            devices.append(d)
-
-    
-
 
 
 def _get_many(mode=1, **kwargs):

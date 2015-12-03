@@ -31,6 +31,7 @@ class Document:
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
+        self.lastModifiedAt = current_time_as_lajistore_timestamp()
         dict = self.to_dict()
         LajiStoreAPI.update_document(**dict) #__dict__ puts all arguments here
 

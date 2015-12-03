@@ -1,8 +1,10 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
 import time
+from selenium.webdriver.support.wait import WebDriverWait
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
 BASE_URL = "http://127.0.0.1:8081"
@@ -86,6 +88,7 @@ class PublicPage(PageWithDeviceSelector):
     PLAY = Element(By.ID, 'play')
     SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
     SKIP = Element(By.ID, 'skip')
+    SPEED_SLIDER = Element(By.ID, 'speedSlider')
 
     def __init__(self):
         super().__init__()
@@ -121,6 +124,11 @@ class PublicPage(PageWithDeviceSelector):
 
     def get_navigation(self):
         return self.driver.find_element_by_id("cssmenu")
+
+    def get_speed_set_as_param(self, speed):
+        self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
+        return self.driver.execute_script('return $("#speedSlider").slider("option", "value")')
+
 
 class ChoosePage(PageWithDeviceSelector):
     """

@@ -22,6 +22,12 @@ def public(request):
 
     display_navigation = authenticated(request)
 
-    return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(devices), 'display_navigation': display_navigation})
+    context = { 'devices': json.dumps(devices),
+                'display_navigation': display_navigation,
+                'device': request.GET.get('device', ''),
+                'speed': request.GET.get('speed', '')
+    }
+
+    return render(request, 'papukaaniApp/public.html', context)
 
 

@@ -93,7 +93,6 @@ class PublicView(StaticLiveServerTestCase):
         self.assertGreater(startcount, len(self.page.driver.find_elements_by_class_name("g")))
 
     def test_navigation_is_shown_if_logged_in(self):
-        # self.driver.get(self.login_page)
         settings.MOCK_AUTHENTICATION = "On"
         try:
             self.page.get_navigation()
@@ -101,10 +100,12 @@ class PublicView(StaticLiveServerTestCase):
             self.fail()
 
     def test_navigation_is_not_shown_if_logged_in(self):
-        # self.driver.get(self.login_page)
         settings.MOCK_AUTHENTICATION = "Skip"
         try:
             self.page.get_navigation()
             self.fail()
         except:
             pass
+
+    def test_speed_sets_with_param(self):
+        self.assertEquals('75', self.page.get_speed_set_as_param(75))

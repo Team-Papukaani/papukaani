@@ -1,9 +1,15 @@
-function init(devices) {
+function init(devices, defaultDevice, defaultSpeed) {
     this.sorter = new DeviceSorter(devices);
     map = new PublicMap(sorter.documents);
 
     this.sorter.setMap(map);
     createDummySlider();
+
+    if(defaultDevice != '' && devices.indexOf(defaultDevice) != -1)
+        $('#selectDevice').val( defaultDevice )
+
+    if(defaultSpeed != '' && (defaultSpeed % 1) === 0)
+        $('#speedSlider').slider( "option", "value", defaultSpeed );
 }
 
 function PublicMap() {

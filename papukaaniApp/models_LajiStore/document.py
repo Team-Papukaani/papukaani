@@ -87,8 +87,8 @@ def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, crea
 
     return document
 
-def get_document_without_private_gatherings(deviceId):
-    return find(filter={"gatherings_publicity" : "public"}, deviceId = deviceId)[0]
+def get_document_without_private_gatherings(id):
+    return find(filter={"gatherings_publicity" : "public"}, id = id)[0]
 
 def delete_all():
     '''

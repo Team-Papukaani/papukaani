@@ -7,8 +7,8 @@ function DeviceSorter() {
         this.type = "Device"
     };
 
-    this.setIndividuals = function (individuals) {
-        this.createIndividualSelector(individuals);
+    this.setIndividuals = function (individuals, species) {
+        this.createIndividualSelector(individuals, species);
         this.type = "Individual"
     };
 
@@ -126,7 +126,7 @@ DeviceSorter.prototype.showSaveOrCancelPopup = function (deviceId) {
 /* Individual spesifics */
 
 //Creates a selector for individuals (individualId:taxon).
-DeviceSorter.prototype.createIndividualSelector = function (individuals) {
+DeviceSorter.prototype.createIndividualSelector = function (individuals, species) {
     var selector = $("#selectDevice");
 
     selector.change(function (event) {
@@ -139,9 +139,9 @@ DeviceSorter.prototype.createIndividualSelector = function (individuals) {
     };
 
     selector.addOption("None","Valitse");
-    $.each(individuals, function(species, individualsOfSpecies){
-        selector.append("<option disabled='disabled'>" + species + "</option>")
-        $.each(individualsOfSpecies, function(key, individual){
+    $.each(species, function(key, s){
+        selector.append("<option disabled='disabled'>" + s + "</option>")
+        $.each(individuals[s], function(key, individual){
             $.each(individual, function(individualId, taxon){
                 selector.addOption(individualId, taxon)
             })

@@ -1,6 +1,6 @@
-function init(individuals) {
+function init(individuals, species) {
     this.sorter = new DeviceSorter();
-    this.sorter.setIndividuals(individuals);
+    this.sorter.setIndividuals(individuals, species);
 
     map = new PublicMap(sorter.documents);
 

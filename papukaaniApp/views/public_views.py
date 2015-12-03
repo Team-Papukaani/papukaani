@@ -22,11 +22,15 @@ def public(request):
         individuals[key].append({individuale.individualId: individuale.taxon})
 
     all_species = species.get_all_in_finnish()
+    ordered_species = []
     for s in all_species:
         if s.id in individuals:
             individuals[s.name] = individuals.pop(s.id)  # Renames the species id to Finnish
+            ordered_species.append(s.name)
+    ordered_species.sort()
 
-    context = { 'individuals': json.dumps(individuals)
+    context = { 'individuals': json.dumps(individuals),
+                'species': json.dumps(ordered_species)
                }
 
     return render(request, 'papukaaniApp/public.html', context)

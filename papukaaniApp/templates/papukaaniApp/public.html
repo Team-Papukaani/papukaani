@@ -16,7 +16,7 @@
 
 </head>
 {% autoescape off %}
-    <body onload='var map = init({{ individuals }})'>
+    <body onload='var map = init({{ individuals }}, {{ species }})'>
 {% endautoescape %}
 
 {% include "papukaaniApp/navigation.html" %}

@@ -25,10 +25,6 @@ PublicMap.prototype.changePoints = function (points) {
     if (this.animation) {
         this.animation.clear();
     }
-<<<<<<< HEAD
-    this.latlngs = this.createLatlngsFromPoints(points);
-    this.animate(this.latlngs);
-=======
     try {
         this.latlngs = this.createLatlngsFromPoints(points);
         this.animate(this.latlngs);
@@ -38,8 +34,6 @@ PublicMap.prototype.changePoints = function (points) {
 //    doc = points[0];
 //    pi = new PathIterator(doc.gatherings);
 //    time = pi.getStartTime();
-
->>>>>>> a19be8f1c7d91f8f8ef83d649e94c793cfd7abeb
 };
 
 PublicMap.prototype.play = function () {

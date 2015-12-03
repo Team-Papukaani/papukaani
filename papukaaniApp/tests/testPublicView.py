@@ -1,10 +1,7 @@
 import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-<<<<<<< HEAD
 from selenium.webdriver.support.wait import WebDriverWait
 
-=======
->>>>>>> a19be8f1c7d91f8f8ef83d649e94c793cfd7abeb
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
@@ -14,15 +11,10 @@ class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         self.A = document.create("TestA",
                                  [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
-<<<<<<< HEAD
                                   gathering.Gathering("1234-12-12T12:13:12+00:00", [63.01, 61.01],
                                                       publicity="public")], "DeviceId")
         self.B = document.create("TestB",
                                  [gathering.Gathering("1235-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public")], "DeviceId2")
-=======
-                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [23.01, 61.01],
-                                                      publicity="public")], "DeviceId")
->>>>>>> a19be8f1c7d91f8f8ef83d649e94c793cfd7abeb
         dev = {
             "deviceId": "DeviceId",
             "deviceType": "Type",

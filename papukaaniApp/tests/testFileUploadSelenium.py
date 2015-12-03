@@ -9,7 +9,7 @@ from papukaaniApp.models import *
 class FileUploadSeleniumTest(StaticLiveServerTestCase):
     def setUp(self):
         self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
-                                                           timestamp="timestamp",
+                                                           timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")

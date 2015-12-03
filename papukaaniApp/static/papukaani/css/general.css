@@ -74,10 +74,10 @@ html, body {
     margin-top: 10px;
 }
 
-#playSlider {
+#in-map {
     position: absolute;
     z-index: 9999;
-    width: 40%;
+    width: 60%;
     max-width: 960px;
     min-width: 600px;
     overflow: hidden;
@@ -87,12 +87,13 @@ html, body {
     bottom: 5px;
 }
 
-#playLabel {
-    position: absolute;
-    z-index: 9999;
-    white-space: nowrap;
-    width: auto;
-    visibility: hidden;
+#play {
+    width: 40px;
+    margin-right: 5px;
+}
+
+#playSlider {
+    width: 50%;
 }
 
 .margin-container {

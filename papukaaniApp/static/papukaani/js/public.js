@@ -2,7 +2,8 @@ function init(devices) {
     this.sorter = new DeviceSorter(devices);
     map = new PublicMap(sorter.documents);
 
-    this.sorter.setMap(map)
+    this.sorter.setMap(map);
+    createDummySlider();
 }
 
 function PublicMap() {
@@ -24,6 +25,7 @@ var requestPath = function (deviceId) {
 PublicMap.prototype.changePoints = function (points) {
     if (this.animation) {
         this.animation.clear();
+        this.animation = null;
     }
     try {
         this.latlngs = this.createLatlngsFromPoints(points);
@@ -36,26 +38,26 @@ PublicMap.prototype.changePoints = function (points) {
 //    time = pi.getStartTime();
 };
 
+//Plays the animation if paused, or pauses if currently playing.
 PublicMap.prototype.play = function () {
-    if (this.animation.start()) {
-        $("#play").attr("disabled", true);
-        $("#pause").attr("disabled", false);
-        $("#skip").attr("disabled", true);
+    if (this.animation) {
+        if (this.animation.start()) {
+            $("#play").html("&#9646;&#9646;");
+            $("#playSlider").slider("disable")
+        } else {
+            if (this.animation.stop()) {
+                $("#play").html("&#9658;");
+                $("#playSlider").slider("enable");
+            }
+        }
     }
 };
 
-PublicMap.prototype.pause = function () {
-    if (this.animation.stop()) {
-        $("#play").attr("disabled", false);
-        $("#pause").attr("disabled", true);
-        $("#skip").attr("disabled", false);
-    }
+var animationEnd = function () {
+    $("#play").attr("disabled", false);
+    $("#pause").attr("disabled", true);
+    $("#playSlider").slider("enable")
 };
-
-PublicMap.prototype.skip = function () {
-    this.animation.skipAnimationUntil();
-};
-
 
 //Creates latLng objects from points
 PublicMap.prototype.createLatlngsFromPoints = function (points) {
@@ -63,7 +65,7 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
         var coordinates = point.wgs84Geometry.coordinates;
         return {
             coordinates: Victor.fromArray(coordinates.reverse()),
-            time: Date.parse(point.timeStart)
+            time: Date.parse(point.dateTimeBegin)
         };
     });
 };
@@ -91,13 +93,30 @@ $(function () {
     });
 });
 
-//Prevents Leaflet onclick and mousewheel events from triggering when slider is used.
+//Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.
 $(function () {
-    var div = L.DomUtil.get('playSlider');
+    var slider = L.DomUtil.get('playSlider');
+    var play = L.DomUtil.get('play');
+    var label = L.DomUtil.get('playLabel');
     if (!L.Browser.touch) {
-        L.DomEvent.disableClickPropagation(div);
-        L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation);
+        L.DomEvent.disableClickPropagation(slider);
+        L.DomEvent.disableClickPropagation(play);
+        L.DomEvent.disableClickPropagation(label);
+        L.DomEvent.on(slider, 'mousewheel', L.DomEvent.stopPropagation);
+        L.DomEvent.on(play, 'mousewheel', L.DomEvent.stopPropagation);
+        L.DomEvent.on(label, 'mousewheel', L.DomEvent.stopPropagation);
     } else {
-        L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
+        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
+        L.DomEvent.on(play, 'click', L.DomEvent.stopPropagation);
+        L.DomEvent.on(label, 'click', L.DomEvent.stopPropagation);
     }
 });
+
+var createDummySlider = function () {
+    $("#playSlider").slider({
+        min: 0,
+        max: 0,
+        step: 0
+    });
+    $("#playLabel").text("N/A");
+};

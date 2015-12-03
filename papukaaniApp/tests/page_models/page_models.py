@@ -115,6 +115,8 @@ class PublicPage(PageWithDeviceSelector):
     def get_popup(self):
         return self.driver.find_element_by_class_name("leaflet-popup-content-wrapper")
 
+    def get_navigation(self):
+        return self.driver.find_element_by_id("cssmenu")
 
 class ChoosePage(PageWithDeviceSelector):
     """

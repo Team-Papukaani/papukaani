@@ -15,8 +15,11 @@
 
 
 </head>
-<body onload=" var map = init({{ devices }})">
-{% include "papukaaniApp/navigation.html" %}
+<body onload="var map = init({{ devices }}, '{{ device }}', '{{ speed }}')">
+
+{% if display_navigation %}
+    {% include "papukaaniApp/navigation.html" %}
+{% endif %}
 
 <div class="choose_actions form-inline padded2">
     <div class="input-group">
@@ -51,7 +54,9 @@
 <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
 
 <script>
+{% if display_navigation %}
 
+{% endif %}
 </script>
 
 </body>

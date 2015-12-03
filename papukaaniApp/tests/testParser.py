@@ -63,8 +63,9 @@ class FileParserTest(TestCase):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
         documents = document.get_all()
         self.assertEquals(4, len(documents[0].gatherings[0].facts))
-        self.assertEquals(documents[0].gatherings[0].facts[1]["value"], "24-11-2015, 00-00-00")
-        self.assertEquals(documents[0].gatherings[0].facts[3]["value"], "01-01-1000, 00-00-00")
+        facts = documents[0].gatherings[0].facts
+        self.assertEquals(facts[1]["value"], "24-11-2015, 00-00-00")
+        self.assertEquals(facts[3]["value"], "01-01-1000, 00-00-00")
 
     def test_byholm_data_goes_lajiStroe_succesfully(self):
         document.delete_all()

@@ -77,23 +77,23 @@ html, body {
 #in-map {
     position: absolute;
     z-index: 9999;
-    width: 60%;
-    max-width: 960px;
-    min-width: 600px;
-    overflow: hidden;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
+    min-width:50%;
+    left: 150px;
     bottom: 5px;
+    background-color: #0f0f0f;
 }
 
 #play {
-    width: 40px;
-    margin-right: 5px;
+    width: 9%;
+    margin-right: 1%;
 }
 
 #playSlider {
-    width: 50%;
+    width: 70%;
+}
+
+#playLabel {
+    width: 20%;
 }
 
 .margin-container {

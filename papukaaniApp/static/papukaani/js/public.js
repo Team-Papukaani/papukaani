@@ -65,7 +65,7 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
         var coordinates = point.wgs84Geometry.coordinates;
         return {
             coordinates: Victor.fromArray(coordinates.reverse()),
-            time: Date.parse(point.timeStart)
+            time: Date.parse(point.dateTimeBegin)
         };
     });
 };

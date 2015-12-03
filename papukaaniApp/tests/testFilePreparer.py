@@ -8,7 +8,7 @@ from papukaaniApp.models_LajiStore import document
 class FilePreparerTest(TestCase):
     def setUp(self):
         self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
-                                                           timestamp="timestamp",
+                                                           timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")

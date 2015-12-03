@@ -17,7 +17,7 @@ class Gathering:
         Returns the fields in a LajiStore-saveable format.
         :return: A dictionary
         '''
-        return {"timeStart":self.time, "wgs84Geometry":{ "type":"Point", "coordinates" : self.geometry}, "temperatureCelsius":self.temperature, "publicity":self.publicity,  "facts":self.facts}
+        return {"dateTimeBegin":self.time, "wgs84Geometry":{ "type":"Point", "coordinates" : self.geometry}, "temperatureCelsius":self.temperature, "publicity":self.publicity,  "facts":self.facts}
 
 
     def __key(self):
@@ -29,11 +29,14 @@ class Gathering:
     def __hash__(self):
         return hash(self.__key())
 
+    def __str__(self):
+        return str(self.__dict__)
+
 def from_lajistore_json(**kwargs):
     '''
     Creates a Gathering object from LajiStore-format json
     :param kwargs: The data from LajiStore
     :return: a Gathering object
     '''
-    return Gathering( time = kwargs["timeStart"], geometry= kwargs["wgs84Geometry"]["coordinates"], temperature=kwargs["temperatureCelsius"],publicity=kwargs["publicity"], facts=kwargs["facts"])
+    return Gathering( time = kwargs["dateTimeBegin"], geometry= kwargs["wgs84Geometry"]["coordinates"], temperature=kwargs["temperatureCelsius"],publicity=kwargs["publicity"], facts=kwargs["facts"])
 

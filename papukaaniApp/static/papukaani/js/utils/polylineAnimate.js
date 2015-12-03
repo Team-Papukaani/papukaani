@@ -2,9 +2,7 @@ function Animator(latlngs, map) {
     this.map = map;
     this.latlngs = latlngs;
     this.pathIterator = new PathIterator(latlngs);
-
     this.polylines = [];
-
     this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
     this.time = this.pathIterator.getStartTime();
     this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
@@ -12,25 +10,30 @@ function Animator(latlngs, map) {
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
     this.marker.addTo(this.map);
     this.marker.bindPopup(this.getMarkerTimeStamp());
-
+    this.polyline = L.polyline([], polylineOptions);
+    this.polyline.addTo(this.map);
     this.paused = true;
-    createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
-    setSliderValue(this.pathIterator.getStartTime());
+    this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
+    this.setSliderValue(this.pathIterator.getStartTime());
 }
+
+//Default options for the main polyline.
+var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
 
 //Returns the points timestamp(ms) in the specified datetime format.
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
-    return new Intl.DateTimeFormat('fi-FI', {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        timeZoneName: 'short'
-    }).format(date);
+    /*return new Intl.DateTimeFormat('fi-FI', {
+     weekday: 'short',
+     day: 'numeric',
+     month: 'long',
+     year: 'numeric',
+     hour: 'numeric',
+     minute: 'numeric',
+     second: 'numeric',
+     timeZoneName: 'short'
+     }).format(date);*/
+    return date.toLocaleString()
 };
 
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
@@ -38,6 +41,7 @@ Animator.prototype.reInit = function (endtime) {
     if (this.time > endtime) {
         this.map.removeLayer(this.marker);
         this.map.clearLayers();
+        this.polylines = [];
         this.pathIterator = new PathIterator(this.latlngs);
         this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
         this.time = this.pathIterator.getStartTime();
@@ -46,6 +50,8 @@ Animator.prototype.reInit = function (endtime) {
         this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
         this.marker.addTo(this.map);
         this.marker.bindPopup(this.getMarkerTimeStamp());
+        this.polyline = L.polyline([], polylineOptions);
+        this.polyline.addTo(this.map);
         this.paused = true;
     }
 
@@ -80,20 +86,19 @@ Animator.prototype.animate = function () {
 
         this.marker.setLatLng(this.markerPosition.toArray());
         this.marker._popup.setContent(this.getMarkerTimeStamp());
-        setSliderValue(this.time);
+        this.setSliderValue(this.time);
         this.time += timeStep;
         if (this.time >= this.pathIterator.getEndTime()) {
             this.stop();
-            unlockButtons();
+            animationEnd();
         }
     }.bind(this), 100);
 };
-
 //New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
         color: 'blue',
-        opacity: 0.9
+        opacity: 1.0
     });
 };
 
@@ -102,44 +107,31 @@ Animator.prototype.calculateTimeStep = function () {
 };
 
 Animator.prototype.updatePolylines = function () {
-    for (var j = 0; j < Math.min(this.polylines.length, 40); j++) {
+    for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
         var line = this.polylines[j];
 
         var oldOpacity = line.options.opacity;
-        var newOpacity = oldOpacity - 0.02;
+        var newOpacity = oldOpacity - 0.03;
         line.setStyle({color: 'blue', opacity: newOpacity});
     }
 };
 
 Animator.prototype.addNewPolyline = function (polyline) {
     this.polylines.push(polyline);
-    if (this.polylines.length >= 40) {
+    if (this.polylines.length >= 20) {
+        this.polyline.addLatLng(this.polylines[0].getLatLngs()[1]);
+        this.map.removeLayer(this.polylines[0]);
         this.polylines.shift();
     }
     polyline.addTo(this.map);
 };
 
-
 //Starts the animation.
 Animator.prototype.start = function () {
     if (this.paused) {
-        this.checkIfSelectedTimeIsBeforeCurrent();
         this.animate();
         this.paused = false;
         return true;
-    }
-};
-
-Animator.prototype.checkIfSelectedTimeIsBeforeCurrent = function () {
-    if ($("#playSlider").slider("option", "value") != this.time) {
-        this.skipAnimationUntil();
-    }
-};
-
-//Skips the animation and draws the polyline at the chosen time.
-Animator.prototype.skipAnimationUntil = function () {
-    if (this.paused) {
-        this.reInit($("#playSlider").slider("option", "value"));
     }
 };
 
@@ -192,7 +184,7 @@ var PathIterator = function (points) {
             var pointTimeDifference = pointB.time - pointA.time;
             var directionVectorScalar = timeSincePointA / pointTimeDifference;
             return pointA.coordinates.clone().add(directionVector.multiplyScalar(directionVectorScalar));
-        }   else {
+        } else {
             return points[0].coordinates.clone();
         }
     };
@@ -224,7 +216,7 @@ Animator.prototype.clear = function () {
     this.stop();
     this.map.removeLayer(this.marker);
     this.map.clearLayers();
-    delete this;
+    createDummySlider();
 };
 
 L.Map.include({
@@ -237,38 +229,30 @@ L.Map.include({
     }
 });
 
-setSliderValue = function (value) {
+Animator.prototype.setSliderValue = function (value) {
     var slider = $("#playSlider");
     slider.slider("option", "value", value);
 };
 
 //Initializes a slider with an attached label showing current value.
-createSlider = function (min, max, step) {
+Animator.prototype.createSlider = function (min, max, step) {
     $("#playSlider").slider({
         min: min,
         max: max,
         step: step,
         change: function (event, ui) {
-            var delay = function () {
-                var label = '#playLabel';
-                $(label).html(new Date(ui.value).toLocaleString()).position({
-                    my: 'center top',
-                    at: 'center bottom',
-                    of: ui.handle
-                }).css({visibility: 'visible'});
-            };
-            setTimeout(delay, 5);
+            var label = '#playLabel';
+            $(label).html(new Date(ui.value).toLocaleString()).css({visibility: 'visible'});
         },
         slide: function (event, ui) {
             var delay = function () {
                 var label = '#playLabel';
-                $(label).html(new Date(ui.value).toLocaleString()).position({
-                    my: 'center top',
-                    at: 'center bottom',
-                    of: ui.handle
-                }).css({visibility: 'visible'});
+                $(label).html(new Date(ui.value).toLocaleString()).css({visibility: 'visible'});
             };
             setTimeout(delay, 5);
-        }
+        },
+        stop: function (event, ui) {
+            this.reInit(ui.value);
+        }.bind(this)
     });
 };

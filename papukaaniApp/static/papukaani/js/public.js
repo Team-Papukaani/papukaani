@@ -36,7 +36,6 @@ PublicMap.prototype.changePoints = function (points) {
 //    doc = points[0];
 //    pi = new PathIterator(doc.gatherings);
 //    time = pi.getStartTime();
-
 };
 
 //Plays the animation if paused, or pauses if currently playing.

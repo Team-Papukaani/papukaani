@@ -35,9 +35,10 @@ class MapPoint(models.Model):
 class GeneralParser(models.Model):
     formatName = models.CharField(max_length=50)
     gpsNumber = models.CharField(max_length=50, blank=True)
-    gpsTime = models.CharField(max_length=50)
+    timestamp = models.CharField(max_length=50)
     longitude = models.CharField(max_length=50)
     latitude = models.CharField(max_length=50)
     altitude = models.CharField(max_length=50, blank=True)
     temperature = models.CharField(max_length=50, blank=True)
     delimiter = models.CharField(max_length=50)
+

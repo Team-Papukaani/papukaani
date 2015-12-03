@@ -13,7 +13,7 @@ def formats(request):
 
             GeneralParser.objects.create(**data)
         except:
-            raise ValueError("POST request does not contain required parameters!")
+            raise ValueError("POST request does not contain the required parameters!")
 
 
     return render(request, 'papukaaniApp/formats.html')

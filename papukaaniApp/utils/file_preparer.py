@@ -28,8 +28,7 @@ def prepare_file(uploaded_file, parser, static_gps_number = False):
     return _to_dictionary(lines, parser, static_gps_number)
 
 def _to_dictionary(lines, parser, static_gps_number = False):
-    if _is_not_valid_file_type(lines, parser):
-        raise TypeError("a")
+    _check_that_file_is_valid(lines, parser)
     headers = _rename_attributes(lines, parser)
 
     parsed = []
@@ -45,17 +44,14 @@ def _to_dictionary(lines, parser, static_gps_number = False):
         parsed.append(parsed_line)
     return parsed
 
-def _is_not_valid_file_type(lines, parser):
-    if parser.gpsTime not in lines[0]:
-        return True
-    if parser.longitude not in lines[0]:
-        return True
-    if parser.latitude not in lines[0]:
-        return True
+def _check_that_file_is_valid(lines, parser):
+    assert parser.timestamp in lines[0], str(parser.timestamp) + " not found in " + str(lines[0])
+    assert parser.longitude in lines[0]
+    assert parser.latitude in lines[0]
 
 def _rename_attributes(lines, parser):
     headers= lines[0]
-    general_attributes = ["gpsNumber", "gpsTime", "longitude", "latitude", "temperature", "altitude"]
+    general_attributes = ["gpsNumber", "timestamp", "longitude", "latitude", "temperature", "altitude"]
     for attribute in general_attributes:
         for x in range(0, len(headers)):
             if headers[x] == getattr(parser, attribute):

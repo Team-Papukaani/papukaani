@@ -8,13 +8,13 @@ from papukaaniApp.models_LajiStore import document
 class FilePreparerTest(TestCase):
     def setUp(self):
         self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
-                                                           gpsTime="GPSTime",
+                                                           timestamp="timestamp",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")
         self.ecotone_parser.save()
 
-        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
+        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", timestamp="DateTime",
                                                           longitude="Longitude_E", latitude="Latitude_N",
                                                           altitude="Altitude_m",
                                                           temperature="temperature", delimiter="\t")
@@ -35,7 +35,7 @@ class FilePreparerTest(TestCase):
             creature, was_created = Creature.objects.get_or_create(name="Pekka")
             point = MapPoint(creature=creature,
                              gpsNumber=entry['gpsNumber'],
-                             timestamp=entry['gpsTime'],
+                             timestamp=entry['timestamp'],
                              latitude=entry['latitude'],
                              longitude=entry['longitude'],
                              altitude=entry['altitude'] if entry['altitude'] != '' else 0,
@@ -62,7 +62,7 @@ class FilePreparerTest(TestCase):
             creature, was_created = Creature.objects.get_or_create(name="Pekka")
             point = MapPoint(creature=creature,
                              gpsNumber="0",
-                             timestamp=entry['gpsTime'],
+                             timestamp=entry['timestamp'],
                              latitude=entry['latitude'],
                              longitude=entry['longitude'],
                              altitude=entry['altitude'] if entry['altitude'] != '' else 0,

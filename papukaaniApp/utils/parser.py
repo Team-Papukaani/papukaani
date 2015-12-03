@@ -37,7 +37,7 @@ def _gpsNumberCheck(collections, devices, parser, gpsNumber):
 def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
         collections[gpsNumber].append(
             gathering.Gathering(
-                time=parse_time(point['gpsTime']),
+                time=parse_time(point['timestamp']),
                 geometry=[float(point["longitude"]), float(point["latitude"])],
                 temperature=float(point['temperature']),
                 facts = gathering_facts

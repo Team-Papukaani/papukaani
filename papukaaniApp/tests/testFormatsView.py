@@ -13,7 +13,7 @@ class TestFormatsView(TestCase):
         response = self.c.post(self.url, data={
             "formatName":"testParser",
             "gpsNumber":"testNumber",
-            "gpsTime" : "testTime",
+            "timestamp" : "testTime",
             "latitude": "latitude",
             "longitude" : "longitude",
             "delimiter" : ","

@@ -52,11 +52,6 @@ def _update_gatherings_to_lajiStore(collections):
             document.create(str(uuid.uuid4()), collections[k], k)
         else:
             doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, collections[k])
-            if len(doc_array) > 1:  # if LajiStore contains redundant documents (more than one document for one device)
-                for i in range(1, len(doc_array)):
-                    doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, doc_array[i].gatherings)
-                    # append points from redundant into first document
-                    doc_array[i].delete()  # delete redundant document
             _check_redundant_lajiStore_documents(doc_array)
             doc_array[0].update()
     return points

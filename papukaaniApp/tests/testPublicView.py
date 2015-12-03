@@ -61,12 +61,12 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_polylines_are_cleared_on_selection_change(self):
         self.select_device_and_play()
-        self.page.PAUSE.click()
+        self.page.play()
         self.page.change_device_selection("None")
 
     def test_pause_stops_polyline_drawing(self):
         self.select_device_and_play()
-        self.page.PAUSE.click()
+        self.page.play()
         start = self.page.get_map_polyline_elements()
         time.sleep(1)
         self.assertEquals(start, self.page.get_map_polyline_elements())

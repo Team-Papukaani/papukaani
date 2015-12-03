@@ -42,6 +42,11 @@
     </div>
 </div>
 
+
+
+
+
+
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
@@ -53,11 +58,18 @@
 <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
 <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
 
-<script>
-{% if display_navigation %}
 
+{% if display_navigation %}
+    <div class="choose_actions form-inline padded2">
+        <div class="input-group">
+            <span class="input-group-addon">iFrame:</span>
+            <input class="form-control" type="text" size="100" id="iframeSrc" />
+        </div>
+        <div class="input-group">
+            <button type="button" class="btn btn-primary" onclick="generateIframeUrl()" id="generateIframeButton">Luo</button>
+        </div>
+    </div>
 {% endif %}
-</script>
 
 </body>
 </html>

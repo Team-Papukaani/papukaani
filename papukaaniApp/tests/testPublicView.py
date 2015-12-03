@@ -109,3 +109,8 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_speed_sets_with_param(self):
         self.assertEquals('75', self.page.get_speed_set_as_param(75))
+
+    def test_iframe_url_is_correct(self):
+        settings.MOCK_AUTHENTICATION = "On"
+        self.page.change_device_selection("DeviceId")
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=DeviceId&speed=50', self.page.get_iframe_url())

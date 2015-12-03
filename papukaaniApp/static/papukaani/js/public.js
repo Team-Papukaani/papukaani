@@ -126,3 +126,12 @@ var createDummySlider = function () {
     });
     $("#playLabel").text("N/A");
 };
+
+function generateIframeUrl() {
+    var inputBox = $('#iframeSrc')
+    var url = 'http://' + window.location.hostname + window.location.pathname
+    var device = 'device=' + $('#selectDevice').val()
+    var speed = 'speed=' + $('#speedSlider').slider("option", "value")
+    inputBox.val(url + '?' + device + '&' + speed)
+    inputBox.select()
+}

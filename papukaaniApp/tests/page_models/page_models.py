@@ -89,6 +89,8 @@ class PublicPage(PageWithDeviceSelector):
     SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')
+    IFRAME_SRC = Element(By.ID, 'iframeSrc')
+    IFRAME_BUTTON = Element(By.ID, 'generateIframeButton')
 
     def __init__(self):
         super().__init__()
@@ -128,6 +130,11 @@ class PublicPage(PageWithDeviceSelector):
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
         return self.driver.execute_script('return $("#speedSlider").slider("option", "value")')
+
+    def get_iframe_url(self):
+        self.IFRAME_BUTTON.click()
+        return self.IFRAME_SRC.get_attribute('value')
+
 
 
 class ChoosePage(PageWithDeviceSelector):

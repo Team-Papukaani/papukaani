@@ -104,6 +104,12 @@
 
 </div>
 
+<p id="messages">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</p>
+
 {% include "papukaaniApp/include_scripts.html" %}
 <script src="{% static 'papukaani/js/formats.js' %}"></script>
 

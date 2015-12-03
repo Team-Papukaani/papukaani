@@ -59,12 +59,6 @@ class PublicView(StaticLiveServerTestCase):
         self.select_device_and_play()
         self.assertNotEquals(self.page.POLYLINE, None)
 
-    def test_selection_does_not_jam_when_loading_device_with_only_one_point(self):
-        self.page.change_device_selection("DeviceId2")
-        WebDriverWait(self.page.driver, 20).until(lambda driver: "DeviceId" == self.page.get_device_selection())
-        self.page.change_device_selection("DeviceId")
-        WebDriverWait(self.page.driver, 20).until(lambda driver: "DeviceId2" == self.page.get_device_selection())
-
     def test_polylines_are_cleared_on_selection_change(self):
         self.select_device_and_play()
         self.page.PAUSE.click()

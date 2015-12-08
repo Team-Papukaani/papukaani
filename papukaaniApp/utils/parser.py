@@ -3,10 +3,11 @@ from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
 import logging
 import datetime
+from dateutil import parser
 
-def parse_time(time):
-    toks = time.split()
-    return toks[0] + "T" + toks[1] + "+00:00"
+def parse_time(timestamp):
+    time = parser.parse(timestamp, parser.parserinfo(dayfirst=True))
+    return time.strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
 def create_points(data, parser, name_of_file, time):
     """
@@ -36,10 +37,7 @@ def _gpsNumberCheck(collections, devices, parser, gpsNumber):
 
 def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
 
-    if 'time' in point.keys() and 'date' in point.keys():
-        timestamp = str(point['date']) + " " + str(point['time'])
-    else:
-        timestamp = point['timestamp']
+    timestamp = _extract_timestamp(point)
     try:
         gathering = _generate_gathering(gathering_facts, point, timestamp)
         collections[gpsNumber].append(gathering)
@@ -47,10 +45,17 @@ def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
         pass
 
 
+def _extract_timestamp(point):
+    if 'time' in point.keys() and 'date' in point.keys():
+        timestamp = str(point['date']) + " " + str(point['time']) + ":00"
+    else:
+        timestamp = point['timestamp']
+    return parse_time(timestamp)
+
 
 def _generate_gathering(gathering_facts, point, timestamp):
     return gathering.Gathering(
-        time=parse_time(timestamp),
+        time=timestamp,
         geometry=[float(point["longitude"]), float(point["latitude"])],
         temperature=float(point['temperature']),
         facts=gathering_facts

@@ -1,3 +1,5 @@
+from papukaaniApp.tests import test_data
+from papukaaniApp.utils.file_preparer import _check_that_file_is_valid
 from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
@@ -69,3 +71,11 @@ class FilePreparerTest(TestCase):
                              temperature="0")
             points.append(point)
         assert len(points) == 5
+
+    def test_file_with_separate_time_and_date_is_correct(self):
+        _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko.txt').readlines(), test_data.jouko_parser) #Raises exception if not validd
+
+    def test_file_with_missing_headers_is_not_correct(self):
+        with self.assertRaises(AssertionError):
+            _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko_invalid.txt').readlines(), test_data.jouko_parser)
+

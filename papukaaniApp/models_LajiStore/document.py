@@ -81,7 +81,6 @@ def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, crea
         createdAt = current_time_as_lajistore_timestamp()
 
     document = Document(documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId)
-
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 

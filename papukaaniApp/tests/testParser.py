@@ -5,6 +5,7 @@ from papukaaniApp.models_LajiStore import document, gathering
 from papukaaniApp.models import *
 from random import *
 import time
+from papukaaniApp.utils.parser import _extract_timestamp
 
 
 class FileParserTest(TestCase):
@@ -15,7 +16,7 @@ class FileParserTest(TestCase):
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")
 
-        GeneralParser.objects.create(formatName="jouko", latitude="Latitude(N)", longitude="Longitude(E)", time='Time', date='Date', delimiter="\t")
+
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", timestamp="DateTime",
@@ -23,6 +24,7 @@ class FileParserTest(TestCase):
                                                           altitude="Altitude_m",
                                                           temperature="temperature", delimiter="\t")
         self.byholm_parser.save()
+
 
     def tearDown(self):
         document.delete_all()
@@ -69,7 +71,7 @@ class FileParserTest(TestCase):
         self.assertEquals(facts[1]["value"], "24-11-2015, 00-00-00")
         self.assertEquals(facts[3]["value"], "01-01-1000, 00-00-00")
 
-    def test_byholm_data_goes_lajiStroe_succesfully(self):
+    def test_byholm_data_goes_to_lajiStore_succesfully(self):
         document.delete_all()
         path = settings.OTHER_ROOT + "/byholm_test.txt"
         file = open(path, "rb")
@@ -78,6 +80,13 @@ class FileParserTest(TestCase):
         documents = document.get_all()
         self.assertEqual(len(documents), 1)
         self.assertEqual(len(documents[0].gatherings), 5)
+
+    def test_generating_timestamp_works_with_separate_date_and_time(self):
+        self.assertEqual(_extract_timestamp({'date': '12-10-2014', 'time': '10:01'}), '2014-10-12T10:01:00+00:00')
+
+    def test_generating_timestamp_works_with_date_and_time_together(self):
+        self.assertEqual(_extract_timestamp({'timestamp': '12-10-2014 10:01'}), '2014-10-12T10:01:00+00:00')
+
 
     def test_filename_and_datetime_goes_to_facts(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")

@@ -92,7 +92,11 @@ Animator.prototype.animate = function () {
         this.marker._popup.setContent(this.getMarkerTimeStamp());
         this.setSliderValue(this.time);
         this.time += timeStep;
-        if (this.time >= this.pathIterator.getEndTime()) {
+        if (this.time > this.pathIterator.getEndTime()) {
+            this.time = this.pathIterator.getEndTime();
+            return;
+        }
+        if (this.time == this.pathIterator.getEndTime()) {
             this.stop();
             animationEnd();
         }
@@ -130,13 +134,23 @@ Animator.prototype.addNewPolyline = function (polyline) {
     polyline.addTo(this.map);
 };
 
-//Starts the animation.
+//Starts (or continues) the animation.
 Animator.prototype.start = function () {
+    if (this.forwarded) {
+        this.startFromBeginning();
+        this.forwarded = false;
+    }
     if (this.paused) {
         this.animate();
         this.paused = false;
         return true;
     }
+};
+
+//Initializes the animation to the starting point.
+Animator.prototype.startFromBeginning = function() {
+    var min = $("#playSlider").slider("option", "min");
+    this.reInit(min);
 };
 
 //Stops the animation.
@@ -284,6 +298,6 @@ Animator.prototype.createSlider = function (min, max, step) {
 Animator.prototype.forwardToEnd = function () {
     var slider = $("#playSlider");
     var max = slider.slider("option", "max");
-    slider.slider("option", "value", max);
     this.reInit(max);
+    this.forwarded = true;
 };

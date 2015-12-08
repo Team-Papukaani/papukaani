@@ -127,9 +127,17 @@ class PublicPage(PageWithDeviceSelector):
     def get_navigation(self):
         return self.driver.find_element_by_id("cssmenu")
 
+    def change_device_selection(self, key):
+        super(PublicPage, self).change_device_selection(key)
+        time.sleep(1)
+
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
         return self.driver.execute_script('return $("#speedSlider").slider("option", "value")')
+
+    def set_slider_value_to_min(self):
+        minval = self.driver.execute_script('return $("#playSlider").slider("option", "min")')
+        self.driver.execute_script('$("#playSlider").slider("option", "value", ' + str(minval) + ')')
 
     def get_iframe_url(self):
         self.IFRAME_BUTTON.click()

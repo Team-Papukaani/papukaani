@@ -29,7 +29,6 @@ var requestPath = function (deviceId) {
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
-    console.log(points);
     if (this.animation) {
         this.animation.clear();
         this.animation = null;

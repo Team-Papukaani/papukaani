@@ -6,11 +6,8 @@ import json
 def validate_token(token):
     token = token.encode("utf-8")
     url = settings.LAJIAUTH_URL + "validation/"
-    print(token)
-    response = requests.post(url, data=token, headers={"Content-Type":"application/json"})
 
-    print(response.status_code)
-    print(response.content)
+    response = requests.post(url, data=token, headers={"Content-Type":"application/json"})
 
     if response.status_code == 200:
         return True

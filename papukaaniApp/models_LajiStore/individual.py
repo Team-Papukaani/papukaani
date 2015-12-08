@@ -1,6 +1,7 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from . import device, document
 from papukaaniApp.utils.model_utils import current_time_as_lajistore_timestamp
+from datetime import time, datetime
 
 class Individual:
     '''
@@ -38,23 +39,21 @@ class Individual:
             if self.individualId in [i["individualId"] for i in d.individuals  if "individualId" in i]:
                 devices.append(d)
 
-        docs = []
-        for d in devices:
-            timeranges = [(i["attached"], i["removed"] if i["removed"] else "*") for i in d.individuals if i["individualId"] == self.individualId]
-            devices_docs = [document.find(deviceId=d.deviceId, filter={"gatherings_publicity":"public"})[0] for deviceId in devices]
-
-            for dd in devices_docs:
-                for doc in docs:
-                    if doc.id == dd.id:
-                        doc.gatherings += dd.gatherings
-                    else:
-                        break
-                docs.append(dd)
-
         gatherings = []
-        for d in docs: gatherings += d.gatherings
+        for d in devices:
+            timeranges = [(i["attached"], i["removed"] if i["removed"] else None) for i in d.individuals if i["individualId"] == self.individualId]
+            docs = document.find(deviceId=d.deviceId, filter={"gatherings_publicity":"public"})
+            for doc in docs:
+                for g in doc.gatherings:
+                    for tr in timeranges:
+                        if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.time) <= _timestamp_to_datetime(tr[1]) if tr[1] else datetime.now():
+                            gatherings.append(g)
 
         return gatherings
+
+def _timestamp_to_datetime(timestamp):
+    timestamp = timestamp[:-3]+timestamp[-2:]
+    return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S%z")
 
 
 def find(**kwargs):

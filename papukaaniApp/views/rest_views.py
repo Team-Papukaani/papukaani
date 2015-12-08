@@ -15,14 +15,14 @@ def getDocumentsForDevice(request):
 
 
 @api_view(['GET'])
-def getPublicDocumentsForBird(request):
+def getGatheringsForBird(request):
     '''
     REST-controller for getting bird-specific gatherings.
     :param request:
     :return: A List of gatherings related to the bird.
     '''
     indiv = individual.get(request.GET.get('individualId'))
-    docs = [d.to_dict() for d in indiv.get_gatherings()]
+    gatherings = [g.to_LajiStore_json() for g in indiv.get_gatherings()]
 
-    return Response(docs)
+    return Response(gatherings)
 

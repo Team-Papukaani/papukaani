@@ -1,8 +1,13 @@
 function init(devices) {
-    this.sorter = new DeviceSorter(devices);
+    this.sorter = new DeviceSorter(devices, "../rest/gatheringsForIndividual?individualId=");
     map = new PublicMap(sorter.documents);
 
     this.sorter.setMap(map);
+
+    requestPath = function (deviceId) {
+    return "../rest/gatheringsForDevice?devId=" + deviceId + "&format=json";
+    };
+
     createDummySlider();
 }
 

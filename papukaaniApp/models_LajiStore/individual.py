@@ -42,14 +42,20 @@ class Individual:
         gatherings = []
         for d in devices:
             timeranges = [(i["attached"], i["removed"] if i["removed"] else None) for i in d.individuals if i["individualId"] == self.individualId]
-            docs = document.find(deviceId=d.deviceId, filter={"gatherings_publicity":"public"})
-            for doc in docs:
-                for g in doc.gatherings:
-                    for tr in timeranges:
-                        if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.time) <= _timestamp_to_datetime(tr[1]) if tr[1] else datetime.now():
-                            gatherings.append(g)
+            docs = document.find(deviceId=d.deviceId)
+            self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
 
         return gatherings
+
+    def _filter_gatherings_by_timeranges(self, docs, gatherings, timeranges):
+        for doc in docs:
+            for g in doc.gatherings:
+                for tr in timeranges:
+                    if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.time) <= (_timestamp_to_datetime(
+                            tr[1]) if tr[1] else datetime.now()) and g.publicity == "public":
+                        gatherings.append(g)
+
+
 
 def _timestamp_to_datetime(timestamp):
     timestamp = timestamp[:-3]+timestamp[-2:]

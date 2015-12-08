@@ -14,10 +14,10 @@ def public(request):
     Controller for '/public/'.
     """
 
-    devices = []
-    for item in device.get_all():
-        devices.append(item.deviceId)
-    devices.sort()
-    return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(devices)})
+    individuals = []
+    for item in individual.get_all():
+        individuals.append(item.individualId)
+    individuals.sort()
+    return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(individuals)})
 
 

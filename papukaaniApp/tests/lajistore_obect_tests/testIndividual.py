@@ -37,10 +37,12 @@ class TestIndividual(TestCase):
     def test_get_gatherings(self):
         dev = device.create("DeviceId", "Type", "Manu", "2000-02-02T20:20:20+00:00", "2000-02-02T20:20:20+00:00")
         doc = document.create("DocumentId", [gathering.Gathering("2012-01-01T00:00:00+00:00", [10.0, 10.0], publicity="public"),
-                                             gathering.Gathering("2013-02-02T00:00:00+00:00", [10.0, 10.0], publicity="public"),
+                                             gathering.Gathering("2013-02-02T00:00:00+00:00", [11.0, 11.0], publicity="public"),
                                              gathering.Gathering("2013-02-02T00:00:00+00:00", [10.0, 10.0], publicity="private")], "DeviceId")
 
         dev.attach_to(self.ind, "2013-01-01T00:00:00+00:00")
+        dev.update()
+
         gatherings = self.ind.get_gatherings()
 
         self.assertEquals(1, len(gatherings))

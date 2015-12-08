@@ -116,11 +116,13 @@ def get(id):
     return Device(**device)
 
 
-def create(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, facts):
+def create(deviceId, deviceType, deviceManufacturer, createdAt =None, lastModifiedAt=None, facts=None):
     '''
     Creates a device instance in LajiStore and a corresponding Device object
     :return: A Device object
     '''
+    createdAt = createdAt if createdAt else current_time_as_lajistore_timestamp()
+    lastModifiedAt = lastModifiedAt if lastModifiedAt else current_time_as_lajistore_timestamp()
     device = Device(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, facts)
     data = LajiStoreAPI.post_device(**device.__dict__)
     device.id = data["id"]

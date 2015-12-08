@@ -16,7 +16,7 @@ def formats(request):
                 if "csrfmiddlewaretoken" in data:
                     data.pop("csrfmiddlewaretoken")
                 GeneralParser.objects.create(**data)
-                messages.add_message(request, messages.INFO, "Onnistui!")
+                messages.add_message(request, messages.INFO, "Tiedostoformaatin asettaminen onnistui!")
         except:
             raise ValueError("POST request does not contain required parameters!")
 
@@ -24,7 +24,6 @@ def formats(request):
     return render(request, 'papukaaniApp/formats.html')
 
 def _check_parser_validity(parser):
-    print(parser)
     if parser["formatName"] and parser["longitude"] and parser["gpsTime"] and parser["latitude"] and parser["delimiter"]:
         return False
     return True

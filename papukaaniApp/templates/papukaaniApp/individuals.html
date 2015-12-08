@@ -24,7 +24,13 @@
 
 <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
     {% csrf_token %}
-    <input class="form-control" type="text" name="taxon" id="new_individual_taxon" placeholder="Nimi"/>
+    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="Nimi"/>
+    <select class="form-control combobox" name="taxon" id="new_individual_taxon">
+        <option></option>
+        {% for s in species %}
+        <option value="{{ s.id }}">{{ s.name }}</option>
+        {% endfor %}
+    </select>
     <button type="submit" class="btn btn-default">Luo</button>
 </form>
 
@@ -33,13 +39,12 @@
     <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ individual.id }}"/>
-        <input class="form-control" type="text" name="taxon" placeholder="Nimi" value="{{ individual.taxon }}"/>
+        <input class="form-control" type="text" name="nickname" placeholder="Nimi" value="{{ individual.nickname }}"/>
         <input class="form-control" type="text" name="ring_id" placeholder="Rengastunnus" value="{{ individual.ring_id }}"/>
-        <input class="form-control" type="text" name="nickname" placeholder="Lempinimi" value="{{ individual.nickname }}"/>
-        <select class="form-control combobox" name="species" placeholder="Laji">
+        <select class="form-control combobox" name="taxon" placeholder="Laji">
             <option></option>
             {% for s in species %}
-            <option value="{{ s.id }}" {% if individual.species == s.id %} selected{% endif %}>{{ s.name }}</option>
+            <option value="{{ s.id }}" {% if individual.taxon == s.id %} selected{% endif %}>{{ s.name }}</option>
             {% endfor %}
         </select>
         <button type="submit" name="modify" value="1" class="btn btn-default">Muokkaa</button>

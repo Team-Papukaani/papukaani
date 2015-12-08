@@ -77,6 +77,8 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, '../papukaaniApp/static')
 )
 
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.

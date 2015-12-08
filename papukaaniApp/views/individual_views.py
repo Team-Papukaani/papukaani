@@ -1,6 +1,7 @@
 import random
 from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.shortcuts import render
+from papukaaniApp.utils.view_utils import populate_facts
 
 from papukaaniApp.models_LajiStore import individual
 from papukaaniApp.models_TipuApi import species
@@ -17,8 +18,7 @@ def individuals(request):
             individuale.taxon = request.POST.get('taxon')
             individuale.facts = [
                 {'name': 'ring_id', 'value': request.POST.get('ring_id')},
-                {'name': 'nickname', 'value': request.POST.get('nickname')},
-                {'name': 'species', 'value': request.POST.get('species')},
+                {'name': 'nickname', 'value': request.POST.get('nickname')}
             ]
             individuale.update()
         elif 'id' in request.POST and 'delete' in request.POST:
@@ -28,6 +28,9 @@ def individuals(request):
         elif 'taxon' in request.POST:
             individuale = individual.create(random.randint(10000000, 99999999), request.POST.get('taxon'))
             individuale.individualId = individuale.id
+            individuale.facts = [
+                {'name': 'nickname', 'value': request.POST.get('nickname')}
+            ]
             individuale.update()
             # Success message
 
@@ -35,7 +38,10 @@ def individuals(request):
 
     populate_facts(individual_list)
 
-    species_list = species.get_all_in_finnish()
+    try:
+        species_list = species.get_all_in_finnish()
+    except:
+        species_list = []
 
     context = {
         'individuals': individual_list,
@@ -43,14 +49,3 @@ def individuals(request):
     }
 
     return render(request, 'papukaaniApp/individuals.html', context)
-
-
-def populate_facts(individual_list):
-    """
-    Converts LajiStore facts into individual's attributes for use in the template
-    """
-    for individualc in individual_list:
-        if individualc.facts is None:
-            continue
-        for fact in individualc.facts:
-            setattr(individualc, fact['name'], fact['value'])

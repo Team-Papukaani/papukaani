@@ -127,9 +127,17 @@ class PublicPage(PageWithDeviceSelector):
     def get_navigation(self):
         return self.driver.find_element_by_id("cssmenu")
 
+    def change_device_selection(self, key):
+        super(PublicPage, self).change_device_selection(key)
+        time.sleep(1)
+
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
         return self.driver.execute_script('return $("#speedSlider").slider("option", "value")')
+
+    def set_slider_value_to_min(self):
+        minval = self.driver.execute_script('return $("#playSlider").slider("option", "min")')
+        self.driver.execute_script('$("#playSlider").slider("option", "value", ' + str(minval) + ')')
 
     def get_iframe_url(self):
         self.IFRAME_BUTTON.click()
@@ -316,35 +324,45 @@ class IndividualPage(Page):
     url = BASE_URL + '/papukaani/individuals/'
 
     NEW_FORM = Element(By.ID, 'new_individual_form')
-    NEW_TAXON_FIELD = Element(By.ID, 'new_individual_taxon')
-    FIRST_MODIFY_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="taxon"]')
+    NEW_NAME_FIELD = Element(By.ID, 'new_individual_nickname')
+    NEW_TAXON_FIELD = Element(By.XPATH, '//input[@name="taxon"][1]')
+    FIRST_MODIFY_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/select[1]')
+    FIRST_NICKNAME_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="nickname"]')
     FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
     DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
 
-    def create_new_individual(self, taxon):
+    def create_new_individual(self, taxon, name):
         """
         Inputs the name of the new individual and submits the form.
         """
-        create = self.NEW_TAXON_FIELD
-        create.send_keys(taxon)
-        create.submit()
+        self.driver.execute_script('return $("[name=\'taxon\']").attr("type", "text");') # set taxon field visible for input
+        namefield2 = self.NEW_TAXON_FIELD
+        namefield2.send_keys(taxon)
+
+        namefield = self.NEW_NAME_FIELD
+        namefield.send_keys(name)
+        namefield.submit()
 
     def get_first_individual_taxon(self):
+        self.driver.execute_script('return $(".comobox").show;') # set taxon select visible
         return self.FIRST_MODIFY_FIELD.get_attribute("value")
+
+    def get_first_individual_nickname(self):
+        return self.FIRST_NICKNAME_FIELD.get_attribute("value")
 
     def get_first_individual_ring_id(self):
         return self.FIRST_RING_ID_FIELD.get_attribute("value")
 
-    def modify_individual(self, taxon, ring_id):
+    def modify_individual(self, nickname, ring_id):
         """
         Inputs the name and ring_id of an existing individual and submits the form.
         """
         modify_button = self.MODIFY_BUTTON
-        taxon_field = self.FIRST_MODIFY_FIELD
-        taxon_field.clear()
-        taxon_field.send_keys(taxon)
+        nickname_field = self.FIRST_NICKNAME_FIELD
+        nickname_field.clear()
+        nickname_field.send_keys(nickname)
         ring_id_field = self.FIRST_RING_ID_FIELD
         ring_id_field.clear()
         ring_id_field.send_keys(ring_id)
@@ -361,7 +379,7 @@ class IndividualPage(Page):
 
 class FormatsPage(Page):
 
-    url = BASE_URL + '/papukaani/formats/'
+    url = BASE_URL + '/papukaani/formats/create/0'
 
     SUBMIT = Element(By.ID, "submit")
     HELP_BUTTON = Element(By.ID, "formatName_helpbutton")

@@ -31,7 +31,6 @@ class MapPoint(models.Model):
     class Meta:
         unique_together = ("gpsNumber", "timestamp", "latitude", "longitude")
 
-
 class GeneralParser(models.Model):
     formatName = models.CharField(max_length=50)
     gpsNumber = models.CharField(max_length=50, blank=True)

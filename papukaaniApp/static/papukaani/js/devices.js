@@ -75,7 +75,7 @@ function attachDevice(){
         displayIndividuals(deviceId);
     }
     if(errors.length == 0){
-        errors.push("Kiinnitysajankohdan lisäys onnistui!!")
+        errors.push("Kiinnitysajankohdan lisäys onnistui. ")
     }
     showErrors()
 
@@ -106,7 +106,7 @@ function removeDevice(index){
         displayIndividuals(deviceId);
     }
     if(errors.length == 0){
-        errors.push("Irrotusajankohdan lisäys onnistui!!")
+        errors.push("Irrotusajankohdan lisäys onnistui. ")
     }
     showErrors()
 }

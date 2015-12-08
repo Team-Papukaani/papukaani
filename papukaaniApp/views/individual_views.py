@@ -38,7 +38,10 @@ def individuals(request):
 
     populate_facts(individual_list)
 
-    species_list = species.get_all_in_finnish()
+    try:
+        species_list = species.get_all_in_finnish()
+    except:
+        species_list = []
 
     context = {
         'individuals': individual_list,

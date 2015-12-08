@@ -4,6 +4,7 @@ from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.core import serializers
 from django.contrib import messages
 
+
 # @require_auth
 # def formats(request):
 #     if request.method == 'POST':
@@ -24,15 +25,14 @@ from django.contrib import messages
 @require_auth
 def list_formats(request):
     parsers = GeneralParser.objects.all()
-    return render(request, "papukaaniApp/list_formats.html", context={"formats" : parsers})
+    return render(request, "papukaaniApp/list_formats.html", context={"formats": parsers})
 
 
 @require_auth
 def show_format(request, id):
-
     if request.method == 'GET' and int(id) > 0:
         parser = GeneralParser.objects.get(id=id)
-        return render(request, "papukaaniApp/formats.html", context={"format" : parser})
+        return render(request, "papukaaniApp/formats.html", context={"format": parser})
 
     if request.method == 'POST':
         data = request.POST.copy().dict()
@@ -57,9 +57,9 @@ def show_format(request, id):
 
     return render(request, "papukaaniApp/formats.html")
 
+
 @require_auth
 def delete_format(request, id):
     GeneralParser.objects.get(id=id).delete()
 
     return redirect(list_formats)
-

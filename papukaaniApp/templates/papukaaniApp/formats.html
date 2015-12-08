@@ -15,11 +15,24 @@
 <div class="margin-container">
     <h1>Määrittele formaatti:</h1>
 
-    <form id="formatForm" class="form" action='{% url "formats" %}' method="post">
+    {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+    {% endif %}
+
+    {% if format %}
+        <form id="formatForm" class="form" action='{% url "show_format" format.id %}' method="post">
+    {% else %}
+        <form id="formatForm" class="form" action='{% url "show_format" 0 %}' method="post">
+    {% endif %}
+
         {% csrf_token %}
         <div class="input-group">
-            <span class="input-group-addon wide">Formaatin nimi</span>
-            <input class="form-control" type="text" name="formatName" id="formatName">
+            <span class="input-group-addon wide">Formaatin nimi*</span>
+            <input class="form-control" type="text" name="formatName" id="formatName" value="{{format.formatName}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_formatName')" id="formatName_helpbutton"></span>
         </div>
 
@@ -27,10 +40,9 @@
             <span>Vapaamuotoinen nimi formaatille. Pakollinen kenttä.</span>
         </div>
 
-
         <div class="input-group">
-            <span class="input-group-addon wide">Aikaleima</span>
-            <input class="form-control" type="text" name="gpsTime" id="gpsTime">
+            <span class="input-group-addon wide">Aikaleima**</span>
+            <input class="form-control" type="text" name="gpsTime" id="gpsTime" value="{{format.gpsTime}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsTime')"></span>
         </div>
 
@@ -39,30 +51,30 @@
         </div>
 
 
+        <!--<div class="input-group">-->
+            <!--<span class="input-group-addon wide">Päivämäärä**</span>-->
+            <!--<input class="form-control" type="text" name="date" id="date">-->
+            <!--<span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>-->
+        <!--</div>-->
+
+        <!--<div id="help_date" class="panel panel-default help-box help">-->
+            <!--<span>Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>-->
+        <!--</div>-->
+
+        <!--<div class="input-group">-->
+            <!--<span class="input-group-addon wide">Kellonaika**</span>-->
+            <!--<input class="form-control" type="text" name="time" id="time">-->
+            <!--<span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_time')"></span>-->
+        <!--</div>-->
+
+        <!--<div id="help_time" class="panel panel-default help-box help">-->
+            <!--<span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>-->
+        <!--</div>-->
+
+
         <div class="input-group">
-            <span class="input-group-addon wide">Päivä</span>
-            <input class="form-control" type="text" name="date" id="date">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>
-        </div>
-
-        <div id="help_date" class="panel panel-default help-box help">
-            <span>Päiväsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>
-        </div>
-
-        <div class="input-group">
-            <span class="input-group-addon wide">Kellonaika</span>
-            <input class="form-control" type="text" name="date" id="time">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_time')"></span>
-        </div>
-
-        <div id="help_time" class="panel panel-default help-box help">
-            <span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>
-        </div>
-
-
-        <div class="input-group">
-            <span class="input-group-addon wide">Longitudi</span>
-            <input class="form-control" type="text" name="longitude" id="longitude">
+            <span class="input-group-addon wide">Longitudi*</span>
+            <input class="form-control" type="text" name="longitude" id="longitude" value="{{format.longitude}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_longitude')"></span>
         </div>
 
@@ -71,8 +83,8 @@
         </div>
 
         <div class="input-group">
-            <span class="input-group-addon wide">Latitudi</span>
-            <input class="form-control" type="text" name="latitude" id="latitude">
+            <span class="input-group-addon wide">Latitudi*</span>
+            <input class="form-control" type="text" name="latitude" id="latitude" value="{{format.latitude}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_latitude')"></span>
         </div>
 
@@ -81,8 +93,8 @@
         </div>
 
         <div class="input-group">
-            <span class="input-group-addon wide">Erottava merkki</span>
-            <input class="form-control" type="text" name="delimiter" id="split_mark" value=" ">
+            <span class="input-group-addon wide">Erottava merkki*</span>
+            <input class="form-control" type="text" name="delimiter" id="split_mark" value="{{format.delimiter}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_split_mark')"></span>
         </div>
 
@@ -92,7 +104,7 @@
 
         <div class="input-group">
             <span class="input-group-addon wide">Lähettimen tunnus</span>
-            <input class="form-control" type="text" name="gpsNumber" id="gpsNumber">
+            <input class="form-control" type="text" name="gpsNumber" id="gpsNumber" value="{{format.gpsNumber}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsNumber')"></span>
         </div>
 
@@ -102,17 +114,17 @@
 
         <div class="input-group">
             <span class="input-group-addon wide">Lämpötila</span>
-            <input class="form-control" type="text" name="temperature" id="temperature">
+            <input class="form-control" type="text" name="temperature" id="temperature" value="{{format.temperature}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_temperature')"></span>
         </div>
 
         <div id="help_temperature" class="panel panel-default help-box help">
-            <span>Merkki, joka erottaa sarakkeet tiedostossa. Vakiona välilyönti, jos vakiota käytetään kenttä tulee jättää tyhjäksi.</span>
+            <span>Lämpötila-sarakkeen nimi.</span>
         </div>
 
         <div class="input-group">
             <span class="input-group-addon wide">Korkeus</span>
-            <input class="form-control" type="text" name="altitude" id="altitude">
+            <input class="form-control" type="text" name="altitude" id="altitude" value="{{format.altitude}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_altitude')"></span>
         </div>
 
@@ -120,7 +132,7 @@
             <span>Korkeus-sarakkeen nimi. Valinnainen kenttä.</span>
         </div>
 
-        <button type="submit" class="btn btn-default" id="submit">Lähetä</button>
+        <button type="submit" class="btn btn-default" id="submit">Tallenna</button>
 
     </form>
 

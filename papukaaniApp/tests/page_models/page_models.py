@@ -379,7 +379,7 @@ class IndividualPage(Page):
 
 class FormatsPage(Page):
 
-    url = BASE_URL + '/papukaani/formats/'
+    url = BASE_URL + '/papukaani/formats/create/0'
 
     SUBMIT = Element(By.ID, "submit")
     HELP_BUTTON = Element(By.ID, "formatName_helpbutton")

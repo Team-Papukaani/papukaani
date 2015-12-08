@@ -21,7 +21,9 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
 
-    url(r'^formats/$', views.formats, name='formats')
-
+    url(r'^formats/create/(?P<id>.+)/$', views.show_format, name='create_format'), #url(r'^formats/create/$', views.formats, name='formats'),
+    url(r'^formats/$', views.list_formats, name='list_formats'),
+    url(r'^formats/(?P<id>.+)/$', views.show_format, name="show_format"),
+    url(r'^formats/(?P<id>.+)/delete$', views.delete_format, name="delete_format")
 ]
 

@@ -15,10 +15,10 @@ class testLajiStoreAPI(TestCase):
     def tearDown(self):
         settings.MOCK_AUTHENTICATION = "Skip"
 
-    def test_log_in_returns_true_if_user_not_logged_in(self):
+    def testlog_in_returns_true_if_user_not_logged_in(self):
         self.assertTrue(log_in(self.request, "user"))
 
-    def test_log_in_returns_false_if_user_is_logged_in(self):
+    def testlog_in_returns_false_if_user_is_logged_in(self):
         log_in(self.request, "user")
 
         self.assertFalse(log_in(self.request, "user"))
@@ -30,7 +30,7 @@ class testLajiStoreAPI(TestCase):
     def test_log_out_return_false_if_user_is_not_logged_in(self):
         self.assertFalse(log_out(self.request))
 
-    def test_log_in_sets_user_id_in_session(self):
+    def testlog_in_sets_user_id_in_session(self):
         log_in(self.request, "user")
 
         self.assertTrue("user_id" in self.request.session)

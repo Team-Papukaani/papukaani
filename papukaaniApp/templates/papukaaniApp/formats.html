@@ -35,8 +35,30 @@
         </div>
 
         <div id="help_gpsTime" class="panel panel-default help-box help">
-            <span>Aikaleima-sarakkeen nimi. Pakollinen kenttä.</span>
+            <span>Aikaleima-sarakkeen nimi. Täytä tämä kenttä tai kaksi alempaa kenttää</span>
         </div>
+
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Päivä</span>
+            <input class="form-control" type="text" name="date" id="date">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>
+        </div>
+
+        <div id="help_date" class="panel panel-default help-box help">
+            <span>Päiväsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon wide">Kellonaika</span>
+            <input class="form-control" type="text" name="date" id="time">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_time')"></span>
+        </div>
+
+        <div id="help_time" class="panel panel-default help-box help">
+            <span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>
+        </div>
+
 
         <div class="input-group">
             <span class="input-group-addon wide">Longitudi</span>

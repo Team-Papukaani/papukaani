@@ -5,7 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
-
+from django.conf import settings
 
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
@@ -91,3 +91,26 @@ class PublicView(StaticLiveServerTestCase):
         startcount = len(self.page.driver.find_elements_by_tag_name("g"))
         time.sleep(1)
         self.assertGreater(startcount, len(self.page.driver.find_elements_by_class_name("g")))
+
+    def test_navigation_is_shown_if_logged_in(self):
+        settings.MOCK_AUTHENTICATION = "On"
+        try:
+            self.page.get_navigation()
+        except:
+            self.fail()
+
+    def test_navigation_is_not_shown_if_logged_in(self):
+        settings.MOCK_AUTHENTICATION = "Skip"
+        try:
+            self.page.get_navigation()
+            self.fail()
+        except:
+            pass
+
+    def test_speed_sets_with_param(self):
+        self.assertEquals('75', self.page.get_speed_set_as_param(75))
+
+    def test_iframe_url_is_correct(self):
+        settings.MOCK_AUTHENTICATION = "On"
+        self.page.change_device_selection("DeviceId")
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=DeviceId&speed=50', self.page.get_iframe_url())

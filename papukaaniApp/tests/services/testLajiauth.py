@@ -15,51 +15,51 @@ class testLajiStoreAPI(TestCase):
     def tearDown(self):
         settings.MOCK_AUTHENTICATION = "Skip"
 
-    def test_log_in_returns_true_if_user_not_logged_in(self):
-        self.assertTrue(_log_in(self.request, "user"))
+    def testlog_in_returns_true_if_user_not_logged_in(self):
+        self.assertTrue(log_in(self.request, "user"))
 
-    def test_log_in_returns_false_if_user_is_logged_in(self):
-        _log_in(self.request, "user")
+    def testlog_in_returns_false_if_user_is_logged_in(self):
+        log_in(self.request, "user")
 
-        self.assertFalse(_log_in(self.request, "user"))
+        self.assertFalse(log_in(self.request, "user"))
 
     def test_log_out_returns_true_if_user_is_logged_in(self):
-        _log_in(self.request, "user")
+        log_in(self.request, "user")
         self.assertTrue(log_out(self.request))
 
     def test_log_out_return_false_if_user_is_not_logged_in(self):
         self.assertFalse(log_out(self.request))
 
-    def test_log_in_sets_user_id_in_session(self):
-        _log_in(self.request, "user")
+    def testlog_in_sets_user_id_in_session(self):
+        log_in(self.request, "user")
 
         self.assertTrue("user_id" in self.request.session)
 
     def test_log_out_removes_user_id_from_sessions(self):
-        _log_in(self.request, "user")
+        log_in(self.request, "user")
         log_out(self.request)
 
         self.assertTrue("user_id" not in self.request.session)
 
     def test_authenticated_returns_true_if_logged_in(self):
-        _log_in(self.request, "user")
+        log_in(self.request, "user")
 
         self.assertTrue(authenticated(self.request))
         log_out(self.request)
-        _log_in(self.request, "user")
+        log_in(self.request, "user")
         self.assertTrue(authenticated(self.request))
 
     def test_authenticated_returns_false_if_not_logged_in(self):
 
         self.assertFalse(authenticated(self.request))
 
-        _log_in(self.request, "user")
+        log_in(self.request, "user")
         log_out(self.request)
 
         self.assertFalse(authenticated(self.request))
 
     def test_require_auth_returns_original_funtion_if_authenticated(self):
-        _log_in(self.request, "user")
+        log_in(self.request, "user")
         self.a = False
 
         @require_auth

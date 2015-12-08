@@ -74,7 +74,9 @@ function attachDevice(){
 
         displayIndividuals(deviceId);
     }
-
+    if(errors.length == 0){
+        errors.push("Kiinnitysajankohdan lisäys onnistui!!")
+    }
     showErrors()
 
 }
@@ -102,6 +104,9 @@ function removeDevice(index){
         });
 
         displayIndividuals(deviceId);
+    }
+    if(errors.length == 0){
+        errors.push("Irrotusajankohdan lisäys onnistui!!")
     }
     showErrors()
 }
@@ -185,7 +190,6 @@ function showErrors(){
         for(var i = 0; i < errors.length; i++){
             errorMessage += errors[i]
         }
-
     }
     errors = []
     $("#errors").text(errorMessage)

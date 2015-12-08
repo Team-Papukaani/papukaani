@@ -41,7 +41,7 @@ class Individual:
         docs = []
         for d in devices:
             timeranges = [(i["attached"], i["removed"] if i["removed"] else "*") for i in d.individuals if i["individualId"] == self.individualId]
-            devices_docs = [dev_doc[0] for dev_doc in [document.find(deviceId=d.deviceId, gatherings_dateTimeBegin="["+ tr[0] +" TO "+ tr[1] +"]", filter={"gatherings_publicity":"public"}) for tr in timeranges] if len(dev_doc) > 0]
+            devices_docs = [document.find(deviceId=d.deviceId, filter={"gatherings_publicity":"public"})[0] for deviceId in devices]
 
             for dd in devices_docs:
                 for doc in docs:

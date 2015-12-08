@@ -36,6 +36,7 @@ def upload(request):
                 return redirect(upload)
             _save_file_to_db(uploaded_file, uploaded_file.name)
             points = create_points(data, parser, uploaded_file.name, datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
+            messages.add_message(request, messages.INFO, "Tiedoston lataus onnistui!")
             return _render_points(points, parsers, request)
 
         messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")

@@ -27,6 +27,7 @@ class FileUploadSeleniumTest(StaticLiveServerTestCase):
         self.upload.upload_file(settings.BASE_DIR + "/papukaaniApp/tests/test_files/ecotones.csv")
         self.assertNotEquals("Tiedostosi formaatti ei ole kelvollinen", self.upload.get_message().strip())
         self.assertNotEquals("Et valinnut ladattavaa tiedostoa", self.upload.get_message().strip())
+        self.assertEquals("Tiedoston lataus onnistui!", self.upload.get_message().strip())
         self.assertNotEquals(self.upload.get_map_polyline_elements(), None)
 
     def test_correct_error_message_if_no_file_selected(self):

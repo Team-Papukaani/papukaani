@@ -16,11 +16,13 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
 
     def test_individual_info_visible(self):
         self.assertEquals("Birdie", self.page.get_first_individual_taxon())
+        self.assertEquals("Lintu luotu onnistuneesti!", self.page.get_message().strip())
 
     def test_modify_individual(self):
         self.page.modify_individual("Snake", "DEM123456")
         self.assertEquals("Snake", self.page.get_first_individual_taxon())
         self.assertEquals("DEM123456", self.page.get_first_individual_ring_id())
+        self.assertEquals("Tiedot tallennettu onnistuneesti!", self.page.get_message().strip())
 
     def test_delete_and_create_individual(self):
         self.page.delete_individual()

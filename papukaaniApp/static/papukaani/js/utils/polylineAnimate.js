@@ -39,6 +39,8 @@ Animator.prototype.getMarkerTimeStamp = function () {
 
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
 Animator.prototype.reInit = function (endtime) {
+    var oldSpeed = $("#speedSlider").slider("option", "value");
+    $("#speedSlider").slider("option", "value", 100);
     if (this.time > endtime) {
         this.map.removeLayer(this.marker);
         this.map.clearLayers();
@@ -70,6 +72,7 @@ Animator.prototype.reInit = function (endtime) {
     }
     this.marker.setLatLng(this.markerPosition.toArray());
     this.marker._popup.setContent(this.getMarkerTimeStamp());
+    $("#speedSlider").slider("option", "value", oldSpeed);
 };
 
 //Animates the polylines and the marker on the map.

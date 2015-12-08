@@ -40,7 +40,7 @@ Animator.prototype.getMarkerTimeStamp = function () {
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
 Animator.prototype.reInit = function (endtime) {
     var oldSpeed = $("#speedSlider").slider("option", "value");
-    $("#speedSlider").slider("option", "value", 100);
+    $("#speedSlider").slider("option", "value", 50);
     if (this.time > endtime) {
         this.map.removeLayer(this.marker);
         this.map.clearLayers();
@@ -78,7 +78,7 @@ Animator.prototype.reInit = function (endtime) {
 //Animates the polylines and the marker on the map.
 Animator.prototype.animate = function () {
     this.interval = setInterval(function () {
-
+        if (this.time >= this.pathIterator.getEndTime) return;
         var timeStep = this.calculateTimeStep();
         this.lastPosition = this.markerPosition;
         this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
@@ -92,16 +92,15 @@ Animator.prototype.animate = function () {
         this.marker._popup.setContent(this.getMarkerTimeStamp());
         this.setSliderValue(this.time);
         this.time += timeStep;
-        if (this.time > this.pathIterator.getEndTime()) {
-            this.time = this.pathIterator.getEndTime();
-            return;
-        }
-        if (this.time == this.pathIterator.getEndTime()) {
+        if (this.time >= this.pathIterator.getEndTime()) {
+            this.setSliderValue(this.pathIterator.getEndTime());
+            this.animationComplete = true;
             this.stop();
             animationEnd();
         }
     }.bind(this), 100);
 };
+
 //New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
@@ -136,9 +135,9 @@ Animator.prototype.addNewPolyline = function (polyline) {
 
 //Starts (or continues) the animation.
 Animator.prototype.start = function () {
-    if (this.forwarded) {
+    if (this.animationComplete) {
         this.startFromBeginning();
-        this.forwarded = false;
+        this.animationComplete = false;
     }
     if (this.paused) {
         this.animate();
@@ -148,7 +147,7 @@ Animator.prototype.start = function () {
 };
 
 //Initializes the animation to the starting point.
-Animator.prototype.startFromBeginning = function() {
+Animator.prototype.startFromBeginning = function () {
     var min = $("#playSlider").slider("option", "min");
     this.reInit(min);
 };
@@ -271,6 +270,7 @@ Animator.prototype.createSlider = function (min, max, step) {
         //When moving the slider, the value and label will only be changed by user actions, not by the animation.
         slide: function (event, ui) {
             this.sliderMove = true;
+            this.animationComplete = false;
             this.change = function () {
             };
             var delay = function () {
@@ -299,5 +299,5 @@ Animator.prototype.forwardToEnd = function () {
     var slider = $("#playSlider");
     var max = slider.slider("option", "max");
     this.reInit(max);
-    this.forwarded = true;
+    this.animationComplete = true;
 };

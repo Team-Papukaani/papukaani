@@ -72,7 +72,8 @@ class FileParserTest(TestCase):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
         file = open(path, "rb")
         entries = prepare_file(file, self.byholm_parser, "1010")
-        create_points(entries, self.byholm_parser, "byholm_test.txt", datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
+        create_points(entries, self.byholm_parser, "byholm_test.txt",
+                      datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
         documents = document.get_all()
         self.assertEqual(len(documents), 1)
         self.assertEqual(len(documents[0].gatherings), 5)
@@ -81,6 +82,19 @@ class FileParserTest(TestCase):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
         documents = document.get_all()
         self.assertEqual(len(documents[0].gatherings[0].facts), 2)
+
+    def test_altitude_in_facts(self):
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
+        documents = document.get_all()
+        result = False
+        facts = documents[0].gatherings[0].facts
+        for fact in facts:
+            print(fact)
+            if fact["name"] == "altitude":
+                if fact["value"] == "1":
+                    result = True
+        self.assertEquals(result, True)
+
 
 def _create_points_from_ecotone(self, filename, time=datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")):
     path = settings.OTHER_ROOT + filename

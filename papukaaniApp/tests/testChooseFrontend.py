@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 _filePath = "papukaaniApp/tests/test_files/"
@@ -149,6 +150,13 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.driver.execute_script("arguments[0].disabled = 'true';", self.page.RESET_BUTTON)
         self.page.reset()
         self.assertEquals(self.page.number_of_private_clusters_on_map(), 1)
+
+    def test_marker_has_popup_with_correct_contents(self):
+        hover = ActionChains(self.page.driver).move_to_element(self.page.MARKER)
+        hover.perform()
+        popups = self.page.driver.find_elements_by_class_name("leaflet-popup-pane")
+        popup = popups.find_elements_by_class_name("leaflet-popup")
+        self.assertNotEquals(popup, None)
 
     def add_public_point(self):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))

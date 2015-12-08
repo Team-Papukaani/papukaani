@@ -41,7 +41,7 @@ def _to_dictionary(lines, parser, static_gps_number=False):
         if "gpsNumber" not in parsed_line:
             parsed_line["gpsNumber"] = static_gps_number
         if "temperature" not in parsed_line:
-            parsed_line["temperature"] = -373.15
+            parsed_line["temperature"] = -273.15
         if "altitude" not in parsed_line:
             parsed_line["altitude"] = 0
 

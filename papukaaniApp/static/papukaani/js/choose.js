@@ -99,7 +99,7 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
         var marker = L.marker(new L.LatLng(ltlgs[1], ltlgs[0]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
-        marker.bindPopup(getPopupContentsForMarker(marker), {offset: L.point(0,-12)});
+        marker.bindPopup(getPopupContentsForMarker(marker), {offset: L.point(0, -12)});
         marker.on('mouseover', function () {
             this.openPopup();
         });
@@ -116,11 +116,13 @@ var getPopupContentsForMarker = function (marker) {
     var content = "";
     content += new Date(marker.pnt.dateTimeBegin).toLocaleString();
     if ("temperatureCelsius" in marker.pnt) {
-        content += "<br>" + "Temperature: " + marker.pnt.temperatureCelsius + "&deg;C";
+        if (marker.pnt.temperatureCelsius > -273.15) {
+            content += "<br>" + "Temperature: " + marker.pnt.temperatureCelsius + "&deg;C";
+        }
     }
     var facts = marker.pnt.facts;
     for (var a in facts) {
-        if (a.name === "altitude") {
+        if (a.name == "altitude") {
             content += "<br>" + "Altitude: " + a.value;
         }
     }

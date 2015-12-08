@@ -89,7 +89,6 @@ class FileParserTest(TestCase):
         result = False
         facts = documents[0].gatherings[0].facts
         for fact in facts:
-            print(fact)
             if fact["name"] == "altitude":
                 if fact["value"] == "1":
                     result = True

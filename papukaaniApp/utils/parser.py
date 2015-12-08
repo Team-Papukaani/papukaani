@@ -26,7 +26,6 @@ def _create_gatherings(data, parser, name_of_file, time):
 
     for point in data:
         gpsNumber = point['gpsNumber']
-        print(point['altitude'])
         _gpsNumberCheck(collections, devices, parser, gpsNumber)
         facts = _additional_facts(point, gathering_facts)
         _create_one_gathering(collections, gpsNumber, facts, point)
@@ -113,6 +112,12 @@ def _gathering_fact_dics(name_of_file, time):
 
 
 def _additional_facts(point, oldfacts):
+    """
+    Add any desired additional values as facts.
+    :param point: Data for the gathering.
+    :param oldfacts: The initial facts for the point.
+    :return: List with both original and newly added facts.
+    """
     facts = oldfacts.copy()
     if "altitude" in point:
         fact = {}

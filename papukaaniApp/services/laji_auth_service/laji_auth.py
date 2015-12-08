@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.conf import settings
 import json
 
-def validate_token(token):
+def _validate_token(token):
     token = token.encode("utf-8")
     url = settings.LAJIAUTH_URL + "validation/"
 
@@ -20,19 +20,35 @@ def log_in(request, id):
     return False
 
 def log_out(request):
+    '''
+    Clear session for the request.
+    :param request:
+    :return: true if user was succesfully logged out
+    '''
     if "user_id" in request.session:
         del request.session["user_id"]
         return True
     return False
 
 def authenticate(request, token):
-    if validate_token(token):
+    '''
+    Logs user in if the token is valid.
+    :param request: A HttpRequest to create session for
+    :param token: The token returned by LajiAuth.
+    :return: true if user is authenticated succesfully
+    '''
+    if _validate_token(token):
         log_in(request, json.loads(token)["user"]["authSourceId"])
         return True
 
     return False
 
 def authenticated(request):
+    '''
+    Checks if user is authenticated if MOCK_AUTHENTICATION is set to 'Skip', always returns true,
+    :param request:
+    :return:
+    '''
     if settings.MOCK_AUTHENTICATION == "Skip": return True
     else :return "user_id" in request.session
 

@@ -14,6 +14,8 @@ class FileParserTest(TestCase):
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")
+
+        GeneralParser.objects.create(formatName="jouko", latitude="Latitude(N)", longitude="Longitude(E)", time='Time', date='Date', delimiter="\t")
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", timestamp="DateTime",

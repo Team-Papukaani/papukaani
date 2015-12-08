@@ -2,6 +2,8 @@ import chardet
 from pprint import pprint
 from io import StringIO
 import csv
+from papukaaniApp.models import GeneralParser
+
 
 def _uploaded_file_to_filestream(file):
     content = file.read()
@@ -45,13 +47,14 @@ def _to_dictionary(lines, parser, static_gps_number = False):
     return parsed
 
 def _check_that_file_is_valid(lines, parser):
-    assert parser.timestamp in lines[0], str(parser.timestamp) + " not found in " + str(lines[0])
-    assert parser.longitude in lines[0]
-    assert parser.latitude in lines[0]
+    headers = lines[0]
+    assert parser.timestamp in headers or (parser.time in headers and parser.date in headers)
+    assert parser.longitude in headers
+    assert parser.latitude in headers
 
 def _rename_attributes(lines, parser):
     headers= lines[0]
-    general_attributes = ["gpsNumber", "timestamp", "longitude", "latitude", "temperature", "altitude"]
+    general_attributes = GeneralParser.possible_column_names
     for attribute in general_attributes:
         for x in range(0, len(headers)):
             if headers[x] == getattr(parser, attribute):

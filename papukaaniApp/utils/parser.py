@@ -1,6 +1,7 @@
 import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
+import logging
 import datetime
 
 def parse_time(time):
@@ -20,7 +21,6 @@ def _create_gatherings(data, parser, name_of_file, time):
     collections = {}
     devices = []
     gathering_facts = _gathering_fact_dics(name_of_file, time)
-
     for point in data:
         gpsNumber = point['gpsNumber']
         _gpsNumberCheck(collections, devices, parser, gpsNumber)
@@ -35,13 +35,27 @@ def _gpsNumberCheck(collections, devices, parser, gpsNumber):
         devices.append(gpsNumber)
 
 def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
-        collections[gpsNumber].append(
-            gathering.Gathering(
-                time=parse_time(point['timestamp']),
-                geometry=[float(point["longitude"]), float(point["latitude"])],
-                temperature=float(point['temperature']),
-                facts = gathering_facts
-            ))
+
+    if 'time' in point.keys() and 'date' in point.keys():
+        timestamp = str(point['date']) + " " + str(point['time'])
+    else:
+        timestamp = point['timestamp']
+    try:
+        gathering = _generate_gathering(gathering_facts, point, timestamp)
+        collections[gpsNumber].append(gathering)
+    except ValueError:
+        pass
+
+
+
+def _generate_gathering(gathering_facts, point, timestamp):
+    return gathering.Gathering(
+        time=parse_time(timestamp),
+        geometry=[float(point["longitude"]), float(point["latitude"])],
+        temperature=float(point['temperature']),
+        facts=gathering_facts
+    )
+
 
 def _update_gatherings_to_lajiStore(collections):
     points = []

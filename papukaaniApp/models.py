@@ -32,13 +32,19 @@ class MapPoint(models.Model):
         unique_together = ("gpsNumber", "timestamp", "latitude", "longitude")
 
 
+
+
 class GeneralParser(models.Model):
+
     formatName = models.CharField(max_length=50)
     gpsNumber = models.CharField(max_length=50, blank=True)
-    timestamp = models.CharField(max_length=50)
+    timestamp = models.CharField(max_length=50, blank=True)
+    time = models.CharField(max_length=50, blank=True)
+    date = models.CharField(max_length=50, blank=True)
     longitude = models.CharField(max_length=50)
     latitude = models.CharField(max_length=50)
     altitude = models.CharField(max_length=50, blank=True)
     temperature = models.CharField(max_length=50, blank=True)
     delimiter = models.CharField(max_length=50)
 
+    possible_column_names = ["gpsNumber", "timestamp", "longitude", "latitude", "temperature", "altitude", "time", "date"]

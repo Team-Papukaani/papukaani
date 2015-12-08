@@ -122,7 +122,9 @@ html, body {
 }
 
 #playLabel_end {
-    margin-left:30px;
+    float: right;
+    margin-right:30px;
+    padding-top: 7px;
 }
 
 #speedLabel {

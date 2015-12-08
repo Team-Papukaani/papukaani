@@ -15,32 +15,45 @@
 
 
 </head>
-<body onload=" var map = init({{ devices }})">
-{% include "papukaaniApp/navigation.html" %}
+<body onload="var map = init({{ devices }}, '{{ device }}', '{{ speed }}')">
+
+{% if display_navigation %}
+    {% include "papukaaniApp/navigation.html" %}
+{% endif %}
 
 <div class="choose_actions form-inline padded2">
     <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Lähetin:</span>
         <select id="selectDevice" class="form-control"></select>
     </div>
-    <div class="input-group">
-        <span class="input-group-addon">Nopeus:</span>
-
-        <div id="speedSlider" class="small-slider"></div>
-    </div>
     <span id="loading" class="help-block" style="display:inline"></span>
 </div>
 
 <div id="map" class="largeMap">
-    <div id="in-map" class="form-inline img-rounded">
-        <button id="play" onclick="map.play()" class="btn btn-default">&#9658;</button>
-        <div id="playSlider" class="input-group ui-slider ui-slider-horizontal"></div>
-        <div id="playLabel" class="form-control">N/A</div>
+    <div id="in-map">
+        <div id="in-map-slider" class="img-rounded">
+            <div id="playSlider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
+        </div>
+        <div id="in-map-control" class="img-rounded">
+            <div class="form-inline">
+                <button id="play" onclick="map.play()" class="btn btn-default">&#9658;</button>
+                <label id="playLabel">N/A</label>
+
+                <div id="speedSlider" class="small-slider"></div>
+                <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}" alt="Nopeus" width="30" height="30"/>
+            </div>
+        </div>
     </div>
 </div>
 
+
+
+
+
+
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'papukaani/libraries/jquery/sliderPadding.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
 <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'papukaani/js/map.js' %}"></script>
@@ -50,9 +63,18 @@
 <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
 <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
 
-<script>
 
-</script>
+{% if display_navigation %}
+    <div class="choose_actions form-inline padded2">
+        <div class="input-group">
+            <span class="input-group-addon">iFrame:</span>
+            <input class="form-control" type="text" size="100" id="iframeSrc" />
+        </div>
+        <div class="input-group">
+            <button type="button" class="btn btn-primary" onclick="generateIframeUrl()" id="generateIframeButton">Luo</button>
+        </div>
+    </div>
+{% endif %}
 
 </body>
 </html>

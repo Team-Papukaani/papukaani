@@ -21,11 +21,13 @@ def formats(request):
 
     return render(request, 'papukaaniApp/formats.html')
 
+@require_auth
 def list_formats(request):
     parsers = GeneralParser.objects.all()
     return render(request, "papukaaniApp/list_formats.html", context={"formats" : parsers})
 
 
+@require_auth
 def show_format(request, id):
     parser = GeneralParser.objects.get(id=id)
 
@@ -48,6 +50,7 @@ def show_format(request, id):
         return redirect(list_formats)
 
 
+@require_auth
 def delete_format(request, id):
     GeneralParser.objects.get(id=id).delete()
 

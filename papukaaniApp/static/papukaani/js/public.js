@@ -5,11 +5,11 @@ function init(devices, defaultDevice, defaultSpeed) {
     this.sorter.setMap(map);
     createDummySlider();
 
-    if(defaultDevice != '' && devices.indexOf(defaultDevice) != -1)
-        $('#selectDevice').val( defaultDevice )
+    if (defaultDevice != '' && devices.indexOf(defaultDevice) != -1)
+        $('#selectDevice').val(defaultDevice)
 
-    if(defaultSpeed != '' && (defaultSpeed % 1) === 0)
-        $('#speedSlider').slider( "option", "value", defaultSpeed );
+    if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
+        $('#speedSlider').slider("option", "value", defaultSpeed);
 }
 
 function PublicMap() {
@@ -29,6 +29,7 @@ var requestPath = function (deviceId) {
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
+    console.log(points);
     if (this.animation) {
         this.animation.clear();
         this.animation = null;
@@ -36,6 +37,7 @@ PublicMap.prototype.changePoints = function (points) {
     try {
         this.latlngs = this.createLatlngsFromPoints(points);
         this.animate(this.latlngs);
+        this.animation.forwardToEnd();
     } catch (e) {
     }
 
@@ -126,11 +128,17 @@ var createDummySlider = function () {
 };
 
 function generateIframeUrl() {
-    var inputBox = $('#iframeSrc')
-    var url = 'http://' + window.location.hostname + window.location.pathname
-    var device = 'device=' + $('#selectDevice').val()
-    var speed = 'speed=' + $('#speedSlider').slider("option", "value")
-    inputBox.val(url + '?' + device + '&' + speed)
+    var inputBox = $('#iframeSrc');
+    var url = 'http://' + window.location.hostname + window.location.pathname;
+    var device = 'device=' + $('#selectDevice').val();
+    var speed = 'speed=' + $('#speedSlider').slider("option", "value");
+    inputBox.val(url + '?' + device + '&' + speed);
     inputBox.select()
 }
+
+$(function () {
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+});
 

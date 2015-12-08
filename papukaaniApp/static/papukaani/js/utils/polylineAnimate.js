@@ -280,3 +280,10 @@ Animator.prototype.createSlider = function (min, max, step) {
         }.bind(this)
     });
 };
+
+Animator.prototype.forwardToEnd = function () {
+    var slider = $("#playSlider");
+    var max = slider.slider("option", "max");
+    slider.slider("option", "value", max);
+    this.reInit(max);
+};

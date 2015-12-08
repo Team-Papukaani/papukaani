@@ -39,16 +39,13 @@
                 <button id="play" onclick="map.play()" class="btn btn-default">&#9658;</button>
                 <label id="playLabel">N/A</label>
 
-                <div id="speedSlider" class="small-slider"></div>
+
+                <div id="speedSlider" class="small-slider" data-toggle="tooltip" title="Nopeus" data-placement="top"></div>
                 <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}" alt="Nopeus" width="30" height="30"/>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
 
 
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
@@ -68,10 +65,11 @@
     <div class="choose_actions form-inline padded2">
         <div class="input-group">
             <span class="input-group-addon">iFrame:</span>
-            <input class="form-control" type="text" size="100" id="iframeSrc" />
+            <input class="form-control" type="text" size="100" id="iframeSrc"/>
         </div>
         <div class="input-group">
-            <button type="button" class="btn btn-primary" onclick="generateIframeUrl()" id="generateIframeButton">Luo</button>
+            <button type="button" class="btn btn-primary" onclick="generateIframeUrl()" id="generateIframeButton">Luo
+            </button>
         </div>
     </div>
 {% endif %}

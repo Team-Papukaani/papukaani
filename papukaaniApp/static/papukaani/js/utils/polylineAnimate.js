@@ -14,6 +14,7 @@ function Animator(latlngs, map) {
     this.polyline.addTo(this.map);
     this.paused = true;
     this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
+    $("#playLabel_end").text("- " + new Date(this.pathIterator.getEndTime()).toLocaleString());
     this.setSliderValue(this.pathIterator.getStartTime());
     this.sliderMove = false;
 }
@@ -257,9 +258,11 @@ Animator.prototype.setSliderValue = function (value) {
 //Initializes a slider with an attached label showing current value.
 Animator.prototype.createSlider = function (min, max, step) {
     $("#playSlider").slider({
+        range: "min",
         min: min,
         max: max,
         step: step,
+        animate: true,
         paddingMin: 7,
         paddingMax: 7,
         //Change the label value to match the slider.

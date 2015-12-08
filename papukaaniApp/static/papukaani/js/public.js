@@ -124,6 +124,7 @@ $(function () {
 var createDummySlider = function () {
     $("#playSlider").slider = null;
     $("#playLabel").text("N/A");
+    $("#playLabel_end").text("");
 };
 
 function generateIframeUrl() {

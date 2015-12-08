@@ -25,11 +25,11 @@ def _create_gatherings(data, parser, name_of_file, time):
     gathering_facts = _gathering_fact_dics(name_of_file, time)
 
     for point in data:
-        print(point)
         gpsNumber = point['gpsNumber']
+        print(point['altitude'])
         _gpsNumberCheck(collections, devices, parser, gpsNumber)
-        _additional_facts(point, gathering_facts)
-        _create_one_gathering(collections, gpsNumber, gathering_facts, point)
+        facts = _additional_facts(point, gathering_facts)
+        _create_one_gathering(collections, gpsNumber, facts, point)
     return _update_gatherings_to_lajiStore(collections)
 
 
@@ -112,9 +112,11 @@ def _gathering_fact_dics(name_of_file, time):
     return gathering_facts
 
 
-def _additional_facts(point, facts):
+def _additional_facts(point, oldfacts):
+    facts = oldfacts.copy()
     if "altitude" in point:
         fact = {}
         fact["name"] = "altitude"
         fact["value"] = point["altitude"]
         facts.append(fact)
+    return facts

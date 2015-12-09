@@ -3,9 +3,11 @@ from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
 import datetime
 
+
 def parse_time(time):
     toks = time.split()
     return toks[0] + "T" + toks[1] + "+00:00"
+
 
 def create_points(data, parser, name_of_file, time):
     """
@@ -16,6 +18,7 @@ def create_points(data, parser, name_of_file, time):
 
     return _create_gatherings(data, parser, name_of_file, time)
 
+
 def _create_gatherings(data, parser, name_of_file, time):
     collections = {}
     devices = []
@@ -24,8 +27,10 @@ def _create_gatherings(data, parser, name_of_file, time):
     for point in data:
         gpsNumber = point['gpsNumber']
         _gpsNumberCheck(collections, devices, parser, gpsNumber)
-        _create_one_gathering(collections, gpsNumber, gathering_facts, point)
+        facts = _additional_facts(point, gathering_facts)
+        _create_one_gathering(collections, gpsNumber, facts, point)
     return _update_gatherings_to_lajiStore(collections)
+
 
 def _gpsNumberCheck(collections, devices, parser, gpsNumber):
     if gpsNumber not in collections:
@@ -34,14 +39,16 @@ def _gpsNumberCheck(collections, devices, parser, gpsNumber):
         device.get_or_create(deviceId=gpsNumber, parserInfo=parser_Info(parser))
         devices.append(gpsNumber)
 
+
 def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
-        collections[gpsNumber].append(
-            gathering.Gathering(
-                time=parse_time(point['gpsTime']),
-                geometry=[float(point["longitude"]), float(point["latitude"])],
-                temperature=float(point['temperature']),
-                facts = gathering_facts
-            ))
+    collections[gpsNumber].append(
+        gathering.Gathering(
+            time=parse_time(point['gpsTime']),
+            geometry=[float(point["longitude"]), float(point["latitude"])],
+            temperature=float(point['temperature']),
+            facts=gathering_facts
+        ))
+
 
 def _update_gatherings_to_lajiStore(collections):
     points = []
@@ -56,12 +63,14 @@ def _update_gatherings_to_lajiStore(collections):
             doc_array[0].update()
     return points
 
+
 def _check_redundant_lajiStore_documents(doc_array):
     if len(doc_array) > 1:  # if LajiStore contains redundant documents (more than one document for one device)
         for i in range(1, len(doc_array)):
             doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, doc_array[i].gatherings)
             # append points from redundant into first document
             doc_array[i].delete()  # delete redundant document
+
 
 def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     """
@@ -80,12 +89,14 @@ def _union_of_gatherings(lajiStore_gatherings, new_gatherings):
     _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings)
     return list(set().union(no_duplicates, duplicates_from_new_gatherings))
 
+
 def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings, duplicates_from_new_gatherings):
     for g in duplicates_from_new_gatherings:
         for g2 in duplicates_from_lajiStore_gatherings:
             if g == g2:
                 g.facts = g.facts + g2.facts
                 break
+
 
 def _gathering_fact_dics(name_of_file, time):
     gathering_facts = []
@@ -98,3 +109,19 @@ def _gathering_fact_dics(name_of_file, time):
     gathering_facts.append(fact1)
     gathering_facts.append(fact2)
     return gathering_facts
+
+
+def _additional_facts(point, oldfacts):
+    """
+    Add any desired additional values as facts.
+    :param point: Data for the gathering.
+    :param oldfacts: The initial facts for the point.
+    :return: List with both original and newly added facts.
+    """
+    facts = oldfacts.copy()
+    if "altitude" in point:
+        fact = {}
+        fact["name"] = "altitude"
+        fact["value"] = point["altitude"]
+        facts.append(fact)
+    return facts

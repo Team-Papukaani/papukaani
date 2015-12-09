@@ -92,3 +92,13 @@ Käynnistetään Apache uudelleen
 sudo service apache2 restart
 ```
 
+###Oracle
+
+Oraclen Instant Client sekä Instant Client SDK tulee olla asennettuna, jotta riippuvuuksien asentaminen onnistuu. Paketit löytyvät [täältä](http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html).
+
+Oraclen asetukset löytyvät tiedostosta /papukaani/config/production.py . Salasanaa varten tulee asettaa ympäristömuuttuja:
+
+```
+SetEnv ORACLE_PASSWORD xxxxx
+```
+

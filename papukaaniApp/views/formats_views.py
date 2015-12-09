@@ -72,7 +72,7 @@ def delete_format(request, id):
 
 @require_auth
 def _check_parser_validity(parser):
-    if parser["formatName"] and parser["longitude"] and parser["gpsTime"] and parser["latitude"] and parser["delimiter"]:
+    if parser["formatName"] and parser["longitude"] and parser["timestamp"] and parser["latitude"] and parser["delimiter"]:
         return False
     return True
 

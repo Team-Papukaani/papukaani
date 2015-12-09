@@ -6,9 +6,6 @@ class FileStorage(models.Model):
     filename = models.CharField(max_length=40, blank=True)
     uploadTime = models.DateTimeField(blank=True)
 
-
-
-
 class GeneralParser(models.Model):
 
     formatName = models.CharField(max_length=50)

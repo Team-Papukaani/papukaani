@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from papukaaniApp.models import GeneralParser
 from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
+
 from django.core import serializers
 from django.contrib import messages
 
@@ -33,13 +34,17 @@ def show_format(request, id):
     if request.method == 'GET' and int(id) > 0:
         parser = GeneralParser.objects.get(id=id)
         return render(request, "papukaaniApp/formats.html", context={"format": parser})
-
     if request.method == 'POST':
         data = request.POST.copy().dict()
         if "csrfmiddlewaretoken" in data:
             data.pop("csrfmiddlewaretoken")
 
         try:
+
+            if _check_parser_validity(data):
+                messages.add_message(request, messages.ERROR, "Pakollista tietoa puuttuu!")
+                return render(request, "papukaaniApp/formats.html")
+
             if int(id) > 0:
                 parser = GeneralParser.objects.get(id=id)
                 for param in data:
@@ -64,3 +69,11 @@ def delete_format(request, id):
     GeneralParser.objects.get(id=id).delete()
 
     return redirect(list_formats)
+
+@require_auth
+def _check_parser_validity(parser):
+    if parser["formatName"] and parser["longitude"] and parser["gpsTime"] and parser["latitude"] and parser["delimiter"]:
+        return False
+    return True
+
+

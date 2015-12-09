@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='FileStorage',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
                 ('file', models.FileField(upload_to='')),
                 ('filename', models.CharField(max_length=40, blank=True)),
                 ('uploadTime', models.DateTimeField(blank=True)),
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GeneralParser',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
                 ('formatName', models.CharField(max_length=50)),
                 ('gpsNumber', models.CharField(max_length=50, blank=True)),
                 ('gpsTime', models.CharField(max_length=50)),

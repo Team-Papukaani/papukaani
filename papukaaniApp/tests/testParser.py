@@ -96,6 +96,7 @@ class FileParserTest(TestCase):
 
     def test_altitude_in_facts(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
+        time.sleep(3)
         documents = document.get_all()
         result = False
         facts = documents[0].gatherings[0].facts

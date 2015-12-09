@@ -6,6 +6,8 @@ from papukaaniApp.utils.view_utils import populate_facts
 from papukaaniApp.models_LajiStore import individual
 from papukaaniApp.models_TipuApi import species
 
+from django.contrib import messages
+
 @require_auth
 def individuals(request):
     """
@@ -21,11 +23,14 @@ def individuals(request):
                 {'name': 'nickname', 'value': request.POST.get('nickname')}
             ]
             individuale.update()
+            messages.add_message(request, messages.INFO, 'Tiedot tallennettu onnistuneesti!')
         elif 'id' in request.POST and 'delete' in request.POST:
             individuale = individual.get(request.POST.get('id'))
             individuale.deleted = True
             individuale.update()
+            messages.add_message(request, messages.INFO, 'Lintu poistettu onnistuneesti!')
         elif 'taxon' in request.POST:
+
             individuale = individual.create(random.randint(10000000, 99999999), request.POST.get('taxon'))
             individuale.individualId = individuale.id
             individuale.facts = [
@@ -47,5 +52,5 @@ def individuals(request):
         'individuals': individual_list,
         'species': species_list
     }
-
     return render(request, 'papukaaniApp/individuals.html', context)
+

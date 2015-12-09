@@ -25,7 +25,7 @@ class Page:
         self.driver.get(self.url)
 
     def close(self):
-        self.driver.close()
+        self.driver.quit()
         self.display.stop()
 
 

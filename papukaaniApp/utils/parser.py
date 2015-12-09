@@ -1,12 +1,14 @@
 import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
+import logging
 import datetime
+from dateutil import parser
 
 
-def parse_time(time):
-    toks = time.split()
-    return toks[0] + "T" + toks[1] + "+00:00"
+def parse_time(timestamp):
+    time = parser.parse(timestamp, parser.parserinfo(dayfirst=True))
+    return time.strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
 
 def create_points(data, parser, name_of_file, time):
@@ -23,7 +25,6 @@ def _create_gatherings(data, parser, name_of_file, time):
     collections = {}
     devices = []
     gathering_facts = _gathering_fact_dics(name_of_file, time)
-
     for point in data:
         gpsNumber = point['gpsNumber']
         _gpsNumberCheck(collections, devices, parser, gpsNumber)
@@ -41,13 +42,31 @@ def _gpsNumberCheck(collections, devices, parser, gpsNumber):
 
 
 def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
-    collections[gpsNumber].append(
-        gathering.Gathering(
-            time=parse_time(point['gpsTime']),
-            geometry=[float(point["longitude"]), float(point["latitude"])],
-            temperature=float(point['temperature']),
-            facts=gathering_facts
-        ))
+
+    timestamp = _extract_timestamp(point)
+    try:
+        gathering = _generate_gathering(gathering_facts, point, timestamp)
+        collections[gpsNumber].append(gathering)
+    except ValueError:
+        pass
+
+
+def _extract_timestamp(point):
+    if 'time' in point.keys() and 'date' in point.keys():
+        timestamp = str(point['date']) + " " + str(point['time']) + ":00"
+    else:
+        timestamp = point['timestamp']
+    return parse_time(timestamp)
+
+
+def _generate_gathering(gathering_facts, point, timestamp):
+    return gathering.Gathering(
+        time=timestamp,
+        geometry=[float(point["longitude"]), float(point["latitude"])],
+        temperature=float(point['temperature']),
+        facts=gathering_facts
+    )
+
 
 
 def _update_gatherings_to_lajiStore(collections):

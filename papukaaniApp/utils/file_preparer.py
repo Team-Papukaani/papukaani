@@ -2,6 +2,8 @@ import chardet
 from pprint import pprint
 from io import StringIO
 import csv
+from papukaaniApp.models import GeneralParser
+
 
 
 def _uploaded_file_to_filestream(file):
@@ -29,10 +31,8 @@ def prepare_file(uploaded_file, parser, static_gps_number=False):
         lines.append(line)
     return _to_dictionary(lines, parser, static_gps_number)
 
-
-def _to_dictionary(lines, parser, static_gps_number=False):
-    if _is_not_valid_file_type(lines, parser):
-        raise TypeError("a")
+def _to_dictionary(lines, parser, static_gps_number = False):
+    _check_that_file_is_valid(lines, parser)
     headers = _rename_attributes(lines, parser)
 
     parsed = []
@@ -49,18 +49,17 @@ def _to_dictionary(lines, parser, static_gps_number=False):
     return parsed
 
 
-def _is_not_valid_file_type(lines, parser):
-    if parser.gpsTime not in lines[0]:
-        return True
-    if parser.longitude not in lines[0]:
-        return True
-    if parser.latitude not in lines[0]:
-        return True
+def _check_that_file_is_valid(lines, parser):
+    headers = lines[0]
+    assert parser.timestamp in headers or (parser.time in headers and parser.date in headers)
+    assert parser.longitude in headers
+    assert parser.latitude in headers
 
 
 def _rename_attributes(lines, parser):
-    headers = lines[0]
-    general_attributes = ["gpsNumber", "gpsTime", "longitude", "latitude", "temperature", "altitude"]
+    headers= lines[0]
+    general_attributes = GeneralParser.possible_column_names
+
     for attribute in general_attributes:
         for x in range(0, len(headers)):
             if headers[x] == getattr(parser, attribute):

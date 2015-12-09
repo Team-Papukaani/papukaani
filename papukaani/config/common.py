@@ -120,3 +120,19 @@ TEST_RUNNER = "papukaani.test_runner.TestRunner"
 XEPHYR_VISIBILITY = 0
 
 MOCK_AUTHENTICATION = "Off"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}

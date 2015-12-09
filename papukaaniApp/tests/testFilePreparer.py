@@ -1,3 +1,5 @@
+from papukaaniApp.tests import test_data
+from papukaaniApp.utils.file_preparer import _check_that_file_is_valid
 from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
@@ -8,13 +10,13 @@ from papukaaniApp.models_LajiStore import document
 class FilePreparerTest(TestCase):
     def setUp(self):
         self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
-                                                           gpsTime="GPSTime",
+                                                           timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")
         self.ecotone_parser.save()
 
-        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
+        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", timestamp="DateTime",
                                                           longitude="Longitude_E", latitude="Latitude_N",
                                                           altitude="Altitude_m",
                                                           temperature="temperature", delimiter="\t")
@@ -35,4 +37,12 @@ class FilePreparerTest(TestCase):
         for entry in entries:
             assert float(lats[i]) == float(entry["latitude"])
             i += 1
+
+
+    def test_file_with_separate_time_and_date_is_correct(self):
+        _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko.txt').readlines(), test_data.jouko_parser) #Raises exception if not validd
+
+    def test_file_with_missing_headers_is_not_correct(self):
+        with self.assertRaises(AssertionError):
+            _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko_invalid.txt').readlines(), test_data.jouko_parser)
 

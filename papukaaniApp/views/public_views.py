@@ -7,6 +7,7 @@ from papukaaniApp.utils.view_utils import extract_latlongs
 from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.views.login_view import *
+from papukaaniApp.utils.view_utils import populate_facts
 
 
 @xframe_options_exempt  # Allows the view to be loaded in an iFrame
@@ -14,9 +15,10 @@ def public(request):
     """
     Controller for '/public/'.
     """
-    individuals = [indiv.individualId for indiv in individual.get_all()]
+    inds = individual.get_all_exclude_deleted()
+    populate_facts(inds)
 
-    individuals.sort()
+    individuals = [{"id" : indiv.individualId, "nickname" : indiv.nickname }for indiv in inds if hasattr(indiv, "nickname")]
 
     display_navigation = authenticated(request)
 

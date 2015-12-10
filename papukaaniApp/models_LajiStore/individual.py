@@ -99,17 +99,19 @@ def get(id):
     return Individual(**individual)
 
 
-def create(individualId, taxon):
+def create(taxon, facts=None):
     '''
     Creates an individual instance in LajiStore and a corresponding Indiviual object
     :param id: The LajiStore ID of the object
     :param taxon: The LajiStore taxon of the object
     :return: An Individual object
     '''
-    individual = Individual(individualId, taxon)
+    individual = Individual("temp", taxon, facts=facts)
 
     data = LajiStoreAPI.post_individual(**individual.__dict__)
     individual.id = data["id"]
+    individual.individualId = individual.id
+    individual.update()
 
     return individual
 

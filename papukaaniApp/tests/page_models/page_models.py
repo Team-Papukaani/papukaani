@@ -295,7 +295,7 @@ class DevicePage(PageWithDeviceSelector):
         self.ATTACHER = self.driver.find_element_by_id("attacher")
 
     def get_individual_name(self, individualId):
-        return self.driver.find_element_by_id("name" + individualId).text
+        return self.driver.find_element_by_id("name" + str(individualId)).text
 
     #
     # def get_number_of_points(self):

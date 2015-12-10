@@ -4,18 +4,20 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
+from papukaaniApp.utils.view_utils import populate_facts
 
 @require_auth
 def devices(request):
     devices = device.get_all()
-    individuals = individual.get_all()
-    selection = individual.get_all_exclude_deleted()
+    individuals = individual.get_all_exclude_deleted()
+    populate_facts(individuals)
+    selection = individuals
 
     # Directory, where key is deviceId and value is an array of individual data
-    individuals_of_devices = {device2.deviceId: device2.individuals for device2 in devices}
+    individuals_of_devices = {dev.deviceId: dev.individuals for dev in devices}
 
     # Directory, where key is individualId and value is it's name (taxon)
-    individual_names = {individual2.individualId: individual2.taxon for individual2 in individuals}
+    individual_names = {indiv.individualId: indiv.nickname if hasattr(indiv, "nickname") else indiv.individualId for indiv in individuals}
 
     context = {
         'individuals': individuals,

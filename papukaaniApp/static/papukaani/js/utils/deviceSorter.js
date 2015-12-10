@@ -83,7 +83,10 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
     }.bind(this));
 
     selector.addOption = function (option) {
-        selector.append("<option value='" + option + "'>" + option + "</option>")
+        val = option.id ? option.id : option
+        text = option.nickname ? option.nickname : option
+
+        selector.append("<option value='" + val + "'>" + text+ "</option>")
     };
 
     selector.addOption("None");

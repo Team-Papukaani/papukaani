@@ -45,7 +45,7 @@ class TestDevice(TestCase):
     def test_attach(self):
         A, B = self._create_individuals()
         self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
-        self.assertEquals(self.d.individuals[0]["individualId"], "A")
+        self.assertEquals(self.d.individuals[0]["individualId"], A.individualId)
         self._delete_individuals([A, B])
 
     def test_device_not_attach_if_unremoved_devices_in_individuals(self):
@@ -86,7 +86,7 @@ class TestDevice(TestCase):
         self._delete_individuals([A,B])
 
     def _create_individuals(self):
-        return individual.create("A", "Taxon"), individual.create("B", "Taxon")
+        return individual.create("TaxonA"), individual.create("TaxonB")
 
     def _delete_individuals(self, inds):
         for i in inds:

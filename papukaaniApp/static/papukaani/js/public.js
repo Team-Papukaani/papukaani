@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function init(devices, defaultDevice, defaultSpeed) {
     this.sorter = new DeviceSorter(devices, "../rest/gatheringsForIndividual?individualId=");
 

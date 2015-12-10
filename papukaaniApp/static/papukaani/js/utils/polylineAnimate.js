@@ -14,7 +14,9 @@ function Animator(latlngs, map) {
     this.polyline.addTo(this.map);
     this.paused = true;
     this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
+    $("#playLabel_end").text(new Date(this.pathIterator.getEndTime()).toLocaleString());
     this.setSliderValue(this.pathIterator.getStartTime());
+    this.sliderMove = false;
 }
 
 //Default options for the main polyline.
@@ -38,6 +40,8 @@ Animator.prototype.getMarkerTimeStamp = function () {
 
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
 Animator.prototype.reInit = function (endtime) {
+    var oldSpeed = $("#speedSlider").slider("option", "value");
+    $("#speedSlider").slider("option", "value", 50);
     if (this.time > endtime) {
         this.map.removeLayer(this.marker);
         this.map.clearLayers();
@@ -69,12 +73,13 @@ Animator.prototype.reInit = function (endtime) {
     }
     this.marker.setLatLng(this.markerPosition.toArray());
     this.marker._popup.setContent(this.getMarkerTimeStamp());
+    $("#speedSlider").slider("option", "value", oldSpeed);
 };
 
 //Animates the polylines and the marker on the map.
 Animator.prototype.animate = function () {
     this.interval = setInterval(function () {
-
+        if (this.time >= this.pathIterator.getEndTime) return;
         var timeStep = this.calculateTimeStep();
         this.lastPosition = this.markerPosition;
         this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
@@ -89,11 +94,14 @@ Animator.prototype.animate = function () {
         this.setSliderValue(this.time);
         this.time += timeStep;
         if (this.time >= this.pathIterator.getEndTime()) {
+            this.setSliderValue(this.pathIterator.getEndTime());
+            this.animationComplete = true;
             this.stop();
             animationEnd();
         }
     }.bind(this), 100);
 };
+
 //New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
@@ -126,13 +134,23 @@ Animator.prototype.addNewPolyline = function (polyline) {
     polyline.addTo(this.map);
 };
 
-//Starts the animation.
+//Starts (or continues) the animation.
 Animator.prototype.start = function () {
+    if (this.animationComplete) {
+        this.startFromBeginning();
+        this.animationComplete = false;
+    }
     if (this.paused) {
         this.animate();
         this.paused = false;
         return true;
     }
+};
+
+//Initializes the animation to the starting point.
+Animator.prototype.startFromBeginning = function () {
+    var min = $("#playSlider").slider("option", "min");
+    this.reInit(min);
 };
 
 //Stops the animation.
@@ -229,30 +247,59 @@ L.Map.include({
     }
 });
 
+//Sets the slider to the desired value, unless it is currently being moved by the user.
 Animator.prototype.setSliderValue = function (value) {
-    var slider = $("#playSlider");
-    slider.slider("option", "value", value);
+    if (!this.sliderMove) {
+        var slider = $("#playSlider");
+        slider.slider("option", "value", value);
+    }
 };
 
 //Initializes a slider with an attached label showing current value.
 Animator.prototype.createSlider = function (min, max, step) {
     $("#playSlider").slider({
+        range: "min",
         min: min,
         max: max,
         step: step,
+        paddingMin: 7,
+        paddingMax: 7,
+        //Change the label value to match the slider.
         change: function (event, ui) {
             var label = '#playLabel';
-            $(label).html(new Date(ui.value).toLocaleString()).css({visibility: 'visible'});
+            $(label).html(new Date(ui.value).toLocaleString());
         },
+        //When moving the slider, the value and label will only be changed by user actions, not by the animation.
         slide: function (event, ui) {
+            this.sliderMove = true;
+            this.animationComplete = false;
+            this.change = function () {
+            };
             var delay = function () {
                 var label = '#playLabel';
-                $(label).html(new Date(ui.value).toLocaleString()).css({visibility: 'visible'});
+                $(label).html(new Date(ui.value).toLocaleString());
             };
             setTimeout(delay, 5);
-        },
+        }.bind(this),
+        //When the user stops moving the slider,
+        // the animation will move to the point indicated by the slider and continue playing if it was active.
+        // Slider and label value will return to being controlled by the animation.
         stop: function (event, ui) {
+            if (this.stop()) var cont = true;
             this.reInit(ui.value);
+            this.change = function (event, ui) {
+                var label = '#playLabel';
+                $(label).html(new Date(ui.value).toLocaleString());
+            };
+            if (cont) this.start();
+            this.sliderMove = false;
         }.bind(this)
     });
+};
+
+Animator.prototype.forwardToEnd = function () {
+    var slider = $("#playSlider");
+    var max = slider.slider("option", "max");
+    this.reInit(max);
+    this.animationComplete = true;
 };

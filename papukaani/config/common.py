@@ -77,6 +77,8 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, '../papukaaniApp/static')
 )
 
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -120,3 +122,19 @@ TEST_RUNNER = "papukaani.test_runner.TestRunner"
 XEPHYR_VISIBILITY = 0
 
 MOCK_AUTHENTICATION = "Off"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}

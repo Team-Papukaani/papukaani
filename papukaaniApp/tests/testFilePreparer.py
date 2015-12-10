@@ -1,3 +1,5 @@
+from papukaaniApp.tests import test_data
+from papukaaniApp.utils.file_preparer import _check_that_file_is_valid
 from papukaaniApp.utils.parser import *
 from django.test import TestCase
 from django.conf import settings
@@ -8,13 +10,13 @@ from papukaaniApp.models_LajiStore import document
 class FilePreparerTest(TestCase):
     def setUp(self):
         self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
-                                                           gpsTime="GPSTime",
+                                                           timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")
         self.ecotone_parser.save()
 
-        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", gpsTime="DateTime",
+        self.byholm_parser = GeneralParser.objects.create(formatName="byholm", timestamp="DateTime",
                                                           longitude="Longitude_E", latitude="Latitude_N",
                                                           altitude="Altitude_m",
                                                           temperature="temperature", delimiter="\t")
@@ -26,23 +28,6 @@ class FilePreparerTest(TestCase):
         self.ecotone_parser.delete()
         self.byholm_parser.delete()
 
-    def test_points_can_be_succesfully_created_from_parsed_contents(self):
-        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
-        file = open(path, "rb")
-        entries = prepare_file(file, self.ecotone_parser)
-        points = []
-        for entry in entries:
-            creature, was_created = Creature.objects.get_or_create(name="Pekka")
-            point = MapPoint(creature=creature,
-                             gpsNumber=entry['gpsNumber'],
-                             timestamp=entry['gpsTime'],
-                             latitude=entry['latitude'],
-                             longitude=entry['longitude'],
-                             altitude=entry['altitude'] if entry['altitude'] != '' else 0,
-                             temperature=entry['temperature'])
-            points.append(point)
-        assert len(points) == 5
-
     def test_byholm_file_parsing(self):
         path = settings.OTHER_ROOT + "/byholm_test.txt"
         file = open(path, "rb")
@@ -52,20 +37,23 @@ class FilePreparerTest(TestCase):
         for entry in entries:
             assert float(lats[i]) == float(entry["latitude"])
             i += 1
+        assert len(entries) == 5
 
-    def test_byholm_points_can_be_succesfully_created_from_parsed_contents(self):
-        path = settings.OTHER_ROOT + "/byholm_test.txt"
+    def test_file_with_separate_time_and_date_is_correct(self):
+        _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko.txt').readlines(), test_data.jouko_parser) #Raises exception if not validd
+
+    def test_file_with_missing_headers_is_not_correct(self):
+        with self.assertRaises(AssertionError):
+            _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko_invalid.txt').readlines(), test_data.jouko_parser)
+
+    def test_file_parsing(self):
+        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
         file = open(path, "rb")
-        entries = prepare_file(file, self.byholm_parser, "1010")
-        points = []
+        entries = prepare_file(file, self.ecotone_parser)
+        lats = [61.757366, 61.757366, 61.758000, 61.757200, 61.758050]
+        i = 0
         for entry in entries:
-            creature, was_created = Creature.objects.get_or_create(name="Pekka")
-            point = MapPoint(creature=creature,
-                             gpsNumber="0",
-                             timestamp=entry['gpsTime'],
-                             latitude=entry['latitude'],
-                             longitude=entry['longitude'],
-                             altitude=entry['altitude'] if entry['altitude'] != '' else 0,
-                             temperature="0")
-            points.append(point)
-        assert len(points) == 5
+            assert float(lats[i]) == float(entry["latitude"])
+            assert float(lats[i]) == float(entry["latitude"])
+            i += 1
+        assert len(entries) == 5

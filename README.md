@@ -69,6 +69,7 @@ SetEnv LAJISTRORE_UNIT_TEST_PASSWORD xxxxx
 SetEnv PAPUKAANI_UNIT_SECRET_KEY xxx
 SetEnv TIPUAPI_USER xxxx
 SetEnv TIPUAPI_PASSWORD xxxx
+SetEnv LAJIAUTH_USER xxxx
 
 WSGIDaemonProcess satelliitti python-path=/home/KÄYTTÄJÄNIMI/pelikaija:/home/KÄYTTÄJÄNIMI/pelikaija/pelikaijaenv/lib/python3.4/site-packages
 WSGIProcessGroup satelliitti
@@ -89,5 +90,15 @@ sudo chown -R :www-data ~/pelikaija
 Käynnistetään Apache uudelleen
 ```sh
 sudo service apache2 restart
+```
+
+###Oracle
+
+Oraclen Instant Client sekä Instant Client SDK tulee olla asennettuna, jotta riippuvuuksien asentaminen onnistuu. Paketit löytyvät [täältä](http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html).
+
+Oraclen asetukset löytyvät tiedostosta /papukaani/config/production.py . Salasanaa varten tulee asettaa ympäristömuuttuja:
+
+```
+SetEnv ORACLE_PASSWORD xxxxx
 ```
 

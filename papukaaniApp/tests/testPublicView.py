@@ -1,11 +1,12 @@
 import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
-
+from django.conf import settings
 
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
@@ -93,7 +94,9 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(start, self.page.get_map_polyline_elements())
 
     def test_marker_has_popup(self):
-        self.page.change_device_selection("1")
+        self.select_device_and_play()
+        self.page.play()
+
         self.page.get_marker().click()
         self.assertNotEquals(self.page.get_popup(), None)
 
@@ -111,4 +114,36 @@ class PublicView(StaticLiveServerTestCase):
         self.select_device_and_play()
         startcount = len(self.page.driver.find_elements_by_tag_name("g"))
         time.sleep(1)
-        self.assertGreater(startcount, len(self.page.driver.find_elements_by_class_name("g")))
+        self.assertGreater(len(self.page.driver.find_elements_by_tag_name("g")), startcount)
+
+    def test_navigation_is_shown_if_logged_in(self):
+        settings.MOCK_AUTHENTICATION = "On"
+        try:
+            self.page.get_navigation()
+        except:
+            self.fail()
+
+    def test_navigation_is_not_shown_if_logged_in(self):
+        settings.MOCK_AUTHENTICATION = "Skip"
+        try:
+            self.page.get_navigation()
+            self.fail()
+        except:
+            pass
+
+    def test_speed_sets_with_param(self):
+        self.assertEquals('75', self.page.get_speed_set_as_param(75))
+
+    def test_iframe_url_is_correct(self):
+        settings.MOCK_AUTHENTICATION = "On"
+        self.page.change_device_selection("DeviceId")
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=DeviceId&speed=50', self.page.get_iframe_url())
+
+    def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
+        self.page.change_device_selection("DeviceId")
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 20)
+
+    def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
+        hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
+        hover.perform()
+        self.assertEquals(self.page.SPEED_SLIDER.get_attribute("aria-describedby"), "ui-id-1")

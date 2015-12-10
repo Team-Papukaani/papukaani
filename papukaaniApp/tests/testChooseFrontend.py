@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 _filePath = "papukaaniApp/tests/test_files/"

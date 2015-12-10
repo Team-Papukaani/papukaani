@@ -83,6 +83,7 @@ def create(documentId, gatherings, deviceId, facts=None, lastModifiedAt=None, cr
 
     document = Document(documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=facts)
 
+
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 

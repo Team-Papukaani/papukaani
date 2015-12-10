@@ -14,7 +14,7 @@ function init(devices, defaultDevice, defaultSpeed) {
 
 function PublicMap() {
     this.map = create_map("map", [61.0, 20.0], 5);
-    this.animationPaused = true;
+    this.paused = true;
 }
 
 //Draws the polyline animation.

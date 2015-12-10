@@ -12,12 +12,11 @@ function Animator(latlngs, map) {
     this.marker.bindPopup(this.getMarkerTimeStamp());
     this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
-    this.animationPaused = true;
+    this.paused = true;
     this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
     $("#playLabel_end").text(new Date(this.pathIterator.getEndTime()).toLocaleString());
     this.setSliderValue(this.pathIterator.getStartTime());
     this.sliderBeingMovedByUser = false;
-    this.animationLoadingDuringSliderStop = false;
 }
 
 //Default options for the main polyline.
@@ -57,7 +56,7 @@ Animator.prototype.reInit = function (endtime) {
         this.marker.bindPopup(this.getMarkerTimeStamp());
         this.polyline = L.polyline([], polylineOptions);
         this.polyline.addTo(this.map);
-        this.animationPaused = true;
+        this.paused = true;
     }
 
     while (this.time < endtime) {
@@ -153,9 +152,9 @@ Animator.prototype.start = function () {
         this.startFromBeginning();
         this.animationComplete = false;
     }
-    if (this.animationPaused) {
+    if (this.paused) {
         this.animate();
-        this.animationPaused = false;
+        this.paused = false;
         return true;
     }
 };
@@ -168,9 +167,9 @@ Animator.prototype.startFromBeginning = function () {
 
 //Stops the animation.
 Animator.prototype.stop = function () {
-    if (!this.animationPaused) {
+    if (!this.paused) {
         clearInterval(this.interval);
-        this.animationPaused = true;
+        this.paused = true;
         return true;
     }
 };

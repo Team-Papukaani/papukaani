@@ -103,7 +103,7 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
     def test_cant_remove_if_time_field_is_empty(self):
         self.page.REMOVE.click()
 
-        self.assertTrue(self.page.ATTACHER.is_displayed())
+        self.assertFalse(self.page.ATTACHER.is_displayed())
 
     def detach_and_assert(self, time, result):
         self.page.REMOVE_TIME.send_keys(time)

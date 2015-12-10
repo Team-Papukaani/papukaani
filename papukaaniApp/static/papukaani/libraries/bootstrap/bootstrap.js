@@ -254,7 +254,7 @@ if (typeof jQuery === 'undefined') {
     this.$element    = $(element)
     this.$indicators = this.$element.find('.carousel-indicators')
     this.options     = options
-    this.paused      = null
+    this.animationPaused      = null
     this.sliding     = null
     this.interval    = null
     this.$active     = null
@@ -290,12 +290,12 @@ if (typeof jQuery === 'undefined') {
   }
 
   Carousel.prototype.cycle = function (e) {
-    e || (this.paused = false)
+    e || (this.animationPaused = false)
 
     this.interval && clearInterval(this.interval)
 
     this.options.interval
-      && !this.paused
+      && !this.animationPaused
       && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
 
     return this
@@ -329,7 +329,7 @@ if (typeof jQuery === 'undefined') {
   }
 
   Carousel.prototype.pause = function (e) {
-    e || (this.paused = true)
+    e || (this.animationPaused = true)
 
     if (this.$element.find('.next, .prev').length && $.support.transition) {
       this.$element.trigger($.support.transition.end)

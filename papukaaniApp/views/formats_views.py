@@ -16,6 +16,7 @@ def show_format(request, id):
     if request.method == 'GET' and int(id) > 0:
         parser = GeneralParser.objects.get(id=id)
         return render(request, "papukaaniApp/formats.html", context={"format": parser})
+
     if request.method == 'POST':
         data = request.POST.copy().dict()
         if "csrfmiddlewaretoken" in data:
@@ -27,6 +28,7 @@ def show_format(request, id):
                 return render(request, "papukaaniApp/formats.html")
 
             if int(id) > 0:
+                print("koe3")
                 parser = GeneralParser.objects.get(id=id)
                 for param in data:
                     setattr(parser, param, data[param])
@@ -52,8 +54,21 @@ def delete_format(request, id):
 
     return redirect(list_formats)
 
+
 def _parser_is_valid(parser):
-    return parser["formatName"] and parser["longitude"] and parser["latitude"] and parser["delimiter"] \
-           and (parser["timestamp"] or (parser["time"] and parser["date"]))
+    if not parser["formatName"]:
+        return False
+    if not parser["longitude"]:
+        return False
+    if not parser["latitude"]:
+        return False
+    if not  parser["delimiter"]:
+        return False
+    if not parser["timestamp"]:
+        if not parser["time"]:
+            return False
+        if not parser["date"]:
+            return True
+    return True
 
 

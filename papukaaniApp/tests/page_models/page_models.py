@@ -333,6 +333,15 @@ class IndividualPage(Page):
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
     DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
 
+    # FIRST_TAXON_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/select[@name="taxon"]')
+    MESSAGE = Element(By.ID, 'messages')
+
+    def get_message(self):
+        """
+        :return: The message after user action.
+        """
+        return self.MESSAGE.get_attribute('innerHTML')
+
     def create_new_individual(self, taxon, name):
         """
         Inputs the name of the new individual and submits the form.
@@ -367,6 +376,22 @@ class IndividualPage(Page):
         ring_id_field.clear()
         ring_id_field.send_keys(ring_id)
         modify_button.click()
+
+    # def save_individual(self, nickname, ring_id, taxon):
+    #     """
+    #     Inputs the name, ring_id and taxon of an existing individual and submits the form.
+    #     """
+    #     modify_button = self.MODIFY_BUTTON
+    #     nickname_field = self.FIRST_NICKNAME_FIELD
+    #     nickname_field.clear()
+    #     nickname_field.send_keys(nickname)
+    #     ring_id_field = self.FIRST_RING_ID_FIELD
+    #     ring_id_field.clear()
+    #     ring_id_field.send_keys(ring_id)
+    #     taxon_field = self.FIRST_TAXON_FIELD
+    #     taxon_field.clear()
+    #     taxon_field.send_keys(taxon)
+    #     modify_button.click()
 
     def delete_individual(self):
         """

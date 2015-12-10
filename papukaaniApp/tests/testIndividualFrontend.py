@@ -27,3 +27,29 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
         self.page.create_new_individual("PODCRI", "Sockbird")
         self.assertEquals("PODCRI", self.page.get_first_individual_taxon())
         self.assertEquals("Sockbird", self.page.get_first_individual_nickname())
+
+    def test_correct_message_if_no_name_and_no_taxon(self):
+        self.page.create_new_individual("", "")
+        self.assertEquals("Laji puuttuu!", self.page.get_message().strip())
+
+    def test_correct_message_if_no_name(self):
+        self.page.create_new_individual("Kuikka", "")
+        self.assertEquals("Nimi puuttuu!", self.page.get_message().strip())
+
+    def test_correct_message_if_no_taxon(self):
+        self.page.create_new_individual("", "Seppo")
+        self.assertEquals("Laji puuttuu!", self.page.get_message().strip())
+
+    def test_correct_message_if_name_and_taxon_ok(self):
+        self.page.create_new_individual("Kuikka", "Seppo")
+        self.assertEquals("Lintu luotu onnistuneesti!", self.page.get_message().strip())
+
+    def test_correct_message_after_save_button(self):
+        self.page.create_new_individual("Kuikka", "Seppo")
+        self.page.delete_individual()
+        self.assertEquals("Lintu poistettu onnistuneesti!", self.page.get_message().strip())
+
+    # def test_correct_message_after_save_button(self):
+    #     self.page.create_new_individual("Kuikka", "Seppo")
+    #     self.page.save_individual("Seppo","","Kuikka")
+    #     self.assertEquals("Tiedot tallennettu onnistuneesti!", self.page.get_message().strip())

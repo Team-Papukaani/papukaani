@@ -37,7 +37,7 @@ class FilePreparerTest(TestCase):
         for entry in entries:
             assert float(lats[i]) == float(entry["latitude"])
             i += 1
-
+        assert len(entries) == 5
 
     def test_file_with_separate_time_and_date_is_correct(self):
         _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko.txt').readlines(), test_data.jouko_parser) #Raises exception if not validd
@@ -46,3 +46,14 @@ class FilePreparerTest(TestCase):
         with self.assertRaises(AssertionError):
             _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko_invalid.txt').readlines(), test_data.jouko_parser)
 
+    def test_file_parsing(self):
+        path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"
+        file = open(path, "rb")
+        entries = prepare_file(file, self.ecotone_parser)
+        lats = [61.757366, 61.757366, 61.758000, 61.757200, 61.758050]
+        i = 0
+        for entry in entries:
+            assert float(lats[i]) == float(entry["latitude"])
+            assert float(lats[i]) == float(entry["latitude"])
+            i += 1
+        assert len(entries) == 5

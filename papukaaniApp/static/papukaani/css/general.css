@@ -83,6 +83,7 @@ html, body {
     position: absolute;
     z-index: 9999;
     width: 60%;
+    max-width: 800px;
     left: 20%;
     bottom: 42px;
 }
@@ -91,6 +92,7 @@ html, body {
     position: absolute;
     z-index: 9999;
     width: 60%;
+    max-width: 800px;
     left: 20%;
     bottom: 5px;
     background-color: white;

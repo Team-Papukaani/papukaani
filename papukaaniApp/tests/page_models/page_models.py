@@ -282,17 +282,17 @@ class DevicePage(PageWithDeviceSelector):
     """
     Page Object for the device page.
     """
+    START_TIME = Element(By.ID,"start_time")
+    REMOVE_TIME = Element(By.ID, "remove_time")
+    ATTACH = Element(By.ID,"attach")
+    REMOVE = Element(By.CLASS_NAME,"btn-danger")
+    ATTACHER = Element(By.ID,"attacher")
+
+
     url = BASE_URL + '/papukaani/devices/'
 
     def __init__(self):
         super().__init__()
-
-    def find_controls(self):
-        self.START_TIME = self.driver.find_element_by_id("start_time")
-        self.REMOVE_TIME = self.driver.find_element_by_id("remove_time")
-        self.ATTACH = self.driver.find_element_by_id("attach")
-        self.REMOVE = self.driver.find_element_by_class_name("btn-danger")
-        self.ATTACHER = self.driver.find_element_by_id("attacher")
 
     def get_individual_name(self, individualId):
         return self.driver.find_element_by_id("name" + str(individualId)).text

@@ -31,9 +31,11 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.page.navigate()
 
         self.page.change_device_selection("DeviceId")
-        self.page.find_controls()
+
 
     def tearDown(self):
+        device.delete_all()
+        individual.delete_all()
         self.D.delete()
         self.I.delete()
         self.page.close()
@@ -79,7 +81,7 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
     def test_cant_attach_if_start_time_overlaps_with_another_device(self):
         self.detach_and_attach_and_assert("03-11-2015 14:00", str(self.I.individualId), "02-11-2015 16:00", True)
 
-    def test_can_attach_id_all_conditions_are_met(self):
+    def test_can_attach_if_all_conditions_are_met(self):
         self.detach_and_attach_and_assert("03-11-2015 14:00", str(self.I.individualId), "04-11-2015 16:00", False)
 
     def test_errors_messages_are_shown_when_validation_fails(self):
@@ -101,7 +103,7 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
     def test_cant_remove_if_time_field_is_empty(self):
         self.page.REMOVE.click()
 
-        self.assertFalse(self.page.ATTACHER.is_displayed())
+        self.assertTrue(self.page.ATTACHER.is_displayed())
 
     def detach_and_assert(self, time, result):
         self.page.REMOVE_TIME.send_keys(time)

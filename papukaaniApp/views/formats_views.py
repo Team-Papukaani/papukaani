@@ -5,24 +5,6 @@ from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.core import serializers
 from django.contrib import messages
 
-
-# @require_auth
-# def formats(request):
-#     if request.method == 'POST':
-#         try:
-#             data = request.POST.copy().dict()
-#             print(data)
-#
-#             if "csrfmiddlewaretoken" in data:
-#                 data.pop("csrfmiddlewaretoken")
-#
-#             GeneralParser.objects.create(**data)
-#         except:
-#             raise ValueError("POST request does not contain required parameters!")
-#
-#
-#     return render(request, 'papukaaniApp/formats.html')
-
 @require_auth
 def list_formats(request):
     parsers = GeneralParser.objects.all()
@@ -40,8 +22,7 @@ def show_format(request, id):
             data.pop("csrfmiddlewaretoken")
 
         try:
-
-            if _check_parser_validity(data):
+            if not _parser_is_valid(data):
                 messages.add_message(request, messages.ERROR, "Pakollista tietoa puuttuu!")
                 return render(request, "papukaaniApp/formats.html")
 
@@ -52,11 +33,12 @@ def show_format(request, id):
                 parser.save()
                 messages.add_message(request, messages.SUCCESS, "Muutokset tallennettu!")
             else:
+                print(data)
                 GeneralParser.objects.create(**data)
                 messages.add_message(request, messages.SUCCESS, "Formaatti tallennettu!")
         except:
             messages.add_message(request, messages.ERROR, "Jokin meni pieleen!")
-            return redirect(show_format)
+            return redirect(list_formats)
 
         return redirect(list_formats)
 
@@ -70,10 +52,8 @@ def delete_format(request, id):
 
     return redirect(list_formats)
 
-@require_auth
-def _check_parser_validity(parser):
-    if parser["formatName"] and parser["longitude"] and parser["timestamp"] and parser["latitude"] and parser["delimiter"]:
-        return False
-    return True
+def _parser_is_valid(parser):
+    return parser["formatName"] and parser["longitude"] and parser["latitude"] and parser["delimiter"] \
+           and (parser["timestamp"] or (parser["time"] and parser["date"]))
 
 

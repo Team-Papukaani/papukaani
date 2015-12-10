@@ -644,8 +644,8 @@ Date	Time	Latitude(N)	Longitude(E)
 2011-11-22	11:00	3.70	low volt
 2011-11-22	13:00	3.70	low volt
 2011-11-22	15:00	3.70	low volt
-2012-02-06	20:00	3.36	low volt
-2012-02-07	06:00	3.33	low volt
+*2012-02-06	20:00	3.36	low volt
+*2012-02-07	06:00	3.33	low volt
 2012-02-07	20:00	3.51	low volt
 2012-02-08	06:00	3.48	low volt
 2012-02-08	20:00	3.46	low volt

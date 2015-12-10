@@ -43,7 +43,7 @@
         <div class="input-group">
 
             <span class="input-group-addon wide">Aikaleima**</span>
-            <input class="form-control" type="text" name="gpsTime" id="gpsTime" value="{{format.timestamp}}">
+            <input class="form-control" type="text" name="timestamp" id="timestamp" value="{{format.timestamp}}">
             <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsTime')"></span>
         </div>
 
@@ -51,27 +51,25 @@
             <span>Aikaleima-sarakkeen nimi. Pakollinen kenttä</span>
         </div>
 
+        <div class="input-group">
+            <span class="input-group-addon wide">Päivämäärä**</span>
+            <input class="form-control" type="text" name="date" id="date" value="{{format.date}}">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>
+        </div>
 
-        <!--<div class="input-group">-->
-            <!--<span class="input-group-addon wide">Päivämäärä**</span>-->
-            <!--<input class="form-control" type="text" name="date" id="date">-->
-            <!--<span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>-->
-        <!--</div>-->
+        <div id="help_date" class="panel panel-default help-box help">
+            <span>Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>
+        </div>
 
-        <!--<div id="help_date" class="panel panel-default help-box help">-->
-            <!--<span>Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>-->
-        <!--</div>-->
+        <div class="input-group">
+            <span class="input-group-addon wide">Kellonaika**</span>
+            <input class="form-control" type="text" name="time" id="time" value="{{format.time}}">
+            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_time')"></span>
+        </div>
 
-        <!--<div class="input-group">-->
-            <!--<span class="input-group-addon wide">Kellonaika**</span>-->
-            <!--<input class="form-control" type="text" name="time" id="time">-->
-            <!--<span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_time')"></span>-->
-        <!--</div>-->
-
-        <!--<div id="help_time" class="panel panel-default help-box help">-->
-            <!--<span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>-->
-        <!--</div>-->
-
+        <div id="help_time" class="panel panel-default help-box help">
+            <span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>
+        </div>
 
         <div class="input-group">
             <span class="input-group-addon wide">Longitudi*</span>

@@ -21,9 +21,9 @@ def prepare_file(uploaded_file, parser, static_gps_number=False):
     :param parser: instance of GeneralParser
     :return: A dictionary containing every event as named values.
     """
-
     filestream = _uploaded_file_to_filestream(uploaded_file).read()
     reader = csv.reader(filestream.splitlines(), delimiter=parser.delimiter)
+
     results = [row for row in reader]
 
     lines = []

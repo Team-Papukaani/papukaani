@@ -17,6 +17,8 @@ def public(request):
     individuals = []
     for item in individual.get_all():
         individuals.append(item.individualId)
+    individuals = [{individual.facts : }]
+
     individuals.sort()
     return render(request, 'papukaaniApp/public.html', {'devices': json.dumps(individuals)})
 

@@ -2,6 +2,8 @@ from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from . import device, document
 from papukaaniApp.utils.model_utils import current_time_as_lajistore_timestamp
 from datetime import time, datetime
+from django.utils import timezone
+
 
 class Individual:
     '''
@@ -52,7 +54,7 @@ class Individual:
             for g in doc.gatherings:
                 for tr in timeranges:
                     if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.time) <= (_timestamp_to_datetime(
-                            tr[1]) if tr[1] else datetime.now()) and g.publicity == "public":
+                            tr[1]) if tr[1] else timezone.now()) and g.publicity == "public":
                         gatherings.append(g)
 
 

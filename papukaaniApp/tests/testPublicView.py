@@ -31,8 +31,29 @@ class PublicView(StaticLiveServerTestCase):
             "lastModifiedAt": "2014-09-29T14:00:00+03:00",
             "facts": []
         }
+
+        indiv = {
+            "individualId" : "1" ,
+            "taxon" : "Birdie"
+        }
+
+        indiv2 = {
+            "individualId" : "2",
+            "taxon" : "AnotherBirdie"
+        }
+
+        self.I = individual.create(**indiv)
+        self.I2 = individual.create(**indiv2)
+
         self.D = device.create(**dev)
         self.D2 = device.create(**dev2)
+
+        self.D.attach_to(self.I, "2000-01-01T10:00:00+00:00")
+        self.D2.attach_to(self.I2, "2000-01-01T10:00:00+00:00")
+
+        self.D.update()
+        self.D2.update()
+
         self.page = PublicPage()
         self.page.navigate()
 
@@ -43,7 +64,7 @@ class PublicView(StaticLiveServerTestCase):
         self.D.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
-        self.page.play_animation_for_device('DeviceId')
+        self.page.play_animation_for_device('1')
         start_location = self.page.SINGLE_MARKER.location
 
         def marker_is_moving(driver):
@@ -72,12 +93,12 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(start, self.page.get_map_polyline_elements())
 
     def test_marker_has_popup(self):
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection("1")
         self.page.get_marker().click()
         self.assertNotEquals(self.page.get_popup(), None)
 
     def select_device_and_play(self):
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection("1")
         self.page.play()
 
     def test_slider_label_value_changes_when_playing(self):

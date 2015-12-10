@@ -23,9 +23,10 @@ class TestChoose(TestCase):
         Bid = self.B.id
 
         self.A.gatherings[0].publicity = "public"
+        dev_data = {"deviceId":self.A.deviceId, "gatherings": [g.to_lajistore_json for g in self.A.gatherings]}
 
         response = self.c.post(_URL, {
-            'data': '['+  json.dumps(self.A.to_dict())+','+ json.dumps(self.B.to_dict())+']'})
+            'data': '['+  dev_data+']'})
 
 
         self.A = document.get(id=Aid)

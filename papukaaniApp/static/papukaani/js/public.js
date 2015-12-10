@@ -6,7 +6,7 @@ function init(devices, defaultDevice, defaultSpeed) {
     createDummySlider();
 
     if (defaultDevice != '' && devices.indexOf(defaultDevice) != -1)
-        $('#selectDevice').val(defaultDevice)
+        $('#selectDevice').val(defaultDevice);
 
     if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
         $('#speedSlider').slider("option", "value", defaultSpeed);

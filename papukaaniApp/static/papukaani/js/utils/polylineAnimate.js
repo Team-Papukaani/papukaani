@@ -60,16 +60,7 @@ Animator.prototype.reInit = function (endtime) {
     }
 
     while (this.time < endtime) {
-        var timeStep = this.calculateTimeStep();
-        this.lastPosition = this.markerPosition;
-        this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
-
-        var polyline = this.newPolyline();
-
-        this.addNewPolyline(polyline);
-        this.updatePolylines();
-
-        this.time += timeStep;
+        this.drawPath(false);
     }
     this.marker.setLatLng(this.markerPosition.toArray());
     this.marker._popup.setContent(this.getMarkerTimeStamp());
@@ -79,20 +70,7 @@ Animator.prototype.reInit = function (endtime) {
 //Animates the polylines and the marker on the map.
 Animator.prototype.animate = function () {
     this.interval = setInterval(function () {
-        if (this.time >= this.pathIterator.getEndTime) return;
-        var timeStep = this.calculateTimeStep();
-        this.lastPosition = this.markerPosition;
-        this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
-
-        var polyline = this.newPolyline();
-
-        this.addNewPolyline(polyline);
-        this.updatePolylines();
-
-        this.marker.setLatLng(this.markerPosition.toArray());
-        this.marker._popup.setContent(this.getMarkerTimeStamp());
-        this.setSliderValue(this.time);
-        this.time += timeStep;
+        this.drawPath(true);
         if (this.time >= this.pathIterator.getEndTime()) {
             this.setSliderValue(this.pathIterator.getEndTime());
             this.animationComplete = true;
@@ -100,6 +78,40 @@ Animator.prototype.animate = function () {
             animationEnd();
         }
     }.bind(this), 100);
+};
+
+Animator.prototype.drawPath = function (animated) {
+    var timeStep = this.calculateTimeStep();
+    this.lastPosition = this.markerPosition;
+    this.markerPosition = this.pathIterator.getPositionAtTime(this.time);
+
+    var polyline = this.newPolyline();
+
+    this.addNewPolyline(polyline);
+    this.updatePolylines();
+
+    if (animated) {
+        this.marker.setLatLng(this.markerPosition.toArray());
+        this.marker._popup.setContent(this.getMarkerTimeStamp());
+        this.setSliderValue(this.time);
+    }
+    this.time += timeStep;
+    if (this.time >= this.pathIterator.getEndTime()) {
+        this.time = this.pathIterator.getEndTime();
+        this.lastPosition = this.markerPosition;
+        this.markerPosition = this.pathIterator.getLastPoint().coordinates;
+
+        var polyline = this.newPolyline();
+
+        this.addNewPolyline(polyline);
+        this.updatePolylines();
+
+        if (animated) {
+            this.marker.setLatLng(this.markerPosition.toArray());
+            this.marker._popup.setContent(this.getMarkerTimeStamp());
+            this.setSliderValue(this.time);
+        }
+    }
 };
 
 //New polyline with default settings.
@@ -227,6 +239,10 @@ var PathIterator = function (points) {
     this.getEndTime = function () {
         return orderedPoints[orderedPoints.length - 1].time;
     };
+
+    this.getLastPoint = function () {
+        return orderedPoints[orderedPoints.length - 1];
+    }
 };
 
 //Removes the animation, effectively removing all markers and polylines created by it.

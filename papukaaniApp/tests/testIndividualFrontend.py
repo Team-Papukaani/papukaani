@@ -44,12 +44,11 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
         self.page.create_new_individual("Kuikka", "Seppo")
         self.assertEquals("Lintu luotu onnistuneesti!", self.page.get_message().strip())
 
-    def test_correct_message_after_save_button(self):
+    def test_correct_message_after_delete_button(self):
         self.page.create_new_individual("Kuikka", "Seppo")
         self.page.delete_individual()
         self.assertEquals("Lintu poistettu onnistuneesti!", self.page.get_message().strip())
 
-    # def test_correct_message_after_save_button(self):
-    #     self.page.create_new_individual("Kuikka", "Seppo")
-    #     self.page.save_individual("Seppo","","Kuikka")
-    #     self.assertEquals("Tiedot tallennettu onnistuneesti!", self.page.get_message().strip())
+    def test_correct_message_after_save_button(self):
+        self.page.modify_individual("GAVARC", "DEM123456")
+        self.assertEquals("Tiedot tallennettu onnistuneesti!", self.page.get_message().strip())

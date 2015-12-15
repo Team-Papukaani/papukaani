@@ -297,16 +297,6 @@ class DevicePage(PageWithDeviceSelector):
     def get_individual_name(self, individualId):
         return self.driver.find_element_by_id("name" + individualId).text
 
-    #
-    # def get_number_of_points(self):
-    #     plines = self.get_map_polyline_elements()
-    #     no_of_pts = 0
-    #     for line in plines:
-    #         d = line.find_element_by_tag_name("path").get_attribute("d")
-    #         no_of_pts += (len(d.split()) - 2)
-    #
-    #     return no_of_pts
-
     def attach_individual(self, bird, timestamp):
         selector = self.driver.find_element_by_id("individualId")
         sel = Select(selector)
@@ -326,14 +316,12 @@ class IndividualPage(Page):
     NEW_FORM = Element(By.ID, 'new_individual_form')
     NEW_NAME_FIELD = Element(By.ID, 'new_individual_nickname')
     NEW_TAXON_FIELD = Element(By.XPATH, '//input[@name="taxon"][1]')
-    FIRST_MODIFY_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/select[1]')
+    FIRST_TAXON_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="taxon"]')
     FIRST_NICKNAME_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="nickname"]')
     FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
     DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
-
-    # FIRST_TAXON_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/select[@name="taxon"]')
     MESSAGE = Element(By.ID, 'messages')
 
     def get_message(self):
@@ -353,10 +341,11 @@ class IndividualPage(Page):
         namefield = self.NEW_NAME_FIELD
         namefield.send_keys(name)
         namefield.submit()
+        time.sleep(5)
 
     def get_first_individual_taxon(self):
-        self.driver.execute_script('return $(".comobox").show;') # set taxon select visible
-        return self.FIRST_MODIFY_FIELD.get_attribute("value")
+        self.driver.execute_script('return $(".combobox").show;') # set taxon select visible
+        return self.FIRST_TAXON_FIELD.get_attribute("value")
 
     def get_first_individual_nickname(self):
         return self.FIRST_NICKNAME_FIELD.get_attribute("value")
@@ -376,22 +365,6 @@ class IndividualPage(Page):
         ring_id_field.clear()
         ring_id_field.send_keys(ring_id)
         modify_button.click()
-
-    # def save_individual(self, nickname, ring_id, taxon):
-    #     """
-    #     Inputs the name, ring_id and taxon of an existing individual and submits the form.
-    #     """
-    #     modify_button = self.MODIFY_BUTTON
-    #     nickname_field = self.FIRST_NICKNAME_FIELD
-    #     nickname_field.clear()
-    #     nickname_field.send_keys(nickname)
-    #     ring_id_field = self.FIRST_RING_ID_FIELD
-    #     ring_id_field.clear()
-    #     ring_id_field.send_keys(ring_id)
-    #     taxon_field = self.FIRST_TAXON_FIELD
-    #     taxon_field.clear()
-    #     taxon_field.send_keys(taxon)
-    #     modify_button.click()
 
     def delete_individual(self):
         """

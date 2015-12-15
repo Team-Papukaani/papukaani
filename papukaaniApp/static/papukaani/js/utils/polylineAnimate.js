@@ -16,7 +16,7 @@ function Animator(latlngs, map) {
     this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
     $("#playLabel_end").text(new Date(this.pathIterator.getEndTime()).toLocaleString());
     this.setSliderValue(this.pathIterator.getStartTime());
-    this.sliderMove = false;
+    this.sliderBeingMovedByUser = false;
 }
 
 //Default options for the main polyline.
@@ -265,7 +265,7 @@ L.Map.include({
 
 //Sets the slider to the desired value, unless it is currently being moved by the user.
 Animator.prototype.setSliderValue = function (value) {
-    if (!this.sliderMove) {
+    if (!this.sliderBeingMovedByUser) {
         var slider = $("#playSlider");
         slider.slider("option", "value", value);
     }
@@ -280,35 +280,29 @@ Animator.prototype.createSlider = function (min, max, step) {
         step: step,
         paddingMin: 7,
         paddingMax: 7,
-        //Change the label value to match the slider.
+        //Change the label value to match when slider value changed by animation.
         change: function (event, ui) {
             var label = '#playLabel';
             $(label).html(new Date(ui.value).toLocaleString());
         },
         //When moving the slider, the value and label will only be changed by user actions, not by the animation.
         slide: function (event, ui) {
-            this.sliderMove = true;
+            this.sliderBeingMovedByUser = true;
             this.animationComplete = false;
-            this.change = function () {
-            };
             var delay = function () {
                 var label = '#playLabel';
                 $(label).html(new Date(ui.value).toLocaleString());
             };
             setTimeout(delay, 5);
         }.bind(this),
-        //When the user stops moving the slider,
-        // the animation will move to the point indicated by the slider and continue playing if it was active.
+        // When the user stops moving the slider,
+        // the animation will advance to the point indicated by the slider and continue playing if applicable.
         // Slider and label value will return to being controlled by the animation.
         stop: function (event, ui) {
             if (this.stop()) var cont = true;
             this.reInit(ui.value);
-            this.change = function (event, ui) {
-                var label = '#playLabel';
-                $(label).html(new Date(ui.value).toLocaleString());
-            };
             if (cont) this.start();
-            this.sliderMove = false;
+            this.sliderBeingMovedByUser = false;
         }.bind(this)
     });
 };

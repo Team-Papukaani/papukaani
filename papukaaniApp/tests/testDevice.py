@@ -13,7 +13,7 @@ class TestDevice(TestCase):
         self.c = Client()
         self.A = device.create('1234TEST_A','type','manufact','2015-10-27T16:32:01+00:00', '2015-10-27T16:32:01+00:00', [])
         self.B = device.create("1234TEST_B","type","manufact","2015-10-27T16:32:01+00:00", "2015-10-27T16:32:01+00:00", [])
-        self.indiv = individual.create("Indiv", "Tax")
+        self.indiv = individual.create("Tax")
 
     def tearDown(self):
         self.A.delete()
@@ -28,7 +28,7 @@ class TestDevice(TestCase):
     def test_post_to_attach_attaches_individual(self):
 
         response = self.c.post(_URL + "1234TEST_A/attach/", data={
-            "individualId" : "Indiv",
+            "individualId" : self.indiv.individualId,
             "timestamp" : "2015-10-10T10:10:10+00:00"
         })
 
@@ -40,7 +40,7 @@ class TestDevice(TestCase):
         self.A.attach_to(self.indiv,"2015-10-10T10:10:10+00:00" )
 
         response = self.c.post(_URL + "1234TEST_A/remove/", data={
-            "individualId" : "Indiv",
+            "individualId" : self.indiv.individualId,
             "timestamp" : "2015-10-10T10:10:10+00:00"
         })
 

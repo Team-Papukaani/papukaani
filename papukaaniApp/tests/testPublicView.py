@@ -32,8 +32,20 @@ class PublicView(StaticLiveServerTestCase):
             "lastModifiedAt": "2014-09-29T14:00:00+03:00",
             "facts": []
         }
+
+
+        self.I = individual.create(taxon="TAXON", facts=[{"name":"nickname", "value":"Birdie"}])
+        self.I2 = individual.create(taxon="TAXON2", facts=[{"name":"nickname", "value":"Birdie2"}])
+
         self.D = device.create(**dev)
         self.D2 = device.create(**dev2)
+
+        self.D.attach_to(self.I, "1000-01-01T10:00:00+00:00")
+        self.D2.attach_to(self.I2, "1000-01-01T10:00:00+00:00")
+
+        self.D.update()
+        self.D2.update()
+
         self.page = PublicPage()
         self.page.navigate()
 
@@ -44,7 +56,7 @@ class PublicView(StaticLiveServerTestCase):
         self.D.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
-        self.page.play_animation_for_device('DeviceId')
+        self.page.play_animation_for_device(str(self.I.individualId))
         start_location = self.page.SINGLE_MARKER.location
 
         def marker_is_moving(driver):
@@ -75,11 +87,12 @@ class PublicView(StaticLiveServerTestCase):
     def test_marker_has_popup(self):
         self.select_device_and_play()
         self.page.play()
+
         self.page.get_marker().click()
         self.assertNotEquals(self.page.get_popup(), None)
 
     def select_device_and_play(self):
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection(str(self.I.individualId))
         self.page.play()
 
     def test_slider_label_value_changes_when_playing(self):
@@ -95,30 +108,35 @@ class PublicView(StaticLiveServerTestCase):
         self.assertGreater(len(self.page.driver.find_elements_by_tag_name("g")), startcount)
 
     def test_navigation_is_shown_if_logged_in(self):
-        settings.MOCK_AUTHENTICATION = "On"
+        self.page.navigate()
+
         try:
             self.page.get_navigation()
         except:
             self.fail()
 
-    def test_navigation_is_not_shown_if_logged_in(self):
-        settings.MOCK_AUTHENTICATION = "Skip"
+    def test_navigation_is_not_shown_if_not_logged_in(self):
+        settings.MOCK_AUTHENTICATION = 'On'
+        self.page.navigate()
+
         try:
             self.page.get_navigation()
             self.fail()
         except:
             pass
+        finally:
+            settings.MOCK_AUTHENTICATION = "Skip"
+
 
     def test_speed_sets_with_param(self):
         self.assertEquals('75', self.page.get_speed_set_as_param(75))
 
     def test_iframe_url_is_correct(self):
-        settings.MOCK_AUTHENTICATION = "On"
-        self.page.change_device_selection("DeviceId")
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device=DeviceId&speed=50', self.page.get_iframe_url())
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50', self.page.get_iframe_url())
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection(str(self.I.individualId))
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 20)
 
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):

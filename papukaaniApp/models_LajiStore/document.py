@@ -9,12 +9,12 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId, id=None, **kwargs):
+    def __init__(self, documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts = None, id=None, **kwargs):
         self.id = id
         self.documentId = documentId
         self.lastModifiedAt = lastModifiedAt
         self.createdAt = createdAt
-        self.facts = facts
+        self.facts = facts if facts else []
         if len(gatherings) > 0 and isinstance(gatherings[0], gathering.Gathering):
             self.gatherings = gatherings
         else:
@@ -31,6 +31,7 @@ class Document:
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
+        self.lastModifiedAt = current_time_as_lajistore_timestamp()
         dict = self.to_dict()
         LajiStoreAPI.update_document(**dict) #__dict__ puts all arguments here
 
@@ -69,7 +70,7 @@ def get(id):
     return Document(**document)
 
 
-def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, createdAt=None):
+def create(documentId, gatherings, deviceId, facts=None, lastModifiedAt=None, createdAt=None):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
@@ -80,7 +81,9 @@ def create(documentId, gatherings, deviceId, facts=[], lastModifiedAt=None, crea
     if createdAt == None:
         createdAt = current_time_as_lajistore_timestamp()
 
-    document = Document(documentId, lastModifiedAt, createdAt, facts, gatherings, deviceId)
+    document = Document(documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=facts)
+
+
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 

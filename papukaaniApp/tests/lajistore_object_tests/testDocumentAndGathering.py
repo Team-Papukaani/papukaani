@@ -25,13 +25,11 @@ class testDocumentAndGathering(TestCase):
         self.assertEquals([68.93023632, 23.19298104], self.doc.gatherings[0].geometry)
 
     def test_update_and_get(self):
-        self.doc.lastModifiedAt = "2015-10-06T15:29:28+03:00"
         self.doc.gatherings[0].temperature = 4
 
         self.doc.update()
         self.doc = document.get(self.doc.id)
 
-        self.assertEquals("2015-10-06T15:29:28+03:00", self.doc.lastModifiedAt)
         self.assertEquals(4, self.doc.gatherings[0].temperature)
 
     def test_get_all(self):

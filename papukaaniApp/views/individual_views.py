@@ -31,7 +31,7 @@ def individuals(request):
             messages.add_message(request, messages.INFO, 'Lintu poistettu onnistuneesti!')
         elif 'taxon' in request.POST:
 
-            individuale = individual.create(random.randint(10000000, 99999999), request.POST.get('taxon'))
+            individuale = individual.create(request.POST.get('taxon'))
             individuale.individualId = individuale.id
             individuale.facts = [
                 {'name': 'nickname', 'value': request.POST.get('nickname')}

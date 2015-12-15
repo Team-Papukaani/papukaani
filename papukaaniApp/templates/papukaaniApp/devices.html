@@ -45,7 +45,7 @@
                 <select id="individualId">
                     <option disabled selected>Valitse kiinnitettävä lintu</option>
                     {% for individual in selection %}
-                        <option value="{{ individual.individualId }}">{{ individual.taxon }}</option>
+                        <option value="{{ individual.individualId }}">{{ individual.nickname }}</option>
                     {% endfor %}
                 </select>
             </td>

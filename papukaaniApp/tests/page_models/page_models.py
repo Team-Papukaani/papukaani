@@ -377,13 +377,63 @@ class IndividualPage(Page):
         confirm_button = self.DELETE_CONFIRM_BUTTON
         confirm_button.click()
 
-class FormatsPage(Page):
+class FormatPage(Page):
 
     url = BASE_URL + '/papukaani/formats/create/0'
 
     SUBMIT = Element(By.ID, "submit")
     HELP_BUTTON = Element(By.ID, "formatName_helpbutton")
     HELP_BOX = Element(By.ID, "help_formatName")
+    FORMAT_NAME = Element(By.ID, "formatName")
+    TIMESTAMP = Element(By.ID, "timestamp")
+    DATE = Element(By.ID, "date")
+    TIME = Element(By.ID, "time")
+    LONGITUDE = Element(By.ID, "longitude")
+    LATITUDE = Element(By.ID, "latitude")
+    DELIMITER = Element(By.ID, "delimiter")
+    GPS_NUMBER = Element(By.ID, "gpsNumber")
+    TEMPERATURE = Element(By.ID, "temperature")
+    ALTITUDE = Element(By.ID, "altitude")
+
+    def input_values_and_submit(self, format_name, timestamp, date, time, longitude, latitude, delimiter, gps_number, temperature, altitude):
+        format_name_field = self.FORMAT_NAME
+        format_name_field.send_keys(format_name)
+        timestamp_field = self.TIMESTAMP
+        timestamp_field.send_keys(timestamp)
+        date_field = self.DATE
+        date_field.send_keys(date)
+        time_field = self.TIME
+        time_field.send_keys(time)
+        longitude_field = self.LONGITUDE
+        longitude_field.send_keys(longitude)
+        latitude_field = self.LATITUDE
+        latitude_field.send_keys(latitude)
+        delimiter_field = self.DELIMITER
+        delimiter_field.send_keys(delimiter)
+        gps_number_field = self.GPS_NUMBER
+        gps_number_field.send_keys(gps_number)
+        temperature_field = self.TEMPERATURE
+        temperature_field.send_keys(temperature)
+        altitude_field = self.ALTITUDE
+        altitude_field.send_keys(altitude)
+
+        altitude_field.submit()
 
 
+class FormatListPage(Page):
 
+    url = BASE_URL + '/papukaani/formats'
+
+    FIRST_MODIFY_BUTTON = Element(By.XPATH, '//a[contains(@class, "glyphicon-pencil")][1]')
+    FIRST_DELETE_BUTTON = Element(By.XPATH, '//a[contains(@class, "glyphicon-trash")][1]')
+    DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
+
+    def does_page_contain(self, search):
+        return search in self.driver.page_source
+
+    def delete_first_format(self):
+        self.FIRST_DELETE_BUTTON.click()
+        self.DELETE_CONFIRM_BUTTON.click()
+
+    def modify_first_format(self):
+        self.FIRST_MODIFY_BUTTON.click()

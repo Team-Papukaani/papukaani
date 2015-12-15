@@ -36,7 +36,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
     try {
-        if (get('nofit') == 1) {
+        if (get_param('nofit') == 1) {
         } else {
             this.map.fitBounds(this.markers.getBounds(), {padding: [6, 6]})
         }
@@ -44,7 +44,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     }
 };
 
-function get(name) {
+function get_param(name) {
     if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
         return decodeURIComponent(name[1]);
 }

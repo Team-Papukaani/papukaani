@@ -66,7 +66,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.double_click_marker()
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
         self.page.reset()
-        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
         self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
 

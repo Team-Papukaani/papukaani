@@ -23,7 +23,7 @@ function displayIndividuals(device) {
 
             if(!individual.removed) {
                 $("#attacher").hide();
-                row += '<td><input type="text" id="remove_time" name="remove_time" class="dateinput datepicker" placeholder="dd-mm-yyyy HH:mm" onblur="validateDateFormat(this)"></td>'
+                row += '<td><input type="text" id="remove_time" name="remove_time" class="dateinput datepicker" placeholder="dd.mm.yyyy HH:mm" onblur="validateDateFormat(this)"></td>'
                 row += '<td><a class="btn btn-sm btn-danger" onclick="removeDevice('+ index +')">Irroita</a></td>'
             } else {
                 row += '<td>' + $.format.date(individual.removed, "dd.MM.yyyy HH:mm") + '</td>'
@@ -169,7 +169,7 @@ function validate(timestring, attached){
 }
 
 function pruneTimestring(timestring){
-    if(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}:[0-9]{2}$/.test(timestring)){
+    if(/^[0-9]{4}.[0-9]{2}.[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}:[0-9]{2}$/.test(timestring)){
         last = timestring.lastIndexOf(":");
 
         return timestring.slice(0, last);
@@ -178,7 +178,7 @@ function pruneTimestring(timestring){
 }
 
 function validTimestring(timestring){
-    if(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+(?:[0-9][0-9]:)+00$/.test(timestring)){
+    if(/^[0-9]{4}.[0-9]{2}.[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+(?:[0-9][0-9]:)+00$/.test(timestring)){
         return true
     }
     return false

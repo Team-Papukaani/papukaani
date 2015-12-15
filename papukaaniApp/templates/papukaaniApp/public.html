@@ -17,7 +17,7 @@
 
 </head>
 {% autoescape off %}
-<body onload="var map = init({{ devices }}, {{ species }}, '{{ device }}', '{{ speed }}')">
+<body onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}")'>
 {% endautoescape %}
 
 {% if display_navigation %}

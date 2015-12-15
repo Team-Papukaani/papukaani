@@ -138,7 +138,7 @@ DeviceSorter.prototype.createIndividualSelector = function (individuals, species
 
     selector.change(function (event) {
         event.preventDefault();
-        this.showSaveOrCancelPopup(selector.val())
+        this.changeDeviceSelection(selector.val())
     }.bind(this));
 
     selector.addOption = function (individualId, taxon) {

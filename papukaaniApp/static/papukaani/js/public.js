@@ -1,5 +1,6 @@
-function init(devices, defaultDevice, defaultSpeed) {
+function init(devices, species, defaultDevice, defaultSpeed) {
     this.sorter = new DeviceSorter(devices, "../rest/gatheringsForIndividual?individualId=");
+    this.sorter.setIndividuals(individuals, species);
 
     map = new PublicMap();
 

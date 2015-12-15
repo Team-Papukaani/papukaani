@@ -28,4 +28,3 @@ def getGatheringsForIndividual(request):
     gatherings = [g.to_lajistore_json() for g in indiv.get_gatherings()]
 
     return Response(gatherings)
-

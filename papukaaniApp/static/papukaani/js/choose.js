@@ -7,13 +7,14 @@ function ChooseMap(sorter) {
     this.markers = createEmptyMarkerClusterGroup();
 
     this.points = [];
+    this.originalpoints = [];
 
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
 
     this.unsaved = false
 }
 
-//Updates the map to show all markers within start and end, which are strings that can be converted to Date.
+//Updates the map to show all markers between start and end (strings that can be converted to Date).
 ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     var a, b;
     try {
@@ -79,6 +80,7 @@ function createEmptyMarkerClusterGroup() {
 //Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
     this.unsaved = false;
+    this.originalpoints = points.slice();
     this.points = points;
     var start = document.getElementById("start_time");
     var end = document.getElementById("end_time");
@@ -238,15 +240,9 @@ function init(devices, token) {
 
 //Resets the map to the state it was in when the page was loaded.
 function resetMap(map) {
-    map.unsaved = false;
-    map.map.removeLayer(map.markers);
-    map.markers = createEmptyMarkerClusterGroup();
-    map.map.addLayer(map.markers);
-    map.sorter.resetOption();
-    map.sorter.documents = [];
-    map.points = [];
     document.getElementById("start_time").value = "";
     document.getElementById("end_time").value = "";
+    map.sorter.changeDeviceSelection(map.sorter.currentDevice);
 }
 
 //Disables the select, save and reset buttons.

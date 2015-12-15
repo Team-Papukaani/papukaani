@@ -2,7 +2,7 @@ function DeviceSorter(devices, restUrl) {
 
     this.devices = devices;
     this.points = [];
-    this.restUrl = restUrl
+    this.restUrl = restUrl;
 
     this.createDeviceSelector(this.devices);
 
@@ -64,14 +64,6 @@ function showPointsForDevice() {
         else unlockButtons()
     }
 }
-
-//Resets the option selector to the default value.
-DeviceSorter.prototype.resetOption = function () {
-    var selector = document.getElementById("selectDevice");
-
-    selector.value = "None";
-    $("#save").attr("disabled", true);
-};
 
 //Creates a selector for devices.
 DeviceSorter.prototype.createDeviceSelector = function (devices) {

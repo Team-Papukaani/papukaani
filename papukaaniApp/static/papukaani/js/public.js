@@ -17,7 +17,9 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
 
     if (defaultDevice != ''){
         try{
-            $('#selectDevice').val(defaultDevice);
+            selector = $('#selectDevice')
+            selector.val(defaultDevice);
+            this.sorter.changeDeviceSelection(selector.val())
         } catch(err){
         }
     }

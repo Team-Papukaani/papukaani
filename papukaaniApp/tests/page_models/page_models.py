@@ -334,7 +334,7 @@ class IndividualPage(Page):
         """
         Inputs the name of the new individual and submits the form.
         """
-        self.driver.execute_script('return $("[name=\'taxon\']").attr("type", "text");') # set taxon field visible for input
+        self.set_taxon_field_visible_for_input()
         namefield2 = self.NEW_TAXON_FIELD
         namefield2.send_keys(taxon)
 
@@ -342,6 +342,15 @@ class IndividualPage(Page):
         namefield.send_keys(name)
         namefield.submit()
         time.sleep(5)
+
+    def set_taxon_field_visible_for_input(self):
+        for attempt in range(10):
+            try:
+                self.driver.execute_script(
+                'return $("[name=\'taxon\']").attr("type", "text");')  # set taxon field visible for input
+                break
+            except:
+                time.sleep(1)
 
     def get_first_individual_taxon(self):
         self.driver.execute_script('return $(".combobox").show;') # set taxon select visible

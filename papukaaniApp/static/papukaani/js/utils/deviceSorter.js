@@ -1,6 +1,5 @@
-function DeviceSorter(devices, restUrl) {
+function DeviceSorter(restUrl) {
 
-    this.devices = devices;
     this.points = [];
     this.restUrl = restUrl
 

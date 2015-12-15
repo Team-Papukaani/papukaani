@@ -15,7 +15,7 @@ DATABASES = {
         'NAME': 'ltkm',
         'USER': 'satellitti_staging',
         'PASSWORD': os.environ['ORACLE_PASSWORD'],
-        'HOST': 'salkku.it.helsinki.fi',
+        'HOST': 'oracle.luomus.fi',
         'PORT': '1521'
     }
 }

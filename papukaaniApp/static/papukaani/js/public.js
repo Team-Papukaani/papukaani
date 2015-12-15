@@ -1,22 +1,35 @@
-function init(individuals, species, defaultDevice, defaultSpeed) {
+function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
     this.sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
     this.sorter.setIndividuals(individuals, species);
 
-    map = new PublicMap();
+    zoom = typeof zoom == 'number' ? zoom : 5
+
+    if(!(loc && loc instanceof Array && loc.length == 2 && typeof loc[0] == "number" && typeof loc[1] == "number")){
+        loc = [60,20]
+    }
+
+
+    map = new PublicMap(loc, zoom);
 
     this.sorter.setMap(map);
 
     createDummySlider();
 
-    if (defaultDevice != '' && devices.indexOf(defaultDevice) != -1)
-        $('#selectDevice').val(defaultDevice);
+    if (defaultDevice != ''){
+        try{
+            selector = $('#selectDevice')
+            selector.val(defaultDevice);
+            this.sorter.changeDeviceSelection(selector.val())
+        } catch(err){
+        }
+    }
 
     if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
         $('#speedSlider').slider("option", "value", defaultSpeed);
 }
 
-function PublicMap() {
-    this.map = create_map("map", [61.0, 20.0], 5);
+function PublicMap(loc, zoom) {
+    this.map = create_map("map", loc , zoom);
     this.paused = true;
 }
 
@@ -127,7 +140,10 @@ function generateIframeUrl() {
     var url = 'http://' + window.location.hostname + window.location.pathname;
     var device = 'device=' + $('#selectDevice').val();
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
-    inputBox.val(url + '?' + device + '&' + speed);
+    var zoom = 'zoom=' + map.map.getZoom()
+    var ltlng = map.map.getCenter()
+    var loc = 'loc=' + "[" + ltlng.lat +","+ ltlng.lng+ "]"
+    inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc);
     inputBox.select()
 }
 

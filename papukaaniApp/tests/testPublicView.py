@@ -140,7 +140,17 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_iframe_url_is_correct(self):
         self.page.change_device_selection(str(self.I.individualId))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50', self.page.get_iframe_url())
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[61,20]', self.page.get_iframe_url())
+
+    def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
+        self.page.driver.get(self.page.url+"?zoom=6&loc=[20,40]")
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=6&loc=[20,40]', self.page.get_iframe_url())
+
+    def test_iframe_url_is_correct_if_url_parameters_are_invalid(self):
+        self.page.driver.get(self.page.url+"?zoom=5&loc=5")
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[60,20]', self.page.get_iframe_url())
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
         self.page.change_device_selection(str(self.I.individualId))

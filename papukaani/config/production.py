@@ -12,10 +12,9 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'ltkm',
+        'NAME': 'oracle.luomus.fi:1521/oracle.luomus.fi',
         'USER': 'satellitti_staging',
         'PASSWORD': os.environ['ORACLE_PASSWORD'],
-        'HOST': 'oracle.luomus.fi',
-        'PORT': '1521'
     }
+
 }

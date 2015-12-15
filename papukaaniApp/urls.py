@@ -16,7 +16,9 @@ urlpatterns = [
     url(r'^devices/(?P<device_id>.+)/remove/$', views.remove_from),
     # ex: /papukaani/individuals/
     url(r'^individuals/$', views.individuals, name='individuals'),
-    url(r'^rest/documentsForDevice$', views.getDocumentsForDevice),
+
+    url(r'^rest/gatheringsForDevice$', views.getGatheringsForDevice),
+    url(r'^rest/gatheringsForIndividual$', views.getGatheringsForIndividual),
 
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),

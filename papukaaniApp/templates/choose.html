@@ -16,8 +16,9 @@
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
 
 </head>
-
-<body onload="var map = init({{ devices }}, '{{ csrf_token }}')">
+{% autoescape off %}
+    <body onload='var map = init({{ devices }}, "{{ csrf_token }}")'>
+{% endautoescape %}
 {% include "papukaaniApp/navigation.html" %}
 
 <div id="popup" class="overlay" hidden="true">
@@ -67,6 +68,7 @@
 <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
 <script src="{% static 'papukaani/js/choose.js' %}"></script>
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
+
 
 <div id="map" class="largeMap">
 </div>

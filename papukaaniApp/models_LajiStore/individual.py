@@ -1,4 +1,8 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from . import device, document
+from papukaaniApp.utils.model_utils import current_time_as_lajistore_timestamp
+from datetime import time, datetime
+from django.utils import timezone
 
 
 class Individual:
@@ -13,6 +17,9 @@ class Individual:
         self.deleted = deleted
         self.facts = facts
 
+    def get_facts_as_dictionary(self):
+        return {fact['name']: fact['value'] for fact in self.facts}
+
     def delete(self):
         '''
         Deletes the individual from LajiStore. Note that the object is not destroyed!
@@ -24,7 +31,40 @@ class Individual:
         Saves changes to the object to the corresponding LajiStore entry
         :return:
         '''
+        self.lastModifiedAt = current_time_as_lajistore_timestamp()
         LajiStoreAPI.update_individual(**self.__dict__)  # __dict__ puts all arguments here
+
+    def get_gatherings(self):
+        '''
+        Get all public gatherings related to this individual.
+        :return: a list of gatherings
+        '''
+        devices = []
+        for d in device.get_all():
+            if self.individualId in [i["individualId"] for i in d.individuals  if "individualId" in i]:
+                devices.append(d)
+
+        gatherings = []
+        for d in devices:
+            timeranges = [(i["attached"], i["removed"] if i["removed"] else None) for i in d.individuals if i["individualId"] == self.individualId]
+            docs = document.find(deviceId=d.deviceId)
+            self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
+
+        return gatherings
+
+    def _filter_gatherings_by_timeranges(self, docs, gatherings, timeranges):
+        for doc in docs:
+            for g in doc.gatherings:
+                for tr in timeranges:
+                    if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.time) <= (_timestamp_to_datetime(
+                            tr[1]) if tr[1] else timezone.now()) and g.publicity == "public":
+                        gatherings.append(g)
+
+
+
+def _timestamp_to_datetime(timestamp):
+    timestamp = timestamp[:-3]+timestamp[-2:]
+    return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S%z")
 
 
 def find(**kwargs):
@@ -62,17 +102,19 @@ def get(id):
     return Individual(**individual)
 
 
-def create(individualId, taxon):
+def create(taxon, facts=None):
     '''
     Creates an individual instance in LajiStore and a corresponding Indiviual object
     :param id: The LajiStore ID of the object
     :param taxon: The LajiStore taxon of the object
     :return: An Individual object
     '''
-    individual = Individual(individualId, taxon)
+    individual = Individual("temp", taxon, facts=facts)
 
     data = LajiStoreAPI.post_individual(**individual.__dict__)
     individual.id = data["id"]
+    individual.individualId = individual.id
+    individual.update()
 
     return individual
 
@@ -99,3 +141,4 @@ def _get_many(mode=1, **kwargs):
         elif mode == 1:
             individuals.append(Individual(**individual))
     return individuals
+

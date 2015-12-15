@@ -3,7 +3,7 @@ import json
 from django.shortcuts import render
 
 from papukaaniApp.utils.view_utils import *
-from papukaaniApp.models_LajiStore import device, document
+from papukaaniApp.models_LajiStore import device, document, gathering
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 
 
@@ -30,6 +30,11 @@ def choose(request):
 
 
 def _set_points_public(request):
-    docs = json.loads(request.POST['data'])
-    for dict in docs:
-        document.update_from_dict(**dict)
+    data = json.loads(request.POST['data'])
+    deviceId = data["deviceId"]
+    gatherings = data["gatherings"]
+
+    doc = document.find(deviceId=deviceId)[0]
+
+    doc.gatherings = [ gathering.from_lajistore_json(**g) for g in gatherings]
+    doc.update()

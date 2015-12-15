@@ -148,7 +148,7 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
 ChooseMap.prototype.send = function () {
-    data = JSON.stringify(this.sorter.documents);
+    data = JSON.stringify({deviceId :  this.sorter.currentDevice ,gatherings : this.sorter.points});
     var messagebox = $("#loading");
     messagebox.text("Tallennetaan...");
 
@@ -228,7 +228,9 @@ function setLoadingMessage(request, messagebox) {
 }
 
 function init(devices, token) {
-    this.sorter = new DeviceSorter(devices);
+    this.sorter = new DeviceSorter("../rest/gatheringsForDevice?devId=");
+    this.sorter.setDevices(devices)
+
     map = new ChooseMap(sorter);
     this.sorter.setMap(map);
     csrf_token = token;

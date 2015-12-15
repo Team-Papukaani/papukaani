@@ -1,9 +1,17 @@
-function DeviceSorter(devices) {
+function DeviceSorter(restUrl) {
 
-    this.devices = devices;
-    this.documents = [];
+    this.points = [];
+    this.restUrl = restUrl
 
-    this.createDeviceSelector(this.devices);
+    this.setDevices = function (devices) {
+        this.createDeviceSelector(devices);
+        this.type = "Device"
+    };
+
+    this.setIndividuals = function (individuals, species) {
+        this.createIndividualSelector(individuals, species);
+        this.type = "Individual"
+    };
 
     this.setMap = function (map) {
         this.map = map
@@ -19,21 +27,21 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         messagebox.text("Tietoja ladataan...");
         lockButtons();
         request = new XMLHttpRequest;
-        var path = requestPath(deviceId);
+        var path = this.requestPath(deviceId);
         request.open("GET", path, true);
         request.onreadystatechange = showPointsForDevice.bind(this);
         request.send(null);
     }
     else {
-        this.documents = [];
-        this.map.changePoints(extractPoints(this.documents));
+        this.points = [];
+        this.map.changePoints(this.points);
     }
     this.currentDevice = deviceId
 };
 
 //Path for all points REST.
-var requestPath = function (deviceId) {
-    return "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+DeviceSorter.prototype.requestPath = function (deviceId) {
+    return this.restUrl + deviceId + "&format=json";
 };
 
 //Extracts a list of points from the documents.
@@ -51,15 +59,12 @@ extractPoints = function (documents) {
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForDevice() {
     if (request.readyState === 4) {
-        this.documents = [];
-        var docs = JSON.parse(request.response);
-        for (var i = 0; i < docs.length; i++) {
-            this.documents.push(docs[i]);
-        }
-        this.map.changePoints(extractPoints(this.documents));
+        this.points = JSON.parse(request.response);
+
+        this.map.changePoints(this.points);
         var messagebox = $("#loading");
         messagebox.text("");
-        if (this.documents.length == 0) {
+        if (this.points.length == 0) {
             $("#selectDevice").attr("disabled", false);
             $("#reset").attr("disabled", false);
         }
@@ -85,12 +90,15 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
     }.bind(this));
 
     selector.addOption = function (option) {
-        selector.append("<option value='" + option + "'>" + option + "</option>")
+        val = option.id ? option.id : option
+        text = option.nickname ? option.nickname : option
+
+        selector.append("<option value='" + val + "'>" + text+ "</option>")
     };
 
     selector.addOption("None");
-    for (var i = 0; i < this.devices.length; i++) {
-        selector.addOption(this.devices[i])
+    for (var i = 0; i < devices.length; i++) {
+        selector.addOption(devices[i])
     }
 };
 
@@ -119,4 +127,30 @@ DeviceSorter.prototype.showSaveOrCancelPopup = function (deviceId) {
         popup.hide()
     }.bind(this));
     popup.show()
+};
+
+/* Individual spesifics */
+
+//Creates a selector for individuals (individualId:taxon).
+DeviceSorter.prototype.createIndividualSelector = function (individuals, species) {
+    var selector = $("#selectDevice");
+
+    selector.change(function (event) {
+        event.preventDefault();
+        this.changeDeviceSelection(selector.val())
+    }.bind(this));
+
+    selector.addOption = function (individualId, taxon) {
+        selector.append("<option value='" + individualId + "'>" + taxon + "</option>")
+    };
+
+    selector.addOption("None","Valitse");
+    $.each(species, function(key, s){
+        selector.append("<option disabled='disabled'>" + s + "</option>")
+        $.each(individuals[s], function(key, individual){
+            $.each(individual, function(individualId, taxon){
+                selector.addOption(individualId, taxon)
+            })
+        })
+    })
 };

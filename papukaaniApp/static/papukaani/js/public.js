@@ -45,6 +45,10 @@ var requestPath = function (deviceId) {
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
+    start = $("#start_time").val()
+    end = $("#end_time").val()
+    points = points_in_timerange(points, start, end)
+
     if (this.animation) {
         this.animation.clear();
         this.animation = null;
@@ -161,3 +165,18 @@ $(function () {
     });
 });
 
+function points_in_timerange(points ,start, end){
+    var a = start !== "" ? new Date(parseTime(start, "+00:00")) : new Date(1900,1,1,0,0,0,0);
+    var b = end !== "" ? new Date(parseTime(end, "+00:00")) : new Date();
+
+    var pts = []
+
+    for(var i = 0; i < points.length; i++){
+        if (dateIsBetween(new Date(points[i].dateTimeBegin), a, b)){
+            pts.push(points[i])
+        }
+    }
+    console.log(pts)
+
+    return pts
+}

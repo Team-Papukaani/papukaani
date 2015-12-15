@@ -10,7 +10,7 @@ function Animator(latlngs, individualname, map) {
     this.markerPosition = this.lastPosition;
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
     this.marker.addTo(this.map);
-    this.marker.bindPopup(this.getMarkerTimeStamp());
+    this.marker.bindPopup(this.popupContent());
     this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
     this.paused = true;
@@ -48,7 +48,6 @@ Animator.prototype.reInit = function (endtime) {
     var oldSpeed = $("#speedSlider").slider("option", "value");
     $("#speedSlider").slider("option", "value", 50);
     if (this.time > endtime) {
-        this.map.removeLayer(this.marker);
         this.map.clearLayers();
         this.polylines = [];
         this.pathIterator = new PathIterator(this.latlngs);
@@ -56,9 +55,8 @@ Animator.prototype.reInit = function (endtime) {
         this.time = this.pathIterator.getStartTime();
         this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
         this.markerPosition = this.lastPosition;
-        this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
-        this.marker.addTo(this.map);
-        this.marker.bindPopup(this.getMarkerTimeStamp());
+        this.marker.setLatLng(this.markerPosition.toArray());
+        this.marker._popup.setContent(this.popupContent());
         this.polyline = L.polyline([], polylineOptions);
         this.polyline.addTo(this.map);
         this.paused = true;

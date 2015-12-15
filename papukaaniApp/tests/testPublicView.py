@@ -84,12 +84,19 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(1)
         self.assertEquals(start, self.page.get_map_polyline_elements())
 
-    def test_marker_has_popup(self):
-        self.select_device_and_play()
-        self.page.play()
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_loaded(self):
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assert_popup_contents()
 
-        self.page.get_marker().click()
-        self.assertNotEquals(self.page.get_popup(), None)
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_playing(self):
+        self.select_device_and_play()
+        self.page.SINGLE_MARKER.click()
+        self.assert_popup_contents()
+
+    def assert_popup_contents(self):
+        popuptext = self.page.get_popup().get_attribute("innerHTML")
+        self.assertEquals("Birdie" in popuptext, True)
+        self.assertEquals("1234" in popuptext, True)
 
     def select_device_and_play(self):
         self.page.change_device_selection(str(self.I.individualId))

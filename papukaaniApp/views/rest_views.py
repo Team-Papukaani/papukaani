@@ -26,6 +26,10 @@ def getGatheringsForIndividual(request):
     '''
     indiv = individual.get(request.GET.get('individualId'))
     gatherings = [g.to_lajistore_json() for g in indiv.get_gatherings()]
+    for fact in indiv.facts:
+        if fact['name'] == 'nickname':
+            gatherings.append(fact['value'])
+            break
 
     return Response(gatherings)
 

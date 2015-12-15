@@ -20,13 +20,8 @@ function PublicMap() {
 }
 
 //Draws the polyline animation.
-PublicMap.prototype.animate = function (latlngs) {
-    this.animation = new Animator(latlngs, this.map);
-};
-
-//Path for private points REST.
-var requestPath = function (deviceId) {
-    return "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+PublicMap.prototype.animate = function (latlngs, individualname) {
+    this.animation = new Animator(latlngs, individualname, this.map);
 };
 
 //Redraws the polyline
@@ -36,15 +31,12 @@ PublicMap.prototype.changePoints = function (points) {
         this.animation = null;
     }
     try {
+        var individualname = points.pop();
         this.latlngs = this.createLatlngsFromPoints(points);
-        this.animate(this.latlngs);
+        this.animate(this.latlngs, individualname);
         this.animation.forwardToEnd();
     } catch (e) {
     }
-
-//    doc = points[0];
-//    pi = new PathIterator(doc.gatherings);
-//    time = pi.getStartTime();
 };
 
 //Plays the animation if paused, or pauses if currently playing.

@@ -1,6 +1,7 @@
-function Animator(latlngs, map) {
+function Animator(latlngs, individualname, map) {
     this.map = map;
     this.latlngs = latlngs;
+    this.individual = individualname;
     this.pathIterator = new PathIterator(latlngs);
     this.polylines = [];
     this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
@@ -38,6 +39,10 @@ Animator.prototype.getMarkerTimeStamp = function () {
     return date.toLocaleString()
 };
 
+Animator.prototype.popupContent = function () {
+    return this.individual + "<br>" + this.getMarkerTimeStamp();
+};
+
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
 Animator.prototype.reInit = function (endtime) {
     var oldSpeed = $("#speedSlider").slider("option", "value");
@@ -63,7 +68,7 @@ Animator.prototype.reInit = function (endtime) {
         this.drawPath(false);
     }
     this.marker.setLatLng(this.markerPosition.toArray());
-    this.marker._popup.setContent(this.getMarkerTimeStamp());
+    this.marker._popup.setContent(this.popupContent());
     $("#speedSlider").slider("option", "value", oldSpeed);
 };
 
@@ -92,7 +97,7 @@ Animator.prototype.drawPath = function (animated) {
 
     if (animated) {
         this.marker.setLatLng(this.markerPosition.toArray());
-        this.marker._popup.setContent(this.getMarkerTimeStamp());
+        this.marker._popup.setContent(this.popupContent());
         this.setSliderValue(this.time);
     }
     this.time += timeStep;
@@ -108,7 +113,7 @@ Animator.prototype.drawPath = function (animated) {
 
         if (animated) {
             this.marker.setLatLng(this.markerPosition.toArray());
-            this.marker._popup.setContent(this.getMarkerTimeStamp());
+            this.marker._popup.setContent(this.popupContent());
             this.setSliderValue(this.time);
         }
     }
@@ -298,18 +303,35 @@ Animator.prototype.createSlider = function (min, max, step) {
         // When the user stops moving the slider,
         // the animation will advance to the point indicated by the slider and continue playing if applicable.
         // Slider and label value will return to being controlled by the animation.
-        stop: function (event, ui) {
+        // Uses debounce to prevent event stacking and slowdown.
+        stop: debounce(function (event, ui) {
             if (this.stop()) var cont = true;
             this.reInit(ui.value);
             if (cont) this.start();
             this.sliderBeingMovedByUser = false;
-        }.bind(this)
+        }, 250).bind(this)
     });
 };
+
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+}
 
 Animator.prototype.forwardToEnd = function () {
     var slider = $("#playSlider");
     var max = slider.slider("option", "max");
     this.reInit(max);
+    this.marker.openPopup();
     this.animationComplete = true;
 };

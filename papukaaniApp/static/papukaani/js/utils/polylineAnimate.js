@@ -3,7 +3,8 @@ function Animator(latlngs, individualname, map) {
     this.latlngs = latlngs;
     this.individual = individualname;
     this.initializePathIterator();
-    this.initializeMarkerAndPolyLines();
+    this.initializeMarker();
+    this.initializePolyLines();
     this.initializeSlider();
 }
 
@@ -25,11 +26,15 @@ Animator.prototype.initializeSlider = function () {
     this.paused = true;
 };
 
-//Initializes the marker, its popup, and polylines.
-Animator.prototype.initializeMarkerAndPolyLines = function () {
+//Initializes the marker and its popup and adds them to the map.
+Animator.prototype.initializeMarker = function () {
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
     this.marker.addTo(this.map);
     this.marker.bindPopup(this.popupContent());
+};
+
+//Initializes polyline components and adds the master polyline to the map.
+Animator.prototype.initializePolyLines = function () {
     this.polylines = [];
     this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
@@ -48,21 +53,27 @@ Animator.prototype.popupContent = function () {
     return this.individual + "<br>" + this.getMarkerTimeStamp();
 };
 
+//Updates the marker's position and popup content.
+Animator.prototype.updateMarker = function () {
+    this.marker.setLatLng(this.markerPosition.toArray());
+    this.marker._popup.setContent(this.popupContent());
+};
+
+//Updates the marker location and popup content, and the slider's value.
+Animator.prototype.updateMarkerAndSlider = function () {
+    this.updateMarker();
+    this.setSliderValue(this.time);
+};
+
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
 Animator.prototype.reInit = function (endtime) {
     var oldSpeed = $("#speedSlider").slider("option", "value");
     $("#speedSlider").slider("option", "value", 50);
     if (this.time > endtime) {
         this.map.clearLayers();
-        this.polylines = [];
-        this.pathIterator = new PathIterator(this.latlngs);
-        this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
-        this.time = this.pathIterator.getStartTime();
-        this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
-        this.markerPosition = this.lastPosition;
+        this.initializePolyLines();
+        this.initializePathIterator();
         this.updateMarker();
-        this.polyline = L.polyline([], polylineOptions);
-        this.polyline.addTo(this.map);
         this.paused = true;
     }
 
@@ -122,24 +133,12 @@ Animator.prototype.drawPathEnd = function (animated) {
     }
 };
 
-//Updates the marker location and popup content, and the slider's value.
-Animator.prototype.updateMarkerAndSlider = function () {
-    this.updateMarker();
-    this.setSliderValue(this.time);
-};
-
 //New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
         color: 'blue',
         opacity: 1.0
     });
-};
-
-//Updates the marker's position and popup content.
-Animator.prototype.updateMarker = function () {
-    this.marker.setLatLng(this.markerPosition.toArray());
-    this.marker._popup.setContent(this.popupContent());
 };
 
 Animator.prototype.calculateTimeStep = function () {
@@ -194,6 +193,24 @@ Animator.prototype.stop = function () {
         this.paused = true;
         return true;
     }
+};
+
+//Forwards the animation until max time is reached.
+Animator.prototype.forwardToEnd = function () {
+    var slider = $("#playSlider");
+    var max = slider.slider("option", "max");
+    this.reInit(max);
+    this.marker.openPopup();
+    this.animationComplete = true;
+    $("#play").html("&#9658;");
+};
+
+//Removes the animation, effectively removing all markers and polylines created by it.
+Animator.prototype.clear = function () {
+    this.stop();
+    this.map.removeLayer(this.marker);
+    this.map.clearLayers();
+    $("#playSlider").slider("destroy");
 };
 
 // Iterates efficiently over objects that have coordinates as a Victor
@@ -267,35 +284,6 @@ var PathIterator = function (points) {
     };
 };
 
-//Removes the animation, effectively removing all markers and polylines created by it.
-Animator.prototype.clear = function () {
-    this.stop();
-    this.map.removeLayer(this.marker);
-    this.map.clearLayers();
-    createDummySlider();
-};
-
-//Adds clearLayers function, which removes all polylines, to Map.
-L.Map.include({
-    'clearLayers': function () {
-        this.eachLayer(function (layer) {
-            if ("_container" in layer) {
-                if (layer._container.toString().indexOf("SVGG") > -1) {
-                    this.removeLayer(layer);
-                }
-            }
-        }, this);
-    }
-});
-
-//Sets the slider to the desired value, unless it is currently being moved by the user.
-Animator.prototype.setSliderValue = function (value) {
-    if (!this.sliderBeingMovedByUser) {
-        var slider = $("#playSlider");
-        slider.slider("option", "value", value);
-    }
-};
-
 //Initializes a slider with an attached label showing current value.
 Animator.prototype.createSlider = function (min, max, step) {
     $("#playSlider").slider({
@@ -333,6 +321,14 @@ Animator.prototype.createSlider = function (min, max, step) {
     });
 };
 
+//Sets the slider to the desired value, unless it is currently being moved by the user.
+Animator.prototype.setSliderValue = function (value) {
+    if (!this.sliderBeingMovedByUser) {
+        var slider = $("#playSlider");
+        slider.slider("option", "value", value);
+    }
+};
+
 //Prevents function from being called too quickly in succession.
 function debounce(func, wait, immediate) {
     var timeout;
@@ -349,11 +345,15 @@ function debounce(func, wait, immediate) {
     };
 }
 
-//Forwards the animation until max time is reached.
-Animator.prototype.forwardToEnd = function () {
-    var slider = $("#playSlider");
-    var max = slider.slider("option", "max");
-    this.reInit(max);
-    this.marker.openPopup();
-    this.animationComplete = true;
-};
+//Adds clearLayers function, which removes all polylines, to Map.
+L.Map.include({
+    'clearLayers': function () {
+        this.eachLayer(function (layer) {
+            if ("_container" in layer) {
+                if (layer._container.toString().indexOf("SVGG") > -1) {
+                    this.removeLayer(layer);
+                }
+            }
+        }, this);
+    }
+});

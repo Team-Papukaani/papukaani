@@ -23,19 +23,9 @@ def individuals(request):
             _create_individual(request)
     return _return_with_context(request)
 
-<<<<<<< HEAD
 def _update_individual(request):
     if not _post_is_valid(request):
         return _return_with_context(request)
-=======
-            individuale = individual.create(request.POST.get('taxon'))
-            individuale.individualId = individuale.id
-            individuale.facts = [
-                {'name': 'nickname', 'value': request.POST.get('nickname')}
-            ]
-            individuale.update()
-            # Success message
->>>>>>> master
 
     individuale = individual.get(request.POST.get('id'))
     individuale.taxon = request.POST.get('taxon')

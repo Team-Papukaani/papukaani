@@ -16,7 +16,6 @@ class FileParserTest(TestCase):
                                                            altitude="Altitude",
                                                            temperature="Temperature", delimiter=",")
 
-
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", timestamp="DateTime",
@@ -24,7 +23,6 @@ class FileParserTest(TestCase):
                                                           altitude="Altitude_m",
                                                           temperature="temperature", delimiter="\t")
         self.byholm_parser.save()
-
 
     def tearDown(self):
         document.delete_all()
@@ -87,7 +85,6 @@ class FileParserTest(TestCase):
 
     def test_generating_timestamp_works_with_date_and_time_together(self):
         self.assertEqual(_extract_timestamp({'timestamp': '12-10-2014 10:01'}), '2014-10-12T10:01:00+00:00')
-
 
     def test_filename_and_datetime_goes_to_facts(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")

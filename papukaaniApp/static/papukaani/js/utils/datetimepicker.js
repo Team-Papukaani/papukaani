@@ -18,7 +18,7 @@ function parseTime(timestring, offset) {
         pad(Math.abs(offset%60), 2)) //+ ":00"
     }
 
-    return (dateparts[2] + "-" + dateparts[1] + "-" + dateparts[0] + 'T' + parts[1] + ":00" + offset);
+    return (dateparts[2] + "" + dateparts[1] + "." + dateparts[0] + 'T' + parts[1] + ":00" + offset);
 }
 
 function pad(number, length){
@@ -76,7 +76,7 @@ function initDatepicker(){
     });
 }
 
-initDatepicker()
+initDatepicker();
 
 
 

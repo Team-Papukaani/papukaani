@@ -2,40 +2,45 @@ function Animator(latlngs, individualname, map) {
     this.map = map;
     this.latlngs = latlngs;
     this.individual = individualname;
-    this.pathIterator = new PathIterator(latlngs);
-    this.polylines = [];
+    this.initializePathIterator();
+    this.initializeMarkerAndPolyLines();
+    this.initializeSlider();
+}
+
+//Initializes the PathIterator and its variables.
+Animator.prototype.initializePathIterator = function () {
+    this.pathIterator = new PathIterator(this.latlngs);
     this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
     this.time = this.pathIterator.getStartTime();
     this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
     this.markerPosition = this.lastPosition;
-    this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
-    this.marker.addTo(this.map);
-    this.marker.bindPopup(this.popupContent());
-    this.polyline = L.polyline([], polylineOptions);
-    this.polyline.addTo(this.map);
-    this.paused = true;
+};
+
+//Initializes the slider and its variables.
+Animator.prototype.initializeSlider = function () {
     this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
     $("#playLabel_end").text(new Date(this.pathIterator.getEndTime()).toLocaleString());
     this.setSliderValue(this.pathIterator.getStartTime());
     this.sliderBeingMovedByUser = false;
-}
+    this.paused = true;
+};
+
+//Initializes the marker, its popup, and polylines.
+Animator.prototype.initializeMarkerAndPolyLines = function () {
+    this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
+    this.marker.addTo(this.map);
+    this.marker.bindPopup(this.popupContent());
+    this.polylines = [];
+    this.polyline = L.polyline([], polylineOptions);
+    this.polyline.addTo(this.map);
+};
 
 //Default options for the main polyline.
 var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
 
-//Returns the points timestamp(ms) in the specified datetime format.
+//Returns the point's timestamp(ms) in locale-specific format.
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
-    /*return new Intl.DateTimeFormat('fi-FI', {
-     weekday: 'short',
-     day: 'numeric',
-     month: 'long',
-     year: 'numeric',
-     hour: 'numeric',
-     minute: 'numeric',
-     second: 'numeric',
-     timeZoneName: 'short'
-     }).format(date);*/
     return date.toLocaleString()
 };
 
@@ -55,8 +60,7 @@ Animator.prototype.reInit = function (endtime) {
         this.time = this.pathIterator.getStartTime();
         this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
         this.markerPosition = this.lastPosition;
-        this.marker.setLatLng(this.markerPosition.toArray());
-        this.marker._popup.setContent(this.popupContent());
+        this.updateMarker();
         this.polyline = L.polyline([], polylineOptions);
         this.polyline.addTo(this.map);
         this.paused = true;
@@ -65,8 +69,7 @@ Animator.prototype.reInit = function (endtime) {
     while (this.time < endtime) {
         this.drawPath(false);
     }
-    this.marker.setLatLng(this.markerPosition.toArray());
-    this.marker._popup.setContent(this.popupContent());
+    this.updateMarker();
     $("#speedSlider").slider("option", "value", oldSpeed);
 };
 
@@ -99,25 +102,29 @@ Animator.prototype.drawPath = function (animated) {
     }
     this.time += timeStep;
     if (this.time >= this.pathIterator.getEndTime()) {
-        this.time = this.pathIterator.getEndTime();
-        this.lastPosition = this.markerPosition;
-        this.markerPosition = this.pathIterator.getLastPoint().coordinates;
+        this.drawPathEnd(animated);
+    }
+};
 
-        var polyline = this.newPolyline();
+//Draws the final polyline when time exceeds or equals PathIterator's getEndTime.
+Animator.prototype.drawPathEnd = function (animated) {
+    this.time = this.pathIterator.getEndTime();
+    this.lastPosition = this.markerPosition;
+    this.markerPosition = this.pathIterator.getLastPoint().coordinates;
 
-        this.addNewPolyline(polyline);
-        this.updatePolylines();
+    var polyline = this.newPolyline();
 
-        if (animated) {
-            this.updateMarkerAndSlider();
-        }
+    this.addNewPolyline(polyline);
+    this.updatePolylines();
+
+    if (animated) {
+        this.updateMarkerAndSlider();
     }
 };
 
 //Updates the marker location and popup content, and the slider's value.
 Animator.prototype.updateMarkerAndSlider = function () {
-    this.marker.setLatLng(this.markerPosition.toArray());
-    this.marker._popup.setContent(this.popupContent());
+    this.updateMarker();
     this.setSliderValue(this.time);
 };
 
@@ -127,6 +134,12 @@ Animator.prototype.newPolyline = function () {
         color: 'blue',
         opacity: 1.0
     });
+};
+
+//Updates the marker's position and popup content.
+Animator.prototype.updateMarker = function () {
+    this.marker.setLatLng(this.markerPosition.toArray());
+    this.marker._popup.setContent(this.popupContent());
 };
 
 Animator.prototype.calculateTimeStep = function () {

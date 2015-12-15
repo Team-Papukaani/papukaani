@@ -155,6 +155,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
         self.A.update()
 
+
     def add_device(self):
         dev = {
             "deviceId": "Empty",

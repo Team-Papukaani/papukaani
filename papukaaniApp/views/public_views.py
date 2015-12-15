@@ -38,7 +38,9 @@ def public(request):
                 'species': json.dumps(ordered_species),
                 'display_navigation': display_navigation,
                 'device': request.GET.get('device', ''),
-                'speed': request.GET.get('speed', '')
+                'speed': request.GET.get('speed', ''),
+                'loc' : request.GET.get('loc', [61.0, 20.0]),
+                'zoom' : request.GET.get('zoom', 5)
                }
 
     return render(request, 'papukaaniApp/public.html', context)

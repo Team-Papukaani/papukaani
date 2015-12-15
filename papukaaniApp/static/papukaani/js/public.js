@@ -1,8 +1,10 @@
 function init(devices, defaultDevice, defaultSpeed) {
-    this.sorter = new DeviceSorter(devices);
-    map = new PublicMap(sorter.documents);
+    this.sorter = new DeviceSorter(devices, "../rest/gatheringsForIndividual?individualId=");
+
+    map = new PublicMap();
 
     this.sorter.setMap(map);
+
     createDummySlider();
 
     if (defaultDevice != '' && devices.indexOf(defaultDevice) != -1)

@@ -109,7 +109,6 @@ def _get(uri, **kwargs):
     if (kwargs):
         url += _add_query(**kwargs)
     response = requests.get(url, auth=_AUTH).json()
-
     return response
 
 

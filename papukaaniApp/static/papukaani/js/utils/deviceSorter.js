@@ -1,7 +1,8 @@
-function DeviceSorter(devices) {
+function DeviceSorter(devices, restUrl) {
 
     this.devices = devices;
-    this.documents = [];
+    this.points = [];
+    this.restUrl = restUrl
 
     this.createDeviceSelector(this.devices);
 
@@ -19,21 +20,21 @@ DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
         messagebox.text("Tietoja ladataan...");
         lockButtons();
         request = new XMLHttpRequest;
-        var path = requestPath(deviceId);
+        var path = this.requestPath(deviceId);
         request.open("GET", path, true);
         request.onreadystatechange = showPointsForDevice.bind(this);
         request.send(null);
     }
     else {
-        this.documents = [];
-        this.map.changePoints(extractPoints(this.documents));
+        this.points = [];
+        this.map.changePoints(this.points);
     }
     this.currentDevice = deviceId
 };
 
 //Path for all points REST.
-var requestPath = function (deviceId) {
-    return "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+DeviceSorter.prototype.requestPath = function (deviceId) {
+    return this.restUrl + deviceId + "&format=json";
 };
 
 //Extracts a list of points from the documents.
@@ -51,15 +52,12 @@ extractPoints = function (documents) {
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForDevice() {
     if (request.readyState === 4) {
-        this.documents = [];
-        var docs = JSON.parse(request.response);
-        for (var i = 0; i < docs.length; i++) {
-            this.documents.push(docs[i]);
-        }
-        this.map.changePoints(extractPoints(this.documents));
+        this.points = JSON.parse(request.response);
+
+        this.map.changePoints(this.points);
         var messagebox = $("#loading");
         messagebox.text("");
-        if (this.documents.length == 0) {
+        if (this.points.length == 0) {
             $("#selectDevice").attr("disabled", false);
             $("#reset").attr("disabled", false);
         }
@@ -85,7 +83,10 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
     }.bind(this));
 
     selector.addOption = function (option) {
-        selector.append("<option value='" + option + "'>" + option + "</option>")
+        val = option.id ? option.id : option
+        text = option.nickname ? option.nickname : option
+
+        selector.append("<option value='" + val + "'>" + text+ "</option>")
     };
 
     selector.addOption("None");

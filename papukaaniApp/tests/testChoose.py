@@ -11,8 +11,8 @@ _URL = '/papukaani/choose/'
 class TestChoose(TestCase):
     def setUp(self):
         self.c = Client()
-        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [22.2, 22.2])], "DeviceId")
-        self.B = document.create("TestB", [gathering.Gathering("1234-12-12T12:12:12+00:00", [32.2, 32.2])], "DeviceId")
+        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [22.2, 22.2])], "TestDevice1234")
+        self.B = document.create("TestB", [gathering.Gathering("1234-12-12T12:12:12+00:00", [32.2, 32.2])], "TestDevice2345")
 
     def tearDown(self):
         self.A.delete()
@@ -23,9 +23,9 @@ class TestChoose(TestCase):
         Bid = self.B.id
 
         self.A.gatherings[0].publicity = "public"
+        dev_data = {"deviceId":self.A.deviceId, "gatherings": [g.to_lajistore_json() for g in self.A.gatherings]}
 
-        response = self.c.post(_URL, {
-            'data': '['+  json.dumps(self.A.to_dict())+','+ json.dumps(self.B.to_dict())+']'})
+        response = self.c.post(_URL, data={"data" : json.dumps(dev_data)})
 
 
         self.A = document.get(id=Aid)

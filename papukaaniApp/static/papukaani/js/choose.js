@@ -230,7 +230,9 @@ function setLoadingMessage(request, messagebox) {
 }
 
 function init(devices, token) {
-    this.sorter = new DeviceSorter(devices, "../rest/gatheringsForDevice?devId=");
+    this.sorter = new DeviceSorter("../rest/gatheringsForDevice?devId=");
+    this.sorter.setDevices(devices)
+
     map = new ChooseMap(sorter);
     this.sorter.setMap(map);
     csrf_token = token;

@@ -32,4 +32,3 @@ def getGatheringsForIndividual(request):
             break
 
     return Response(gatherings)
-

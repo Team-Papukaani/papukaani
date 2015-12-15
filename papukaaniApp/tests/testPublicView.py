@@ -34,8 +34,8 @@ class PublicView(StaticLiveServerTestCase):
         }
 
 
-        self.I = individual.create(taxon="TAXON", facts=[{"name":"nickname", "value":"Birdie"}])
-        self.I2 = individual.create(taxon="TAXON2", facts=[{"name":"nickname", "value":"Birdie2"}])
+        self.I = individual.create(taxon="GAVSTE", facts=[{"name":"nickname", "value":"Birdie"}])
+        self.I2 = individual.create(taxon="GAVSTE", facts=[{"name":"nickname", "value":"Birdie2"}])
 
         self.D = device.create(**dev)
         self.D2 = device.create(**dev2)
@@ -68,7 +68,7 @@ class PublicView(StaticLiveServerTestCase):
     def test_no_points_are_shown_on_map_initially(self):
         self.assertEquals(self.page.get_number_of_points(), 0)
 
-    def test_can_choose_points_by_device(self):
+    def test_can_choose_points_by_individual(self):
         self.select_device_and_play()
         self.assertNotEquals(self.page.POLYLINE, None)
 

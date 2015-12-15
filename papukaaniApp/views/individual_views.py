@@ -46,7 +46,7 @@ def _create_individual(request):
     if not _post_is_valid(request):
         return _return_with_context(request)
 
-    individuale = individual.create(random.randint(10000000, 99999999), request.POST.get('taxon'))
+    individuale = individual.create(request.POST.get('taxon'))
     individuale.individualId = individuale.id
     individuale.facts = [
         {'name': 'nickname', 'value': request.POST.get('nickname')}

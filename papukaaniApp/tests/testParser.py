@@ -96,14 +96,19 @@ class FileParserTest(TestCase):
 
     def test_altitude_in_facts(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
-        time.sleep(3)
-        documents = document.get_all()
-        result = False
-        facts = documents[0].gatherings[0].facts
-        for fact in facts:
-            if fact["name"] == "altitude":
-                if fact["value"] == "1":
-                    result = True
+
+        for attempt in range(10):
+            documents = document.get_all()
+            result = False
+            facts = documents[0].gatherings[0].facts
+            for fact in facts:
+                if fact["name"] == "altitude":
+                    if fact["value"] == "1":
+                        result = True
+            if result:
+                break
+
+            time.sleep(2)
         self.assertEquals(result, True)
 
 

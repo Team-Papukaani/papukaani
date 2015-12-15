@@ -142,10 +142,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(self.page.save_button_is_enabled(), False)
         self.E.delete()
 
-    def test_save_button_is_disabled_after_reset(self):
-        self.page.reset()
-        self.assertEquals(self.page.save_button_is_enabled(), False)
-
     def test_disabled_button_cannot_be_clicked(self):
         self.page.driver.execute_script("arguments[0].disabled = 'true';", self.page.RESET_BUTTON)
         self.page.reset()

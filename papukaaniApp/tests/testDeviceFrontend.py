@@ -64,7 +64,7 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.assertFalse(self.page.ATTACHER.is_displayed())
 
     def test_attacher_is_shown_after_remove(self):
-        self.detach_and_assert("03-11-2015 00:00", True)
+        self.detach_and_assert("03.11.2015 00:00", True)
 
     def test_cant_remove_if_remove_time_is_before_attach_time(self):
         self.detach_and_assert("01.10.2015 02:00", False)

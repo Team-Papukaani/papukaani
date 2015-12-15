@@ -22,7 +22,7 @@ def getGatheringsForIndividual(request):
     '''
     REST-controller for getting bird-specific gatherings.
     :param request:
-    :return: A List of gatherings related to the bird.
+    :return: A List of gatherings related to the bird, with the bird's nickname appended to the end.
     '''
     indiv = individual.get(request.GET.get('individualId'))
     gatherings = [g.to_lajistore_json() for g in indiv.get_gatherings()]

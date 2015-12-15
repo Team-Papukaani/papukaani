@@ -72,7 +72,7 @@ Animator.prototype.reInit = function (endtime) {
     $("#speedSlider").slider("option", "value", oldSpeed);
 };
 
-//Animates the polylines and the marker on the map.
+//Begins animation of polyline drawing and marker movement.
 Animator.prototype.animate = function () {
     this.interval = setInterval(function () {
         this.drawPath(true);
@@ -85,6 +85,7 @@ Animator.prototype.animate = function () {
     }.bind(this), 100);
 };
 
+//Draws a polyline, with animation if parameter is true.
 Animator.prototype.drawPath = function (animated) {
     var timeStep = this.calculateTimeStep();
     this.lastPosition = this.markerPosition;
@@ -96,9 +97,7 @@ Animator.prototype.drawPath = function (animated) {
     this.updatePolylines();
 
     if (animated) {
-        this.marker.setLatLng(this.markerPosition.toArray());
-        this.marker._popup.setContent(this.popupContent());
-        this.setSliderValue(this.time);
+        this.updateMarkerAndSlider();
     }
     this.time += timeStep;
     if (this.time >= this.pathIterator.getEndTime()) {
@@ -112,11 +111,16 @@ Animator.prototype.drawPath = function (animated) {
         this.updatePolylines();
 
         if (animated) {
-            this.marker.setLatLng(this.markerPosition.toArray());
-            this.marker._popup.setContent(this.popupContent());
-            this.setSliderValue(this.time);
+            this.updateMarkerAndSlider();
         }
     }
+};
+
+//Updates the marker location and popup content, and the slider's value.
+Animator.prototype.updateMarkerAndSlider = function () {
+    this.marker.setLatLng(this.markerPosition.toArray());
+    this.marker._popup.setContent(this.popupContent());
+    this.setSliderValue(this.time);
 };
 
 //New polyline with default settings.
@@ -131,6 +135,7 @@ Animator.prototype.calculateTimeStep = function () {
     return $('#speedSlider').slider("option", "value") * this.timeBetweenFirstAndLast / 24000;
 };
 
+//Decreases opacity of polylines as distance to head grows, until the polyline is far enough.
 Animator.prototype.updatePolylines = function () {
     for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
         var line = this.polylines[j];
@@ -141,6 +146,7 @@ Animator.prototype.updatePolylines = function () {
     }
 };
 
+//Adds a new polyline to the map, and if numerous enough merges one from the tail to the master polyline to maintain performance.
 Animator.prototype.addNewPolyline = function (polyline) {
     this.polylines.push(polyline);
     if (this.polylines.length >= 20) {
@@ -210,7 +216,7 @@ var PathIterator = function (points) {
             var pointA = points[pointAIndex];
             var pointB = points[pointAIndex + 1];
 
-            if (pointB == undefined) {
+            if (pointB === undefined) {
                 pointB = pointA;
             }
 
@@ -247,7 +253,7 @@ var PathIterator = function (points) {
 
     this.getLastPoint = function () {
         return orderedPoints[orderedPoints.length - 1];
-    }
+    };
 };
 
 //Removes the animation, effectively removing all markers and polylines created by it.
@@ -258,11 +264,14 @@ Animator.prototype.clear = function () {
     createDummySlider();
 };
 
+//Adds clearLayers function, which removes all polylines, to Map.
 L.Map.include({
     'clearLayers': function () {
         this.eachLayer(function (layer) {
-            if (layer._container.toString().indexOf("SVGG") > -1) {
-                this.removeLayer(layer);
+            if ("_container" in layer) {
+                if (layer._container.toString().indexOf("SVGG") > -1) {
+                    this.removeLayer(layer);
+                }
             }
         }, this);
     }
@@ -313,21 +322,23 @@ Animator.prototype.createSlider = function (min, max, step) {
     });
 };
 
+//Prevents function from being called too quickly in succession.
 function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
+    var timeout;
+    return function () {
+        var context = this, args = arguments;
+        var later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
 }
 
+//Forwards the animation until max time is reached.
 Animator.prototype.forwardToEnd = function () {
     var slider = $("#playSlider");
     var max = slider.slider("option", "max");

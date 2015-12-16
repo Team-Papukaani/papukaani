@@ -235,6 +235,8 @@ class ChoosePage(PageWithDeviceSelector):
         Resets the page by clicking the reset button.
         """
         self.RESET_BUTTON.click()
+        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
 
     def set_start_time(self, string):
         self.START_TIME.send_keys(string)

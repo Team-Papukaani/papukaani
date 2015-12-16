@@ -1,32 +1,44 @@
-function init(devices, defaultDevice, defaultSpeed) {
-    this.sorter = new DeviceSorter(devices, "../rest/gatheringsForIndividual?individualId=");
+function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
+    this.sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
+    this.sorter.setIndividuals(individuals, species);
 
-    map = new PublicMap();
+    zoom = typeof zoom == 'number' ? zoom : 5
 
-    this.sorter.setMap(map);
+    if (!(loc && loc instanceof Array && loc.length == 2 && typeof loc[0] == "number" && typeof loc[1] == "number")) {
+        loc = [60, 20]
+    }
+
+    map = new PublicMap(loc, zoom);
 
     createDummySlider();
 
-    if (defaultDevice != '' && devices.indexOf(defaultDevice) != -1)
-        $('#selectDevice').val(defaultDevice);
+    this.sorter.setMap(map);
+
+    if (defaultDevice != '') {
+        try {
+            selector = $('#selectDevice');
+            selector.val(defaultDevice);
+            this.sorter.changeDeviceSelection(selector.val())
+        } catch (err) {
+        }
+    }
 
     if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
         $('#speedSlider').slider("option", "value", defaultSpeed);
 }
 
-function PublicMap() {
-    this.map = create_map("map", [61.0, 20.0], 5);
+function PublicMap(loc, zoom) {
+    this.map = create_map("map", loc, zoom);
     this.paused = true;
 }
 
 //Draws the polyline animation.
-PublicMap.prototype.animate = function (latlngs) {
-    this.animation = new Animator(latlngs, this.map);
-};
-
-//Path for private points REST.
-var requestPath = function (deviceId) {
-    return "../rest/documentsForDevice?devId=" + deviceId + "&format=json";
+PublicMap.prototype.animate = function (latlngs, individualname) {
+    if (latlngs && individualname) {
+        this.animation = new Animator(latlngs, individualname, this.map);
+    } else {
+        this.animation = null;
+    }
 };
 
 //Redraws the polyline
@@ -34,17 +46,17 @@ PublicMap.prototype.changePoints = function (points) {
     if (this.animation) {
         this.animation.clear();
         this.animation = null;
+        createDummySlider();
     }
-    try {
-        this.latlngs = this.createLatlngsFromPoints(points);
-        this.animate(this.latlngs);
-        this.animation.forwardToEnd();
-    } catch (e) {
+    if (points) {
+        try {
+            var individualname = points.pop();
+            this.latlngs = this.createLatlngsFromPoints(points);
+            this.animate(this.latlngs, individualname);
+            this.animation.forwardToEnd();
+        } catch (e) {
+        }
     }
-
-//    doc = points[0];
-//    pi = new PathIterator(doc.gatherings);
-//    time = pi.getStartTime();
 };
 
 //Plays the animation if paused, or pauses if currently playing.
@@ -124,9 +136,10 @@ $(function () {
 
 //Replaces the slider with a placeholder.
 var createDummySlider = function () {
-    $("#playSlider").slider = null;
+    $("#playSlider").slider({min: 0, max: 0, paddingMin: 7, paddingMax: 7});
     $("#playLabel").text("N/A");
     $("#playLabel_end").text("");
+    $("#play").html("&#9658;").prop("disabled", true);
 };
 
 function generateIframeUrl() {
@@ -134,7 +147,10 @@ function generateIframeUrl() {
     var url = 'http://' + window.location.hostname + window.location.pathname;
     var device = 'device=' + $('#selectDevice').val();
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
-    inputBox.val(url + '?' + device + '&' + speed);
+    var zoom = 'zoom=' + map.map.getZoom()
+    var ltlng = map.map.getCenter()
+    var loc = 'loc=' + "[" + ltlng.lat + "," + ltlng.lng + "]"
+    inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc);
     inputBox.select()
 }
 

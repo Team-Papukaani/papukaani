@@ -1,41 +1,68 @@
-function Animator(latlngs, map) {
+function Animator(latlngs, individualname, map) {
     this.map = map;
     this.latlngs = latlngs;
-    this.pathIterator = new PathIterator(latlngs);
-    this.polylines = [];
+    this.individual = individualname;
+    this.initializePathIterator();
+    this.initializeMarker();
+    this.initializePolyLines();
+    this.initializeSlider();
+}
+
+//Initializes the PathIterator and its variables.
+Animator.prototype.initializePathIterator = function () {
+    this.pathIterator = new PathIterator(this.latlngs);
     this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
     this.time = this.pathIterator.getStartTime();
     this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
     this.markerPosition = this.lastPosition;
-    this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
-    this.marker.addTo(this.map);
-    this.marker.bindPopup(this.getMarkerTimeStamp());
-    this.polyline = L.polyline([], polylineOptions);
-    this.polyline.addTo(this.map);
-    this.paused = true;
+};
+
+//Initializes the slider and its variables.
+Animator.prototype.initializeSlider = function () {
     this.createSlider(this.pathIterator.getStartTime(), this.pathIterator.getEndTime(), 1);
     $("#playLabel_end").text(new Date(this.pathIterator.getEndTime()).toLocaleString());
     this.setSliderValue(this.pathIterator.getStartTime());
     this.sliderBeingMovedByUser = false;
-}
+    this.paused = true;
+};
+
+//Initializes the marker and its popup and adds them to the map.
+Animator.prototype.initializeMarker = function () {
+    this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
+    this.marker.addTo(this.map);
+    this.marker.bindPopup(this.popupContent(), {autoPan: false});
+};
+
+//Initializes polyline components and adds the master polyline to the map.
+Animator.prototype.initializePolyLines = function () {
+    this.polylines = [];
+    this.polyline = L.polyline([], polylineOptions);
+    this.polyline.addTo(this.map);
+};
 
 //Default options for the main polyline.
 var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
 
-//Returns the points timestamp(ms) in the specified datetime format.
+//Returns the point's timestamp(ms) in locale-specific format.
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
-    /*return new Intl.DateTimeFormat('fi-FI', {
-     weekday: 'short',
-     day: 'numeric',
-     month: 'long',
-     year: 'numeric',
-     hour: 'numeric',
-     minute: 'numeric',
-     second: 'numeric',
-     timeZoneName: 'short'
-     }).format(date);*/
     return date.toLocaleString()
+};
+
+Animator.prototype.popupContent = function () {
+    return this.individual + "<br>" + this.getMarkerTimeStamp();
+};
+
+//Updates the marker's position and popup content.
+Animator.prototype.updateMarker = function () {
+    this.marker.setLatLng(this.markerPosition.toArray());
+    this.marker._popup.setContent(this.popupContent());
+};
+
+//Updates the marker location and popup content, and the slider's value.
+Animator.prototype.updateMarkerAndSlider = function () {
+    this.updateMarker();
+    this.setSliderValue(this.time);
 };
 
 //Changes the animator's state to match the specified time, in effect skipping the animation until the correct time is reached.
@@ -43,31 +70,21 @@ Animator.prototype.reInit = function (endtime) {
     var oldSpeed = $("#speedSlider").slider("option", "value");
     $("#speedSlider").slider("option", "value", 50);
     if (this.time > endtime) {
-        this.map.removeLayer(this.marker);
         this.map.clearLayers();
-        this.polylines = [];
-        this.pathIterator = new PathIterator(this.latlngs);
-        this.timeBetweenFirstAndLast = this.pathIterator.getEndTime() - this.pathIterator.getStartTime();
-        this.time = this.pathIterator.getStartTime();
-        this.lastPosition = this.pathIterator.getPositionAtTime(this.time);
-        this.markerPosition = this.lastPosition;
-        this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
-        this.marker.addTo(this.map);
-        this.marker.bindPopup(this.getMarkerTimeStamp());
-        this.polyline = L.polyline([], polylineOptions);
-        this.polyline.addTo(this.map);
+        this.initializePolyLines();
+        this.initializePathIterator();
+        this.updateMarker();
         this.paused = true;
     }
 
     while (this.time < endtime) {
         this.drawPath(false);
     }
-    this.marker.setLatLng(this.markerPosition.toArray());
-    this.marker._popup.setContent(this.getMarkerTimeStamp());
+    this.updateMarker();
     $("#speedSlider").slider("option", "value", oldSpeed);
 };
 
-//Animates the polylines and the marker on the map.
+//Begins animation of polyline drawing and marker movement.
 Animator.prototype.animate = function () {
     this.interval = setInterval(function () {
         this.drawPath(true);
@@ -80,6 +97,7 @@ Animator.prototype.animate = function () {
     }.bind(this), 100);
 };
 
+//Draws a polyline, with animation if parameter is true.
 Animator.prototype.drawPath = function (animated) {
     var timeStep = this.calculateTimeStep();
     this.lastPosition = this.markerPosition;
@@ -91,26 +109,27 @@ Animator.prototype.drawPath = function (animated) {
     this.updatePolylines();
 
     if (animated) {
-        this.marker.setLatLng(this.markerPosition.toArray());
-        this.marker._popup.setContent(this.getMarkerTimeStamp());
-        this.setSliderValue(this.time);
+        this.updateMarkerAndSlider();
     }
     this.time += timeStep;
     if (this.time >= this.pathIterator.getEndTime()) {
-        this.time = this.pathIterator.getEndTime();
-        this.lastPosition = this.markerPosition;
-        this.markerPosition = this.pathIterator.getLastPoint().coordinates;
+        this.drawPathEnd(animated);
+    }
+};
 
-        var polyline = this.newPolyline();
+//Draws the final polyline when time exceeds or equals PathIterator's getEndTime.
+Animator.prototype.drawPathEnd = function (animated) {
+    this.time = this.pathIterator.getEndTime();
+    this.lastPosition = this.markerPosition;
+    this.markerPosition = this.pathIterator.getLastPoint().coordinates;
 
-        this.addNewPolyline(polyline);
-        this.updatePolylines();
+    var polyline = this.newPolyline();
 
-        if (animated) {
-            this.marker.setLatLng(this.markerPosition.toArray());
-            this.marker._popup.setContent(this.getMarkerTimeStamp());
-            this.setSliderValue(this.time);
-        }
+    this.addNewPolyline(polyline);
+    this.updatePolylines();
+
+    if (animated) {
+        this.updateMarkerAndSlider();
     }
 };
 
@@ -126,6 +145,7 @@ Animator.prototype.calculateTimeStep = function () {
     return $('#speedSlider').slider("option", "value") * this.timeBetweenFirstAndLast / 24000;
 };
 
+//Decreases opacity of polylines as distance to head grows, until the polyline is far enough.
 Animator.prototype.updatePolylines = function () {
     for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
         var line = this.polylines[j];
@@ -136,6 +156,7 @@ Animator.prototype.updatePolylines = function () {
     }
 };
 
+//Adds a new polyline to the map, and if numerous enough merges one from the tail to the master polyline to maintain performance.
 Animator.prototype.addNewPolyline = function (polyline) {
     this.polylines.push(polyline);
     if (this.polylines.length >= 20) {
@@ -174,6 +195,24 @@ Animator.prototype.stop = function () {
     }
 };
 
+//Forwards the animation until max time is reached.
+Animator.prototype.forwardToEnd = function () {
+    var slider = $("#playSlider");
+    var max = slider.slider("option", "max");
+    this.reInit(max);
+    this.marker.openPopup();
+    this.animationComplete = true;
+    $("#play").html("&#9658;");
+};
+
+//Removes the animation, effectively removing all markers and polylines created by it.
+Animator.prototype.clear = function () {
+    this.stop();
+    this.map.removeLayer(this.marker);
+    this.map.clearLayers();
+    $("#playSlider").slider("destroy");
+};
+
 // Iterates efficiently over objects that have coordinates as a Victor
 // and time (time) (as milliseconds) as members.
 var PathIterator = function (points) {
@@ -205,7 +244,7 @@ var PathIterator = function (points) {
             var pointA = points[pointAIndex];
             var pointB = points[pointAIndex + 1];
 
-            if (pointB == undefined) {
+            if (pointB === undefined) {
                 pointB = pointA;
             }
 
@@ -242,33 +281,7 @@ var PathIterator = function (points) {
 
     this.getLastPoint = function () {
         return orderedPoints[orderedPoints.length - 1];
-    }
-};
-
-//Removes the animation, effectively removing all markers and polylines created by it.
-Animator.prototype.clear = function () {
-    this.stop();
-    this.map.removeLayer(this.marker);
-    this.map.clearLayers();
-    createDummySlider();
-};
-
-L.Map.include({
-    'clearLayers': function () {
-        this.eachLayer(function (layer) {
-            if (layer._container.toString().indexOf("SVGG") > -1) {
-                this.removeLayer(layer);
-            }
-        }, this);
-    }
-});
-
-//Sets the slider to the desired value, unless it is currently being moved by the user.
-Animator.prototype.setSliderValue = function (value) {
-    if (!this.sliderBeingMovedByUser) {
-        var slider = $("#playSlider");
-        slider.slider("option", "value", value);
-    }
+    };
 };
 
 //Initializes a slider with an attached label showing current value.
@@ -298,18 +311,49 @@ Animator.prototype.createSlider = function (min, max, step) {
         // When the user stops moving the slider,
         // the animation will advance to the point indicated by the slider and continue playing if applicable.
         // Slider and label value will return to being controlled by the animation.
-        stop: function (event, ui) {
+        // Uses debounce to prevent event stacking and slowdown.
+        stop: debounce(function (event, ui) {
             if (this.stop()) var cont = true;
             this.reInit(ui.value);
             if (cont) this.start();
             this.sliderBeingMovedByUser = false;
-        }.bind(this)
+        }, 250).bind(this)
     });
 };
 
-Animator.prototype.forwardToEnd = function () {
-    var slider = $("#playSlider");
-    var max = slider.slider("option", "max");
-    this.reInit(max);
-    this.animationComplete = true;
+//Sets the slider to the desired value, unless it is currently being moved by the user.
+Animator.prototype.setSliderValue = function (value) {
+    if (!this.sliderBeingMovedByUser) {
+        var slider = $("#playSlider");
+        slider.slider("option", "value", value);
+    }
 };
+
+//Prevents function from being called too quickly in succession.
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+        var context = this, args = arguments;
+        var later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
+//Adds clearLayers function, which removes all polylines, to Map.
+L.Map.include({
+    'clearLayers': function () {
+        this.eachLayer(function (layer) {
+            if ("_container" in layer) {
+                if (layer._container.toString().indexOf("SVGG") > -1) {
+                    this.removeLayer(layer);
+                }
+            }
+        }, this);
+    }
+});

@@ -34,8 +34,8 @@ class PublicView(StaticLiveServerTestCase):
         }
 
 
-        self.I = individual.create(taxon="TAXON", facts=[{"name":"nickname", "value":"Birdie"}])
-        self.I2 = individual.create(taxon="TAXON2", facts=[{"name":"nickname", "value":"Birdie2"}])
+        self.I = individual.create(taxon="GAVSTE", facts=[{"name":"nickname", "value":"Birdie"}])
+        self.I2 = individual.create(taxon="GAVSTE", facts=[{"name":"nickname", "value":"Birdie2"}])
 
         self.D = device.create(**dev)
         self.D2 = device.create(**dev2)
@@ -68,7 +68,7 @@ class PublicView(StaticLiveServerTestCase):
     def test_no_points_are_shown_on_map_initially(self):
         self.assertEquals(self.page.get_number_of_points(), 0)
 
-    def test_can_choose_points_by_device(self):
+    def test_can_choose_points_by_individual(self):
         self.select_device_and_play()
         self.assertNotEquals(self.page.POLYLINE, None)
 
@@ -84,12 +84,18 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(1)
         self.assertEquals(start, self.page.get_map_polyline_elements())
 
-    def test_marker_has_popup(self):
-        self.select_device_and_play()
-        self.page.play()
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_loaded(self):
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assert_popup_contents()
 
-        self.page.get_marker().click()
-        self.assertNotEquals(self.page.get_popup(), None)
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_playing(self):
+        self.select_device_and_play()
+        self.assert_popup_contents()
+
+    def assert_popup_contents(self):
+        popuptext = self.page.get_popup().get_attribute("innerHTML")
+        self.assertEquals("Birdie" in popuptext, True)
+        self.assertEquals("1234" in popuptext, True)
 
     def select_device_and_play(self):
         self.page.change_device_selection(str(self.I.individualId))
@@ -133,7 +139,17 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_iframe_url_is_correct(self):
         self.page.change_device_selection(str(self.I.individualId))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50', self.page.get_iframe_url())
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[61,20]', self.page.get_iframe_url())
+
+    def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
+        self.page.driver.get(self.page.url+"?zoom=6&loc=[20,40]")
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=6&loc=[20,40]', self.page.get_iframe_url())
+
+    def test_iframe_url_is_correct_if_url_parameters_are_invalid(self):
+        self.page.driver.get(self.page.url+"?zoom=5&loc=5")
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[60,20]', self.page.get_iframe_url())
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
         self.page.change_device_selection(str(self.I.individualId))

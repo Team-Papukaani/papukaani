@@ -17,6 +17,9 @@ class Individual:
         self.deleted = deleted
         self.facts = facts
 
+    def get_facts_as_dictionary(self):
+        return {fact['name']: fact['value'] for fact in self.facts}
+
     def delete(self):
         '''
         Deletes the individual from LajiStore. Note that the object is not destroyed!

@@ -1,10 +1,17 @@
-function DeviceSorter(devices, restUrl) {
+function DeviceSorter(restUrl) {
 
-    this.devices = devices;
     this.points = [];
-    this.restUrl = restUrl
+    this.restUrl = restUrl;
 
-    this.createDeviceSelector(this.devices);
+    this.setDevices = function (devices) {
+        this.createDeviceSelector(devices);
+        this.type = "Device"
+    };
+
+    this.setIndividuals = function (individuals, species) {
+        this.createIndividualSelector(individuals, species);
+        this.type = "Individual"
+    };
 
     this.setMap = function (map) {
         this.map = map
@@ -65,14 +72,6 @@ function showPointsForDevice() {
     }
 }
 
-//Resets the option selector to the default value.
-DeviceSorter.prototype.resetOption = function () {
-    var selector = document.getElementById("selectDevice");
-
-    selector.value = "None";
-    $("#save").attr("disabled", true);
-};
-
 //Creates a selector for devices.
 DeviceSorter.prototype.createDeviceSelector = function (devices) {
     var selector = $("#selectDevice");
@@ -90,8 +89,8 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
     };
 
     selector.addOption("None");
-    for (var i = 0; i < this.devices.length; i++) {
-        selector.addOption(this.devices[i])
+    for (var i = 0; i < devices.length; i++) {
+        selector.addOption(devices[i])
     }
 };
 
@@ -120,4 +119,30 @@ DeviceSorter.prototype.showSaveOrCancelPopup = function (deviceId) {
         popup.hide()
     }.bind(this));
     popup.show()
+};
+
+/* Individual spesifics */
+
+//Creates a selector for individuals (individualId:taxon).
+DeviceSorter.prototype.createIndividualSelector = function (individuals, species) {
+    var selector = $("#selectDevice");
+
+    selector.change(function (event) {
+        event.preventDefault();
+        this.changeDeviceSelection(selector.val())
+    }.bind(this));
+
+    selector.addOption = function (individualId, taxon) {
+        selector.append("<option value='" + individualId + "'>" + taxon + "</option>")
+    };
+
+    selector.addOption("None","Valitse");
+    $.each(species, function(key, s){
+        selector.append("<option disabled='disabled'>" + s + "</option>")
+        $.each(individuals[s], function(key, individual){
+            $.each(individual, function(individualId, taxon){
+                selector.addOption(individualId, taxon)
+            })
+        })
+    })
 };

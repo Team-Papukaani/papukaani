@@ -90,7 +90,6 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_marker_has_popup_with_individual_name_and_timestamp_when_playing(self):
         self.select_device_and_play()
-        self.page.SINGLE_MARKER.click()
         self.assert_popup_contents()
 
     def assert_popup_contents(self):

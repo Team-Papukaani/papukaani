@@ -92,6 +92,7 @@ class FileParserTest(TestCase):
         self.assertEqual(len(documents[0].gatherings[0].facts), 3)
 
     def test_altitude_in_facts(self):
+        document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
 
         for attempt in range(10):

@@ -30,7 +30,7 @@ Animator.prototype.initializeSlider = function () {
 Animator.prototype.initializeMarker = function () {
     this.marker = L.marker(this.markerPosition.toArray(), {zIndexOffset: 1000});
     this.marker.addTo(this.map);
-    this.marker.bindPopup(this.popupContent());
+    this.marker.bindPopup(this.popupContent(), {autoPan: false});
 };
 
 //Initializes polyline components and adds the master polyline to the map.

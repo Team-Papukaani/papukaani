@@ -2,13 +2,15 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
     this.sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
     this.sorter.setIndividuals(individuals, species);
 
-    zoom = typeof zoom == 'number' ? zoom : 5
+    zoom = typeof zoom == 'number' ? zoom : 5;
 
     if (!(loc && loc instanceof Array && loc.length == 2 && typeof loc[0] == "number" && typeof loc[1] == "number")) {
         loc = [60, 20]
     }
 
     map = new PublicMap(loc, zoom);
+
+    playSliderKeyboardControls();
 
     createDummySlider();
 
@@ -26,6 +28,26 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
     if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
         $('#speedSlider').slider("option", "value", defaultSpeed);
 }
+
+//Add play-on-spacebar-press to the map div, and prevent propagation of said event when play button is selected.
+var playSliderKeyboardControls = function () {
+    $('#map').bind('keyup', function (event) {
+        if (event.keyCode == 32) {
+            map.play();
+        }
+    });
+
+    $('#play').keyup(function (e) {
+        if (e.keyCode == 32) {
+            e.stopPropagation();
+        }
+    });
+
+    //Prevent screen scrolling when spacebar pressed.
+    window.onkeydown = function (e) {
+        return !(e.keyCode == 32);
+    };
+};
 
 function PublicMap(loc, zoom) {
     this.map = create_map("map", loc, zoom);

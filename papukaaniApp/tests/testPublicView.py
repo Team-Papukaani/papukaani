@@ -183,7 +183,18 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals("12.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel").text)
         self.assertEquals("13.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel_end").text)
 
-    def test_iframe_with_only_start_time_is_correct(self):
-        self.page.TIME_START.send_keys("11.12.2010 00:00")
+    def test_iframe_with_time_selection_is_correct(self):
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[61,20]' ,self.page.get_iframe_url())
 
+        self.page.TIME_START.send_keys("11.12.2010 00:00")
         self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[61,20]&start_time=11.12.2010 00:00' ,self.page.get_iframe_url())
+
+        self.page.TIME_END.send_keys("14.12.2010 00:00")
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[61,20]&start_time=11.12.2010 00:00&end_time=14.12.2010 00:00' ,self.page.get_iframe_url())
+
+    def test_time_selection_in_get_parameters_show_correct_time_selection(self):
+        self.page.driver.get(self.page.url+"?start_time=11.12.2010 00:00&end_time=14.12.2010 00:00")
+
+        self.assertEquals(self.page.TIME_START.value, "10.12.2010 00:00")
+        self.assertEquals(self.page.TIME_END.value, "14.12.2010 00:00")

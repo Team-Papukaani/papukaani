@@ -40,7 +40,9 @@ def public(request):
                 'device': request.GET.get('device', ''),
                 'speed': request.GET.get('speed', ''),
                 'loc' : request.GET.get('loc', [61.0, 20.0]),
-                'zoom' : request.GET.get('zoom', 5)
+                'zoom' : request.GET.get('zoom', 5),
+                'start_time' : request.get('start_time', ""),
+                'end_time' : request.get('end_time', "")
                }
 
     return render(request, 'papukaaniApp/public.html', context)

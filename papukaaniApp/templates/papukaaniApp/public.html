@@ -17,7 +17,7 @@
 
 </head>
 {% autoescape off %}
-<body onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }} , {{ zoom }})'>
+<body onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }} , {{ zoom }}, {{ start_time }}, {{ end_time }})'>
 {% endautoescape %}
 
 {% if display_navigation %}

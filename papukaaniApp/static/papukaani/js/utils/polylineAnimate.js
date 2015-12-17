@@ -49,6 +49,7 @@ Animator.prototype.getMarkerTimeStamp = function () {
     return date.toLocaleString()
 };
 
+//Content for the marker's popup.
 Animator.prototype.popupContent = function () {
     return this.individual + "<br>" + this.getMarkerTimeStamp();
 };
@@ -141,6 +142,7 @@ Animator.prototype.newPolyline = function () {
     });
 };
 
+//Determines how fast the animation progresses, based on speedSlider value and actual time-range of points.
 Animator.prototype.calculateTimeStep = function () {
     return $('#speedSlider').slider("option", "value") * this.timeBetweenFirstAndLast / 24000;
 };

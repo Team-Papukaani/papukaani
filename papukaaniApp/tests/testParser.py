@@ -109,6 +109,21 @@ class FileParserTest(TestCase):
             time.sleep(2)
         self.assertEquals(result, True)
 
+    def test_altitude_will_not_be_added_to_facts_if_value_is_empty(self):
+        document.delete_all()
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
+
+        documents = document.get_all()
+        result = True
+        facts = documents[0].gatherings[0].facts
+        for fact in facts:
+            if fact["name"] == "altitude":
+                if fact["value"] == "1":
+                    result = False
+                    break
+
+        self.assertEquals(result, True)
+
 
 def _create_points_from_ecotone(self, filename, time=datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")):
     path = settings.OTHER_ROOT + filename

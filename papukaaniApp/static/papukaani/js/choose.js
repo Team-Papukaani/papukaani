@@ -7,9 +7,8 @@ function ChooseMap(sorter) {
     this.markers = createEmptyMarkerClusterGroup();
 
     this.points = [];
-    this.originalpoints = [];
 
-    this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this)
+    this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this);
 
     this.unsaved = false
 }
@@ -36,22 +35,14 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
     try {
-        if (get_param('nofit') == 1) {
-        } else {
-            this.map.fitBounds(this.markers.getBounds(), {padding: [6, 6]})
-        }
+        this.map.fitBounds(this.markers.getBounds(), {padding: [6, 6]})
     } catch (e) {
     }
 };
 
-function get_param(name) {
-    if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
-        return decodeURIComponent(name[1]);
-}
-
 //Creates an empty MarkerClusterGroup with initial settings.
 function createEmptyMarkerClusterGroup() {
-    customCluster = function (cluster) {
+    var customCluster = function (cluster) {
         var childCount = cluster.getChildCount();
         var pubcount = getPublicChildCount(cluster);
 
@@ -80,7 +71,6 @@ function createEmptyMarkerClusterGroup() {
 //Changes the currently visible points to the ones given, taking into account the current time-selection.
 ChooseMap.prototype.changePoints = function (points) {
     this.unsaved = false;
-    this.originalpoints = points.slice();
     this.points = points;
     var start = document.getElementById("start_time");
     var end = document.getElementById("end_time");
@@ -114,6 +104,7 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
     clusterGroup.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this));
 };
 
+//Generates content for marker's popup. Info includes time and all applicable facts.
 var getPopupContentsForMarker = function (marker) {
     var content = "";
     content += new Date(marker.pnt.dateTimeBegin).toLocaleString();
@@ -123,9 +114,9 @@ var getPopupContentsForMarker = function (marker) {
         }
     }
     var facts = marker.pnt.facts;
-    for (var a in facts) {
-        if (a.name == "altitude") {
-            content += "<br>" + "Altitude: " + a.value;
+    for (var i = 0; i < facts.length; i++) {
+        if (facts[i].value) {
+            content += "<br>" + facts[i].name + ": " + facts[i].value;
         }
     }
     return content;
@@ -150,7 +141,7 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.
 ChooseMap.prototype.send = function () {
-    data = JSON.stringify({deviceId :  this.sorter.currentDevice ,gatherings : this.sorter.points});
+    data = JSON.stringify({deviceId: this.sorter.currentDevice, gatherings: this.sorter.points});
     var messagebox = $("#loading");
     messagebox.text("Tallennetaan...");
 

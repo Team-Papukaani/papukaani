@@ -138,7 +138,7 @@ def _additional_facts(point, oldfacts):
     :return: List with both original and newly added facts.
     """
     facts = oldfacts.copy()
-    if "altitude" in point:
+    if "altitude" in point and point["altitude"]:
         fact = {}
         fact["name"] = "altitude"
         fact["value"] = point["altitude"]

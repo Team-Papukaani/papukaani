@@ -48,7 +48,7 @@ function attachDevice(){
     var individualId = $("#individualId").val();
     var timestamp = parseTime($("#start_time").val());
 
-    if(deviceId && individualId && validate(timestamp, null, noOverlappingTimeSlices, notInFuture)){
+    if(deviceId && validateIndividual(individualId) && validate(timestamp, null, noOverlappingTimeSlices, notInFuture)){
         $("#attacher").hide();
 
         $.ajax({
@@ -78,7 +78,6 @@ function attachDevice(){
         errors.push("Kiinnitysajankohdan lisäys onnistui. ")
     }
     showErrors()
-
 }
 
 function removeDevice(index){
@@ -88,7 +87,7 @@ function removeDevice(index){
     var attached = devices_and_individuals[deviceId][index].attached;
     var timestamp = parseTime($("#remove_time").val());
 
-    if(deviceId && individualId && validate(timestamp, attached, attachedBeforeRemoved, notInFuture)){
+    if(deviceId && validateIndividual(individualId) && validate(timestamp, attached, attachedBeforeRemoved, notInFuture)){
         $("#attacher").show()
 
         devices_and_individuals[deviceId][index].removed = timestamp;
@@ -166,6 +165,14 @@ function validate(timestring, attached){
     }
 
     return valid
+}
+
+function validateIndividual(individualId){
+    if(individualId == null){
+        errors.push("Lintua ei määritelty! ")
+        return false
+    }
+    return true
 }
 
 function pruneTimestring(timestring){

@@ -1,4 +1,4 @@
-function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
+function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, start_time, end_time) {
     sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
     sorter.setIndividuals(individuals, species);
 
@@ -15,6 +15,10 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
     createDummySlider();
 
     this.sorter.setMap(map);
+
+    if(start_time !== "") $("#start_time").val(start_time)
+    if(end_time !== "") $("#end_time").val(end_time)
+
 
     if (defaultDevice != '') {
         try {
@@ -152,12 +156,24 @@ var createDummySlider = function () {
 function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
+
     var device = 'device=' + $('#selectDevice').val();
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
     var zoom = 'zoom=' + map.map.getZoom()
     var ltlng = map.map.getCenter()
     var loc = 'loc=' + "[" + ltlng.lat + "," + ltlng.lng + "]"
-    inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc);
+
+    var time = "";
+
+    var start_time = $("#start_time").val()
+    var end_time = $("#end_time").val()
+
+    if(start_time !== "" || end_time !== "") {
+        time += start_time !== "" ? "&start_time=" +start_time : "";
+        time += end_time !== "" ? "&end_time=" +end_time : "";
+    }
+
+    inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc + time);
     inputBox.select()
 }
 

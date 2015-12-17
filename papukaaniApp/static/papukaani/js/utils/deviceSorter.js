@@ -56,6 +56,7 @@ extractPoints = function (documents) {
     return points;
 };
 
+
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForDevice() {
     if (request.readyState === 4) {

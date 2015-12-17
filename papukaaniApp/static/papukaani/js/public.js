@@ -1,6 +1,6 @@
 function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
-    this.sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
-    this.sorter.setIndividuals(individuals, species);
+    sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
+    sorter.setIndividuals(individuals, species);
 
     zoom = typeof zoom == 'number' ? zoom : 5
 
@@ -11,7 +11,7 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
 
     map = new PublicMap(loc, zoom);
 
-    this.sorter.setMap(map);
+    sorter.setMap(map);
 
     createDummySlider();
 
@@ -19,7 +19,7 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
         try{
             selector = $('#selectDevice')
             selector.val(defaultDevice);
-            this.sorter.changeDeviceSelection(selector.val())
+            sorter.changeDeviceSelection(selector.val())
         } catch(err){
         }
     }
@@ -176,7 +176,6 @@ function points_in_timerange(points ,start, end){
             pts.push(points[i])
         }
     }
-    console.log(pts)
 
     return pts
 }

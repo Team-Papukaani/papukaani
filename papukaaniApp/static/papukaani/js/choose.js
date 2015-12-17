@@ -39,10 +39,18 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
     this.map.points = pointsWithinRange;
     this.map.addLayer(this.markers);
     try {
-        this.map.fitBounds(this.markers.getBounds(), {padding: [6, 6]})
+        if (get_param('nofit') == 1) {
+        } else {
+            this.map.fitBounds(this.markers.getBounds(), {padding: [6, 6]})
+        }
     } catch (e) {
     }
 };
+
+function get_param(name) {
+    if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+        return decodeURIComponent(name[1]);
+}
 
 //Creates an empty MarkerClusterGroup with initial settings.
 function createEmptyMarkerClusterGroup() {

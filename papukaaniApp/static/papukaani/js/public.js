@@ -164,12 +164,14 @@ function generateIframeUrl() {
     var loc = 'loc=' + "[" + ltlng.lat + "," + ltlng.lng + "]"
 
     var time = "";
+
+    var start_time = $("#start_time").val()
+    var end_time = $("#end_time").val()
+
     if(start_time !== "" || end_time !== "") {
-        time += start_time !== "" ? +"&start_time=" +start_time : "";
-        time += end_time !== "" ? +"&end_time=" +end_time : "";
+        time += start_time !== "" ? "&start_time=" +start_time : "";
+        time += end_time !== "" ? "&end_time=" +end_time : "";
     }
-    var start_time = 'start_time=' + $("#start_time").val()
-    var end_time = 'end_time=' + $("#end_time").val()
 
     inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc + time);
     inputBox.select()

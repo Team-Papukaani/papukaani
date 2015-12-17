@@ -182,3 +182,8 @@ class PublicView(StaticLiveServerTestCase):
 
         self.assertEquals("12.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel").text)
         self.assertEquals("13.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel_end").text)
+
+    def test_iframe_with_only_start_time_is_correct(self):
+        self.page.TIME_START.send_keys("11.12.2010 00:00")
+
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device='+str(self.I.individualId) +'&speed=50' + '&zoom=5&loc=[61,20]&start_time=11.12.2010 00:00' ,self.page.get_iframe_url())

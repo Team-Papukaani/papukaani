@@ -226,7 +226,7 @@ var PathIterator = function (points) {
     //the timestamp of a point, it returns that point.
     this.getPointAtTime = function (time) {
         var pointIndex = this.getPointIndexAtTime(time);
-        if (pointIndex === undefined) return null;
+        if (pointIndex == undefined) return null;
         return orderedPoints[pointIndex];
     };
 

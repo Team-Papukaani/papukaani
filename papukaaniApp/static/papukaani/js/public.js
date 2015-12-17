@@ -10,16 +10,14 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     map = new PublicMap(loc, zoom);
 
-    playSliderKeyboardControls();
-
     sorter.setMap(map);
 
     createDummySlider();
 
     this.sorter.setMap(map);
 
-    if(start_time !== "") $("#start_time").val(start_time)
-    if(end_time !== "") $("#end_time").val(end_time)
+    if (start_time !== "") $("#start_time").val(start_time);
+    if (end_time !== "") $("#end_time").val(end_time);
 
 
     if (defaultDevice != '') {
@@ -27,7 +25,7 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
             selector = $('#selectDevice');
             selector.val(defaultDevice);
             sorter.changeDeviceSelection(selector.val())
-        } catch(err){
+        } catch (err) {
         }
     }
 
@@ -50,9 +48,7 @@ var playSliderKeyboardControls = function () {
     });
 
     //Prevent screen scrolling when spacebar pressed.
-    window.onkeydown = function (e) {
-        return !(e.keyCode == 32);
-    };
+    $("#map").off("onkeydown");
 };
 
 function PublicMap(loc, zoom) {
@@ -191,9 +187,9 @@ function generateIframeUrl() {
     var start_time = $("#start_time").val();
     var end_time = $("#end_time").val();
 
-    if(start_time !== "" || end_time !== "") {
-        time += start_time !== "" ? "&start_time=" +start_time : "";
-        time += end_time !== "" ? "&end_time=" +end_time : "";
+    if (start_time !== "" || end_time !== "") {
+        time += start_time !== "" ? "&start_time=" + start_time : "";
+        time += end_time !== "" ? "&end_time=" + end_time : "";
     }
 
     inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc + time);
@@ -206,14 +202,14 @@ $(function () {
     });
 });
 
-function points_in_timerange(points ,start, end){
-    var a = start !== "" ? new Date(parseTime(start, "+00:00")) : new Date(1900,1,1,0,0,0,0);
+function points_in_timerange(points, start, end) {
+    var a = start !== "" ? new Date(parseTime(start, "+00:00")) : new Date(1900, 1, 1, 0, 0, 0, 0);
     var b = end !== "" ? new Date(parseTime(end, "+00:00")) : new Date();
 
     var pts = [];
 
-    for(var i = 0; i < points.length; i++){
-        if (dateIsBetween(new Date(points[i].dateTimeBegin), a, b)){
+    for (var i = 0; i < points.length; i++) {
+        if (dateIsBetween(new Date(points[i].dateTimeBegin), a, b)) {
             pts.push(points[i])
         }
     }

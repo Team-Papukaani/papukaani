@@ -10,6 +10,8 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     map = new PublicMap(loc, zoom);
 
+    playSliderKeyboardControls();
+
     sorter.setMap(map);
 
     createDummySlider();
@@ -48,7 +50,13 @@ var playSliderKeyboardControls = function () {
     });
 
     //Prevent screen scrolling when spacebar pressed.
-    $("#map").off("onkeydown");
+    window.onkeydown = function (e) {
+        var elem = e.target.nodeName;
+        if (e.keyCode == 32 && elem != "INPUT") {
+            e.preventDefault();
+            return false;
+        }
+    };
 };
 
 function PublicMap(loc, zoom) {

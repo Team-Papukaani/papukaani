@@ -9,6 +9,7 @@ from papukaaniApp.utils.view_utils import populate_facts
 @require_auth
 def devices(request):
     devices = device.get_all()
+    devices.sort(key=lambda x: x.deviceId)
     individuals = individual.get_all_exclude_deleted()
     populate_facts(individuals)
     selection = individuals

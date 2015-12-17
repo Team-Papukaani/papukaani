@@ -10,7 +10,10 @@ function ChooseMap(sorter) {
 
     this.showMarkersWithinTimeRange = this.showMarkersWithinTimeRange.bind(this);
 
-    this.unsaved = false
+    this.unsaved = false;
+
+    //True enables cluster spiderfying on all zoom levels. Performance issues with large clusters.
+    this.spiderfyOnAnyZoom = false;
 }
 
 //Updates the map to show all markers between start and end (strings that can be converted to Date).
@@ -102,6 +105,9 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
         markers.addLayer(marker);
     }
     clusterGroup.on('clusterdblclick', this.changeMarkerClusterPublicity.bind(this));
+    if (this.spiderfyOnAnyZoom) {
+        clusterGroup.on('clusterclick', this.spiderfyAnyZoom.bind(this))
+    }
 };
 
 //Generates content for marker's popup. Info includes time and all applicable facts.
@@ -137,6 +143,11 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
         redrawIcon(markers[i]);
     }
     this.markers.refreshClusters(markers);
+};
+
+//Spiderfy a cluster.
+ChooseMap.prototype.spiderfyAnyZoom = function (a) {
+    a.layer.spiderfy();
 };
 
 //Posts publicity data to server. Shows a message and disables the save button while waiting for response.

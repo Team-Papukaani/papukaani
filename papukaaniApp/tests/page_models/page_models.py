@@ -399,12 +399,11 @@ class FormatPage(Page):
     TIME = Element(By.ID, "time")
     LONGITUDE = Element(By.ID, "longitude")
     LATITUDE = Element(By.ID, "latitude")
-    DELIMITER = Element(By.ID, "delimiter")
     GPS_NUMBER = Element(By.ID, "gpsNumber")
     TEMPERATURE = Element(By.ID, "temperature")
     ALTITUDE = Element(By.ID, "altitude")
 
-    def input_values_and_submit(self, format_name, timestamp, date, time, longitude, latitude, delimiter, gps_number, temperature, altitude):
+    def input_values_and_submit(self, format_name, timestamp, date, time, longitude, latitude, gps_number, temperature, altitude):
         format_name_field = self.FORMAT_NAME
         format_name_field.send_keys(format_name)
         timestamp_field = self.TIMESTAMP
@@ -417,8 +416,6 @@ class FormatPage(Page):
         longitude_field.send_keys(longitude)
         latitude_field = self.LATITUDE
         latitude_field.send_keys(latitude)
-        delimiter_field = self.DELIMITER
-        delimiter_field.send_keys(delimiter)
         gps_number_field = self.GPS_NUMBER
         gps_number_field.send_keys(gps_number)
         temperature_field = self.TEMPERATURE

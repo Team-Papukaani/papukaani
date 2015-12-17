@@ -38,6 +38,7 @@ class Element:
         self.location_strategy = location_strategy
         self.locator = locator
 
+
     def __get__(self, instance, owner):
         driver = instance.driver
         try:

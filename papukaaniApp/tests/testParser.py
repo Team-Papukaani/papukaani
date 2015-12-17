@@ -73,11 +73,10 @@ class FileParserTest(TestCase):
         document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
         documents = document.get_all()
-        documents[0].gatherings[0].publicity = True
+        documents[0].gatherings[0].publicity = "public"
         document.update_from_dict(**documents)
-        print(**documents)
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
-        print(**document.get_all())
+        self.assertEquals(document.get_all()[0].gatherings[0].publicity, "public")
 
     def test_byholm_data_goes_to_lajiStore_succesfully(self):
         document.delete_all()

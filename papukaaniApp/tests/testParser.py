@@ -3,7 +3,6 @@ from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models_LajiStore import document, gathering
 from papukaaniApp.models import *
-from random import *
 import time
 from papukaaniApp.utils.parser import _extract_timestamp
 
@@ -72,9 +71,9 @@ class FileParserTest(TestCase):
     def test_gathering_publicity_remains_unchanged_after_unite(self):
         document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
-        documents = document.get_all()
-        documents[0].gatherings[0].publicity = "public"
-        document.update_from_dict(**documents)
+        documents = document.get_all()[0]
+        documents.gatherings[0].publicity = "public"
+        documents.update()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
         self.assertEquals(document.get_all()[0].gatherings[0].publicity, "public")
 

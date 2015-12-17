@@ -9,7 +9,7 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts = None, id=None, **kwargs):
+    def __init__(self, documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=None, id=None, **kwargs):
         self.id = id
         self.documentId = documentId
         self.lastModifiedAt = lastModifiedAt
@@ -33,7 +33,7 @@ class Document:
         '''
         self.lastModifiedAt = current_time_as_lajistore_timestamp()
         dict = self.to_dict()
-        LajiStoreAPI.update_document(**dict) #__dict__ puts all arguments here
+        LajiStoreAPI.update_document(**dict)  # __dict__ puts all arguments here
 
     def to_dict(self):
         dict = self.__dict__.copy()
@@ -49,8 +49,10 @@ def find(**kwargs):
     '''
     return _get_many(**kwargs)
 
+
 def update_from_dict(**kwargs):
     LajiStoreAPI.update_document(**kwargs)
+
 
 def get_all():
     '''
@@ -83,20 +85,22 @@ def create(documentId, gatherings, deviceId, facts=None, lastModifiedAt=None, cr
 
     document = Document(documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=facts)
 
-
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 
     return document
 
+
 def get_document_without_private_gatherings(id):
-    return find(filter={"gatherings_publicity" : "public"}, id = id)[0]
+    return find(filter={"gatherings_publicity": "public"}, id=id)[0]
+
 
 def delete_all():
     '''
     Deletes all documents. Can only be used in test enviroment.
     '''
     LajiStoreAPI.delete_all_documents()
+
 
 def _get_many(**kwargs):
     data = LajiStoreAPI.get_all_documents(**kwargs)
@@ -108,6 +112,3 @@ def _get_many(**kwargs):
 
 def _parse_gathering(data):
     return [gathering.from_lajistore_json(**point) for point in data]
-
-
-

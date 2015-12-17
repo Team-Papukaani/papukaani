@@ -173,6 +173,7 @@ class PublicView(StaticLiveServerTestCase):
         self.assertTrue("11" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("13" in self.page.driver.find_element_by_id("playLabel_end").text)
 
+
     def test_time_selection_refresh_button_works(self):
         self.page.change_device_selection(str(self.I.individualId))
 
@@ -184,3 +185,4 @@ class PublicView(StaticLiveServerTestCase):
 
         self.assertTrue("11" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("13" in self.page.driver.find_element_by_id("playLabel_end").text)
+

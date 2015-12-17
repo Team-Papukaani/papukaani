@@ -11,9 +11,11 @@ from django.conf import settings
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         self.A = document.create("TestA",
-                                 [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
-                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [63.01, 61.01],
-                                                      publicity="public")], "DeviceId")
+                                 [gathering.Gathering("2010-11-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
+                                  gathering.Gathering("2010-12-12T12:13:12+00:00", [63.01, 61.01], publicity="public"),
+                                  gathering.Gathering("2010-12-13T12:13:12+00:00", [65.01, 61.01], publicity="public"),
+                                  gathering.Gathering("2010-12-15T12:13:12+00:00", [68.01, 61.01], publicity="public")
+                                  ], "DeviceId")
         self.B = document.create("TestB",
                                  [gathering.Gathering("1235-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public")], "DeviceId2")
         dev = {
@@ -95,7 +97,7 @@ class PublicView(StaticLiveServerTestCase):
     def assert_popup_contents(self):
         popuptext = self.page.get_popup().get_attribute("innerHTML")
         self.assertEquals("Birdie" in popuptext, True)
-        self.assertEquals("1234" in popuptext, True)
+        self.assertEquals("2010" in popuptext, True)
 
     def select_device_and_play(self):
         self.page.change_device_selection(str(self.I.individualId))
@@ -159,3 +161,24 @@ class PublicView(StaticLiveServerTestCase):
         hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
         hover.perform()
         self.assertEquals(self.page.SPEED_SLIDER.get_attribute("aria-describedby"), "ui-id-1")
+
+    def test_time_selection_shows_correct_points(self):
+        self.page.TIME_START.send_keys("11.12.2010 00:00")
+        self.page.TIME_END.send_keys("14.12.2010 00:00")
+
+        self.page.change_device_selection(str(self.I.individualId))
+
+        self.assertEquals("12.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel").text)
+        self.assertEquals("13.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel_end").text)
+
+    def test_time_selection_refresh_button_works(self):
+        self.page.change_device_selection(str(self.I.individualId))
+
+        self.page.TIME_START.send_keys("11.12.2010 00:00")
+        self.page.TIME_END.send_keys("14.12.2010 00:00")
+
+        self.page.REFRESH.click()
+        time.sleep(1.5)
+
+        self.assertEquals("12.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel").text)
+        self.assertEquals("13.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel_end").text)

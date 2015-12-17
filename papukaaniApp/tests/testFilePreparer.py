@@ -14,13 +14,13 @@ class FilePreparerTest(TestCase):
                                                            timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
-                                                           temperature="Temperature", delimiter=",")
+                                                           temperature="Temperature")
         self.ecotone_parser.save()
 
         self.byholm_parser = GeneralParser.objects.create(formatName="byholm", timestamp="DateTime",
                                                           longitude="Longitude_E", latitude="Latitude_N",
                                                           altitude="Altitude_m",
-                                                          temperature="temperature", delimiter="\t")
+                                                          temperature="temperature")
         self.byholm_parser.save()
 
     def tearDown(self):

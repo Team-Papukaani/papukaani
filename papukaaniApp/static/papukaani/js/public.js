@@ -1,6 +1,6 @@
 function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
-    this.sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
-    this.sorter.setIndividuals(individuals, species);
+    sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
+    sorter.setIndividuals(individuals, species);
 
     zoom = typeof zoom == 'number' ? zoom : 5;
 
@@ -12,6 +12,8 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
 
     playSliderKeyboardControls();
 
+    sorter.setMap(map);
+
     createDummySlider();
 
     this.sorter.setMap(map);
@@ -20,8 +22,8 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom) {
         try {
             selector = $('#selectDevice');
             selector.val(defaultDevice);
-            this.sorter.changeDeviceSelection(selector.val())
-        } catch (err) {
+            sorter.changeDeviceSelection(selector.val())
+        } catch(err){
         }
     }
 
@@ -65,6 +67,12 @@ PublicMap.prototype.animate = function (latlngs, individualname) {
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
+
+    var individualname = points.pop();
+    var start = $("#start_time").val();
+    var end = $("#end_time").val();
+    points = points_in_timerange(points, start, end);
+
     if (this.animation) {
         this.animation.clear();
         this.animation = null;
@@ -72,7 +80,6 @@ PublicMap.prototype.changePoints = function (points) {
     }
     if (points) {
         try {
-            var individualname = points.pop();
             this.latlngs = this.createLatlngsFromPoints(points);
             this.animate(this.latlngs, individualname);
             this.animation.forwardToEnd();
@@ -169,9 +176,9 @@ function generateIframeUrl() {
     var url = 'http://' + window.location.hostname + window.location.pathname;
     var device = 'device=' + $('#selectDevice').val();
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
-    var zoom = 'zoom=' + map.map.getZoom()
-    var ltlng = map.map.getCenter()
-    var loc = 'loc=' + "[" + ltlng.lat + "," + ltlng.lng + "]"
+    var zoom = 'zoom=' + map.map.getZoom();
+    var ltlng = map.map.getCenter();
+    var loc = 'loc=' + "[" + ltlng.lat + "," + ltlng.lng + "]";
     inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc);
     inputBox.select()
 }
@@ -182,3 +189,17 @@ $(function () {
     });
 });
 
+function points_in_timerange(points ,start, end){
+    var a = start !== "" ? new Date(parseTime(start, "+00:00")) : new Date(1900,1,1,0,0,0,0);
+    var b = end !== "" ? new Date(parseTime(end, "+00:00")) : new Date();
+
+    var pts = [];
+
+    for(var i = 0; i < points.length; i++){
+        if (dateIsBetween(new Date(points[i].dateTimeBegin), a, b)){
+            pts.push(points[i])
+        }
+    }
+
+    return pts
+}

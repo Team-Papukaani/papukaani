@@ -22,7 +22,6 @@ class TestFormatsView(TestCase):
             "timestamp" : "testTime",
             "latitude": "latitude",
             "longitude" : "longitude",
-            "delimiter" : ","
         })
 
         self.assertEquals(len(GeneralParser.objects.all()), 1)
@@ -35,7 +34,6 @@ class TestFormatsView(TestCase):
             "gpsTime" : "testGPS",
             "latitude": "latitude",
             "longitude" : "longitude",
-            "delimiter" : ","
         })
 
         self.assertEquals(len(GeneralParser.objects.all()), 0)

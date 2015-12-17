@@ -22,14 +22,12 @@ def prepare_file(uploaded_file, parser, static_gps_number=False):
     :return: A dictionary containing every event as named values.
     """
     filestream = _uploaded_file_to_filestream(uploaded_file).read()
-    reader = csv.reader(filestream.splitlines(), delimiter=parser.delimiter)
+    dialect = csv.Sniffer().sniff(filestream.splitlines()[0])
+    reader = csv.reader(filestream.splitlines(), dialect=dialect)
 
     results = [row for row in reader]
 
-    lines = []
-    for line in results:
-        lines.append(line)
-    return _to_dictionary(lines, parser, static_gps_number)
+    return _to_dictionary(results, parser, static_gps_number)
 
 def _to_dictionary(lines, parser, static_gps_number = False):
     _check_that_file_is_valid(lines, parser)

@@ -33,6 +33,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         b = (end != "" ? b : timestamp);
         return dateIsBetween(timestamp, a, b)
     });
+
     this.removeAllMarkers.call(this);
     this.createMarkersFromPoints(pointsWithinRange, this.markers);
     this.map.points = pointsWithinRange;

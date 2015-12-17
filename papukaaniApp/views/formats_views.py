@@ -61,13 +61,11 @@ def _parser_is_valid(parser):
         return False
     if not parser["latitude"]:
         return False
-    if not  parser["delimiter"]:
-        return False
     if not parser["timestamp"]:
         if not parser["time"]:
             return False
         if not parser["date"]:
-            return True
+            return False
     return True
 
 

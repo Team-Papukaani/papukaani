@@ -17,6 +17,5 @@ class GeneralParser(models.Model):
     latitude = models.CharField(max_length=50)
     altitude = models.CharField(max_length=50, blank=True)
     temperature = models.CharField(max_length=50, blank=True)
-    delimiter = models.CharField(max_length=50)
 
     possible_column_names = ["gpsNumber", "timestamp", "longitude", "latitude", "temperature", "altitude", "time", "date"]

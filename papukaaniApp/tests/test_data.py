@@ -6,5 +6,4 @@ def create_jouko_parser():
              formatName="jouko",
              latitude="Latitude(N)",
              longitude="Longitude(E)",
-             time='Time', date='Date',
-             delimiter="\t")
+             time='Time', date='Date')

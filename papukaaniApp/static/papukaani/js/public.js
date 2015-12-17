@@ -49,10 +49,10 @@ PublicMap.prototype.animate = function (latlngs, individualname) {
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (points) {
-    var individualname = points.pop();
 
-    start = $("#start_time").val()
-    end = $("#end_time").val()
+    var individualname = points.pop();
+    var start = $("#start_time").val()
+    var end = $("#end_time").val()
     points = points_in_timerange(points, start, end)
 
     if (this.animation) {

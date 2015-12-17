@@ -302,16 +302,6 @@ class DevicePage(PageWithDeviceSelector):
     def get_individual_name(self, individualId):
         return self.driver.find_element_by_id("name" + str(individualId)).text
 
-    #
-    # def get_number_of_points(self):
-    #     plines = self.get_map_polyline_elements()
-    #     no_of_pts = 0
-    #     for line in plines:
-    #         d = line.find_element_by_tag_name("path").get_attribute("d")
-    #         no_of_pts += (len(d.split()) - 2)
-    #
-    #     return no_of_pts
-
     def attach_individual(self, bird, timestamp):
         selector = self.driver.find_element_by_id("individualId")
         sel = Select(selector)
@@ -331,28 +321,45 @@ class IndividualPage(Page):
     NEW_FORM = Element(By.ID, 'new_individual_form')
     NEW_NAME_FIELD = Element(By.ID, 'new_individual_nickname')
     NEW_TAXON_FIELD = Element(By.XPATH, '//input[@name="taxon"][1]')
-    FIRST_MODIFY_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/select[1]')
+    FIRST_TAXON_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="taxon"]')
     FIRST_NICKNAME_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="nickname"]')
     FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
     DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
+    MESSAGE = Element(By.ID, 'messages')
+
+    def get_message(self):
+        """
+        :return: The message after user action.
+        """
+        return self.MESSAGE.get_attribute('innerHTML')
 
     def create_new_individual(self, taxon, name):
         """
         Inputs the name of the new individual and submits the form.
         """
-        self.driver.execute_script('return $("[name=\'taxon\']").attr("type", "text");') # set taxon field visible for input
+        self.set_taxon_field_visible_for_input()
         namefield2 = self.NEW_TAXON_FIELD
         namefield2.send_keys(taxon)
 
         namefield = self.NEW_NAME_FIELD
         namefield.send_keys(name)
         namefield.submit()
+        time.sleep(5)
+
+    def set_taxon_field_visible_for_input(self):
+        for attempt in range(10):
+            try:
+                self.driver.execute_script(
+                'return $("[name=\'taxon\']").attr("type", "text");')  # set taxon field visible for input
+                break
+            except:
+                time.sleep(1)
 
     def get_first_individual_taxon(self):
-        self.driver.execute_script('return $(".comobox").show;') # set taxon select visible
-        return self.FIRST_MODIFY_FIELD.get_attribute("value")
+        self.driver.execute_script('return $(".combobox").show;') # set taxon select visible
+        return self.FIRST_TAXON_FIELD.get_attribute("value")
 
     def get_first_individual_nickname(self):
         return self.FIRST_NICKNAME_FIELD.get_attribute("value")

@@ -93,6 +93,7 @@ class PublicPage(PageWithDeviceSelector):
     IFRAME_BUTTON = Element(By.ID, 'generateIframeButton')
     TIME_START = Element(By.ID, 'start_time')
     TIME_END = Element(By.ID, 'end_time')
+    REFRESH = Element(By.ID, "show_time_range")
 
     def __init__(self):
         super().__init__()

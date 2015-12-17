@@ -55,7 +55,6 @@ def delete_format(request, id):
 
 
 def _parser_is_valid(parser):
-    import pdb; pdb.set_trace()
     if not parser["formatName"]:
         return False
     if not parser["longitude"]:

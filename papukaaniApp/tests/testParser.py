@@ -118,9 +118,8 @@ class FileParserTest(TestCase):
         facts = documents[0].gatherings[0].facts
         for fact in facts:
             if fact["name"] == "altitude":
-                if fact["value"] == "1":
-                    result = False
-                    break
+                result = False
+                break
 
         self.assertEquals(result, True)
 

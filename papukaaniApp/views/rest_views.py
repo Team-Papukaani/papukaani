@@ -11,7 +11,7 @@ def getGatheringsForDevice(request):
     :return: List of documents that match the deviceId.
     """
     docs = document.find(deviceId=request.GET.get('devId'))
-    gatherings = docs[0].gatherings if len(docs)>0 else []
+    gatherings = docs[0].gatherings if len(docs) > 0 else []
 
     docs = [g.to_lajistore_json() for g in gatherings]
     return Response(docs)
@@ -26,9 +26,25 @@ def getGatheringsForIndividual(request):
     '''
     indiv = individual.get(request.GET.get('individualId'))
     gatherings = [g.to_lajistore_json() for g in indiv.get_gatherings()]
+    for g in gatherings:
+        remove_unwanted_info_from_gathering(g)
     for fact in indiv.facts:
         if fact['name'] == 'nickname':
             gatherings.append(fact['value'])
             break
 
     return Response(gatherings)
+
+
+def remove_unwanted_info_from_gathering(gathering):
+    """
+    Removes any unwanted information from the gathering before sending.
+    :param gathering: Gathering to be processed.
+    :return: Gathering containing only necessary information.
+    """
+    if 'facts' in gathering:
+        del gathering['facts']
+    if 'publicity' in gathering:
+        del gathering['publicity']
+    if 'temperatureCelsius' in gathering:
+        del gathering['temperatureCelsius']

@@ -196,5 +196,5 @@ class PublicView(StaticLiveServerTestCase):
     def test_time_selection_in_get_parameters_show_correct_time_selection(self):
         self.page.driver.get(self.page.url+"?start_time=11.12.2010 00:00&end_time=14.12.2010 00:00")
 
-        self.assertEquals(self.page.TIME_START.value, "10.12.2010 00:00")
-        self.assertEquals(self.page.TIME_END.value, "14.12.2010 00:00")
+        self.assertEquals(self.page.TIME_START.get_attribute("value"), "11.12.2010 00:00")
+        self.assertEquals(self.page.TIME_END.get_attribute("value"), "14.12.2010 00:00")

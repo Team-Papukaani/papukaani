@@ -33,7 +33,6 @@ def show_format(request, id):
                 parser.save()
                 messages.add_message(request, messages.SUCCESS, "Muutokset tallennettu!")
             else:
-                print(data)
                 GeneralParser.objects.create(**data)
                 messages.add_message(request, messages.SUCCESS, "Formaatti tallennettu!")
         except:

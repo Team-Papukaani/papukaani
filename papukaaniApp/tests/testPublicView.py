@@ -11,8 +11,8 @@ from django.conf import settings
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         self.A = document.create("TestA",
-                                 [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
-                                  gathering.Gathering("1234-12-12T12:13:12+00:00", [63.01, 61.01],
+                                 [gathering.Gathering("2010-11-12T12:12:12+00:00", [23.00, 61.00], publicity="public"),
+                                  gathering.Gathering("2010-12-12T12:13:12+00:00", [63.01, 61.01],
                                                       publicity="public")], "DeviceId")
         self.B = document.create("TestB",
                                  [gathering.Gathering("1235-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public")], "DeviceId2")
@@ -84,12 +84,18 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(1)
         self.assertEquals(start, self.page.get_map_polyline_elements())
 
-    def test_marker_has_popup(self):
-        self.select_device_and_play()
-        self.page.play()
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_loaded(self):
+        self.page.change_device_selection(str(self.I.individualId))
+        self.assert_popup_contents()
 
-        self.page.get_marker().click()
-        self.assertNotEquals(self.page.get_popup(), None)
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_playing(self):
+        self.select_device_and_play()
+        self.assert_popup_contents()
+
+    def assert_popup_contents(self):
+        popuptext = self.page.get_popup().get_attribute("innerHTML")
+        self.assertEquals("Birdie" in popuptext, True)
+        self.assertEquals("1234" in popuptext, True)
 
     def select_device_and_play(self):
         self.page.change_device_selection(str(self.I.individualId))
@@ -153,3 +159,9 @@ class PublicView(StaticLiveServerTestCase):
         hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
         hover.perform()
         self.assertEquals(self.page.SPEED_SLIDER.get_attribute("aria-describedby"), "ui-id-1")
+
+    def test_timeselection_shows_correct_points(self):
+        "2010-11-12T12:12:12+00:00"
+        self.page.TIME_START.send_keys()
+
+        self.page.change_device_selection(str(self.I.individualId))

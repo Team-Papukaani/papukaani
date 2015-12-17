@@ -66,13 +66,13 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.double_click_marker()
         self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
         self.page.reset()
-        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
         self.assertEquals(0, self.page.number_of_partially_public_clusters_on_map())
 
     def test_reset_button_clears_time_range_fields(self):
-        self.page.set_start_time("12-12-1234 00:00")
-        self.page.set_end_time("12-12-1234 00:00")
+        self.page.set_start_time("12.12.1234 00:00")
+        self.page.set_end_time("12.12.1234 00:00")
         self.page.reset()
         self.assertEquals(self.page.get_start_time(), '')
         self.assertEquals(self.page.get_end_time(), '')
@@ -83,14 +83,14 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
 
     def test_filtering_points_with_time_range(self):
-        self.page.set_start_time("12-12-1234 12:12")
-        self.page.set_end_time("12-12-1234 12:13")
+        self.page.set_start_time("12.12.1234 12:12")
+        self.page.set_end_time("12.12.1234 12:13")
         self.page.show_time_range()
         self.assertEquals(self.page.get_cluster_size(), "0/1")
 
     def test_filtering_with_end_time_starting_before_start_time_returns_no_points(self):
-        self.page.set_start_time("13-12-1234 00:00")
-        self.page.set_end_time("12-12-1234 00:00")
+        self.page.set_start_time("13.12.1234 00:00")
+        self.page.set_end_time("12.12.1234 00:00")
         self.page.show_time_range()
         self.assertEquals(self.page.number_of_private_clusters_on_map(), 0)
 
@@ -141,10 +141,6 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.change_device_selection("Empty")
         self.assertEquals(self.page.save_button_is_enabled(), False)
         self.E.delete()
-
-    def test_save_button_is_disabled_after_reset(self):
-        self.page.reset()
-        self.assertEquals(self.page.save_button_is_enabled(), False)
 
     def test_disabled_button_cannot_be_clicked(self):
         self.page.driver.execute_script("arguments[0].disabled = 'true';", self.page.RESET_BUTTON)

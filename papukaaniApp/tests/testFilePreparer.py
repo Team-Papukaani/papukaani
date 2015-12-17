@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models import *
 from papukaaniApp.models_LajiStore import document
+from papukaaniApp.tests.test_data import create_jouko_parser
 
 
 class FilePreparerTest(TestCase):
@@ -40,11 +41,11 @@ class FilePreparerTest(TestCase):
         assert len(entries) == 5
 
     def test_file_with_separate_time_and_date_is_correct(self):
-        _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko.txt').readlines(), test_data.jouko_parser) #Raises exception if not validd
+        _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko.txt').readlines(), test_data.create_jouko_parser()) #Raises exception if not valid
 
     def test_file_with_missing_headers_is_not_correct(self):
         with self.assertRaises(AssertionError):
-            _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko_invalid.txt').readlines(), test_data.jouko_parser)
+            _check_that_file_is_valid(open('papukaaniApp/tests/test_files/Jouko_invalid.txt').readlines(), test_data.create_jouko_parser())
 
     def test_file_parsing(self):
         path = settings.OTHER_ROOT + "/Ecotones_gps_pos_test.csv"

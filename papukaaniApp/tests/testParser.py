@@ -69,6 +69,16 @@ class FileParserTest(TestCase):
         self.assertEquals(facts[1]["value"], "24-11-2015, 00-00-00")
         self.assertEquals(facts[3]["value"], "01-01-1000, 00-00-00")
 
+    def test_gathering_publicity_remains_unchanged_after_unite(self):
+        document.delete_all()
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
+        documents = document.get_all()
+        documents[0].gatherings[0].publicity = True
+        document.update_from_dict(**documents)
+        print(**documents)
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
+        print(**document.get_all())
+
     def test_byholm_data_goes_to_lajiStore_succesfully(self):
         document.delete_all()
         path = settings.OTHER_ROOT + "/byholm_test.txt"

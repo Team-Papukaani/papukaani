@@ -36,17 +36,16 @@ Animator.prototype.initializeMarker = function () {
 //Initializes polyline components and adds the master polyline to the map.
 Animator.prototype.initializePolyLines = function () {
     this.polylines = [];
+    //Default options for the main polyline.
+    var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
     this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
 };
 
-//Default options for the main polyline.
-var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
-
 //Returns the point's timestamp(ms) in locale-specific format.
 Animator.prototype.getMarkerTimeStamp = function () {
     var date = new Date(this.time);
-    return date.toLocaleString()
+    return date.toLocaleString();
 };
 
 //Content for the marker's popup.
@@ -227,14 +226,18 @@ var PathIterator = function (points) {
     //the timestamp of a point, it returns that point.
     this.getPointAtTime = function (time) {
         var pointIndex = this.getPointIndexAtTime(time);
-        if (pointIndex == undefined) return null;
+        if (pointIndex === undefined) return null;
         return orderedPoints[pointIndex];
     };
 
     //Helper function
     this.getPointIndexAtTime = function (time) {
-        if (time < this.getStartTime()) return null;
-        while (currentIndex < orderedPoints.length - 1 && time >= orderedPoints[currentIndex + 1].time) currentIndex++;
+        if (time < this.getStartTime()) {
+            return null;
+        }
+        while (currentIndex < orderedPoints.length - 1 && time >= orderedPoints[currentIndex + 1].time) {
+            currentIndex++;
+        }
         return currentIndex;
     };
 
@@ -315,9 +318,14 @@ Animator.prototype.createSlider = function (min, max, step) {
         // Slider and label value will return to being controlled by the animation.
         // Uses debounce to prevent event stacking and slowdown.
         stop: debounce(function (event, ui) {
-            if (this.stop()) var cont = true;
+            var cont = false;
+            if (this.stop()) {
+                cont = true;
+            }
             this.reInit(ui.value);
-            if (cont) this.start();
+            if (cont) {
+                this.start();
+            }
             this.sliderBeingMovedByUser = false;
         }, 250).bind(this)
     });
@@ -338,12 +346,16 @@ function debounce(func, wait, immediate) {
         var context = this, args = arguments;
         var later = function () {
             timeout = null;
-            if (!immediate) func.apply(context, args);
+            if (!immediate) {
+                func.apply(context, args);
+            }
         };
         var callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
+        if (callNow) {
+            func.apply(context, args);
+        }
     };
 }
 

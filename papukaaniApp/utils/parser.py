@@ -42,7 +42,6 @@ def _gpsNumberCheck(collections, devices, parser, gpsNumber):
 
 
 def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
-
     timestamp = _extract_timestamp(point)
     try:
         gathering = _generate_gathering(gathering_facts, point, timestamp)
@@ -66,7 +65,6 @@ def _generate_gathering(gathering_facts, point, timestamp):
         temperature=float(point['temperature']),
         facts=gathering_facts
     )
-
 
 
 def _update_gatherings_to_lajiStore(collections):
@@ -113,6 +111,7 @@ def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings,
     for g in duplicates_from_new_gatherings:
         for g2 in duplicates_from_lajiStore_gatherings:
             if g == g2:
+                g.publicity = g2.publicity
                 g.facts = g.facts + g2.facts
                 break
 
@@ -139,7 +138,7 @@ def _additional_facts(point, oldfacts):
     """
     facts = oldfacts.copy()
     if "altitude" in point and point["altitude"]:
-        fact = {}
+        fact = dict()
         fact["name"] = "altitude"
         fact["value"] = point["altitude"]
         facts.append(fact)

@@ -168,8 +168,8 @@ class PublicView(StaticLiveServerTestCase):
 
         self.page.change_device_selection(str(self.I.individualId))
 
-        self.assertEquals("12.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel").text)
-        self.assertEquals("13.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel_end").text)
+        self.assertTrue("12.12.2010" in  self.page.driver.find_element_by_id("playLabel").text)
+        self.assertTrue("13.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
     def test_time_selection_refresh_button_works(self):
         self.page.change_device_selection(str(self.I.individualId))
@@ -180,5 +180,5 @@ class PublicView(StaticLiveServerTestCase):
         self.page.REFRESH.click()
         time.sleep(1.5)
 
-        self.assertEquals("12.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel").text)
-        self.assertEquals("13.12.2010 klo 14.13.12", self.page.driver.find_element_by_id("playLabel_end").text)
+        self.assertTrue("12.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
+        self.assertTrue("13.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)

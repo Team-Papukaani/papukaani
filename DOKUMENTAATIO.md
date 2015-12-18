@@ -194,6 +194,7 @@ Uutiset on suhteellisen helppo toteuttaa, jos ne voidaan yksilöidä linnun tunn
 - HTTPS-yhteys kirjautumisen tueksi
 - WWW-juuresta ohjaus /papukaaniin
 - Formaatin muokkausnäkymässä epäonnistuneen validoinnin jälkeen syötteet häviää
+- Lähettimen valinnassa voi tulla päällekkäisyyksiä, kiinnityksen muokkaus
 
 ## Tehtävänanto
 

@@ -195,6 +195,7 @@ Uutiset on suhteellisen helppo toteuttaa, jos ne voidaan yksilöidä linnun tunn
 - WWW-juuresta ohjaus /papukaaniin
 - Formaatin muokkausnäkymässä epäonnistuneen validoinnin jälkeen syötteet häviää
 - Lähettimen valinnassa voi tulla päällekkäisyyksiä, kiinnityksen muokkaus
+- Mobiilissa play-slider toimii huonosti
 
 ## Tehtävänanto
 

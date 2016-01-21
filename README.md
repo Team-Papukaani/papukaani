@@ -102,3 +102,23 @@ Oraclen asetukset löytyvät tiedostosta /papukaani/config/production.py . Salas
 SetEnv ORACLE_PASSWORD xxxxx
 ```
 
+## Testaus
+
+Testit eivät vaadi Apachea vaan pelkkä python3 virtualenv riittää.
+Oraclen Instant Client sekä Instant Client SDK yllä olevan ohjeen mukaan sekä testeissä tarvittavat paketit:
+```sh
+sudo apt-get install phantomjs xvfb xserver-xephyr
+```
+
+Testien ajo:
+```sh
+pip install -r requirements.txt
+./manage.py makemigrations
+./manage.py migrate
+./manage.py test -v 3
+```
+
+Jos haluat nähdä selaintestit:
+```sh
+./manage.py test -v 3 --visible
+```

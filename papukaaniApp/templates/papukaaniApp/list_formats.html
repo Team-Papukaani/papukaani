@@ -1,59 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Papukaija</title>
-    {% load staticfiles %}
+{% extends 'base.html' %}
 
-    {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+{% load staticfiles %}
+
+{% block header %}
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
-</head>
-<body>
+{% endblock %}
 
-{% include "papukaaniApp/navigation.html" %}
+{% block content %}
+    {% include "papukaaniApp/navigation.html" %}
+    {% include "papukaaniApp/popup_box.html"%}
 
-{% include "papukaaniApp/popup_box.html"%}
-
-
-<div class="margin-container">
-    <table class="table table-stripped table-nonfluid outlined">
-        <tr>
-            <th>Formaatin nimi</th>
-            <th></th>
-            <th>Muokkaa</th>
-            <th>Poista</th>
-        </tr>
-        {% for f in formats %}
+    <div class="margin-container">
+        <table class="table table-stripped table-nonfluid outlined">
             <tr>
-                <td>{{f.formatName}}</td>
-                <td></td>
-                <td><a class="glyphicon glyphicon-pencil" href="{% url 'show_format' f.id %}"></a></td>
-                <script>
-                    delete_url = "{% url 'delete_format' f.id %}";
-                </script>
-                <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('Haluatko varmasti poistaa formaatin {{f.formatName}}?',delete_url)"></a></td>
+                <th>Formaatin nimi</th>
+                <th></th>
+                <th>Muokkaa</th>
+                <th>Poista</th>
             </tr>
-        {% endfor %}
-            <tr>
-                <td><a class="glyphicon glyphicon-plus" href="{% url 'create_format' 0 %}"></a></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-    </table>
+            {% for f in formats %}
+                <tr>
+                    <td>{{f.formatName}}</td>
+                    <td></td>
+                    <td><a class="glyphicon glyphicon-pencil" href="{% url 'show_format' f.id %}"></a></td>
+                    <script>
+                        delete_url = "{% url 'delete_format' f.id %}";
+                    </script>
+                    <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('Haluatko varmasti poistaa formaatin {{f.formatName}}?',delete_url)"></a></td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td><a class="glyphicon glyphicon-plus" href="{% url 'create_format' 0 %}"></a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </table>
 
-    {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-    {% endif %}
+        {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+        {% endif %}
 
-</div>
-{% include "papukaaniApp/include_scripts.html" %}
-<script src="{% static 'papukaani/js/utils/confirm.js' %}"></script>
+    </div>
 
-</body>
-</html>
+    {% include "papukaaniApp/include_scripts.html" %}
+
+    <script src="{% static 'papukaani/js/utils/confirm.js' %}"></script>
+{% endblock %}

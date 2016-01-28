@@ -1,134 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pelikaija</title>
-    {% load staticfiles %}
+{% extends 'base.html' %}
 
-    {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+{% load staticfiles %}
+
+{% block header %}
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
-</head>
-<body onload="init()">
+{% endblock %}
 
-{% include "papukaaniApp/navigation.html" %}
-<div class="margin-container">
-    <h1>Määrittele formaatti:</h1>
+{% block content %}
+    <body onload="init()">
 
-    {% if messages %}
+    {% include "papukaaniApp/navigation.html" %}
+
+    <div class="margin-container">
+        <h1>Määrittele formaatti:</h1>
+
+        {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
             </ul>
-    {% endif %}
+        {% endif %}
 
-    {% if format %}
+        {% if format %}
         <form id="formatForm" class="form" action='{% url "show_format" format.id %}' method="post">
-    {% else %}
+        {% else %}
         <form id="formatForm" class="form" action='{% url "show_format" 0 %}' method="post">
-    {% endif %}
+        {% endif %}
 
-        {% csrf_token %}
-        <div class="input-group">
-            <span class="input-group-addon wide">Formaatin nimi*</span>
-            <input class="form-control" type="text" name="formatName" id="formatName" value="{{format.formatName}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_formatName')" id="formatName_helpbutton"></span>
-        </div>
+            {% csrf_token %}
 
-        <div id="help_formatName" class="panel panel-default help-box help">
-            <span>Vapaamuotoinen nimi formaatille. Pakollinen kenttä.</span>
-        </div>
+            <div class="input-group">
+                <span class="input-group-addon wide">Formaatin nimi*</span>
 
-        <div class="input-group">
+                <input class="form-control" type="text" name="formatName" id="formatName" value="{{format.formatName}}">
 
-            <span class="input-group-addon wide">Aikaleima**</span>
-            <input class="form-control" type="text" name="timestamp" id="timestamp" value="{{format.timestamp}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsTime')"></span>
-        </div>
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_formatName')" id="formatName_helpbutton"></span>
+            </div>
 
-        <div id="help_gpsTime" class="panel panel-default help-box help">
-            <span>Aikaleima-sarakkeen nimi. Pakollinen kenttä</span>
-        </div>
+            <div id="help_formatName" class="panel panel-default help-box help">
+                <span>Vapaamuotoinen nimi formaatille. Pakollinen kenttä.</span>
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon wide">Päivämäärä**</span>
-            <input class="form-control" type="text" name="date" id="date" value="{{format.date}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>
-        </div>
+            <div class="input-group">
+                <span class="input-group-addon wide">Aikaleima**</span>
 
-        <div id="help_date" class="panel panel-default help-box help">
-            <span>Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>
-        </div>
+                <input class="form-control" type="text" name="timestamp" id="timestamp" value="{{format.timestamp}}">
 
-        <div class="input-group">
-            <span class="input-group-addon wide">Kellonaika**</span>
-            <input class="form-control" type="text" name="time" id="time" value="{{format.time}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_time')"></span>
-        </div>
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsTime')"></span>
+            </div>
 
-        <div id="help_time" class="panel panel-default help-box help">
-            <span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>
-        </div>
+            <div id="help_gpsTime" class="panel panel-default help-box help">
+                <span>Aikaleima-sarakkeen nimi. Pakollinen kenttä</span>
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon wide">Longitudi*</span>
-            <input class="form-control" type="text" name="longitude" id="longitude" value="{{format.longitude}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_longitude')"></span>
-        </div>
+            <div class="input-group">
+                <span class="input-group-addon wide">Päivämäärä**</span>
+                <input class="form-control" type="text" name="date" id="date" value="{{format.date}}">
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>
+            </div>
 
-        <div id="help_longitude" class="panel panel-default help-box help">
-            <span>Longitudi-sarakkeen nimi. Pakollinen kenttä.</span>
-        </div>
+            <div id="help_date" class="panel panel-default help-box help">
+                <span>Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon wide">Latitudi*</span>
-            <input class="form-control" type="text" name="latitude" id="latitude" value="{{format.latitude}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_latitude')"></span>
-        </div>
+            <div class="input-group">
+                <span class="input-group-addon wide">Kellonaika**</span>
 
-        <div id="help_latitude" class="panel panel-default help-box help">
-            <span>Latitudi-sarakkeen nimi. Pakollinen kenttä.</span>
-        </div>
+                <input class="form-control" type="text" name="time" id="time" value="{{format.time}}">
 
-        <div class="input-group">
-            <span class="input-group-addon wide">Lähettimen tunnus</span>
-            <input class="form-control" type="text" name="gpsNumber" id="gpsNumber" value="{{format.gpsNumber}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsNumber')"></span>
-        </div>
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_time')"></span>
+            </div>
 
-        <div id="help_gpsNumber" class="panel panel-default help-box help">
-            <span>Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste annetaan latauksen yhteydessä.</span>
-        </div>
+            <div id="help_time" class="panel panel-default help-box help">
+                <span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon wide">Lämpötila</span>
-            <input class="form-control" type="text" name="temperature" id="temperature" value="{{format.temperature}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_temperature')"></span>
-        </div>
+            <div class="input-group">
+                <span class="input-group-addon wide">Longitudi*</span>
+                <input class="form-control" type="text" name="longitude" id="longitude" value="{{format.longitude}}">
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_longitude')"></span>
+            </div>
 
-        <div id="help_temperature" class="panel panel-default help-box help">
-            <span>Lämpötila-sarakkeen nimi.</span>
-        </div>
+            <div id="help_longitude" class="panel panel-default help-box help">
+                <span>Longitudi-sarakkeen nimi. Pakollinen kenttä.</span>
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon wide">Korkeus</span>
-            <input class="form-control" type="text" name="altitude" id="altitude" value="{{format.altitude}}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_altitude')"></span>
-        </div>
+            <div class="input-group">
+                <span class="input-group-addon wide">Latitudi*</span>
 
-        <div id="help_altitude" class="panel panel-default help-box help">
-            <span>Korkeus-sarakkeen nimi. Valinnainen kenttä.</span>
-        </div>
+                <input class="form-control" type="text" name="latitude" id="latitude" value="{{format.latitude}}">
 
-        <button type="submit" class="btn btn-default" id="submit">Tallenna</button>
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_latitude')"></span>
+            </div>
 
-    </form>
+            <div id="help_latitude" class="panel panel-default help-box help">
+                <span>Latitudi-sarakkeen nimi. Pakollinen kenttä.</span>
+            </div>
 
-</div>
+            <div class="input-group">
+                <span class="input-group-addon wide">Lähettimen tunnus</span>
 
-{% include "papukaaniApp/include_scripts.html" %}
-<script src="{% static 'papukaani/js/formats.js' %}"></script>
+                <input class="form-control" type="text" name="gpsNumber" id="gpsNumber" value="{{format.gpsNumber}}">
 
-</body>
-</html>
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_gpsNumber')"></span>
+            </div>
+
+            <div id="help_gpsNumber" class="panel panel-default help-box help">
+                <span>Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste annetaan latauksen yhteydessä.</span>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon wide">Lämpötila</span>
+
+                <input class="form-control" type="text" name="temperature" id="temperature" value="{{format.temperature}}">
+
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_temperature')"></span>
+            </div>
+
+            <div id="help_temperature" class="panel panel-default help-box help">
+                <span>Lämpötila-sarakkeen nimi.</span>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon wide">Korkeus</span>
+
+                <input class="form-control" type="text" name="altitude" id="altitude" value="{{format.altitude}}">
+
+                <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_altitude')"></span>
+            </div>
+
+            <div id="help_altitude" class="panel panel-default help-box help">
+                <span>Korkeus-sarakkeen nimi. Valinnainen kenttä.</span>
+            </div>
+
+            <button type="submit" class="btn btn-default" id="submit">Tallenna</button>
+        </form>
+    </div>
+
+    {% include "papukaaniApp/include_scripts.html" %}
+
+    <script src="{% static 'papukaani/js/formats.js' %}"></script>
+{% endblock %}

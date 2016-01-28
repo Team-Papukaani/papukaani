@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-{% load staticfiles %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pelikaija</title>
-    {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
-</head>
-<body class="login-body">
+{% extends 'base.html' %}
+
+{% block body_attr %} class="login-body"{% endblock %}
+
+{% block content %}
     <div class="login-container">
         <h1>Kirjaudu sisään:</h1>
         <br>
@@ -18,17 +13,17 @@
                 {% endfor %}
             </ul>
         {% endif %}
+    
         <p>
             <a href="{{lajiauth}}{{luomus}}/">
                 <img src="https://login.laji.fi/static/luomus.png" alt="LUOMUS" />
-            </a>
+            </a>   
         </p>
-
+    
         <p>
             <a href="{{lajiauth}}{{haka}}/">
                 <img src="https://login.laji.fi/static/haka.gif" alt="HAKA" />
             </a>
-        </p>
+        <p/>
     </div>
-</body>
-</html>
+{% endblock %}

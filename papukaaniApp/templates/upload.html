@@ -63,8 +63,8 @@
         {% autoescape off %}
             create_map_with_points('{{points}}');
 
-            fileFormats = {{% for parser in parsers %} 
-                "{{ parser.formatName }}": "{{ parser.gpsNumber }}", 
+            fileFormats = {{% for parser in parsers %}
+                "{{ parser.formatName }}": "{{ parser.gpsNumber }}",
             {% endfor %}};
         {% endautoescape%}
 

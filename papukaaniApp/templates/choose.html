@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% autoescape off %}
-    {% block body_attr %} onload='var map = init({{ devices }}, "{{ csrf_token }}")'{% endblock %} 
+    {% block body_attr %} onload='var map = init({{ devices }}, "{{ csrf_token }}")'{% endblock %}
 {% endautoescape %}
 
 {% block content %}

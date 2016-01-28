@@ -18,7 +18,7 @@ def upload(request):
     parsers = GeneralParser.objects.all()
 
     if request.method == 'GET':
-        return render(request, 'upload.html', {'parsers': parsers})
+        return render(request, 'papukaaniApp/upload.html', {'parsers': parsers})
     if request.method == 'POST':
         if 'file' in request.FILES:
 
@@ -45,7 +45,7 @@ def upload(request):
 
 def _render_points(points, parsers, request):
     latlongs = [[g.geometry[1], g.geometry[0]] for g in points]
-    return render(request, 'upload.html', {'points': json.dumps(latlongs), 'parsers': parsers})
+    return render(request, 'papukaaniApp/upload.html', {'points': json.dumps(latlongs), 'parsers': parsers})
 
 def _save_file_to_db(file, name):
     dbFile = FileStorage.objects.create(file = file,filename=name, uploadTime=datetime.datetime.now())

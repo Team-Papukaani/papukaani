@@ -4,9 +4,9 @@
 
 <html lang="en">
 <head>
+    <title>{% block title %}Pelikaija{% endblock %}</title>
     {% include "papukaaniApp/include_headers.html" %}
     {% block header %}{% endblock %}
-    <title>{% block title %}Pelikaija{% endblock %}</title>
 </head>
 
 <body{% block body_attr %}{% endblock %}>

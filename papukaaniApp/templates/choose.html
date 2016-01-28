@@ -3,7 +3,6 @@
 {% load staticfiles %}
 
 {% block header %}
-    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
@@ -13,14 +12,11 @@
     <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 {% endblock %}
 
+{% autoescape off %}
+    {% block body_attr %} onload='var map = init({{ devices }}, "{{ csrf_token }}")'{% endblock %} 
+{% endautoescape %}
+
 {% block content %}
-    {% autoescape off %}
-        <script>
-            $(document).ready(function() {
-                var map = init({{ devices }}, "{{ csrf_token }}");
-            });
-        </script>
-    {% endautoescape %}
 
     {% include "papukaaniApp/navigation.html" %}
 

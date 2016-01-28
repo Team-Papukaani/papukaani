@@ -3,18 +3,15 @@
 {% load staticfiles %}
 
 {% block header %}
-    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
+    <!--<link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/> -->
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
 {% endblock %}
 
+{% autoescape off %}
+    {% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }} , {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
+{% endautoescape %}
+
 {% block content %}
-    {% autoescape off %}
-        <script>
-            $(document).ready(function() {
-                var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }} , {{ zoom }}, "{{ start_time }}", "{{ end_time }}");
-            });
-        </script>
-    {% endautoescape %}
 
     {% include "papukaaniApp/navigation.html" %}
 

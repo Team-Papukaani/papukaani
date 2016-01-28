@@ -2,13 +2,9 @@
 
 {% load staticfiles %}
 
-{% block header %}
-    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
-{% endblock %}
+{% block body_attr %} onload="init()"{% endblock %}
 
 {% block content %}
-    <body onload="init()">
-
     {% include "papukaaniApp/navigation.html" %}
 
     <div class="margin-container">

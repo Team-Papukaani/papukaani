@@ -1,20 +1,17 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pelikaija</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+{% extends 'base.html' %}
 
-    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
+{% load staticfiles %}
+
+{% block header %}
     <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
-    {% include "papukaaniApp/include_headers.html" %}
+{% endblock %]
 
-</head>
-<body>
+{% block content %}
     {% include "papukaaniApp/navigation.html" %}
+
     <h2>Lintu: {{ creature.name }}</h2>
 
     <div id="map" class="largeMap"></div>
@@ -26,18 +23,17 @@
         </code>
     </p>
 
-    {% autoescape off %}
-        <script>
-            var mapPoints = {{points}};
-            creatureMapInit(mapPoints);
-        </script>
-    {% endautoescape %}
+    {% include "papukaaniApp/include_scripts.html" %}
+
     <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/creature.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
-    {% include "papukaaniApp/include_scripts.html" %}
-</body>
-</html>
-
+    <script>
+        {% autoescape off %}
+            var mapPoints = {{points}};
+            creatureMapInit(mapPoints);
+        {% endautoescape %}
+    </script>
+{% endblock %}

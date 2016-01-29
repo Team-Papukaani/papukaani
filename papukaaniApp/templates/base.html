@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>{% block title %}Pelikaija{% endblock %}</title>
+    {% include "papukaaniApp/include_headers.html" %}
+    {% block header %}{% endblock %}
+</head>
+
+<body{% block body_attr %}{% endblock %}>
+    {% block content %}{% endblock %}
+</body>
+</html>

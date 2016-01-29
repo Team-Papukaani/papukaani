@@ -1,14 +1,9 @@
+{% extends 'base.html' %}
+
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
-    <title>Pelikaija</title>
-</head>
-<body>
+
+{% block content %}
     {% include "papukaaniApp/navigation.html" %}
-    <img src="{% static "papukaaniApp/logo.png" %}" alt="Papukaani" style="height:90%; display: block;margin:0 auto"/>
-    {% include "papukaaniApp/include_scripts.html" %}
-</body>
-</html>
+
+    <img src="{% static '/static/papukaaniApp/logo.png' %}" alt="Papukaani" style="height:90%; display: block;margin:0 auto"/>
+{% endblock %}

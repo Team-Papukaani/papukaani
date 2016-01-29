@@ -1,66 +1,71 @@
+{% extends 'base.html' %}
+
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% include "papukaaniApp/include_headers.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/general.css' %}">
+
+{% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/individuals.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.css' %}">
-    <title>Pelikaija</title>
-</head>
-<body>
+{% endblock %}
 
-{% include "papukaaniApp/navigation.html" %}
+{% block content %}
+    {% include "papukaaniApp/navigation.html" %}
 
-{% include "papukaaniApp/include_scripts.html" %}
+    {% include "papukaaniApp/include_scripts.html" %}
 
-<div id="delete_confirm_popup" class="overlay" hidden="true">
-    <p>Haluatko varmasti poistaa linnun?</p>
-    <button id="yes_button" class="btn btn-default"> Kyllä</button>
-    <button id="cancel_button" class="btn btn-default"> Peruuta</button>
-</div>
+    <div id="delete_confirm_popup" class="overlay" hidden="true">
+        <p>Haluatko varmasti poistaa linnun?</p>
 
-<h1>Luo lintu</h1>
+        <button id="yes_button" class="btn btn-default"> Kyllä</button>
+        <button id="cancel_button" class="btn btn-default"> Peruuta</button>
+    </div>
 
-<form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
-    {% csrf_token %}
-    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="Nimi"/>
-    <select class="form-control combobox" name="taxon" id="new_individual_taxon">
-        <option></option>
-        {% for s in species %}
-        <option value="{{ s.id }}">{{ s.name }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit" class="btn btn-default">Luo</button>
-</form>
+    <h1>Luo lintu</h1>
 
-<h1>Muokkaa lintua</h1>
-{% for individual in individuals %}
-    <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
+    <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
         {% csrf_token %}
-        <input type="hidden" name="id" value="{{ individual.id }}"/>
-        <input class="form-control" type="text" name="nickname" placeholder="Nimi" value="{{ individual.nickname }}"/>
-        <input class="form-control" type="text" name="ring_id" placeholder="Rengastunnus" value="{{ individual.ring_id }}"/>
-        <select class="form-control combobox" name="taxon" placeholder="Laji">
+
+        <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="Nimi"/>
+
+        <select class="form-control combobox" name="taxon" id="new_individual_taxon">
             <option></option>
+
             {% for s in species %}
-            <option value="{{ s.id }}" {% if individual.taxon == s.id %} selected{% endif %}>{{ s.name }}</option>
+                <option value="{{ s.id }}">{{ s.name }}</option>
             {% endfor %}
         </select>
-        <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
-        <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">Poista</button>
+
+        <button type="submit" class="btn btn-default">Luo</button>
     </form>
-    <br>
-{% endfor %}
 
-<p id="messages">
-    {% for message in messages %}
-        {{ message }}
+    <h1>Muokkaa lintua</h1>
+    {% for individual in individuals %}
+        <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
+            {% csrf_token %}
+
+            <input type="hidden" name="id" value="{{ individual.id }}"/>
+
+            <input class="form-control" type="text" name="nickname" placeholder="Nimi" value="{{ individual.nickname }}"/>
+            <input class="form-control" type="text" name="ring_id" placeholder="Rengastunnus" value="{{ individual.ring_id }}"/>
+
+            <select class="form-control combobox" name="taxon" placeholder="Laji">
+                <option></option>
+                {% for s in species %}
+                    <option value="{{ s.id }}" {% if individual.taxon == s.id %} selected{% endif %}>{{ s.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
+            <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">Poista</button>
+        </form>
+        <br>
     {% endfor %}
-</p>
 
-<script src="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.js' %}"></script>
-<script src="{% static 'papukaani/js/individuals.js' %}"></script>
+    <p id="messages">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </p>
 
-</body>
-</html>
+    <script src="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.js' %}"></script>
+    <script src="{% static 'papukaani/js/individuals.js' %}"></script>
+{% endblock %}

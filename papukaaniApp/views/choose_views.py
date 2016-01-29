@@ -26,7 +26,7 @@ def choose(request):
         if "Dev" in devices:
             devices.remove("Dev")
         devices.sort()
-        return render(request, 'choose.html', {'devices': json.dumps(devices)})
+        return render(request, 'papukaaniApp/choose.html', {'devices': json.dumps(devices)})
 
 
 def _set_points_public(request):

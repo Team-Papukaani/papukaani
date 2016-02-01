@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% load staticfiles %}
 
@@ -15,17 +16,17 @@
 
     {% include "papukaaniApp/navigation.html" %}
 
-    <h2>Lataa tiedosto</h2>
+    <h2>{% trans "Lataa tiedosto" %}</h2>
 
     <div class="choose_actions form-inline padded2">
         <form enctype="multipart/form-data" method="post"> {% csrf_token %}
             <div class="input-group">
-                <span class="input-group-addon">Tiedosto:</span>
+              <span class="input-group-addon">{% trans "Tiedosto:" %}</span>
                 <input type="file" id="file" name="file">
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon">Tiedostomuoto:</span>
+              <span class="input-group-addon">{% trans "Tiedostomuoto:" %}</span>
                 <select name="fileFormat" id="fileFormat" onchange="displayGpsField()" class="form-control form-field">
                     {% for parser in parsers %}
                         <option value="{{ parser.formatName }}">{{ parser.formatName }}</option>
@@ -35,14 +36,14 @@
 
             <div id="gpsInputDiv" style="display: inline">
                 <div class="input-group">
-                    <span class="input-group-addon">GPS-numero:</span>
+                  <span class="input-group-addon">{% trans "GPS-numero:" %}</span>
                     <input type="text" name="gpsNumber" id="gpsNumber" class="form-control form-field">
                 </div>
             </div>
 
             <input type="submit" class="btn btn-default" value="Lähetä" name="submitButton">
 
-            <a href="{% url 'list_formats'%}">Formaattien hallinta</a>
+            <a href="{% url 'list_formats'%}">{% trans "Formaattien hallinta" %}</a>
         </form>
     </div>
 

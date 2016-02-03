@@ -1,6 +1,90 @@
+function IndividualSorter(restUrl, individuals, species, map) {
+    this.restUrl = restUrl;
+    this.routes = [];
+    this.map = map;
+    this.createIndividualSelector(individuals, species);
+}
+
+//Sends a request to the rest-controller for documents matching the deviceId.
+IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
+        var messagebox = $("#loading");
+        messagebox.text("Tietoja ladataan...");
+        lockButtons();
+        request = new XMLHttpRequest;
+        var path = this.restUrl + individualId + "&format=json";
+        request.open("GET", path, true);
+        request.onreadystatechange = showPointsForIndividual.bind(this,individualId);
+        request.send(null);
+};
+
+IndividualSorter.prototype.removePointsForIndividual = function(individualId) {
+    for(var i = 0; i<this.routes.length;i++) {
+            if(this.routes[i].individualId===individualId){
+                if(this.routes[i].animation) {
+                this.routes[i].animation.clear();
+                this.routes[i].animation = null;
+            }
+            this.routes.splice(i,1);
+            this.map.changePoints(this.routes);
+            return;
+        }
+    }
+}
+
+//Once the request has a response, changes the sorters points to the ones received in the response.
+function showPointsForIndividual(individualId) {
+    if (request.readyState === 4) {
+
+        var messagebox = $("#loading");
+        messagebox.text("");
+
+        var points = JSON.parse(request.response);
+
+        if (points.length == 0) {
+            $("#selectIndividual input").attr("disabled", false);
+        } else {
+            var individualname = points.pop();
+            this.routes.push({
+                individualId: individualId,
+                points: points,
+                individualname: individualname,
+                latlngs: false
+            });
+
+            this.map.changePoints(this.routes);
+            unlockButtons();
+        }
+    }
+}
+
+//Creates a selector for individuals (individualId:taxon).
+IndividualSorter.prototype.createIndividualSelector = function (individuals, species) {
+    var selector = $("#selectIndividual");
+    var that = this;
+
+    selector.addOption = function (individualId, taxon) {
+        selector.append('<li><label><input type="checkbox" value="'+ individualId+'">'+ taxon + '</label></li>')
+    };
+
+    $.each(species, function(key, s){
+        selector.append("<li>" + s + "</li>")
+        $.each(individuals[s], function(key, individual){
+            $.each(individual, function(individualId, taxon){
+                selector.addOption(individualId, taxon)
+            })
+        })
+    })
+
+     $("#selectIndividual input").change(function () {
+         if($(this).is(":checked")) {
+             that.changeDeviceSelection($(this).val())
+         } else {
+             that.removePointsForIndividual($(this).val())
+         }
+    });
+};
+
 function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, start_time, end_time) {
-    sorter = new DeviceSorter("../rest/gatheringsForIndividual?individualId=");
-    sorter.setIndividuals(individuals, species);
 
     zoom = typeof zoom == 'number' ? zoom : 5;
 
@@ -10,13 +94,11 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     map = new PublicMap(loc, zoom);
 
+    sorter = new IndividualSorter("../rest/gatheringsForIndividual?individualId=",individuals, species, map);
+
     playSliderKeyboardControls();
 
-    sorter.setMap(map);
-
     createDummySlider();
-
-    this.sorter.setMap(map);
 
     if (start_time !== "") $("#start_time").val(start_time);
     if (end_time !== "") $("#end_time").val(end_time);
@@ -24,7 +106,7 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     if (defaultDevice != '') {
         try {
-            selector = $('#selectDevice');
+            selector = $('#selectIndividual');
             selector.val(defaultDevice);
             sorter.changeDeviceSelection(selector.val())
         } catch (err) {
@@ -64,49 +146,47 @@ function PublicMap(loc, zoom) {
     this.paused = true;
 }
 
-//Draws the polyline animation.
-PublicMap.prototype.animate = function (latlngs, individualname) {
-    if (latlngs && individualname) {
-        this.animation = new Animator(latlngs, individualname, this.map);
-    } else {
-        this.animation = null;
-    }
-};
-
 //Redraws the polyline
-PublicMap.prototype.changePoints = function (points) {
+PublicMap.prototype.changePoints = function (routes) {
+    for(var i = 0; i < routes.length; i++) {
 
-    var individualname = points.pop();
-    var start = $("#start_time").val();
-    var end = $("#end_time").val();
-    points = points_in_timerange(points, start, end);
+        var start = $("#start_time").val();
+        var end = $("#end_time").val();
+        var points = points_in_timerange(routes[i].points, start, end);
 
-    if (this.animation) {
-        this.animation.clear();
-        this.animation = null;
-        createDummySlider();
-    }
-    if (points) {
-        try {
-            this.latlngs = this.createLatlngsFromPoints(points);
-            this.animate(this.latlngs, individualname);
-            this.animation.forwardToEnd();
-        } catch (e) {
+        if(routes[i].animation) {
+            routes[i].animation.clear();
+            routes[i].animation = null;
+        }
+
+        if (points.length > 0) {
+            try {
+                if(routes[i].latlngs===false) {
+                    routes[i].latlngs = this.createLatlngsFromPoints(points);
+                }
+                routes[i].animation = new Animator(routes[i].latlngs, routes[i].individualname, this.map);
+                routes[i].animation.forwardToEnd();
+
+            } catch (e) {
+            }
         }
     }
+    this.routes = routes;
 };
 
 //Plays the animation if paused, or pauses if currently playing.
 PublicMap.prototype.play = function () {
-    if (this.animation) {
-        if (this.animation.start()) {
-            $("#play").html("&#9646;&#9646;");
-        } else {
-            if (this.animation.stop()) {
-                $("#play").html("&#9658;");
-            }
-        }
-    }
+     for(var i = 0; i < this.routes.length; i++) {
+         if (this.routes[i].animation) {
+             if (this.routes[i].animation.start()) {
+                 $("#play").html("&#9646;&#9646;");
+             } else {
+                 if (this.routes[i].animation.stop()) {
+                     $("#play").html("&#9658;");
+                 }
+             }
+         }
+     }
 };
 
 //Performed when the animation reaches its end.
@@ -127,14 +207,14 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
 
 //Disables the select, save and reset buttons.
 function lockButtons() {
-    $("#selectDevice").attr("disabled", true);
+    $("#selectIndividual input").attr("disabled", true);
     $("#play").attr("disabled", true);
     $("#pause").attr("disabled", true);
 }
 
 //Enables the select, save and reset buttons.
 function unlockButtons() {
-    $("#selectDevice").attr("disabled", false);
+    $("#selectIndividual input").attr("disabled", false);
     $("#play").attr("disabled", false);
     $("#pause").attr("disabled", false);
 }
@@ -183,7 +263,7 @@ function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
 
-    var device = 'device=' + $('#selectDevice').val();
+    var device = 'device=' + $('#selectIndividual').val();
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
 
     var zoom = 'zoom=' + map.map.getZoom();

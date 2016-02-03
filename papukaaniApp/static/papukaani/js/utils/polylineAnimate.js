@@ -1,4 +1,5 @@
-function Animator(latlngs, individualname, map) {
+function Animator(latlngs, individualname, map, color) {
+    this.color = color;
     this.map = map;
     this.latlngs = latlngs;
     this.individual = individualname;
@@ -6,6 +7,7 @@ function Animator(latlngs, individualname, map) {
     this.initializeMarker();
     this.initializePolyLines();
     this.initializeSlider();
+
 }
 
 //Initializes the PathIterator and its variables.
@@ -37,7 +39,7 @@ Animator.prototype.initializeMarker = function () {
 Animator.prototype.initializePolyLines = function () {
     this.polylines = [];
     //Default options for the main polyline.
-    var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
+    var polylineOptions = {color: this.color, opacity: 0.3, smoothFactor: 0};
     this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
 };
@@ -136,7 +138,7 @@ Animator.prototype.drawPathEnd = function (animated) {
 //New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
-        color: 'blue',
+        color: this.color,
         opacity: 1.0
     });
 };
@@ -153,7 +155,7 @@ Animator.prototype.updatePolylines = function () {
 
         var oldOpacity = line.options.opacity;
         var newOpacity = oldOpacity - 0.03;
-        line.setStyle({color: 'blue', opacity: newOpacity});
+        line.setStyle({color: this.color, opacity: newOpacity});
     }
 };
 

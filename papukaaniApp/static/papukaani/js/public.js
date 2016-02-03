@@ -7,24 +7,24 @@ function IndividualSorter(restUrl, individuals, species, map) {
 
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
-        var messagebox = $("#loading");
-        messagebox.text("Tietoja ladataan...");
-        lockButtons();
-        request = new XMLHttpRequest;
-        var path = this.restUrl + individualId + "&format=json";
-        request.open("GET", path, true);
-        request.onreadystatechange = showPointsForIndividual.bind(this,individualId);
-        request.send(null);
+    var messagebox = $("#loading");
+    messagebox.text("Tietoja ladataan...");
+    lockButtons();
+    request = new XMLHttpRequest;
+    var path = this.restUrl + individualId + "&format=json";
+    request.open("GET", path, true);
+    request.onreadystatechange = showPointsForIndividual.bind(this, individualId);
+    request.send(null);
 };
 
-IndividualSorter.prototype.removePointsForIndividual = function(individualId) {
-    for(var i = 0; i<this.routes.length;i++) {
-            if(this.routes[i].individualId===individualId){
-                if(this.routes[i].animation) {
+IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
+    for (var i = 0; i < this.routes.length; i++) {
+        if (this.routes[i].individualId === individualId) {
+            if (this.routes[i].animation) {
                 this.routes[i].animation.clear();
                 this.routes[i].animation = null;
             }
-            this.routes.splice(i,1);
+            this.routes.splice(i, 1);
             this.map.changePoints(this.routes);
             return;
         }
@@ -48,6 +48,7 @@ function showPointsForIndividual(individualId) {
                 individualId: individualId,
                 points: points,
                 individualname: individualname,
+                color: '#'+(Math.random()*0xFFFFFF<<0).toString(16),
                 latlngs: false
             });
 
@@ -63,24 +64,24 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     var that = this;
 
     selector.addOption = function (individualId, taxon) {
-        selector.append('<li><label><input type="checkbox" value="'+ individualId+'">'+ taxon + '</label></li>')
+        selector.append('<li><label><input type="checkbox" value="' + individualId + '">' + taxon + '</label></li>')
     };
 
-    $.each(species, function(key, s){
+    $.each(species, function (key, s) {
         selector.append("<li>" + s + "</li>")
-        $.each(individuals[s], function(key, individual){
-            $.each(individual, function(individualId, taxon){
+        $.each(individuals[s], function (key, individual) {
+            $.each(individual, function (individualId, taxon) {
                 selector.addOption(individualId, taxon)
             })
         })
     })
 
-     $("#selectIndividual input").change(function () {
-         if($(this).is(":checked")) {
-             that.changeDeviceSelection($(this).val())
-         } else {
-             that.removePointsForIndividual($(this).val())
-         }
+    $("#selectIndividual input").change(function () {
+        if ($(this).is(":checked")) {
+            that.changeDeviceSelection($(this).val())
+        } else {
+            that.removePointsForIndividual($(this).val())
+        }
     });
 };
 
@@ -94,7 +95,7 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     map = new PublicMap(loc, zoom);
 
-    sorter = new IndividualSorter("../rest/gatheringsForIndividual?individualId=",individuals, species, map);
+    sorter = new IndividualSorter("../rest/gatheringsForIndividual?individualId=", individuals, species, map);
 
     playSliderKeyboardControls();
 
@@ -143,28 +144,27 @@ var playSliderKeyboardControls = function () {
 
 function PublicMap(loc, zoom) {
     this.map = create_map("map", loc, zoom);
-    this.paused = true;
 }
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (routes) {
-    for(var i = 0; i < routes.length; i++) {
+    for (var i = 0; i < routes.length; i++) {
 
         var start = $("#start_time").val();
         var end = $("#end_time").val();
         var points = points_in_timerange(routes[i].points, start, end);
 
-        if(routes[i].animation) {
+        if (routes[i].animation) {
             routes[i].animation.clear();
             routes[i].animation = null;
         }
 
         if (points.length > 0) {
             try {
-                if(routes[i].latlngs===false) {
+                if (routes[i].latlngs === false) {
                     routes[i].latlngs = this.createLatlngsFromPoints(points);
                 }
-                routes[i].animation = new Animator(routes[i].latlngs, routes[i].individualname, this.map);
+                routes[i].animation = new Animator(routes[i].latlngs, routes[i].individualname, this.map, routes[i].color);
                 routes[i].animation.forwardToEnd();
 
             } catch (e) {
@@ -176,19 +176,19 @@ PublicMap.prototype.changePoints = function (routes) {
 
 //Plays the animation if paused, or pauses if currently playing.
 PublicMap.prototype.play = function () {
-     for(var i = 0; i < this.routes.length; i++) {
-         if (this.routes[i].animation) {
-             if (this.routes[i].animation.start()) {
-                 $("#play").html("&#9646;&#9646;");
-             } else {
-                 if (this.routes[i].animation.stop()) {
-                     $("#play").html("&#9658;");
-                 }
-             }
-         }
-     }
+    for (var i = 0; i < this.routes.length; i++) {
+        if (this.routes[i].animation) {
+            if (this.routes[i].animation.start()) {
+                animationStart();
+            } else if (this.routes[i].animation.stop()) {
+                animationEnd();
+            }
+        }
+    }
 };
-
+var animationStart = function () {
+    $("#play").html("&#9646;&#9646;");
+};
 //Performed when the animation reaches its end.
 var animationEnd = function () {
     $("#play").html("&#9658;");

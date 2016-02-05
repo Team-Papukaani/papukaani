@@ -224,3 +224,19 @@ html, body {
     background-image: none;
     background-color: #887e6d;
 }
+
+#selectIndividual {
+    list-style: none;
+}
+#selectIndividual li span{
+   line-height: 30px;
+}
+.sqr {
+    float:left;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #000;
+}

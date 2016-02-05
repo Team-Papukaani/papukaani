@@ -26,6 +26,7 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
             }
             this.routes.splice(i, 1);
             this.map.changePoints(this.routes);
+            $("#individual" + individualId).find("div.sqr").css('background-color', "#fff");
             return;
         }
     }
@@ -44,11 +45,15 @@ function showPointsForIndividual(individualId) {
             $("#selectIndividual input").attr("disabled", false);
         } else {
             var individualname = points.pop();
+
+            var indiv = $("#individual" + individualId);
+            indiv.find("div.sqr").css('background-color', indiv.attr('data-color'));
+
             this.routes.push({
                 individualId: individualId,
                 points: points,
                 individualname: individualname,
-                color: '#'+(Math.random()*0xFFFFFF<<0).toString(16),
+                color: indiv.attr('data-color'),
                 latlngs: false
             });
 
@@ -64,7 +69,17 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     var that = this;
 
     selector.addOption = function (individualId, taxon) {
-        selector.append('<li><label><input type="checkbox" value="' + individualId + '">' + taxon + '</label></li>')
+
+        var color = (Math.random() * 0xFFFFFF << 0).toString(16);
+        color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
+
+        var e = '<li id="individual' + individualId + '" data-color="' + color + '">';
+        e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
+        e = e + '<div class="sqr"></div>';
+        e = e + '<span>' + taxon + '</span>';
+        e = e + '</label>';
+        e = e + '</li>';
+        selector.append(e);
     };
 
     $.each(species, function (key, s) {

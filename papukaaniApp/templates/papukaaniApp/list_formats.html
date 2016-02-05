@@ -9,10 +9,10 @@
     <div class="margin-container">
         <table class="table table-stripped table-nonfluid outlined">
             <tr>
-                <th>Formaatin nimi</th>
+              <th>{% trans "Formaatin nimi" %}</th>
                 <th></th>
-                <th>Muokkaa</th>
-                <th>Poista</th>
+                <th>{% trans "Muokkaa" %}</th>
+                <th>{% trans "Poista" %}</th>
             </tr>
             {% for f in formats %}
                 <tr>
@@ -22,7 +22,7 @@
                     <script>
                         delete_url = "{% url 'delete_format' f.id %}";
                     </script>
-                    <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('Haluatko varmasti poistaa formaatin {{f.formatName}}?',delete_url)"></a></td>
+                    <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('{% trans "Haluatko varmasti poistaa formaatin {{f.formatName}}?" %}',delete_url)"></a></td>
                 </tr>
             {% endfor %}
                 <tr>

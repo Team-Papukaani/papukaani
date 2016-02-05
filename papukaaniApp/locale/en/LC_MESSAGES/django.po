@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-05 10:42+0200\n"
+"POT-Creation-Date: 2016-02-05 11:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,6 +65,7 @@ msgstr "Show points in interval"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:59
 #: papukaaniApp/templates/papukaaniApp/formats.html:134
+#: papukaaniApp/templates/papukaaniApp/individuals.html:57
 msgid "Tallenna"
 msgstr "Save"
 
@@ -188,6 +189,54 @@ msgstr "Height"
 msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
 msgstr "Name of the height column. Optional field."
 
+#: papukaaniApp/templates/papukaaniApp/individuals.html:16
+msgid "Haluatko varmasti poistaa linnun?"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:18
+#, fuzzy
+#| msgid " Kyllä"
+msgid "Kyllä"
+msgstr " Yes"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:19
+#, fuzzy
+#| msgid " Peruuta"
+msgid "Peruuta"
+msgstr " Cancel"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:22
+#, fuzzy
+#| msgid "Lintu"
+msgid "Luo lintu"
+msgstr "Bird"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:37
+#: papukaaniApp/templates/papukaaniApp/public.html:101
+msgid "Luo"
+msgstr "Create"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:40
+msgid "Muokkaa lintua"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:47
+msgid "Nimi"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:48
+msgid "Rengastunnus"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:50
+msgid "Laji"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:58
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:15
+msgid "Poista"
+msgstr ""
+
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:12
 #, fuzzy
 #| msgid "Formaatin nimi*"
@@ -196,10 +245,6 @@ msgstr "Format name*"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:14
 msgid "Muokkaa"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:15
-msgid "Poista"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:25
@@ -254,10 +299,6 @@ msgstr "Refresh "
 #: papukaaniApp/templates/papukaaniApp/public.html:96
 msgid "iFrame:"
 msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/public.html:101
-msgid "Luo"
-msgstr "Create"
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:24
 msgid "Tiedosto:"

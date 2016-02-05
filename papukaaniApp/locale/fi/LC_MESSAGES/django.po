@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-05 10:42+0200\n"
+"POT-Creation-Date: 2016-02-05 11:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# This is a dummy translation file for Finnish, with all translations intentionally left blank. This is because all strings are already in Finnish, so there's no need to translate.
 
 #: papukaani/config/common.py:100
 msgid "Suomi"
@@ -66,6 +68,7 @@ msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:59
 #: papukaaniApp/templates/papukaaniApp/formats.html:134
+#: papukaaniApp/templates/papukaaniApp/individuals.html:57
 msgid "Tallenna"
 msgstr ""
 
@@ -182,16 +185,54 @@ msgstr ""
 msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
 msgstr ""
 
+#: papukaaniApp/templates/papukaaniApp/individuals.html:16
+msgid "Haluatko varmasti poistaa linnun?"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:18
+msgid "Kyllä"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:19
+msgid "Peruuta"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:22
+msgid "Luo lintu"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:37
+#: papukaaniApp/templates/papukaaniApp/public.html:101
+msgid "Luo"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:40
+msgid "Muokkaa lintua"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:47
+msgid "Nimi"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:48
+msgid "Rengastunnus"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:50
+msgid "Laji"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:58
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:15
+msgid "Poista"
+msgstr ""
+
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:12
 msgid "Formaatin nimi"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:14
 msgid "Muokkaa"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:15
-msgid "Poista"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:25
@@ -245,10 +286,6 @@ msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/public.html:96
 msgid "iFrame:"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/public.html:101
-msgid "Luo"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:24

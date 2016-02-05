@@ -228,6 +228,9 @@ html, body {
 #selectIndividual {
     list-style: none;
 }
+#selectIndividual li label{
+    cursor: pointer;
+}
 #selectIndividual li span{
    line-height: 30px;
 }

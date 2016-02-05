@@ -38,6 +38,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -92,7 +93,21 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+from django.utils.translation import ugettext_lazy as _
+
+# Available languages
+LANGUAGES = [
+    ('fi', _('Suomi')),
+    ('en', _('Englanti')),
+    ('sv', _('Ruotsi')),
+    ]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'papukaaniApp', 'locale'),
+]
+
+# Default language if we can't determine user's preference
+LANGUAGE_CODE = 'fi'
 
 TIME_ZONE = 'Europe/Helsinki'
 

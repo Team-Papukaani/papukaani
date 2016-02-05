@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% load staticfiles %}
 
@@ -17,14 +18,14 @@
 {% block content %}
     {% include "papukaaniApp/navigation.html" %}
 
-    <h1 class="heading">Hallitse lähettimiä</h1>
+    <h1 class="heading">{% trans "Hallitse lähettimiä" %}</h1>
 
     <form>
         <p class="heading">
-            Valitse lähetin
+        {% trans "Valitse lähetin" %}
             <select id="selectDevice" class="form-control form-field" style="display:inline"
                     onchange="displayIndividuals(this.value)">
-                <option selected disabled>Valitse lähetin</option>
+                    <option selected disabled>{% trans "Valitse lähetin" %}</option>
                 {% for device in devices %}
                     <option value="{{ device.deviceId }}">{{ device.deviceId }}</option>
                 {% endfor %}
@@ -35,16 +36,16 @@
 
         <table id="table" class="table table-stripped table-nonfluid">
             <tr>
-                <th>Lintu</th>
-                <th>Kiinnitetty</th>
-                <th>Irroitettu</th>
+              <th>{% trans "Lintu" %}</th>
+              <th>{% trans "Kiinnitetty" %}</th>
+              <th>{% trans "Irroitettu" %}</th>
                 <th></th>
             </tr>
             <tbody id="individuals"></tbody>
             <tr id="attacher">
                 <td>
                     <select id="individualId">
-                        <option disabled selected>Valitse kiinnitettävä lintu</option>
+                      <option disabled selected>{% trans "Valitse kiinnitettävä lintu" %}</option>
                         {% for individual in selection %}
                             <option value="{{ individual.individualId }}">{{ individual.nickname }}</option>
                         {% endfor %}
@@ -54,7 +55,7 @@
                     <input type="text" id="start_time" name="start_time" class="dateinput datepicker"
                            onblur="validateDateFormat(this)" placeholder="dd.mm.yyyy HH:mm"></td>
                 <td></td>
-                <td><a id="attach" class="btn btn-sm btn-primary" onclick="attachDevice()">Kiinnitä</a></td>
+                <td><a id="attach" class="btn btn-sm btn-primary" onclick="attachDevice()">{% trans "Kiinnitä" %}</a></td>
             </tr>
         </table>
     </form>

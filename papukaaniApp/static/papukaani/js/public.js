@@ -1,3 +1,5 @@
+var request = null;
+
 function IndividualSorter(restUrl, individuals, species, map) {
     this.restUrl = restUrl;
     this.routes = [];
@@ -35,7 +37,9 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
         }
     }
 }
-
+IndividualSorter.prototype.refresh = function () {
+    this.map.changePoints(this.routes);
+}
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForIndividual(individualId) {
     if (request.readyState === 4) {
@@ -65,16 +69,17 @@ function showPointsForIndividual(individualId) {
             this.map.changePoints(this.routes);
             unlockButtons();
         }
+        request = null;
     }
 }
 
 function ColorChart() {
     this.colors = [{color: "#CC0000"}, {color: "#FFFF00"}, {color: "#00CC00"},
-                   {color: "#00FFFF"}, {color: "#0000CC"}, {color: "#CC00CC"},
-                   {color: "#808080"}];
+        {color: "#00FFFF"}, {color: "#0000CC"}, {color: "#CC00CC"},
+        {color: "#808080"}];
 }
 
-ColorChart.prototype.getColor = function(individualId) {
+ColorChart.prototype.getColor = function (individualId) {
     var color;
     for (var i = 0; i < this.colors.length; i++) {
         if (!this.colors[i].individualId) {
@@ -91,7 +96,7 @@ ColorChart.prototype.getColor = function(individualId) {
     return color;
 }
 
-ColorChart.prototype.freeColor = function(individualId) {
+ColorChart.prototype.freeColor = function (individualId) {
     for (var i = 0; i < this.colors.length; i++) {
         if (this.colors[i].individualId == individualId) {
             this.colors[i].individualId = null;
@@ -158,11 +163,16 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
 
     if (defaultDevice != '') {
-        try {
-            selector = $('#selectIndividual');
-            selector.val(defaultDevice);
-            sorter.changeDeviceSelection(selector.val())
-        } catch (err) {
+        if (defaultDevice instanceof Array && defaultDevice.length > 0) {
+            for (var i = 0; i < defaultDevice.length; i++) {
+                if (typeof defaultDevice[i] == "number") {
+                    try {
+                        $("#individual" + defaultDevice[i]).find('input').prop('checked', true);
+                        sorter.changeDeviceSelection(defaultDevice[i]);
+                    } catch (err) {
+                    }
+                }
+            }
         }
     }
 
@@ -315,7 +325,14 @@ function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
 
-    var device = 'device=' + $('#selectIndividual').val();
+    var checked = $('#selectIndividual input:checked');
+    var a = [];
+    for (var i = 0; i < checked.length; i++) {
+        a.push(checked[i].value);
+    }
+
+    var device = 'device=[' + a.join(",") + ']';
+
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
 
     var zoom = 'zoom=' + map.map.getZoom();

@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% autoescape off %}
-    {% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
+    {% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ device }}, "{{ speed }}", {{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
 {% endautoescape %}
 
 {% block content %}
@@ -21,7 +21,7 @@
     {% endif %}
 
     <div class="choose_actions form-inline padded2">
-        <div>
+        <div id="birds">
             <ul id="selectIndividual"></ul>
         </div>
 
@@ -45,7 +45,7 @@
             <span id="formatError" style="margin:0"></span>
 
             <button type="button" class="btn btn-default"
-                    onclick="sorter.changeDeviceSelection(sorter.currentDevice)"
+                    onclick="sorter.refresh()"
                     id="show_time_range">Päivitä
             </button>
         </form>

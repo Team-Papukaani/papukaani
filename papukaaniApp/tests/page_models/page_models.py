@@ -131,21 +131,32 @@ class PublicPage(PageWithDeviceSelector):
         return self.driver.find_element_by_id("cssmenu")
 
     def change_device_selection(self, key):
-        super(PublicPage, self).change_device_selection(key)
+        if(key == "None"):
+            elem = self.driver.find_element_by_xpath("//li[1]")
+            elem.click()
+            time.sleep(1)
+            return
+
+        elem = self.driver.find_element_by_xpath("//li[@id='individual"+key+"']")
+        elem.click()
+        while self.driver.find_element_by_xpath("//input[@value='"+key+"']").get_attribute('disabled'):
+            time.sleep(0.1)
         time.sleep(1)
+
 
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
         return self.driver.execute_script('return $("#speedSlider").slider("option", "value")')
 
+
     def set_slider_value_to_min(self):
         minval = self.driver.execute_script('return $("#playSlider").slider("option", "min")')
         self.driver.execute_script('$("#playSlider").slider("option", "value", ' + str(minval) + ')')
 
+
     def get_iframe_url(self):
         self.IFRAME_BUTTON.click()
         return self.IFRAME_SRC.get_attribute('value')
-
 
 
 class ChoosePage(PageWithDeviceSelector):
@@ -287,12 +298,11 @@ class DevicePage(PageWithDeviceSelector):
     """
     Page Object for the device page.
     """
-    START_TIME = Element(By.ID,"start_time")
+    START_TIME = Element(By.ID, "start_time")
     REMOVE_TIME = Element(By.ID, "remove_time")
-    ATTACH = Element(By.ID,"attach")
-    REMOVE = Element(By.CLASS_NAME,"btn-danger")
-    ATTACHER = Element(By.ID,"attacher")
-
+    ATTACH = Element(By.ID, "attach")
+    REMOVE = Element(By.CLASS_NAME, "btn-danger")
+    ATTACHER = Element(By.ID, "attacher")
 
     url = BASE_URL + '/papukaani/devices/'
 
@@ -352,13 +362,13 @@ class IndividualPage(Page):
         for attempt in range(10):
             try:
                 self.driver.execute_script(
-                'return $("[name=\'taxon\']").attr("type", "text");')  # set taxon field visible for input
+                    'return $("[name=\'taxon\']").attr("type", "text");')  # set taxon field visible for input
                 break
             except:
                 time.sleep(1)
 
     def get_first_individual_taxon(self):
-        self.driver.execute_script('return $(".combobox").show;') # set taxon select visible
+        self.driver.execute_script('return $(".combobox").show;')  # set taxon select visible
         return self.FIRST_TAXON_FIELD.get_attribute("value")
 
     def get_first_individual_nickname(self):
@@ -389,8 +399,8 @@ class IndividualPage(Page):
         confirm_button = self.DELETE_CONFIRM_BUTTON
         confirm_button.click()
 
-class FormatPage(Page):
 
+class FormatPage(Page):
     url = BASE_URL + '/papukaani/formats/create/0'
 
     SUBMIT = Element(By.ID, "submit")
@@ -406,7 +416,8 @@ class FormatPage(Page):
     TEMPERATURE = Element(By.ID, "temperature")
     ALTITUDE = Element(By.ID, "altitude")
 
-    def input_values_and_submit(self, format_name, timestamp, date, time, longitude, latitude, gps_number, temperature, altitude):
+    def input_values_and_submit(self, format_name, timestamp, date, time, longitude, latitude, gps_number, temperature,
+                                altitude):
         format_name_field = self.FORMAT_NAME
         format_name_field.send_keys(format_name)
         timestamp_field = self.TIMESTAMP
@@ -430,7 +441,6 @@ class FormatPage(Page):
 
 
 class FormatListPage(Page):
-
     url = BASE_URL + '/papukaani/formats'
 
     FIRST_MODIFY_BUTTON = Element(By.XPATH, '//a[contains(@class, "glyphicon-pencil")][1]')

@@ -4,7 +4,9 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.map = map;
     this.createIndividualSelector(individuals, species);
 }
-
+IndividualSorter.prototype.getRoutes = function () {
+    return this.routes;
+}
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
     var messagebox = $("#loading");

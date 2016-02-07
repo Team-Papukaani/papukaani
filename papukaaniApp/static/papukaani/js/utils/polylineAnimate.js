@@ -150,23 +150,23 @@ Animator.prototype.calculateTimeStep = function () {
 
 //Decreases opacity of polylines as distance to head grows, until the polyline is far enough.
 Animator.prototype.updatePolylines = function () {
-   /* for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
-        var line = this.polylines[j];
+    /* for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
+     var line = this.polylines[j];
 
-        var oldOpacity = line.options.opacity;
-        var newOpacity = oldOpacity - 0.03;
-        line.setStyle({color: this.color, opacity: newOpacity});
-    }*/
+     var oldOpacity = line.options.opacity;
+     var newOpacity = oldOpacity - 0.03;
+     line.setStyle({color: this.color, opacity: newOpacity});
+     }*/
 };
 
 //Adds a new polyline to the map, and if numerous enough merges one from the tail to the master polyline to maintain performance.
 Animator.prototype.addNewPolyline = function (polyline) {
     this.polylines.push(polyline);
     /*if (this.polylines.length >= 20) {
-        this.polyline.addLatLng(this.polylines[0].getLatLngs()[1]);
-        this.map.removeLayer(this.polylines[0]);
-        this.polylines.shift();
-    }*/
+     this.polyline.addLatLng(this.polylines[0].getLatLngs()[1]);
+     this.map.removeLayer(this.polylines[0]);
+     this.polylines.shift();
+     }*/
     polyline.addTo(this.map);
 };
 
@@ -213,7 +213,10 @@ Animator.prototype.clear = function () {
     this.stop();
     this.map.removeLayer(this.marker);
     this.map.clearLayers();
-    $("#playSlider").slider("destroy");
+    if (sorter.getRoutes().length == 1) {
+        $("#playSlider").slider("destroy");
+        createDummySlider();
+    }
 };
 
 // Iterates efficiently over objects that have coordinates as a Victor
@@ -293,6 +296,15 @@ var PathIterator = function (points) {
 
 //Initializes a slider with an attached label showing current value.
 Animator.prototype.createSlider = function (min, max, step) {
+    if (sorter.getRoutes().length > 1) {
+        min = Math.min($("#playSlider").slider("option", "min"), min);
+        $("#playSlider").slider("option", "min", min);
+        max = Math.max($("#playSlider").slider("option", "max"), max);
+        $("#playSlider").slider("option", "max", max);
+        $("#playLabel_end").text(new Date(max).toLocaleString());
+        this.setSliderValue(min);
+        return;
+    }
     $("#playSlider").slider({
         range: "min",
         min: min,

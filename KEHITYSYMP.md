@@ -7,24 +7,24 @@
 > Linkki: [Team-Papukaani](https://github.com/Team-Papukaani/papukaani.git "jotain....")
 
 ## Ajoympäristön pystyttäminen
-	
+
 > Ohjeet ajoympäristön pystyttämiseen löytyvät Readme.md Asennusdokumentaatiosta
 
 ## Ajoympäristön käynnistäminen
 
-* Järjestelmän ajamista varten aktivoidaan virtuaaliympäristö komennolla: 
+* Järjestelmän ajamista varten aktivoidaan virtuaaliympäristö komennolla:
 
 > *source pelikaijaenv/bin/activate*
 
 * Paikallinen ympäristö käynnistetään komennolla:
 
-> *python3 manage.py runserver* 
+> *python3 manage.py runserver*
 
 * Kirjautumisen saa pois päältä lisäämällä edellisen komennon loppuun parametri –skipauth
 
 > *python3 manage.py runserver –skipauth*
 
-* Avataan selaimella 
+* Avataan selaimella
 
 > *localhost:8000/papukaani/*
 

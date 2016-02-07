@@ -4,7 +4,6 @@
 {% load staticfiles %}
 
 {% block header %}
-    <!--<link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/> -->
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
 {% endblock %}
 
@@ -22,7 +21,8 @@
         <form enctype="multipart/form-data" method="post"> {% csrf_token %}
             <div class="input-group">
               <span class="input-group-addon">{% trans "Tiedosto:" %}</span>
-                <input type="file" id="file" name="file">
+                <input type="file" class="filestyle" data-classButton="btn btn-primary" data-input="false"
+                       data-classIcon="icon-plus" data-buttonText="{% trans "Selaa" %}">
             </div>
 
             <div class="input-group">
@@ -60,6 +60,7 @@
     <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/upload.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/bootstrap/bootstrap-filestyle.min.js' %}"></script>
     <script>
         {% autoescape off %}
             create_map_with_points('{{points}}');

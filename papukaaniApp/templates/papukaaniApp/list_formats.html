@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% load staticfiles %}
 
@@ -22,7 +23,7 @@
                     <script>
                         delete_url = "{% url 'delete_format' f.id %}";
                     </script>
-                    <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('{% trans "Haluatko varmasti poistaa formaatin {{f.formatName}}?" %}',delete_url)"></a></td>
+                    <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('{% trans "Haluatko varmasti poistaa formaatin " %} {{f.formatName}}?',delete_url)"></a></td>
                 </tr>
             {% endfor %}
                 <tr>

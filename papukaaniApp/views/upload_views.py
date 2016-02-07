@@ -7,6 +7,7 @@ import json, uuid
 import datetime
 from django.contrib import messages
 from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
+from django.utils.translation import ugettext_lazy as _
 
 @require_auth
 def upload(request):
@@ -32,14 +33,14 @@ def upload(request):
                     data = prepare_file(uploaded_file, parser)
 
             except:
-                messages.add_message(request, messages.ERROR, 'Tiedostosi formaatti ei ole kelvollinen!')
+                messages.add_message(request, messages.ERROR, _("Tiedostosi formaatti ei ole kelvollinen!"))
                 return redirect(upload)
             _save_file_to_db(uploaded_file, uploaded_file.name)
             points = create_points(data, parser, uploaded_file.name, datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
-            messages.add_message(request, messages.INFO, "Tiedoston lataus onnistui!")
+            messages.add_message(request, messages.INFO, _("Tiedoston lataus onnistui!"))
             return _render_points(points, parsers, request)
 
-        messages.add_message(request, messages.ERROR, "Et valinnut ladattavaa tiedostoa!")
+        messages.add_message(request, messages.ERROR, _("Et valinnut ladattavaa tiedostoa!"))
         return redirect(upload)
 
 

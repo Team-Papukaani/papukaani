@@ -23,14 +23,14 @@ function create_map(container, latlong, zoom) {
     };
 
     var baseMaps = {
-        gettext("Maailmankartta"): layers.osm,
-        gettext("Topografia"): layers.otm,
-        gettext("Maanmittauslaitos"): layers.mm),
-        gettext("Satelliitti"): layers.satellite
+        "Maailmankartta": layers.osm,
+        "Topografia": layers.otm,
+        "Maanmittauslaitos": layers.mm,
+        "Satelliitti": layers.satellite
     };
 
     var overlays = {
-        gettext("Eliömaakunnat"): layers.geobiologicalProvinces
+        "Eliömaakunnat": layers.geobiologicalProvinces
     };
 
     layers.osm.addTo(map);

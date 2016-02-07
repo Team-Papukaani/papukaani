@@ -3,6 +3,7 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.routes = [];
     this.map = map;
     this.createIndividualSelector(individuals, species);
+    this.colorChart = new ColorChart();
 }
 IndividualSorter.prototype.getRoutes = function () {
     return this.routes;
@@ -26,6 +27,7 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
                 this.routes[i].animation.clear();
                 this.routes[i].animation = null;
             }
+            this.colorChart.freeColor(this.routes[i].individualId);
             this.routes.splice(i, 1);
             this.map.changePoints(this.routes);
             $("#individual" + individualId).find("div.sqr").css('background-color', "#fff");
@@ -49,18 +51,51 @@ function showPointsForIndividual(individualId) {
             var individualname = points.pop();
 
             var indiv = $("#individual" + individualId);
-            indiv.find("div.sqr").css('background-color', indiv.attr('data-color'));
+            var color = this.colorChart.getColor(individualId);
+            indiv.find("div.sqr").css('background-color', color);
 
             this.routes.push({
                 individualId: individualId,
                 points: points,
                 individualname: individualname,
-                color: indiv.attr('data-color'),
+                color: color,
                 latlngs: false
             });
 
             this.map.changePoints(this.routes);
             unlockButtons();
+        }
+    }
+}
+
+function ColorChart() {
+    this.colors = [{color: "#CC0000"}, {color: "#FFFF00"}, {color: "#00CC00"},
+                   {color: "#00FFFF"}, {color: "#0000CC"}, {color: "#CC00CC"},
+                   {color: "#808080"}];
+}
+
+ColorChart.prototype.getColor = function(individualId) {
+    var color;
+    for (var i = 0; i < this.colors.length; i++) {
+        if (!this.colors[i].individualId) {
+            color = this.colors[i].color;
+            this.colors[i].individualId = individualId;
+            break;
+        }
+    }
+    if (!color) {
+        color = (Math.random() * 0xFFFFFF << 0).toString(16);
+        color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
+    }
+    this.colors.push({color: color, individualId: individualId});
+    return color;
+}
+
+ColorChart.prototype.freeColor = function(individualId) {
+    for (var i = 0; i < this.colors.length; i++) {
+        if (this.colors[i].individualId == individualId) {
+            this.colors[i].individualId = null;
+            break;
         }
     }
 }
@@ -75,7 +110,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         var color = (Math.random() * 0xFFFFFF << 0).toString(16);
         color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
 
-        var e = '<li id="individual' + individualId + '" data-color="' + color + '">';
+        var e = '<li id="individual' + individualId + '">';
         e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
         e = e + '<div class="sqr"></div>';
         e = e + '<span>' + taxon + '</span>';

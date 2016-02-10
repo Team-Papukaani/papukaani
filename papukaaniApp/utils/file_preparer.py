@@ -66,4 +66,4 @@ def _rename_attributes(lines, parser):
 
 
 def parser_Info(parser):
-    return {"type": "GMS", "manufacturer": parser.formatName}
+    return {"type": "GMS", "manufacturer": parser.formatName, "manufacturerid": parser.formatName}

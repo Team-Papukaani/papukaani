@@ -124,7 +124,7 @@ def create_response(data, uri, post):
         response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     else:
         response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
-    if "id" not in response:
+    if "@id" not in response:
         raise ValueError(_ERROR_MSG)
     return response
 
@@ -153,17 +153,19 @@ def _parse_query_param(kwargs, q):
 
 def _get_all_pages(uri, key, list=None, **kwargs):
     response = _get(uri, **kwargs)
-    embedded = response["_embedded"][key]
-    list = list + embedded if list else embedded
-    links = response["_links"]
+    print(response)
+    #embedded = response["_embedded"][key]
+    #list = list + embedded if list else embedded
 
-    if "last" not in links:
+    if response['totalItems'] == 0:
         return []
 
-    if links["self"]["href"] == links["last"]["href"]:
-        return list
+    view = response["view"]
 
-    else:
-        uri = links["next"]["href"].split("/")[-1]
-        return _get_all_pages(uri, key, list)
+    #if view["self"]["href"] == links["last"]["href"]:
+     #   return list
+
+    #else:
+     #   uri = links["next"]["href"].split("/")[-1]
+     #   return _get_all_pages(uri, key, list)
 

@@ -133,6 +133,7 @@ def _create_response(data, uri, post):
         response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     else:
         response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+
     if "@id" not in response:
         raise ValueError(_ERROR_MSG)
 

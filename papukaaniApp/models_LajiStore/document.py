@@ -1,6 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.models_LajiStore import gathering
-from datetime import datetime
 from papukaaniApp.utils.model_utils import *
 
 
@@ -9,17 +8,18 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=None, id=None, **kwargs):
-        self.id = id
-        self.documentId = documentId
-        self.lastModifiedAt = lastModifiedAt
-        self.createdAt = createdAt
-        self.facts = facts if facts else []
+    def __init__(self, gatherings, collectionID, deviceID, dateCreated, dateEdited, id=None, **kwargs):
+
         if len(gatherings) > 0 and isinstance(gatherings[0], gathering.Gathering):
             self.gatherings = gatherings
         else:
             self.gatherings = _parse_gathering(gatherings)
-        self.deviceId = deviceId
+
+        self.collectionID = collectionID
+        self.deviceID = deviceID
+        self.dateCreated = dateCreated
+        self.dateEdited = dateEdited
+        self.id = id
 
     def delete(self):
         '''
@@ -72,19 +72,17 @@ def get(id):
     return Document(**document)
 
 
-def create(documentId, gatherings, deviceId, facts=None, lastModifiedAt=None, createdAt=None):
+def create(gatherings, deviceId, collectionID, dateCreated=None, dateEdited=None):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
     '''
-    if lastModifiedAt == None:
-        lastModifiedAt = current_time_as_lajistore_timestamp()
+    current_time = current_time_as_lajistore_timestamp()
 
-    if createdAt == None:
-        createdAt = current_time_as_lajistore_timestamp()
+    dateCreated = dateCreated if dateCreated else current_time
+    dateEdited = dateEdited if dateEdited else current_time
 
-    document = Document(documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=facts)
-
+    document = Document(gatherings, deviceId, collectionID, dateCreated, dateEdited)
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 
@@ -93,13 +91,6 @@ def create(documentId, gatherings, deviceId, facts=None, lastModifiedAt=None, cr
 
 def get_document_without_private_gatherings(id):
     return find(filter={"gatherings_publicity": "public"}, id=id)[0]
-
-
-def delete_all():
-    '''
-    Deletes all documents. Can only be used in test enviroment.
-    '''
-    LajiStoreAPI.delete_all_documents()
 
 
 def _get_many(**kwargs):
@@ -112,3 +103,10 @@ def _get_many(**kwargs):
 
 def _parse_gathering(data):
     return [gathering.from_lajistore_json(**point) for point in data]
+
+
+def delete_all():
+    '''
+    Deletes all documents. Can only be used in test enviroment.
+    '''
+    LajiStoreAPI.delete_all_documents()

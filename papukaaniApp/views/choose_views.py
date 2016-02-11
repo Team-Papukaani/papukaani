@@ -21,8 +21,8 @@ def choose(request):
 
     else:
         devices = []
-        for item in device.get_all():
-            devices.append(item.deviceId)
+        for item in device.find():
+            devices.append(item.id)
         if "Dev" in devices:
             devices.remove("Dev")
         devices.sort()

@@ -49,6 +49,13 @@ class Device:
         '''
         return DeviceIndividual.get_attached_individual(self.id)['individualID']
 
+    def get_individuals_for_device(self):
+        '''
+        Return all attached individuals id or None for none attached
+        :return: ID or None
+        '''
+        return DeviceIndividual.get_individuals_for_device(self.id)
+
     def is_attached(self):
         return True if self.get_attached_individualid() else False
 

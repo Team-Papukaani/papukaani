@@ -51,6 +51,13 @@ def get_devices_for_individual(individualID):
     return LajiStoreAPI.get_all_deviceindividual(individualID=individualID)
 
 
+def get_individuals_for_device(deviceID):
+    '''
+        Return all attached inviduals for device
+        :return: ID or None
+    '''
+    return LajiStoreAPI.get_all_deviceindividual(deviceID=deviceID)
+
 def find(**kwargs):
     '''
     Return all attachments

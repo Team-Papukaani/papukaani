@@ -81,7 +81,11 @@ def find_exclude_deleted():
     Returns all individuals not marked as deleted
     :return: A list of Individual objects
     '''
-    return find(deleted=False)
+    individuals = find()
+    for individual in individuals:
+        if individual.deleted:
+            individuals.remove(individual)
+    return individuals
 
 
 def get(id):

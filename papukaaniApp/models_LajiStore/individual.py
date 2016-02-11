@@ -1,4 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from papukaaniApp.services.deviceindividual_service import DeviceIndividual
 from . import device, document
 from papukaaniApp.utils.model_utils import current_time_as_lajistore_timestamp
 from datetime import time, datetime
@@ -10,15 +11,11 @@ class Individual:
     Represents the Individual table of LajiStore
     '''
 
-    def __init__(self, individualId, taxon, id=None, deleted="", facts=None, **kwargs):
+    def __init__(self, nickname, taxon, id=None, deleted="", **kwargs):
         self.id = id
-        self.individualId = individualId
+        self.nickname = nickname
         self.taxon = taxon
         self.deleted = deleted
-        self.facts = facts
-
-    def get_facts_as_dictionary(self):
-        return {fact['name']: fact['value'] for fact in self.facts}
 
     def delete(self):
         '''
@@ -31,7 +28,6 @@ class Individual:
         Saves changes to the object to the corresponding LajiStore entry
         :return:
         '''
-        self.lastModifiedAt = current_time_as_lajistore_timestamp()
         LajiStoreAPI.update_individual(**self.__dict__)  # __dict__ puts all arguments here
 
     def get_gatherings(self):
@@ -41,13 +37,14 @@ class Individual:
         '''
         devices = []
         for d in device.get_all():
-            if self.individualId in [i["individualId"] for i in d.individuals  if "individualId" in i]:
+            if self.id in [i["individualId"] for i in d.individuals if "individualId" in i]:
                 devices.append(d)
 
         gatherings = []
         for d in devices:
-            timeranges = [(i["attached"], i["removed"] if i["removed"] else None) for i in d.individuals if i["individualId"] == self.individualId]
-            docs = document.find(deviceId=d.deviceId)
+            timeranges = [(i["attached"], i["removed"] if i["removed"] else None) for i in d.individuals if
+                          i["individualId"] == self.individualId]
+            docs = document.find(deviceId=d.id)
             self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
 
         return gatherings
@@ -61,9 +58,8 @@ class Individual:
                         gatherings.append(g)
 
 
-
 def _timestamp_to_datetime(timestamp):
-    timestamp = timestamp[:-3]+timestamp[-2:]
+    timestamp = timestamp[:-3] + timestamp[-2:]
     return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S%z")
 
 
@@ -73,23 +69,19 @@ def find(**kwargs):
     :param kwargs: Search parameters
     :return: A list of Individual objects
     '''
-    return _get_many(**kwargs)
+    data = LajiStoreAPI.get_all_individuals(**kwargs)
+    individuals = []
+    for individual in data:  # creates a list of individuals to return
+        individuals.append(Individual(**individual))
+    return individuals
 
 
-def get_all():
-    '''
-    Returns all individuals
-    :return: A list of Individual objects
-    '''
-    return _get_many()
-
-
-def get_all_exclude_deleted():
+def find_exclude_deleted():
     '''
     Returns all individuals not marked as deleted
     :return: A list of Individual objects
     '''
-    return _get_many(0)
+    return find(deleted=True)
 
 
 def get(id):
@@ -102,19 +94,17 @@ def get(id):
     return Individual(**individual)
 
 
-def create(taxon, facts=None):
+def create(nickname, taxon):
     '''
     Creates an individual instance in LajiStore and a corresponding Indiviual object
     :param id: The LajiStore ID of the object
     :param taxon: The LajiStore taxon of the object
     :return: An Individual object
     '''
-    individual = Individual("temp", taxon, facts=facts)
-
+    individual = Individual(nickname, taxon)
     data = LajiStoreAPI.post_individual(**individual.__dict__)
-    individual.id = data["id"]
-    individual.individualId = individual.id
-    individual.update()
+
+    individual.id = data['id']
 
     return individual
 
@@ -124,21 +114,3 @@ def delete_all():
     Deletes all individuals. Can only be used in test enviroment.
     '''
     LajiStoreAPI.delete_all_individuals()
-
-
-def _get_many(mode=1, **kwargs):
-    """
-    :param mode: default 1 for ALL, 0 for non-deleted.
-    """
-    data = LajiStoreAPI.get_all_individuals(**kwargs)
-    individuals = []
-    for individual in data:  # creates a list of individuals to return
-        if mode == 0:
-            if 'deleted' not in individual:
-                individuals.append(Individual(**individual))
-            elif not individual['deleted']:
-                individuals.append(Individual(**individual))
-        elif mode == 1:
-            individuals.append(Individual(**individual))
-    return individuals
-

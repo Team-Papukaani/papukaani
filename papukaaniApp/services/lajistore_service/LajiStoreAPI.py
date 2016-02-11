@@ -2,7 +2,6 @@ import requests
 import json
 from papukaani import secret_settings
 from django.conf import settings
-from time import clock
 
 _URL = settings.LAJISTORE_URL
 _AUTH = (secret_settings.LAJISTORE_USER, secret_settings.LAJISTORE_PASSWORD)
@@ -15,10 +14,12 @@ _INDIVIDUAL_PATH = "individuals"
 
 _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 
+
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 # as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
 
 # Devices lajistore/devices.
+
 
 def get_all_devices(**kwargs):
     return _get_all_pages(_DEVICE_PATH, **kwargs)
@@ -107,28 +108,33 @@ def _delete(uri):
 
 def _get(uri, **kwargs):
     url = _URL + uri
-    if (kwargs):
+    if kwargs:
         url += _add_query(**kwargs)
     response = requests.get(url, auth=_AUTH).json()
+    if '@id' in response:
+        response['id'] = response['@id'].rsplit('/', 1)[-1]
     return response
 
 
 def _post(data, uri):
-    return create_response(data, uri, True)
+    return _create_response(data, uri, True)
+
 
 def _put(uri, data):
-    return create_response(data, uri, False)
+    return _create_response(data, uri, False)
 
-def create_response(data, uri, post):
+
+def _create_response(data, uri, post):
     url = _URL + uri
-    if 'id' in data: del data['id'] # Fi
-    if(post):
+    if 'id' in data: del data['id']
+    if (post):
         response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     else:
         response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     if "@id" not in response:
         raise ValueError(_ERROR_MSG)
     return response
+
 
 def _add_query(**kwargs):
     q = ""
@@ -138,7 +144,7 @@ def _add_query(**kwargs):
         kwargs.pop("filter")
 
     if len(kwargs.keys()) > 0:
-        q += "?q=" if q=="" else "&q="
+        q += "?q=" if q == "" else "&q="
         q = _parse_query_param(kwargs, q)
 
     return q
@@ -154,18 +160,21 @@ def _parse_query_param(kwargs, q):
 
 
 def _get_all_pages(url, list=None, **kwargs):
-
     response = _get(url, **kwargs)
 
     if response['totalItems'] == 0:
         return []
 
-    members = response['member']
+    member = response['member']
 
-    list = list + members if list else members
+    for m in member:
+        if '@id' in m:
+            m['id'] = m['@id'].rsplit('/', 1)[-1]
 
-    if (response['view']['@id'] == response['view']['lastPage']):
-        return list;
+    list = list + member if list else member
+
+    if response['view']['@id'] == response['view']['lastPage']:
+        return list
 
     else:
         url = response['view']['nextPage'].rsplit('/', 1)[-1]

@@ -32,7 +32,7 @@ class FileParserTest(TestCase):
     def test_create_points_method_correctly_updates_existing_documents(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
-        assert len(document.get_all()) == 3
+        assert len(document.find()) == 3
 
     def test_merge_and_delete_if_three_documents_found_for_same_device(self):
         gatherings = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
@@ -47,22 +47,22 @@ class FileParserTest(TestCase):
         document.create(**dict)
         document.create(**dict)
         document.create(**dict)
-        assert len(document.get_all()) == 3
+        assert len(document.find()) == 3
 
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_test.csv")
-        assert len(document.get_all()) == 1
+        assert len(document.find()) == 1
 
     def test_document_does_not_contain_duplicate_gathering(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv")
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test2.csv")
-        documents = document.get_all()
+        documents = document.find()
         self.assertEqual(len(documents[0].gatherings), 1)
 
     def test_gathering_facts_unite_succesfully(self):
         document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
-        documents = document.get_all()
+        documents = document.find()
         self.assertEquals(4, len(documents[0].gatherings[0].facts))
         facts = documents[0].gatherings[0].facts
         self.assertEquals(facts[1]["value"], "24-11-2015, 00-00-00")
@@ -71,11 +71,11 @@ class FileParserTest(TestCase):
     def test_gathering_publicity_remains_unchanged_after_unite(self):
         document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
-        documents = document.get_all()[0]
+        documents = document.find()[0]
         documents.gatherings[0].publicity = "public"
         documents.update()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
-        self.assertEquals(document.get_all()[0].gatherings[0].publicity, "public")
+        self.assertEquals(document.find()[0].gatherings[0].publicity, "public")
 
     def test_byholm_data_goes_to_lajiStore_succesfully(self):
         document.delete_all()
@@ -84,7 +84,7 @@ class FileParserTest(TestCase):
         entries = prepare_file(file, self.byholm_parser, "1010")
         create_points(entries, self.byholm_parser, "byholm_test.txt",
                       datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
-        documents = document.get_all()
+        documents = document.find()
         self.assertEqual(len(documents), 1)
         self.assertEqual(len(documents[0].gatherings), 5)
 
@@ -96,7 +96,7 @@ class FileParserTest(TestCase):
 
     def test_filename_and_datetime_goes_to_facts(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
-        documents = document.get_all()
+        documents = document.find()
         self.assertEqual(len(documents[0].gatherings[0].facts), 3)
 
     def test_altitude_in_facts(self):
@@ -104,7 +104,7 @@ class FileParserTest(TestCase):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
 
         for attempt in range(10):
-            documents = document.get_all()
+            documents = document.find()
             result = False
             facts = documents[0].gatherings[0].facts
             for fact in facts:
@@ -121,7 +121,7 @@ class FileParserTest(TestCase):
         document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
 
-        documents = document.get_all()
+        documents = document.find()
         result = True
         facts = documents[0].gatherings[0].facts
         for fact in facts:

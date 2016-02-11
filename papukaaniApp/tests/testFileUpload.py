@@ -28,10 +28,10 @@ class FileUploadTest(TestCase):
 
     def test_post_to_upload_with_file_creates_database_entry(self):
         document.delete_all()
-        before = len(document.get_all())
+        before = len(document.find())
         self.submit_file("ecotones.csv")
 
-        after = len(document.get_all())
+        after = len(document.find())
         self.assertTrue(after > before)
 
     def test_invalid_file_does_not_cause_exception(self):
@@ -40,10 +40,10 @@ class FileUploadTest(TestCase):
 
     def test_the_same_points_will_not_be_added_to_database_multiple_times(self):
         self.submit_file("ecotones.csv")
-        before = len(document.get_all())
+        before = len(document.find())
         self.submit_file("ecotones.csv")
 
-        after = len(document.get_all())
+        after = len(document.find())
         self.assertTrue(after == before)
 
     def test_file_can_be_found_from_db_after_upload(self):

@@ -31,9 +31,10 @@ class Document:
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
-        self.lastModifiedAt = current_time_as_lajistore_timestamp()
+
+        self.dateEdited = current_time_as_lajistore_timestamp()
         dict = self.to_dict()
-        LajiStoreAPI.update_document(**dict)  # __dict__ puts all arguments here
+        LajiStoreAPI.update_document(**dict)  # to_dict() puts all arguments here
 
     def to_dict(self):
         dict = self.__dict__.copy()
@@ -47,19 +48,11 @@ def find(**kwargs):
     :param kwargs: Search parameters.
     :return: A list of Document objects.
     '''
-    return _get_many(**kwargs)
-
-
-def update_from_dict(**kwargs):
-    LajiStoreAPI.update_document(**kwargs)
-
-
-def get_all():
-    '''
-    Returns all documents
-    :return A list of Document objects:
-    '''
-    return _get_many()
+    data = LajiStoreAPI.get_all_documents(**kwargs)
+    documents = []
+    for document in data:  # creates a list of documents to return
+        documents.append(Document(**document))
+    return documents
 
 
 def get(id):
@@ -81,24 +74,11 @@ def create(gatherings, deviceId, collectionID, dateCreated=None, dateEdited=None
 
     dateCreated = dateCreated if dateCreated else current_time
     dateEdited = dateEdited if dateEdited else current_time
-
     document = Document(gatherings, deviceId, collectionID, dateCreated, dateEdited)
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 
     return document
-
-
-def get_document_without_private_gatherings(id):
-    return find(filter={"gatherings_publicity": "public"}, id=id)[0]
-
-
-def _get_many(**kwargs):
-    data = LajiStoreAPI.get_all_documents(**kwargs)
-    documents = []
-    for document in data:  # creates a list of documents to return
-        documents.append(Document(**document))
-    return documents
 
 
 def _parse_gathering(data):

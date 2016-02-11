@@ -33,4 +33,4 @@ class testDocumentAndGathering(TestCase):
         self.assertEquals(4, self.doc.gatherings[0].temperature)
 
     def test_get_all(self):
-        self.assertGreater(len(document.get_all()), 0)
+        self.assertGreater(len(document.find()), 0)

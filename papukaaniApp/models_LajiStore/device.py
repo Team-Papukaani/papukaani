@@ -67,7 +67,6 @@ def find(**kwargs):
     :return: A list of Device objects.
     '''
     data = LajiStoreAPI.get_all_devices(**kwargs)
-    print(data)
     devices = []
     for device in data:  # Creates a list of devices to return
         devices.append(Device(**device))

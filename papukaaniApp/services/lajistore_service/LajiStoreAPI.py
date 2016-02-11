@@ -21,7 +21,7 @@ _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 # Devices lajistore/devices.
 
 def get_all_devices(**kwargs):
-    return _get_all_pages(_DEVICE_PATH + '?page=1', **kwargs)
+    return _get_all_pages(_DEVICE_PATH, **kwargs)
 
 
 def get_device(id):
@@ -121,7 +121,7 @@ def _put(uri, data):
 
 def create_response(data, uri, post):
     url = _URL + uri
-    if (data['id']): del data['id']
+    if 'id' in data: del data['id'] # Fi
     if(post):
         response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     else:
@@ -154,7 +154,7 @@ def _parse_query_param(kwargs, q):
 
 
 def _get_all_pages(url, list=None, **kwargs):
-    # Not quite working yet
+
     response = _get(url, **kwargs)
 
     if response['totalItems'] == 0:
@@ -168,5 +168,5 @@ def _get_all_pages(url, list=None, **kwargs):
         return list;
 
     else:
-        url = response['view']['nextPage']
+        url = response['view']['nextPage'].rsplit('/', 1)[-1]
         return _get_all_pages(url, list)

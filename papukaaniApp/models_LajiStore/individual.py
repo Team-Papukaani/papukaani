@@ -35,18 +35,13 @@ class Individual:
         Get all public gatherings related to this individual.
         :return: a list of gatherings
         '''
-        devices = []
-        for d in device.get_all():
-            if self.id in [i["individualId"] for i in d.individuals if "individualId" in i]:
-                devices.append(d)
+        devices = DeviceIndividual.get_devices_for_individual()
 
         gatherings = []
         for d in devices:
-            timeranges = [(i["attached"], i["removed"] if i["removed"] else None) for i in d.individuals if
-                          i["individualId"] == self.individualId]
-            docs = document.find(deviceId=d.id)
+            timeranges = [(d["attached"], d["removed"] if d["removed"] else None)]
+            docs = document.find(deviceId=d.deviceId)
             self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
-
         return gatherings
 
     def _filter_gatherings_by_timeranges(self, docs, gatherings, timeranges):
@@ -54,7 +49,7 @@ class Individual:
             for g in doc.gatherings:
                 for tr in timeranges:
                     if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.time) <= (_timestamp_to_datetime(
-                            tr[1]) if tr[1] else timezone.now()) and g.publicity == "public":
+                            tr[1]) if tr[1] else timezone.now()) and g.publicityRestrictions == "MZ.publicityRestrictionsPublic":
                         gatherings.append(g)
 
 
@@ -101,7 +96,7 @@ def get(id):
 def create(nickname, taxon):
     '''
     Creates an individual instance in LajiStore and a corresponding Indiviual object
-    :param id: The LajiStore ID of the object
+    :param nickname: nickname for the individual
     :param taxon: The LajiStore taxon of the object
     :return: An Individual object
     '''

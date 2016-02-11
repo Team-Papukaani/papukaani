@@ -11,6 +11,7 @@ _JSON_HEADERS = {'Content-Type': 'application/json'}
 _DEVICE_PATH = "devices"
 _DOCUMENT_PATH = "documents"
 _INDIVIDUAL_PATH = "individuals"
+_DEVICEINDIVIDUAL_PATH = "deviceIndividual"
 
 _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 
@@ -18,8 +19,34 @@ _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 # as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
 
-# Devices lajistore/devices.
 
+# DeviceIndividuals lajistore/deviceIndividual/
+
+def get_all_deviceindividual(**kwargs):
+    return _get_all_pages(_DEVICEINDIVIDUAL_PATH, **kwargs)
+
+
+def get_deviceindividual(id):
+    return _get(_DEVICEINDIVIDUAL_PATH + "/" + str(id))
+
+
+def delete_deviceindividual(id):
+    return _delete(_DEVICEINDIVIDUAL_PATH + "/" + str(id))
+
+
+def post_deviceindividual(**data):
+    return _post(data, _DEVICEINDIVIDUAL_PATH)
+
+
+def update_deviceindividual(**data):
+    return _put(_DEVICEINDIVIDUAL_PATH + "/" + str(data["id"]), data)
+
+
+def delete_all_deviceindividual():
+    return _delete(_DEVICEINDIVIDUAL_PATH)
+
+
+# Devices lajistore/devices.
 
 def get_all_devices(**kwargs):
     return _get_all_pages(_DEVICE_PATH, **kwargs)
@@ -129,6 +156,8 @@ def _put(uri, data):
 def _create_response(data, uri, post):
     url = _URL + uri
     if 'id' in data: del data['id']
+    if '@id' in data: del data['@id']
+
     if (post):
         response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     else:
@@ -169,13 +198,13 @@ def _get_all_pages(url, list=None, **kwargs):
     if response['totalItems'] == 0:
         return []
 
-    member = response['member']
+    members = response['member']
 
-    for m in member:
-        if '@id' in m:
-            m['id'] = m['@id'].rsplit('/', 1)[-1]
+    for member in members:
+        if '@id' in member:
+            member['id'] = member['@id'].rsplit('/', 1)[-1]
 
-    list = list + member if list else member
+    list = list + members if list else members
 
     if response['view']['@id'] == response['view']['lastPage']:
         return list

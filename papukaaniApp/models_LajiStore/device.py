@@ -1,4 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from papukaaniApp.services.deviceindividual_service import DeviceIndividual
 from papukaaniApp.utils.model_utils import *
 
 
@@ -9,21 +10,18 @@ class Device:
 
     def __init__(self, deviceType, deviceManufacturer, deviceManufacturerID,
                  dateCreated, dateEdited, id=None, **kwargs):
-
         self.deviceType = deviceType
         self.deviceManufacturer = deviceManufacturer
         self.deviceManufacturerID = deviceManufacturerID
         self.dateCreated = dateCreated
         self.dateEdited = dateEdited
-        self.id=id
-
+        self.id = id
 
     def delete(self):
         '''
         Deletes the device from LajiStore. Note that the object is not destroyed!
         '''
         LajiStoreAPI.delete_device(self.id)
-
 
     def update(self):
         '''
@@ -32,32 +30,27 @@ class Device:
         self.dateEdited = current_time_as_lajistore_timestamp()
         LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here.
 
-
-    def attach_to(self, individual, timestamp):
+    def attach_to(self, individualid, timestamp):
         '''
-        Attaches this device to an individual. Previously attached device will be removed.
-
-        if self.facts[0]["value"] == "not attached":
-            self.individuals.append({
-                "individualId": individual.individualId,
-                "attached": timestamp,
-                "removed": None
-            })
-            self.change_status()
-            return True
-        return False
+        Attaches this device to an individual
         '''
+        DeviceIndividual.attach(self.id, individualid, timestamp)
 
-
-    def detach_from(self, individual, timestamp):
+    def detach_from(self, individualid, timestamp):
         '''
-        Removes this device from an individual. If the individual is already removed, old removal date will be rewritten.
-
-        for indiv in self.individuals:
-            if indiv["individualId"] == individual.individualId and indiv["removed"] is None:
-                indiv["removed"] = timestamp
-        self.change_status()
+        Removes this device from an individual
         '''
+        DeviceIndividual.detach(self.id, individualid, timestamp)
+
+    def get_attached_individualid(self):
+        '''
+        Return currently attached individuals id or None for not currently attached
+        :return: ID or None
+        '''
+        return DeviceIndividual.get_attached_individual(self.id)['individualID']
+
+    def is_attached(self):
+        return True if self.get_attached_individualid() else False
 
 
 def find(**kwargs):

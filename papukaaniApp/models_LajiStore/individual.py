@@ -35,12 +35,12 @@ class Individual:
         Get all public gatherings related to this individual.
         :return: a list of gatherings
         '''
-        devices = DeviceIndividual.get_devices_for_individual()
+        devices = DeviceIndividual.get_devices_for_individual(self.id)
 
         gatherings = []
         for d in devices:
             timeranges = [(d["attached"], d["removed"] if d["removed"] else None)]
-            docs = document.find(deviceId=d.deviceId)
+            docs = document.find(deviceID=d["deviceID"])
             self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
         return gatherings
 

@@ -49,7 +49,7 @@ def delete_all_devices():
 # Documents lajistore/documents/
 
 def get_all_documents(**kwargs):
-    return _get_all_pages(_DOCUMENT_PATH, "document", **kwargs)
+    return _get_all_pages(_DOCUMENT_PATH, **kwargs)
 
 
 def get_document(id):
@@ -75,7 +75,7 @@ def delete_all_documents():
 # Individuals lajistore/individual
 
 def get_all_individuals(**kwargs):
-    return _get_all_pages(_INDIVIDUAL_PATH, "individual", **kwargs)
+    return _get_all_pages(_INDIVIDUAL_PATH, **kwargs)
 
 
 def get_individual(id):
@@ -103,6 +103,8 @@ def delete_all_individuals():
 def _delete(uri):
     url = _URL + uri
     response = requests.delete(url, auth=_AUTH)
+    if '@id' in response:
+        response['id'] = response['@id'].rsplit('/', 1)[-1]
     return response
 
 
@@ -133,6 +135,8 @@ def _create_response(data, uri, post):
         response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     if "@id" not in response:
         raise ValueError(_ERROR_MSG)
+
+    response['id'] = response['@id'].rsplit('/', 1)[-1]
     return response
 
 

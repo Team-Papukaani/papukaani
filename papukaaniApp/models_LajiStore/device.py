@@ -95,8 +95,7 @@ def create(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated=Non
     device = Device(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated, dateEdited)
     data = LajiStoreAPI.post_device(**device.__dict__)
 
-    id_url = data["@id"]
-    device.id = id_url.rsplit('/', 1)[-1]
+    device.id = data['id']
 
     return device
 

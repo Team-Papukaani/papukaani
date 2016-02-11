@@ -21,7 +21,7 @@ _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 # Devices lajistore/devices.
 
 def get_all_devices(**kwargs):
-    return _get_all_pages(_DEVICE_PATH, "device", **kwargs)
+    return _get_all_pages(_DEVICE_PATH, **kwargs)
 
 
 def get_device(id):
@@ -37,7 +37,9 @@ def post_device(**data):
 
 
 def update_device(**data):
-    return _put(_DEVICE_PATH + "/" + str(data["id"]), data)
+    id = str(data["id"])
+    del data["id"]
+    return _put(_DEVICE_PATH + "/" + id, data)
 
 
 def delete_all_devices():
@@ -100,6 +102,7 @@ def delete_all_individuals():
 
 def _delete(uri):
     url = _URL + uri
+    print(url)
     response = requests.delete(url, auth=_AUTH)
     return response
 
@@ -108,6 +111,7 @@ def _get(uri, **kwargs):
     url = _URL + uri
     if (kwargs):
         url += _add_query(**kwargs)
+    print(url)
     response = requests.get(url, auth=_AUTH).json()
     return response
 
@@ -151,16 +155,26 @@ def _parse_query_param(kwargs, q):
     return q
 
 
-def _get_all_pages(uri, key, list=None, **kwargs):
+def _get_all_pages(uri, list=None, **kwargs):
+    page = 1;
+    uri += '?page=' + str(page)
     response = _get(uri, **kwargs)
-    print(response)
-    #embedded = response["_embedded"][key]
-    #list = list + embedded if list else embedded
-
     if response['totalItems'] == 0:
         return []
 
-    view = response["view"]
+
+
+    print(response)
+
+    members = response["member"]
+    list = list + members if list else members
+    print(list)
+
+    #embedded = response["_embedded"][key]
+    #list = list + embedded if list else embedded
+
+
+    #view = response["view"]
 
     #if view["self"]["href"] == links["last"]["href"]:
      #   return list

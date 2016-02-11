@@ -7,31 +7,34 @@ class Device:
     Represents the Device table of LajiStore
     '''
 
-    def __init__(self, deviceType, deviceManufacturer, deviceManufacturerID, dateCreated, dateEdited, **kwargs):
+    def __init__(self, deviceType, deviceManufacturer, deviceManufacturerID,
+                 dateCreated, dateEdited, id=None, **kwargs):
 
         self.deviceType = deviceType
         self.deviceManufacturer = deviceManufacturer
         self.deviceManufacturerID = deviceManufacturerID
         self.dateCreated = dateCreated
         self.dateEdited = dateEdited
+        self.id=id
 
 
     def delete(self):
         '''
         Deletes the device from LajiStore. Note that the object is not destroyed!
         '''
-        #LajiStoreAPI.delete_device(self.id)
+        LajiStoreAPI.delete_device(self.id)
+
 
     def update(self):
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
         self.dateEdited = current_time_as_lajistore_timestamp()
-        LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here
+        LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here.
+
 
     def attach_to(self, individual, timestamp):
         '''
-        current api does not support this
         Attaches this device to an individual. Previously attached device will be removed.
 
         if self.facts[0]["value"] == "not attached":
@@ -45,9 +48,9 @@ class Device:
         return False
         '''
 
+
     def detach_from(self, individual, timestamp):
         '''
-        Current api does not support this!
         Removes this device from an individual. If the individual is already removed, old removal date will be rewritten.
 
         for indiv in self.individuals:
@@ -56,28 +59,18 @@ class Device:
         self.change_status()
         '''
 
-    def change_status(self):
-        '''
-        Current api does not support this!
-        Changes the status of the device to attached if not attached and vice versa.
-
-        self.facts[0]["value"] = "attached" if self.facts[0]["value"] == "not attached" else "not attached"
-        '''
-
 
 def find(**kwargs):
     '''
     Find all matching devices.
-    :param kwargs: Search parameters.
+    :param kwargs: Search parameters. No parameters will search all devices.
     :return: A list of Device objects.
     '''
-
     data = LajiStoreAPI.get_all_devices(**kwargs)
     devices = []
-    for device in data:  # creates a list of devices to return
+    for device in data:  # Creates a list of devices to return
         devices.append(Device(**device))
     return devices
-
 
 
 def get(id):
@@ -86,7 +79,6 @@ def get(id):
     :param id: The LajiStore ID of the device
     :return: A Device object
     '''
-
     device = LajiStoreAPI.get_device(id)
     return Device(**device)
 
@@ -101,7 +93,13 @@ def create(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated=Non
     dateCreated = dateCreated if dateCreated else current_time
     dateEdited = dateEdited if dateEdited else current_time
     device = Device(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated, dateEdited)
-    LajiStoreAPI.post_device(**device.__dict__)
+
+    postData = device.__dict__
+    del postData['id'] # Remove id=None as otherwise LajiStore will reject POST due to invalid field
+    data = LajiStoreAPI.post_device(**postData)
+
+    id_url = data["@id"]
+    device.id = id_url.rsplit('/', 1)[-1]
 
     return device
 

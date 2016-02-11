@@ -34,13 +34,14 @@ def _create_gatherings(data, parser, name_of_file, time):
 
 
 def _gpsNumberCheck(collections, devices, parser, gpsNumber):
-    #
+
     if gpsNumber not in collections:
         collections[gpsNumber] = []
     if gpsNumber not in devices:
         if not (device.get(gpsNumber)):
-            device.create(parser.parserInfo["type"], parser.parserInfo["type"]["manufacturer"],
-                          parser.parserInfo["type"]["manufacturerid"])
+            device.create(parser_Info(parser)['type'],
+                          deviceManufacturer=parser_Info(parser)['manufacturer'],
+                          deviceManufacturerID=gpsNumber)
         devices.append(gpsNumber)
 
 

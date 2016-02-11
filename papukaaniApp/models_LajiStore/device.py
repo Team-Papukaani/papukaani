@@ -67,6 +67,7 @@ def find(**kwargs):
     :return: A list of Device objects.
     '''
     data = LajiStoreAPI.get_all_devices(**kwargs)
+    print(data)
     devices = []
     for device in data:  # Creates a list of devices to return
         devices.append(Device(**device))
@@ -93,10 +94,7 @@ def create(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated=Non
     dateCreated = dateCreated if dateCreated else current_time
     dateEdited = dateEdited if dateEdited else current_time
     device = Device(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated, dateEdited)
-
-    postData = device.__dict__
-    del postData['id'] # Remove id=None as otherwise LajiStore will reject POST due to invalid field
-    data = LajiStoreAPI.post_device(**postData)
+    data = LajiStoreAPI.post_device(**device.__dict__)
 
     id_url = data["@id"]
     device.id = id_url.rsplit('/', 1)[-1]

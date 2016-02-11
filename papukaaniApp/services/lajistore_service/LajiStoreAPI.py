@@ -21,7 +21,7 @@ _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 # Devices lajistore/devices.
 
 def get_all_devices(**kwargs):
-    return _get_all_pages(_DEVICE_PATH, **kwargs)
+    return _get_all_pages(_DEVICE_PATH + '?page=1', **kwargs)
 
 
 def get_device(id):
@@ -38,7 +38,6 @@ def post_device(**data):
 
 def update_device(**data):
     id = str(data["id"])
-    del data["id"]
     return _put(_DEVICE_PATH + "/" + id, data)
 
 
@@ -102,7 +101,6 @@ def delete_all_individuals():
 
 def _delete(uri):
     url = _URL + uri
-    print(url)
     response = requests.delete(url, auth=_AUTH)
     return response
 
@@ -111,7 +109,6 @@ def _get(uri, **kwargs):
     url = _URL + uri
     if (kwargs):
         url += _add_query(**kwargs)
-    print(url)
     response = requests.get(url, auth=_AUTH).json()
     return response
 
@@ -124,6 +121,7 @@ def _put(uri, data):
 
 def create_response(data, uri, post):
     url = _URL + uri
+    if (data['id']): del data['id']
     if(post):
         response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     else:
@@ -155,31 +153,20 @@ def _parse_query_param(kwargs, q):
     return q
 
 
-def _get_all_pages(uri, list=None, **kwargs):
-    page = 1;
-    uri += '?page=' + str(page)
-    response = _get(uri, **kwargs)
+def _get_all_pages(url, list=None, **kwargs):
+    # Not quite working yet
+    response = _get(url, **kwargs)
+
     if response['totalItems'] == 0:
         return []
 
+    members = response['member']
 
-
-    print(response)
-
-    members = response["member"]
     list = list + members if list else members
-    print(list)
 
-    #embedded = response["_embedded"][key]
-    #list = list + embedded if list else embedded
+    if (response['view']['@id'] == response['view']['lastPage']):
+        return list;
 
-
-    #view = response["view"]
-
-    #if view["self"]["href"] == links["last"]["href"]:
-     #   return list
-
-    #else:
-     #   uri = links["next"]["href"].split("/")[-1]
-     #   return _get_all_pages(uri, key, list)
-
+    else:
+        url = response['view']['nextPage']
+        return _get_all_pages(url, list)

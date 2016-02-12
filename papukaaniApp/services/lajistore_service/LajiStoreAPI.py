@@ -132,6 +132,9 @@ def _delete(uri):
     response = requests.delete(url, auth=_AUTH)
     if '@id' in response:
         response['id'] = response['@id'].rsplit('/', 1)[-1]
+
+    print(response)
+
     return response
 
 

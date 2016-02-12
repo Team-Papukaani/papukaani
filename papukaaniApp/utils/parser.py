@@ -1,4 +1,7 @@
 import uuid
+
+from math import radians
+
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
 import logging
@@ -25,7 +28,7 @@ def _create_gatherings(data, parser):
     collections = {}
     devices = []
     for point in data:
-        manufacturerID = point['ManufacturerID']
+        manufacturerID = point['manufacturerID']
         _manufacturerIDCheck(collections, devices, parser, manufacturerID)
         _create_one_gathering(collections, manufacturerID, point)
     return _update_gatherings_to_lajiStore(collections)
@@ -61,7 +64,7 @@ def _generate_gathering(point, timestamp):
     return gathering.Gathering(
         dateBegin=timestamp,
         geometry=[float(point["longitude"]), float(point["latitude"])],
-        temperature=int(point['temperature']),
+        temperature=int(float(point['temperature'])),
     )
 
 

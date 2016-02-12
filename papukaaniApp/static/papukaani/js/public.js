@@ -120,7 +120,7 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
         var coordinates = point.wgs84Geometry.coordinates;
         return {
             coordinates: Victor.fromArray(coordinates.reverse()),
-            time: Date.parse(point.dateTimeBegin)
+            time: Date.parse(point.dateBegin)
         };
     });
 };
@@ -217,7 +217,7 @@ function points_in_timerange(points, start, end) {
     var pts = [];
 
     for (var i = 0; i < points.length; i++) {
-        if (dateIsBetween(new Date(points[i].dateTimeBegin), a, b)) {
+        if (dateIsBetween(new Date(points[i].dateBegin), a, b)) {
             pts.push(points[i])
         }
     }

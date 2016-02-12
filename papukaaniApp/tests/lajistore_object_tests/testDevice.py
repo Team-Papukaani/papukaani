@@ -5,12 +5,11 @@ from papukaaniApp.models_LajiStore import *
 class TestDevice(TestCase):
     def setUp(self):
         dev = {
-            "deviceId": "ABCD1234567",
+            "deviceManufacturerID": "ABCD1234567",
             "deviceType": "Type",
             "deviceManufacturer": "Manufacturer",
-            "createdAt": "2015-09-29T14:00:00+03:00",
-            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-            "facts": []
+            "dateCreated": "2015-09-29T14:00:00+03:00",
+            "dateEdited": "2015-09-29T14:00:00+03:00"
         }
 
         self.d = device.create(**dev)
@@ -86,7 +85,7 @@ class TestDevice(TestCase):
         self._delete_individuals([A,B])
 
     def _create_individuals(self):
-        return individual.create("TaxonA"), individual.create("TaxonB")
+        return individual.create("LintuA","TaxonA"), individual.create("LintuB","TaxonB")
 
     def _delete_individuals(self, inds):
         for i in inds:

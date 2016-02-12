@@ -20,13 +20,10 @@ def choose(request):
         return redirect(choose)
 
     else:
-        devices = []
-        for item in device.find():
-            devices.append(item.id)
-        if "Dev" in devices:
-            devices.remove("Dev")
-        devices.sort()
-        return render(request, 'papukaaniApp/choose.html', {'devices': json.dumps(devices)})
+        devices = device.find()
+        devices.sort(key=lambda x: x.id)
+        devices_ = {dev.id: dev.deviceManufacturerID for dev in devices}
+        return render(request, 'papukaaniApp/choose.html', {'devices': json.dumps(devices_)})
 
 
 def _set_points_public(request):
@@ -34,7 +31,7 @@ def _set_points_public(request):
     deviceId = data["deviceId"]
     gatherings = data["gatherings"]
 
-    doc = document.find(deviceId=deviceId)[0]
+    doc = document.find(deviceID=deviceId)[0]
 
     doc.gatherings = [ gathering.from_lajistore_json(**g) for g in gatherings]
     doc.update()

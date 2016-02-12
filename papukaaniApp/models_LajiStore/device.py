@@ -82,9 +82,11 @@ def get(id):
     :param id: The LajiStore ID of the device
     :return: A Device object
     '''
+
     device = LajiStoreAPI.get_device(id)
     if '@id' in device:
         return Device(**device)
+
     else:
         return None
 

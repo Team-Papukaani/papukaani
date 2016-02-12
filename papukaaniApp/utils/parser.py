@@ -35,7 +35,7 @@ def _manufacturerIDCheck(collections, devices, parser, manufacturerID):
     if manufacturerID not in collections:
         collections[manufacturerID] = []
     if manufacturerID not in devices:
-        if not (device.get(manufacturerID)):
+        if not device.find(deviceManufacturerID=manufacturerID):
             device.create(parser_Info(parser)['deviceType'], parser_Info(parser)['deviceManufacturer'], manufacturerID)
         devices.append(manufacturerID)
 
@@ -61,7 +61,7 @@ def _generate_gathering(point, timestamp):
     return gathering.Gathering(
         dateBegin=timestamp,
         geometry=[float(point["longitude"]), float(point["latitude"])],
-        notes=str(float(point['temperature'])),
+        temperature=int(point['temperature']),
     )
 
 

@@ -1,4 +1,4 @@
-IdNr,ManufacturerID,GPSTime,SMSTime,Latitude,Longtitude,BatteryVoltage,GpsDescription,Temperature,GPSIntervals,VHFTelemetry,Activity,GSMSignal,N_satellites,Speed_knots,Altitude,Light,Acc_X,Acc_Y,Acc_Z
+IdNr,GpsNumber,GPSTime,SMSTime,Latitude,Longtitude,BatteryVoltage,GpsDescription,Temperature,GPSIntervals,VHFTelemetry,Activity,GSMSignal,N_satellites,Speed_knots,Altitude,Light,Acc_X,Acc_Y,Acc_Z
 1,48500691564,2015-08-01 00:00:50,2015-08-01 02:01:30,61.757366,22.344783,413,FIOS10,19.0,4,0,60,16,,,,,,,
 2,48500691564,2015-08-01 02:00:13,2015-08-01 10:01:07,61.757366,22.344966,413,FIOS10,19.0,4,0,109,19,,,,,,,
 3,48500691564,2015-08-01 04:00:24,2015-08-01 10:01:07,61.758000,22.344899,413,FIOS10,14.0,4,0,109,19,,,,,,,

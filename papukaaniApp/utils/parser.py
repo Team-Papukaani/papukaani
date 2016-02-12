@@ -26,28 +26,31 @@ def create_points(data, parser, name_of_file, time):
 
 def _create_gatherings(data, parser):
     collections = {}
-    devices = []
+    devices = {}
     for point in data:
         manufacturerID = point['manufacturerID']
-        _manufacturerIDCheck(collections, devices, parser, manufacturerID)
-        _create_one_gathering(collections, manufacturerID, point)
+        deviceID = _manufacturerIDCheck(collections, devices, parser, manufacturerID)
+        _create_one_gathering(collections, deviceID, point)
     return _update_gatherings_to_lajiStore(collections)
 
 
 def _manufacturerIDCheck(collections, devices, parser, manufacturerID):
-    if manufacturerID not in collections:
-        collections[manufacturerID] = []
     if manufacturerID not in devices:
-        if not device.find(deviceManufacturerID=manufacturerID):
-            device.create(parser_Info(parser)['deviceType'], parser_Info(parser)['deviceManufacturer'], manufacturerID)
-        devices.append(manufacturerID)
+        found = device.find(deviceManufacturerID=manufacturerID)
+        if not found:
+            dev = device.create(parser_Info(parser)['deviceType'], parser_Info(parser)['deviceManufacturer'], manufacturerID)
+        else:
+            dev = found[0]
+        collections[dev.id] = []
+        devices[manufacturerID]=dev.id
+    return devices[manufacturerID]
 
 
-def _create_one_gathering(collections, manufacturerID, point):
+def _create_one_gathering(collections, deviceID, point):
     timestamp = _extract_timestamp(point)
     try:
         gathering = _generate_gathering(point, timestamp)
-        collections[manufacturerID].append(gathering)
+        collections[deviceID].append(gathering)
     except ValueError:
         pass
 

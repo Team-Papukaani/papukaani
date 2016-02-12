@@ -40,7 +40,7 @@ class Individual:
 
         gatherings = []
         for d in devices:
-            timeranges = [(d["attached"], d["removed"] if d["removed"] else None)]
+            timeranges = [(d["attached"], d["removed"] if "removed" in d else None)]
             docs = document.find(deviceID=d["deviceID"])
             self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
         return gatherings
@@ -49,7 +49,7 @@ class Individual:
         for doc in docs:
             for g in doc.gatherings:
                 for tr in timeranges:
-                    if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.time) <= (_timestamp_to_datetime(
+                    if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.dateBegin) <= (_timestamp_to_datetime(
                             tr[1]) if tr[1] else timezone.now()) and g.publicityRestrictions == "MZ.publicityRestrictionsPublic":
                         gatherings.append(g)
 

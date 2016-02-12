@@ -11,10 +11,11 @@ class Individual:
     Represents the Individual table of LajiStore
     '''
 
-    def __init__(self, nickname, taxon, id=None, deleted="", **kwargs):
+    def __init__(self, nickname, taxon, ringID="", id=None, deleted="", **kwargs):
         self.id = id
         self.nickname = nickname
         self.taxon = taxon
+        self.ringID = ringID
         self.deleted = deleted
 
     def delete(self):

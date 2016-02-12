@@ -47,7 +47,10 @@ class Device:
         Return currently attached individuals id or None for not currently attached
         :return: ID or None
         '''
-        return DeviceIndividual.get_attached_individual(self.id)['individualID']
+        individual = DeviceIndividual.get_attached_individual(self.id)
+        if individual is None:
+            return None
+        return individual['individualID']
 
     def get_individuals_for_device(self):
         '''

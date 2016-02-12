@@ -26,7 +26,7 @@
                     onchange="displayIndividuals(this.value)">
                 <option selected disabled>Valitse lähetin</option>
                 {% for device in devices %}
-                    <option value="{{ device.deviceId }}">{{ device.deviceId }}</option>
+                    <option value="{{ device.id }}">{{ device.deviceManufacturerID }}</option>
                 {% endfor %}
             </select>
 
@@ -46,7 +46,7 @@
                     <select id="individualId">
                         <option disabled selected>Valitse kiinnitettävä lintu</option>
                         {% for individual in selection %}
-                            <option value="{{ individual.individualId }}">{{ individual.nickname }}</option>
+                            <option value="{{ individual.id }}">{{ individual.nickname }}</option>
                         {% endfor %}
                     </select>
                 </td>

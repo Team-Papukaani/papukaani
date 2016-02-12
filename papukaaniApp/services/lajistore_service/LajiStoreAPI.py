@@ -11,7 +11,7 @@ _JSON_HEADERS = {'Content-Type': 'application/json'}
 _DEVICE_PATH = "devices"
 _DOCUMENT_PATH = "documents"
 _INDIVIDUAL_PATH = "individuals"
-_DEVICEINDIVIDUAL_PATH = "deviceIndividual"
+_DEVICEINDIVIDUAL_PATH = "deviceIndividuals"
 
 _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 
@@ -23,11 +23,18 @@ _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 # DeviceIndividuals lajistore/deviceIndividual/
 
 def get_all_deviceindividual(**kwargs):
-    return _get_all_pages(_DEVICEINDIVIDUAL_PATH, **kwargs)
+    list = _get_all_pages(_DEVICEINDIVIDUAL_PATH, **kwargs)
+    for item in list:
+        item['deviceID'] = item['deviceID'].rsplit('/', 1)[-1]
+        item['individualID'] = item['individualID'].rsplit('/', 1)[-1]
+    return list
 
 
 def get_deviceindividual(id):
-    return _get(_DEVICEINDIVIDUAL_PATH + "/" + str(id))
+    item = _get(_DEVICEINDIVIDUAL_PATH + "/" + str(id))
+    item['deviceID'] = item['deviceID'].rsplit('/', 1)[-1]
+    item['individualID'] = item['individualID'].rsplit('/', 1)[-1]
+    return item
 
 
 def delete_deviceindividual(id):
@@ -35,10 +42,14 @@ def delete_deviceindividual(id):
 
 
 def post_deviceindividual(**data):
+    data['deviceID'] = _URL + _DEVICE_PATH + "/" + data['deviceID']
+    data['individualID'] = _URL + _INDIVIDUAL_PATH + "/" + data['individualID']
     return _post(data, _DEVICEINDIVIDUAL_PATH)
 
 
 def update_deviceindividual(**data):
+    data['deviceID'] = _URL + _DEVICE_PATH + "/" + data['deviceID']
+    data['individualID'] = _URL + _INDIVIDUAL_PATH + "/" + data['individualID']
     return _put(_DEVICEINDIVIDUAL_PATH + "/" + str(data["id"]), data)
 
 
@@ -164,6 +175,7 @@ def _create_response(data, uri, post):
         response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
 
     if "@id" not in response:
+        print(response)
         raise ValueError(_ERROR_MSG)
 
     response['id'] = response['@id'].rsplit('/', 1)[-1]

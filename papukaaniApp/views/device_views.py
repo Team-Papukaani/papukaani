@@ -11,17 +11,15 @@ def devices(request):
     devices = device.find()
     devices.sort(key=lambda x: x.id)
     individuals = individual.find_exclude_deleted()
-    selection = individuals
 
     # Directory, where key is deviceId and value is an array of individual data
     individuals_of_devices = {dev.id: dev.get_individuals_for_device() for dev in devices}
 
     # Directory, where key is individualId and value is it's name (taxon)
-    individual_names = {indiv.id: indiv.nickname if indiv.nickname != "" else indiv.id for indiv in individuals}
+    individual_names = {indiv.id: indiv.nickname for indiv in individuals}
 
     context = {
-        'individuals': individuals,
-        'selection': selection,
+        'selection': individuals,
         'devices': devices,
         'device_json': json.dumps(individuals_of_devices),
         'individual_json': json.dumps(individual_names)
@@ -45,10 +43,9 @@ def attach_to(request, device_id):
     if _append_missing_to_erros(response, missing):
         return Response(response)
 
-    dev = device.find(deviceId=device_id)[0]
-    indiv = individual.find(individualId=request.POST['individualId'])[0]
+    dev = device.get(device_id)
 
-    attached = dev.attach_to(indiv, request.POST['timestamp'])
+    dev.attach_to(request.POST['individualId'], request.POST['timestamp'])
 
     response["status"] = "attached" if dev.is_attached() else "not attached"
 
@@ -67,10 +64,9 @@ def remove_from(request, device_id):
     if _append_missing_to_erros(response, missing):
         return Response(response)
 
-    dev = device.find(deviceId=device_id)[0]
-    indiv = individual.find(individualId=request.POST['individualId'])[0]
+    dev = device.get(device_id)
 
-    dev.detach_from(indiv, request.POST['timestamp'])
+    dev.detach_from(request.POST['individualId'], request.POST['timestamp'])
 
     return Response(response)
 

@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
 {% endblock %}
 
-{% autoescape off %}
-    {% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }} , {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
-{% endautoescape %}
-
 {% block content %}
 
     {% include "papukaaniApp/navigation.html" %}

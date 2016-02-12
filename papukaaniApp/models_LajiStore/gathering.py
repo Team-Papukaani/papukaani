@@ -30,7 +30,7 @@ class Gathering:
 
 
     def __key(self):
-        return  (int(self.dateBegin), "%.9f" % self.geometry[0], "%.9f" % self.geometry[1], "%.9f" % int(self.notes))
+        return  self.dateBegin, "%.9f" % self.geometry[0], "%.9f" % self.geometry[1], "%.9f" % float(self.notes)
 
     def __eq__(x, y):
         return x.__key() == y.__key()

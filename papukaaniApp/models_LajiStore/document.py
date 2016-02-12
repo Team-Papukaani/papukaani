@@ -65,7 +65,7 @@ def get(id):
     return Document(**document)
 
 
-def create(gatherings, deviceId, collectionID, dateCreated=None, dateEdited=None):
+def create(gatherings, deviceID, collectionID='http://tun.fi/HR.1427', dateCreated=None, dateEdited=None):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
@@ -74,7 +74,7 @@ def create(gatherings, deviceId, collectionID, dateCreated=None, dateEdited=None
 
     dateCreated = dateCreated if dateCreated else current_time
     dateEdited = dateEdited if dateEdited else current_time
-    document = Document(gatherings, deviceId, collectionID, dateCreated, dateEdited)
+    document = Document(gatherings, collectionID, deviceID, dateCreated, dateEdited)
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 

@@ -33,10 +33,10 @@
                 </select>
             </div>
 
-            <div id="gpsInputDiv" style="display: inline">
+            <div id="manufacturerIdInputDiv" style="display: inline">
                 <div class="input-group">
                     <span class="input-group-addon">GPS-numero:</span>
-                    <input type="text" name="gpsNumber" id="gpsNumber" class="form-control form-field">
+                    <input type="text" name="manufacturerID" id="manufacturerID" class="form-control form-field">
                 </div>
             </div>
 
@@ -64,7 +64,7 @@
             create_map_with_points('{{points}}');
 
             fileFormats = {{% for parser in parsers %}
-                "{{ parser.formatName }}": "{{ parser.gpsNumber }}",
+                "{{ parser.formatName }}": "{{ parser.manufacturerID }}",
             {% endfor %}};
         {% endautoescape%}
 

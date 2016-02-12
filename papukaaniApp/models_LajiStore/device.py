@@ -80,7 +80,11 @@ def get(id):
     :return: A Device object
     '''
     device = LajiStoreAPI.get_device(id)
-    return Device(**device)
+    if '@id' in device:
+        return Device(**device)
+    else:
+        return None
+
 
 
 def create(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated=None, dateEdited=None):

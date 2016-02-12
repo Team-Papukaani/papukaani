@@ -143,9 +143,6 @@ def _delete(uri):
     response = requests.delete(url, auth=_AUTH)
     if '@id' in response:
         response['id'] = response['@id'].rsplit('/', 1)[-1]
-
-    print(response)
-
     return response
 
 
@@ -178,7 +175,6 @@ def _create_response(data, uri, post):
         response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
 
     if "@id" not in response:
-        print(response)
         raise ValueError(_ERROR_MSG)
 
     response['id'] = response['@id'].rsplit('/', 1)[-1]

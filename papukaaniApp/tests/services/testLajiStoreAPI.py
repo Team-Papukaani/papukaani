@@ -1,7 +1,6 @@
 from django.test import TestCase
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
-from papukaani import secret_settings
-import sys
+from papukaaniApp.models_LajiStore import gathering
 
 
 class testLajiStoreAPI(TestCase):
@@ -14,17 +13,18 @@ class testLajiStoreAPI(TestCase):
             "dateEdited": "2015-09-29T14:00:00+03:00"
         }
 
-        gatherings = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
+        data = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
+        gatherings = [g.to_lajistore_json() for g in data]
         self.document = {
-            "gatherings": gatherings
-            "deviceId": "TestDevice",
+            "gatherings": gatherings,
+            "deviceID": "TestDevice",
             "collectionID": "http://tun.fi/HR.1427",
             "dateCreated": "2015-09-14T15:29:28+03:00",
             "dateEdited": "2015-09-14T15:29:28+03:00",
         }
 
         self.individual = {
-            "nickname": "Lintu1"
+            "nickname": "Lintu1",
             "taxon": "test test"
         }
 
@@ -79,16 +79,16 @@ class testLajiStoreAPI(TestCase):
         self.assertEquals(True, "deleted" in response)
 
     def testSingleArgumentQueries(self):
-        response = LajiStoreAPI.get_all_devices(deviceId="ABCD1234567")
+        response = LajiStoreAPI.get_all_devices(deviceManufacturerID="ABCD1234567")
         self.assertGreaterEqual(len(response), 0)
 
-        response = LajiStoreAPI.get_all_documents(documentId="ABCDTESTTEST")
+        response = LajiStoreAPI.get_all_documents(deviceID="ABCDTESTTEST")
         self.assertGreaterEqual(len(response), 0)
 
-        response = LajiStoreAPI.get_all_individuals(individualId="INDIVIDUALABCD")
+        response = LajiStoreAPI.get_all_individuals(deleted=True)
         self.assertGreaterEqual(len(response), 0)
 
-        response = LajiStoreAPI.get_all_documents(documentId="NOTFOUND")
+        response = LajiStoreAPI.get_all_documents(deviceID="NOTFOUND")
         self.assertEqual(len(response), 0)
 
     def testGetAll(self):
@@ -118,8 +118,8 @@ class testLajiStoreAPI(TestCase):
         self.assertTrue(" AND " in q)
 
     def testAddFilter(self):
-        q = LajiStoreAPI._add_query(filter={"arg1":"test"})
+        q = LajiStoreAPI._add_query(filter={"arg1": "test"})
         self.assertEquals(q, "?filter=arg1:test")
 
-        q = LajiStoreAPI._add_query(filter={"arg1":"test"}, arg2="test")
+        q = LajiStoreAPI._add_query(filter={"arg1": "test"}, arg2="test")
         self.assertEquals(q, "?filter=arg1:test&q=arg2:test")

@@ -206,7 +206,6 @@ def _parse_query_param(kwargs, q):
 
 def _get_all_pages(url, list=None, **kwargs):
     response = _get(url, **kwargs)
-
     if response['totalItems'] == 0:
         return []
 

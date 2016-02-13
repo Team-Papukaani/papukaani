@@ -91,12 +91,15 @@ def get(id):
         return None
 
 
-
 def create(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated=None, dateEdited=None):
     '''
     Creates a device instance in LajiStore and a corresponding Device object
     :return: A Device object
     '''
+    originaldevice = _find_duplicate(deviceManufacturerID)
+    if originaldevice is not None:
+        return originaldevice
+
     current_time = current_time_as_lajistore_timestamp()
 
     dateCreated = dateCreated if dateCreated else current_time
@@ -114,3 +117,10 @@ def delete_all():
     Deletes all devices. Can only be used in test enviroment.
     '''
     LajiStoreAPI.delete_all_devices()
+
+
+def _find_duplicate(deviceManufacturerID):
+    devices = find(deviceManufacturerID=deviceManufacturerID)
+    if devices:
+        return devices[0]
+    return None

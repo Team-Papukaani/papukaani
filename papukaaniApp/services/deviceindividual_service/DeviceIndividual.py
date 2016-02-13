@@ -17,11 +17,12 @@ def attach(deviceID, individualID, timestamp):
     :param individualID:  individual.id
     :param timestamp: time of attachment e.g.'2016-02-11T09:45:58+00:00'
     '''
-    LajiStoreAPI.post_deviceindividual(
-        deviceID=deviceID,
-        individualID=individualID,
-        attached=timestamp
-    )
+    if get_attached_individual(deviceID) is None:
+        LajiStoreAPI.post_deviceindividual(
+            deviceID=deviceID,
+            individualID=individualID,
+            attached=timestamp
+        )
 
 
 def detach(deviceID, individualID, timestamp):
@@ -33,9 +34,9 @@ def detach(deviceID, individualID, timestamp):
     '''
     individualID = '"' + _URL + _INDIVIDUAL_PATH + "/" + individualID + '"'
     deviceID = '"' + _URL + _DEVICE_PATH + "/" + deviceID + '"'
-    attachments = LajiStoreAPI.get_all_deviceindividual(individualID=individualID, deviceID=deviceID)
+    attachments = _get(individualID=individualID, deviceID=deviceID)
     for attachment in attachments:
-        if 'removed' not in attachment:
+        if attachment["removed"] is None:
             attachment["removed"] = timestamp
             LajiStoreAPI.update_deviceindividual(**attachment)
 
@@ -46,9 +47,9 @@ def get_attached_individual(deviceID):
         :return: ID or None
     '''
     deviceID = '"' + _URL + _DEVICE_PATH + "/" + deviceID + '"'
-    attachments = LajiStoreAPI.get_all_deviceindividual(deviceID=deviceID)
+    attachments = _get(deviceID=deviceID)
     for attachment in attachments:
-        if 'removed' not in attachment:
+        if attachment["removed"] is None:
             return attachment
     return None
 
@@ -56,19 +57,19 @@ def get_attached_individual(deviceID):
 def get_devices_for_individual(individualID):
     '''
         Return all attached devices for individual
-        :return: ID or None
+        :return: List of attachments
     '''
     individualID = '"' + _URL + _INDIVIDUAL_PATH + "/" + individualID + '"'
-    return LajiStoreAPI.get_all_deviceindividual(individualID=individualID)
+    return _get(individualID=individualID)
 
 
 def get_individuals_for_device(deviceID):
     '''
         Return all attached inviduals for device
-        :return: ID or None
+        :return: List of attachments
     '''
     deviceID = '"' + _URL + _DEVICE_PATH + "/" + deviceID + '"'
-    return LajiStoreAPI.get_all_deviceindividual(deviceID=deviceID)
+    return _get(deviceID=deviceID)
 
 
 def find(**kwargs):
@@ -77,4 +78,12 @@ def find(**kwargs):
     :param kwargs:
     :return:
     '''
-    return LajiStoreAPI.get_all_deviceindividual(**kwargs)
+    return _get(**kwargs)
+
+
+def _get(**kwargs):
+    attachments = LajiStoreAPI.get_all_deviceindividual(**kwargs);
+    for a in attachments:
+        if "removed" not in a:
+            a["removed"] = None
+    return attachments

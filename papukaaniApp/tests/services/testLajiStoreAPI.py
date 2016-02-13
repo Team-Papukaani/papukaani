@@ -7,29 +7,24 @@ import sys
 class testLajiStoreAPI(TestCase):
     def setUp(self):
         self.device = {
-            "deviceId": "ABCD1234567",
+            "deviceManufacturerID": "ABCD1234567",
             "deviceType": "Type",
             "deviceManufacturer": "Manufacturer",
-            "createdAt": "2015-09-29T14:00:00+03:00",
-            "createdBy": "SomeUser",
-            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-            "lastModifiedBy": "SomeUser",
-            "facts": []
+            "dateCreated": "2015-09-29T14:00:00+03:00",
+            "dateEdited": "2015-09-29T14:00:00+03:00"
         }
 
+        gatherings = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
         self.document = {
-            "lastModifiedAt": "2015-09-15T11:25:58+03:00",
-            "lastModifiedBy": "SomeUser",
-            "documentId": "ABCDTESTTEST",
-            "deviceId": "TestTest",
-            "createdAt": "2015-09-15T11:25:58+03:00",
-            "createdBy": "SomeUser",
-            "facts": [],
-            "gatherings": [],
+            "gatherings": gatherings
+            "deviceID": "TestDevice",
+            "collectionID": "http://tun.fi/HR.1427",
+            "dateCreated": "2015-09-14T15:29:28+03:00",
+            "dateEdited": "2015-09-14T15:29:28+03:00",
         }
 
         self.individual = {
-            "individualId": "INDIVIDUALABCD",
+            "nickname": "Lintu1"
             "taxon": "test test"
         }
 

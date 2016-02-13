@@ -19,17 +19,13 @@ class TestChoose(TestCase):
         self.B.delete()
 
     def test_post_with_data_changes_database_entries(self):
-        Aid = self.A.id
-        Bid = self.B.id
-
         self.A.gatherings[0].publicityRestrictions = "MZ.publicityRestrictionsPublic"
         dev_data = {"deviceId":self.A.deviceID, "gatherings": [g.to_lajistore_json() for g in self.A.gatherings]}
 
         response = self.c.post(_URL, data={"data" : json.dumps(dev_data)})
 
-
-        self.A = document.get(id=Aid)
-        self.B = document.get(id=Bid)
+        self.A = document.get(self.A.id)
+        self.B = document.get(self.B.id)
 
         self.assertEquals(self.A.gatherings[0].publicityRestrictions, "MZ.publicityRestrictionsPublic")
         self.assertEquals(self.B.gatherings[0].publicityRestrictions, "MZ.publicityRestrictionsPrivate")

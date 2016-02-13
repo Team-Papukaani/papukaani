@@ -1,11 +1,5 @@
-import uuid
-
-from math import radians
-
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
-import logging
-import datetime
 from dateutil import parser
 
 
@@ -116,7 +110,6 @@ def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings,
         for g2 in duplicates_from_lajiStore_gatherings:
             if g == g2:
                 g.publicityRestrictions = g2.publicityRestrictions
-                #g.facts = g.facts + g2.facts
                 break
 
 

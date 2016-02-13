@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
+import time
 
 _filePath = "papukaaniApp/tests/test_files/"
 
@@ -16,8 +17,8 @@ class TestChooseFrontend(StaticLiveServerTestCase):
             "dateEdited": "2015-09-29T14:00:00+03:00"
         }
         self.D = device.create(**dev)
-        self.A = document.create([gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00]),
-                                  gathering.Gathering("1234-12-12T12:13:14+00:00", [23.01, 61.01])],
+        self.A = document.create([gathering.Gathering("2015-12-12T12:12:12+00:00", [23.00, 61.00]),
+                                  gathering.Gathering("2015-12-12T12:13:14+00:00", [23.01, 61.01])],
                                  self.D.id)
         self.page = ChoosePage()
 
@@ -57,7 +58,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
 
     def test_save_button_is_disabled_while_waiting_for_response(self):
         self.page.click_save_button()
-        self.assertEquals(not self.page.save_button_is_enabled(), True)
+        self.assertEquals(self.page.save_button_is_enabled(), False)
 
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()

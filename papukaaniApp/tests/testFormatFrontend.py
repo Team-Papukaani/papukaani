@@ -2,7 +2,6 @@ from time import sleep
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.models import GeneralParser
 from papukaaniApp.tests.test_data import create_jouko_parser
-from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from papukaaniApp.tests.page_models.page_models import FormatPage, FormatListPage
 
 
@@ -40,16 +39,14 @@ class TestFormatFrontend(StaticLiveServerTestCase):
     def test_input_validation(self):
         self.assertEquals(len(GeneralParser.objects.all()), 0)
         self.page.input_values_and_submit("Eco","", "", "Time", "Lon", "Lat", "gps", "temp", "alt")
-        sleep(10)
         self.assertEquals(len(GeneralParser.objects.all()), 0)
 
 
 class TestFormatListFrontend(StaticLiveServerTestCase):
-    from papukaaniApp.tests.test_data import create_jouko_parser
 
     def setUp(self):
         GeneralParser.objects.all().delete()
-        jouko = create_jouko_parser()
+        create_jouko_parser()
         self.page = FormatListPage()
         self.page.navigate()
 

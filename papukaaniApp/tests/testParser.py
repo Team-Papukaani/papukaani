@@ -3,13 +3,13 @@ from django.test import TestCase
 from django.conf import settings
 from papukaaniApp.models_LajiStore import document, gathering
 from papukaaniApp.models import *
-import time
+import datetime
 from papukaaniApp.utils.parser import _extract_timestamp
 
 
 class FileParserTest(TestCase):
     def setUp(self):
-        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", manufacturerID="GpsNumber",
                                                            timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",
@@ -32,25 +32,29 @@ class FileParserTest(TestCase):
     def test_create_points_method_correctly_updates_existing_documents(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
-        assert len(document.find()) == 3
+        self.assertEqual(len(document.find()),3)
 
     def test_merge_and_delete_if_three_documents_found_for_same_device(self):
+        document.delete_all()
+        device.delete_all()
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_test.csv")
+        dev = device.find()[0]
+
         gatherings = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
         dict = {
-            "documentId": "TestId0000001",
-            "deviceId": "48500691564",
-            "createdAt": "2015-09-14T15:29:28+03:00",
-            "lastModifiedAt": "2015-09-14T15:29:28+03:00",
-            "facts": [],
+            "deviceID": dev.id,
+            "dateCreated": "2015-09-14T15:29:28+03:00",
+            "dateEdited": "2015-09-14T15:29:28+03:00",
             "gatherings": gatherings
         }
         document.create(**dict)
         document.create(**dict)
         document.create(**dict)
-        assert len(document.find()) == 3
+        self.assertEqual(len(document.find()), 4)
 
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_test.csv")
-        assert len(document.find()) == 1
+
+        self.assertEqual(len(document.find()),1)
 
     def test_document_does_not_contain_duplicate_gathering(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv")
@@ -58,24 +62,14 @@ class FileParserTest(TestCase):
         documents = document.find()
         self.assertEqual(len(documents[0].gatherings), 1)
 
-    def test_gathering_facts_unite_succesfully(self):
-        document.delete_all()
-        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
-        _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
-        documents = document.find()
-        self.assertEquals(4, len(documents[0].gatherings[0].facts))
-        facts = documents[0].gatherings[0].facts
-        self.assertEquals(facts[1]["value"], "24-11-2015, 00-00-00")
-        self.assertEquals(facts[3]["value"], "01-01-1000, 00-00-00")
-
     def test_gathering_publicity_remains_unchanged_after_unite(self):
         document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "01-01-1000, 00-00-00")
         documents = document.find()[0]
-        documents.gatherings[0].publicity = "public"
+        documents.gatherings[0].publicityRestrictions = "MZ.publicityRestrictionsPublic"
         documents.update()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_gathering_duplicate_test.csv", "24-11-2015, 00-00-00")
-        self.assertEquals(document.find()[0].gatherings[0].publicity, "public")
+        self.assertEquals(document.find()[0].gatherings[0].publicityRestrictions, "MZ.publicityRestrictionsPublic")
 
     def test_byholm_data_goes_to_lajiStore_succesfully(self):
         document.delete_all()
@@ -94,42 +88,37 @@ class FileParserTest(TestCase):
     def test_generating_timestamp_works_with_date_and_time_together(self):
         self.assertEqual(_extract_timestamp({'timestamp': '12-10-2014 10:01'}), '2014-10-12T10:01:00+00:00')
 
-    def test_filename_and_datetime_goes_to_facts(self):
-        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
-        documents = document.find()
-        self.assertEqual(len(documents[0].gatherings[0].facts), 3)
+    # def test_altitude_in_facts(self):
+    #     document.delete_all()
+    #     _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
+    #
+    #     for attempt in range(10):
+    #         documents = document.find()
+    #         result = False
+    #         facts = documents[0].gatherings[0].facts
+    #         for fact in facts:
+    #             if fact["name"] == "altitude":
+    #                 if fact["value"] == "1":
+    #                     result = True
+    #         if result:
+    #             break
+    #
+    #         time.sleep(2)
+    #     self.assertEquals(result, True)
 
-    def test_altitude_in_facts(self):
-        document.delete_all()
-        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
-
-        for attempt in range(10):
-            documents = document.find()
-            result = False
-            facts = documents[0].gatherings[0].facts
-            for fact in facts:
-                if fact["name"] == "altitude":
-                    if fact["value"] == "1":
-                        result = True
-            if result:
-                break
-
-            time.sleep(2)
-        self.assertEquals(result, True)
-
-    def test_altitude_will_not_be_added_to_facts_if_value_is_empty(self):
-        document.delete_all()
-        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
-
-        documents = document.find()
-        result = True
-        facts = documents[0].gatherings[0].facts
-        for fact in facts:
-            if fact["name"] == "altitude":
-                result = False
-                break
-
-        self.assertEquals(result, True)
+    # def test_altitude_will_not_be_added_to_facts_if_value_is_empty(self):
+    #     document.delete_all()
+    #     _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
+    #
+    #     documents = document.find()
+    #     result = True
+    #     facts = documents[0].gatherings[0].facts
+    #     for fact in facts:
+    #         if fact["name"] == "altitude":
+    #             result = False
+    #             break
+    #
+    #     self.assertEquals(result, True)
 
 
 def _create_points_from_ecotone(self, filename, time=datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")):

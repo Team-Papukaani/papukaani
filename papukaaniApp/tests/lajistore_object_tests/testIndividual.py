@@ -5,11 +5,9 @@ from papukaaniApp.models_LajiStore import individual,device,document, gathering
 class TestIndividual(TestCase):
     def setUp(self):
         indiv = {
-            "nickname": "Lintu1"
             "taxon": "test test"
         }
         indiv2 = {
-            "nickname": "Lintu2"
             "taxon": "test test2"
         }
 

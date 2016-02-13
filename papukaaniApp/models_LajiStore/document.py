@@ -1,6 +1,9 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.models_LajiStore import gathering
 from papukaaniApp.utils.model_utils import *
+from django.conf import settings
+
+_LAJISTORE_COLLECTIONID = settings.LAJISTORE_COLLECTIONID
 
 
 class Document:
@@ -8,14 +11,14 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, gatherings, collectionID, deviceID, dateCreated, dateEdited, id=None, **kwargs):
+    def __init__(self, gatherings, deviceID, dateCreated, dateEdited, collectionID=None, id=None, **kwargs):
 
         if len(gatherings) > 0 and isinstance(gatherings[0], gathering.Gathering):
             self.gatherings = gatherings
         else:
             self.gatherings = _parse_gathering(gatherings)
 
-        self.collectionID = collectionID
+        self.collectionID = collectionID if collectionID else _LAJISTORE_COLLECTIONID
         self.deviceID = deviceID
         self.dateCreated = dateCreated
         self.dateEdited = dateEdited
@@ -65,16 +68,15 @@ def get(id):
     return Document(**document)
 
 
-def create(gatherings, deviceID, collectionID='http://tun.fi/HR.1427', dateCreated=None, dateEdited=None):
+def create(gatherings, deviceID, dateCreated=None, dateEdited=None):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
     '''
     current_time = current_time_as_lajistore_timestamp()
-
     dateCreated = dateCreated if dateCreated else current_time
     dateEdited = dateEdited if dateEdited else current_time
-    document = Document(gatherings, collectionID, deviceID, dateCreated, dateEdited)
+    document = Document(gatherings, deviceID, dateCreated, dateEdited)
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 

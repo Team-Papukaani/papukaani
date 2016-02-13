@@ -5,12 +5,12 @@ from papukaaniApp.models_LajiStore import *
 class testDocumentAndGathering(TestCase):
     def setUp(self):
         gatherings = [gathering.Gathering("2015-09-15T08:00:00+03:00", [68.93023632, 23.19298104])]
+
         dict = {
+            "deviceID" : "TestDevice",
+            "dateCreated":"2015-09-14T15:29:28+03:00",
+            "dateEdited":"2015-09-14T15:29:28+03:00",
             "gatherings": gatherings
-            "deviceId": "TestDevice",
-            "collectionID": "http://tun.fi/HR.1427",
-            "dateCreated": "2015-09-14T15:29:28+03:00",
-            "dateEdited": "2015-09-14T15:29:28+03:00",
             }
         self.doc = document.create(**dict)
 
@@ -18,8 +18,8 @@ class testDocumentAndGathering(TestCase):
         self.doc.delete()
 
     def test_create_and_delete(self):
-        self.assertEquals("TestId0000001", self.doc.documentId)
-        self.assertEquals("2015-09-14T15:29:28+03:00", self.doc.createdAt)
+        self.assertTrue(hasattr(self.doc,"id"))
+        self.assertEquals("2015-09-14T15:29:28+03:00", self.doc.dateCreated)
         self.assertEquals([68.93023632, 23.19298104], self.doc.gatherings[0].geometry)
 
     def test_update_and_get(self):

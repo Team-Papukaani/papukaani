@@ -11,8 +11,8 @@ _URL = '/papukaani/choose/'
 class TestChoose(TestCase):
     def setUp(self):
         self.c = Client()
-        self.A = document.create([gathering.Gathering("1234-12-12T12:12:12+00:00", [22.2, 22.2])], "ABCD1234567", "http://tun.fi/HR.1427")
-        self.B = document.create([gathering.Gathering("1234-12-12T12:12:12+00:00", [32.2, 32.2])], "ABCD1234567", "http://tun.fi/HR.1427")
+        self.A = document.create([gathering.Gathering("1234-12-12T12:12:12+00:00", [22.2, 22.2])], "TestDevice1234")
+        self.B = document.create([gathering.Gathering("1234-12-12T12:12:12+00:00", [32.2, 32.2])], "TestDevice2345")
 
     def tearDown(self):
         self.A.delete()
@@ -22,7 +22,7 @@ class TestChoose(TestCase):
         Aid = self.A.id
         Bid = self.B.id
 
-        self.A.gatherings[0].publicityRestrictions = 'MZ.publicityRestrictionsPrivate'
+        self.A.gatherings[0].publicityRestrictions = "MZ.publicityRestrictionsPublic"
         dev_data = {"deviceId":self.A.deviceID, "gatherings": [g.to_lajistore_json() for g in self.A.gatherings]}
 
         response = self.c.post(_URL, data={"data" : json.dumps(dev_data)})
@@ -31,7 +31,7 @@ class TestChoose(TestCase):
         self.A = document.get(id=Aid)
         self.B = document.get(id=Bid)
 
-        self.assertEquals(self.A.gatherings[0].publicityRestrictions, 'MZ.publicityRestrictionsPrivate')
+        self.assertEquals(self.A.gatherings[0].publicityRestrictions, "MZ.publicityRestrictionsPublic")
         self.assertEquals(self.B.gatherings[0].publicityRestrictions, "MZ.publicityRestrictionsPrivate")
 
     def test_get_returns_200(self):

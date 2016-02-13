@@ -40,7 +40,7 @@ class Individual:
 
         gatherings = []
         for d in devices:
-            timeranges = [d["attached"], d["removed"]]
+            timeranges = [(d["attached"], d["removed"])]
             docs = document.find(deviceID=d["deviceID"])
             self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
         return gatherings

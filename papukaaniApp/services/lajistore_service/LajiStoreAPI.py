@@ -168,7 +168,7 @@ def _create_response(data, uri, post):
     url = _URL + uri
     if 'id' in data: del data['id']
     if '@id' in data: del data['@id']
-    
+
     if (post):
         response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
     else:

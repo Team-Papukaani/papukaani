@@ -17,8 +17,8 @@ class TestChooseFrontend(StaticLiveServerTestCase):
             "dateEdited": "2015-09-29T14:00:00+03:00"
         }
         self.D = device.create(**dev)
-        self.A = document.create([gathering.Gathering("2015-12-12T12:12:12+00:00", [23.00, 61.00]),
-                                  gathering.Gathering("2015-12-12T12:13:14+00:00", [23.01, 61.01])],
+        self.A = document.create([gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00]),
+                                  gathering.Gathering("1234-12-12T12:13:14+00:00", [23.01, 61.01])],
                                  self.D.id)
         self.page = ChoosePage()
 

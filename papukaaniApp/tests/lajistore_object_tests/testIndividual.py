@@ -5,6 +5,11 @@ from papukaaniApp.models_LajiStore import individual,device,document, gathering
 class TestIndividual(TestCase):
     def setUp(self):
         indiv = {
+                    self.id = id
+        self.nickname = nickname
+        self.taxon = taxon
+        self.ringID = ringID
+        self.deleted = deleted
             "taxon": "test test"
         }
         indiv2 = {

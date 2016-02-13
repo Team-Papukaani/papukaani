@@ -43,8 +43,8 @@ class TestDevice(TestCase):
 
     def test_attach(self):
         A, B = self._create_individuals()
-        self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
-        self.assertEquals(self.d.individuals[0]["individualId"], A.individualId)
+        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
+        self.assertEquals(self.d.id[0]., A.id)
         self._delete_individuals([A, B])
 
     def test_device_not_attach_if_unremoved_devices_in_individuals(self):
@@ -56,7 +56,7 @@ class TestDevice(TestCase):
 
         self.assertEquals(len(self.d.individuals), 1)
 
-        self.assertTrue(self.d.individuals[0]["removed"] == None)
+        self.assertTrue(self.d.individuals[0]["removed"] is None)
 
         self._delete_individuals([A, B])
 
@@ -64,13 +64,13 @@ class TestDevice(TestCase):
         self.d.individuals = []
 
         A, B = self._create_individuals()
-        self.d.attach_to(A, "2015-10-10T10:10:10+00:00")
+        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
 
-        self.d.detach_from(A, "2015-10-10T10:10:10+00:00")
+        self.d.detach_from(A.id, "2015-10-10T10:10:10+00:00")
 
-        self.assertTrue(self.d.attach_to(B, "2015-10-10T10:10:10+00:00"))
+        self.assertTrue(self.d.attach_to(B.id, "2015-10-10T10:10:10+00:00") is None)
 
-        self._delete_individuals([A,B])
+        self._delete_individuals([A, B])
 
 
     def test_remove(self):
@@ -80,7 +80,7 @@ class TestDevice(TestCase):
         self.d.detach_from(A, "2015-10-10T10:10:10+00:00")
 
         self.assertEquals(len(self.d.individuals), 1)
-        self.assertTrue(self.d.individuals[0]["removed"] != None)
+        self.assertTrue(self.d.individuals[0]["removed"] is not None)
 
         self._delete_individuals([A,B])
 

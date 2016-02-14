@@ -31,8 +31,7 @@ class Migration(migrations.Migration):
                 ('longitude', models.CharField(max_length=50)),
                 ('latitude', models.CharField(max_length=50)),
                 ('altitude', models.CharField(blank=True, max_length=50)),
-                ('temperature', models.CharField(blank=True, max_length=50)),
-                ('delimiter', models.CharField(max_length=50)),
+                ('temperature', models.CharField(blank=True, max_length=50))
             ],
         ),
     ]

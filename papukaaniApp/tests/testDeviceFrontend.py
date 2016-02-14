@@ -1,8 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import DevicePage
-from selenium.common.exceptions import NoSuchElementException
-from papukaaniApp.utils.view_utils import populate_facts
 
 _filePath = "papukaaniApp/tests/test_files/"
 
@@ -10,28 +8,22 @@ _filePath = "papukaaniApp/tests/test_files/"
 class TestDeviceFrontend(StaticLiveServerTestCase):
     def setUp(self):
         dev = {
-            "deviceId": "DeviceId",
+            "deviceManufacturerID": "DeviceId",
             "deviceType": "Type",
             "deviceManufacturer": "Manufacturer",
-            "createdAt": "2015-09-29T14:00:00+03:00",
-            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-            "facts": []
+            "dateCreated": "2015-09-29T14:00:00+03:00",
+            "dateEdited": "2015-09-29T14:00:00+03:00"
         }
         self.D = device.create(**dev)
 
-        self.I = individual.create("Birdie", facts=[{"name":"nickname", "value":"NICK"}])
+        self.I = individual.create("NICK","Birdie")
 
-        self.D.attach_to(self.I, "2015-11-02T14:00:00+02:00")
-
-        self.D.update()
-
-        populate_facts([self.I])
+        self.D.attach_to(self.I.id, "2015-11-02T14:00:00+02:00")
 
         self.page = DevicePage()
         self.page.navigate()
 
-        self.page.change_device_selection("DeviceId")
-
+        self.page.change_device_selection(self.D.id)
 
     def tearDown(self):
         device.delete_all()
@@ -42,7 +34,7 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         document.delete_all()
 
     def test_individual_info_visible(self):
-        self.assertEquals(self.I.nickname , self.page.get_individual_name(self.I.individualId))
+        self.assertEquals(self.I.nickname, self.page.get_individual_name(self.I.id))
 
     def test_only_currently_attached_bird_has_remove_button(self):
         self.assertEquals(1, len(self.page.driver.find_elements_by_class_name("btn-danger")))
@@ -59,7 +51,7 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.page.REMOVE_TIME.send_keys("03.11.2015 00:00")
         self.page.REMOVE.click()
 
-        self.page.attach_individual(str(self.I.individualId), "12.11.2015 00:00")
+        self.page.attach_individual(str(self.I.id), "12.11.2015 00:00")
 
         self.assertFalse(self.page.ATTACHER.is_displayed())
 
@@ -76,19 +68,19 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.detach_and_assert("03.11.2015 14:00", True)
 
     def test_cant_attach_if_start_time_is_in_future(self):
-        self.detach_and_attach_and_assert("03.11.2015 14:00", str(self.I.individualId), "13.12.2114 00:00", True)
+        self.detach_and_attach_and_assert("03.11.2015 14:00", str(self.I.id), "13.12.2114 00:00", True)
 
     def test_cant_attach_if_start_time_overlaps_with_another_device(self):
-        self.detach_and_attach_and_assert("03.11.2015 14:00", str(self.I.individualId), "02.11.2015 16:00", True)
+        self.detach_and_attach_and_assert("03.11.2015 14:00", str(self.I.id), "02.11.2015 16:00", True)
 
     def test_can_attach_if_all_conditions_are_met(self):
-        self.detach_and_attach_and_assert("03.11.2015 14:00", str(self.I.individualId), "04.11.2015 16:00", False)
+        self.detach_and_attach_and_assert("03.11.2015 14:00", str(self.I.id), "04.11.2015 16:00", False)
 
     def test_errors_messages_are_shown_when_validation_fails(self):
         self.page.REMOVE_TIME.send_keys("03.11.2015 14:00")
         self.page.REMOVE.click()
 
-        self.page.attach_individual(str(self.I.individualId), "13.12.2114 00:00")
+        self.page.attach_individual(str(self.I.id), "13.12.2114 00:00")
 
         self.assertTrue(len(self.page.driver.find_element_by_id("errors").text) > 0)
 

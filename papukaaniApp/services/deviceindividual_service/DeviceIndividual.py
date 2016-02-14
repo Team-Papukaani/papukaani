@@ -87,3 +87,9 @@ def _get(**kwargs):
         if "removed" not in a:
             a["removed"] = None
     return attachments
+
+def delete_all():
+    '''
+    Deletes all DeviceIndividuals. Can only be used in test enviroment.
+    '''
+    LajiStoreAPI.delete_all_deviceindividual()

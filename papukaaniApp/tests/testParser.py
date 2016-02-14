@@ -4,6 +4,7 @@ from django.conf import settings
 from papukaaniApp.models_LajiStore import document, gathering
 from papukaaniApp.models import *
 import datetime
+import time
 from papukaaniApp.utils.parser import _extract_timestamp
 
 
@@ -88,38 +89,30 @@ class FileParserTest(TestCase):
     def test_generating_timestamp_works_with_date_and_time_together(self):
         self.assertEqual(_extract_timestamp({'timestamp': '12-10-2014 10:01'}), '2014-10-12T10:01:00+00:00')
 
-    # def test_altitude_in_facts(self):
-    #     document.delete_all()
-    #     _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
-    #
-    #     for attempt in range(10):
-    #         documents = document.find()
-    #         result = False
-    #         facts = documents[0].gatherings[0].facts
-    #         for fact in facts:
-    #             if fact["name"] == "altitude":
-    #                 if fact["value"] == "1":
-    #                     result = True
-    #         if result:
-    #             break
-    #
-    #         time.sleep(2)
-    #     self.assertEquals(result, True)
+    def test_altitude_in_gathering(self):
+        document.delete_all()
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
 
-    # def test_altitude_will_not_be_added_to_facts_if_value_is_empty(self):
-    #     document.delete_all()
-    #     _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
-    #
-    #     documents = document.find()
-    #     result = True
-    #     facts = documents[0].gatherings[0].facts
-    #     for fact in facts:
-    #         if fact["name"] == "altitude":
-    #             result = False
-    #             break
-    #
-    #     self.assertEquals(result, True)
+        for attempt in range(3):
+            documents = document.find()
+            result = False
+            if documents[0].gatherings[0].altitude == '1':
+                result = True
+                break
 
+            time.sleep(4)
+        self.assertEquals(result, True)
+
+    def test_gathering_altitude_is_empty_if_value_in_data_is_empty(self):
+        document.delete_all()
+        _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
+
+        documents = document.find()
+        result = False
+        if documents[0].gatherings[0].altitude == '':
+            result = True
+
+        self.assertEquals(result, True)
 
 def _create_points_from_ecotone(self, filename, time=datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S")):
     path = settings.OTHER_ROOT + filename

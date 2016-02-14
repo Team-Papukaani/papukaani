@@ -33,6 +33,7 @@ class FileParserTest(TestCase):
     def test_create_points_method_correctly_updates_existing_documents(self):
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test.csv")
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
+        time.sleep(2)
         self.assertEqual(len(document.find()),3)
 
     def test_merge_and_delete_if_three_documents_found_for_same_device(self):
@@ -51,10 +52,11 @@ class FileParserTest(TestCase):
         document.create(**dict)
         document.create(**dict)
         document.create(**dict)
+        time.sleep(2)
         self.assertEqual(len(document.find()), 4)
 
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_test.csv")
-
+        time.sleep(2)
         self.assertEqual(len(document.find()),1)
 
     def test_document_does_not_contain_duplicate_gathering(self):

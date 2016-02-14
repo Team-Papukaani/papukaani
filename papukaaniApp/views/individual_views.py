@@ -29,6 +29,7 @@ def _update_individual(request):
     individuale = individual.get(request.POST.get('id'))
     individuale.taxon = request.POST.get('taxon')
     individuale.ringID = request.POST.get('ring_id')
+    individuale.nickname = request.POST.get('nickname')
     individuale.update()
     messages.add_message(request, messages.INFO, 'Tiedot tallennettu onnistuneesti!')
 

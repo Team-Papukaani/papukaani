@@ -5,6 +5,7 @@ from papukaaniApp.models_LajiStore import individual, device
 
 class testLajiStoreAPI(TestCase):
     def setUp(self):
+        DeviceIndividual.delete_all()
         self.D = device.create(**{
             "deviceManufacturerID": "ABCD1234567",
             "deviceType": "Type",

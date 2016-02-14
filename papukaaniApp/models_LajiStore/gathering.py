@@ -5,9 +5,10 @@ class Gathering:
     '''
     Represets the gatherings in a Document table in LajiStore
     '''
-    def __init__(self, dateBegin, geometry, temperature = 0, higherGeography = 'x', country = 'x', publicityRestrictions="MZ.publicityRestrictionsPrivate"):
+    def __init__(self, dateBegin, geometry, altitude = 0,temperature = 0, higherGeography = 'x', country = 'x', publicityRestrictions="MZ.publicityRestrictionsPrivate"):
         self.dateBegin = dateBegin
         self.geometry = geometry
+        self.altitude = altitude
         self.temperature = temperature
         self.publicityRestrictions = publicityRestrictions
         self.higherGeography = higherGeography
@@ -21,6 +22,7 @@ class Gathering:
         return {"dateBegin":self.dateBegin,
                 "wgs84Geometry":{ "type":"Point", "coordinates" : self.geometry},
                 "temperature":self.temperature,
+                "notes":str(self.altitude),
                 "higherGeography":self.higherGeography,
                 "country":self.country,
                 "publicityRestrictions":self.publicityRestrictions}
@@ -47,6 +49,7 @@ def from_lajistore_json(**kwargs):
     return Gathering(dateBegin = kwargs["dateBegin"],
                      geometry= kwargs["wgs84Geometry"]["coordinates"],
                      temperature = kwargs["temperature"],
+                     altitude = float(kwargs["notes"]),
                      higherGeography=kwargs["higherGeography"],
                      country=kwargs["country"],
                      publicityRestrictions=kwargs["publicityRestrictions"])

@@ -61,6 +61,7 @@ def _generate_gathering(point, timestamp):
     return gathering.Gathering(
         dateBegin=timestamp,
         geometry=[float(point["longitude"]), float(point["latitude"])],
+        altitude=float(point["altitude"]),
         temperature=int(float(point['temperature'])),
     )
 

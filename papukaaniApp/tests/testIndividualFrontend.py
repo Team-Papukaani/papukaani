@@ -5,7 +5,7 @@ from papukaaniApp.tests.page_models.page_models import IndividualPage
 
 class TestIndividualFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.I = individual.create("ERIEUR")
+        self.I = individual.create("TIRPPA","ERIEUR")
         self.page = IndividualPage()
         self.page.navigate()
 

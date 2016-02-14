@@ -9,7 +9,7 @@ class FileStorage(models.Model):
 class GeneralParser(models.Model):
 
     formatName = models.CharField(max_length=50)
-    gpsNumber = models.CharField(max_length=50, blank=True)
+    manufacturerID = models.CharField(max_length=50, blank=True)
     timestamp = models.CharField(max_length=50, blank=True)
     time = models.CharField(max_length=50, blank=True)
     date = models.CharField(max_length=50, blank=True)
@@ -18,4 +18,4 @@ class GeneralParser(models.Model):
     altitude = models.CharField(max_length=50, blank=True)
     temperature = models.CharField(max_length=50, blank=True)
 
-    possible_column_names = ["gpsNumber", "timestamp", "longitude", "latitude", "temperature", "altitude", "time", "date"]
+    possible_column_names = ["manufacturerID", "timestamp", "longitude", "latitude", "temperature", "altitude", "time", "date"]

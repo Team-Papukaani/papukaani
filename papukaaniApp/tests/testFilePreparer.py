@@ -10,7 +10,7 @@ from papukaaniApp.tests.test_data import create_jouko_parser
 
 class FilePreparerTest(TestCase):
     def setUp(self):
-        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", manufacturerID="GpsNumber",
                                                            timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",

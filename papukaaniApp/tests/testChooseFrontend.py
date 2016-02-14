@@ -2,7 +2,6 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import ChoosePage
-from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 _filePath = "papukaaniApp/tests/test_files/"
@@ -10,22 +9,21 @@ _filePath = "papukaaniApp/tests/test_files/"
 
 class TestChooseFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.A = document.create("TestA", [gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00]),
-                                           gathering.Gathering("1234-12-12T12:13:14+00:00", [23.01, 61.01])],
-                                 "DeviceId")
         dev = {
-            "deviceId": "DeviceId",
+            "deviceManufacturerID": "DeviceId",
             "deviceType": "Type",
             "deviceManufacturer": "Manufacturer",
-            "createdAt": "2015-09-29T14:00:00+03:00",
-            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-            "facts": []
+            "dateCreated": "2015-09-29T14:00:00+03:00",
+            "dateEdited": "2015-09-29T14:00:00+03:00"
         }
         self.D = device.create(**dev)
+        self.A = document.create([gathering.Gathering("1234-12-12T12:12:12+00:00", [23.00, 61.00]),
+                                  gathering.Gathering("1234-12-12T12:13:14+00:00", [23.01, 61.01])],
+                                 self.D.id)
         self.page = ChoosePage()
 
         self.page.navigate()
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection(self.D.id)
 
     def tearDown(self):
         take_screenshot_of_test_case(self, self.page.driver)
@@ -53,14 +51,15 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def test_cluster_with_mixed_public_and_private_points_is_yellow(self):
         self.add_public_point()
         self.page.navigate()
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection(self.D.id)
         self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
         self.assertEquals(1, self.page.number_of_partially_public_clusters_on_map())
 
     def test_save_button_is_disabled_while_waiting_for_response(self):
         self.page.click_save_button()
-        self.assertEquals(not self.page.save_button_is_enabled(), True)
+        self.assertEquals(self.page.save_button_is_enabled(), False)
+        time.sleep(5) # test conflicts with the next one and results in stacktrace because of "null-pointers"
 
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()
@@ -108,7 +107,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.change_device_selection("None")
 
         self.page.popup_click_yes()
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection(self.D.id)
 
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
 
@@ -116,7 +115,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.change_publicity_and_selection_without_saving(self)
 
         self.page.popup_click_no()
-        self.page.change_device_selection("DeviceId")
+        self.page.change_device_selection(self.D.id)
 
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 0)
 
@@ -126,7 +125,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.popup_click_cancel()
         self.assertEquals(self.page.number_of_completely_public_clusters_on_map(), 1)
 
-        self.assertTrue("DeviceId", self.page.get_device_selection())
+        self.assertTrue(self.D.id, self.page.get_device_selection())
 
     def test_save_button_is_initially_disabled(self):
         self.page.navigate()
@@ -138,7 +137,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def test_save_button_is_disabled_when_device_with_no_points_is_selected(self):
         self.add_device()
         self.page.navigate()
-        self.page.change_device_selection("Empty")
+        self.page.change_device_selection(self.E.id)
         self.assertEquals(self.page.save_button_is_enabled(), False)
         self.E.delete()
 
@@ -148,18 +147,17 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(self.page.number_of_private_clusters_on_map(), 1)
 
     def add_public_point(self):
-        self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01], publicity="public"))
+        self.A.gatherings.append(gathering.Gathering("1234-12-12T12:12:12+00:00", [23.01, 61.01],
+                                                     publicityRestrictions="MZ.publicityRestrictionsPublic"))
         self.A.update()
-
 
     def add_device(self):
         dev = {
-            "deviceId": "Empty",
+            "deviceManufacturerID": "Empty",
             "deviceType": "Type",
             "deviceManufacturer": "Manufacturer",
-            "createdAt": "2015-09-29T14:00:00+03:00",
-            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-            "facts": []
+            "dateCreated": "2015-09-29T14:00:00+03:00",
+            "dateEdited": "2015-09-29T14:00:00+03:00"
         }
         self.E = device.create(**dev)
 

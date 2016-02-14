@@ -27,7 +27,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         return;
     }
     var pointsWithinRange = this.points.filter(function (point) {
-        var timestring = point.dateTimeBegin;
+        var timestring = point.dateBegin;
         var timestamp = new Date(timestring);
         a = (start != "" ? a : timestamp);
         b = (end != "" ? b : timestamp);
@@ -122,16 +122,10 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 //Generates content for marker's popup. Info includes time and all applicable facts.
 var getPopupContentsForMarker = function (marker) {
     var content = "";
-    content += new Date(marker.pnt.dateTimeBegin).toLocaleString();
-    if ("temperatureCelsius" in marker.pnt) {
-        if (marker.pnt.temperatureCelsius > -273.15) {
-            content += "<br>" + "Temperature: " + marker.pnt.temperatureCelsius + "&deg;C";
-        }
-    }
-    var facts = marker.pnt.facts;
-    for (var i = 0; i < facts.length; i++) {
-        if (facts[i].value) {
-            content += "<br>" + facts[i].name + ": " + facts[i].value;
+    content += new Date(marker.pnt.dateBegin).toLocaleString();
+    if ("temperature" in marker.pnt) {
+        if (marker.pnt.temperature > -273.15) {
+            content += "<br>" + "Temperature: " + marker.pnt.temperature + "&deg;C";
         }
     }
     return content;
@@ -142,9 +136,9 @@ ChooseMap.prototype.changeMarkerClusterPublicity = function (a) {
     this.unsaved = true;
 
     var markers = a.layer.getAllChildMarkers();
-    var changepublicityto = "public";
+    var changepublicityto = "MZ.publicityRestrictionsPublic";
     if (getPublicChildCount(a.layer) > 0) {
-        changepublicityto = "private";
+        changepublicityto = "MZ.publicityRestrictionsPrivate";
     }
 
     for (var i = 0; i < markers.length; i++) {
@@ -184,11 +178,11 @@ ChooseMap.prototype.send = function () {
 //Forces a redraw of the specified marker's icon, as it doesn't necessarily update when changes are made.
 redrawIcon = function (marker) {
     var c = ' marker-cluster';
-    if (marker.pnt.publicity === "public") c += '-small';
+    if (marker.pnt.publicityRestrictions === "MZ.publicityRestrictionsPublic") c += '-small';
     else c += '-large';
 
     marker.setIcon(new L.DivIcon({
-        html: '<div><span>' + (marker.pnt.publicity === "public" ? 1 : 0) + '/' + 1 + '</span></div>',
+        html: '<div><span>' + (marker.pnt.publicityRestrictions === "MZ.publicityRestrictionsPublic" ? 1 : 0) + '/' + 1 + '</span></div>',
         className: 'marker-cluster' + c,
         iconSize: new L.Point(40, 40)
     }));
@@ -198,14 +192,14 @@ redrawIcon = function (marker) {
 ChooseMap.prototype.changePublicity = function (marker) {
     this.unsaved = true;
 
-    marker.pnt.publicity = (marker.pnt.publicity) === "public" ? "private" : "public";
+    marker.pnt.publicityRestrictions = (marker.pnt.publicityRestrictions) === "MZ.publicityRestrictionsPublic" ? "MZ.publicityRestrictionsPrivate" : "MZ.publicityRestrictionsPublic";
     redrawIcon(marker);
     this.markers.refreshClusters(marker);
 };
 
 //Changes the publicity of a marker to the desired value.
 changePublicityTo = function (marker, value) {
-    marker.pnt.publicity = value;
+    marker.pnt.publicityRestrictions = value;
 };
 
 //Counts the cluster's public child markers.
@@ -214,7 +208,7 @@ getPublicChildCount = function (cluster) {
 
     var markers = cluster.getAllChildMarkers();
     for (var i = 0; i < markers.length; i++) {
-        if (markers[i].pnt.publicity == "public") {
+        if (markers[i].pnt.publicityRestrictions == "MZ.publicityRestrictionsPublic") {
             pubcount++;
         }
     }

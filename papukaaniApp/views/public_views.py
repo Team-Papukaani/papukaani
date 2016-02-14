@@ -8,7 +8,6 @@ from papukaaniApp.utils.view_utils import extract_latlongs
 from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.views.login_view import *
-from papukaaniApp.utils.view_utils import populate_facts
 
 
 @xframe_options_exempt  # Allows the view to be loaded in an iFrame
@@ -17,12 +16,11 @@ def public(request):
     Controller for '/public/'.
     """
     individuals = dict()
-    inds_objects =  individual.get_all_exclude_deleted()
-    populate_facts(inds_objects)
+    inds_objects =  individual.find_exclude_deleted()
     for individuale in inds_objects:
         key = individuale.taxon
         individuals.setdefault(key, [])
-        individuals[key].append({individuale.individualId: individuale.nickname})
+        individuals[key].append({individuale.id: individuale.nickname})
 
     all_species = species.get_all_in_finnish()
     ordered_species = []

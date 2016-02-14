@@ -82,17 +82,15 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
         this.showSaveOrCancelPopup(selector.val())
     }.bind(this));
 
-    selector.addOption = function (option) {
-        val = option.id ? option.id : option
-        text = option.nickname ? option.nickname : option
-
-        selector.append("<option value='" + val + "'>" + text+ "</option>")
+    selector.addOption = function (val, text) {
+        selector.append("<option value='" + val + "'>" + text + "</option>")
     };
 
-    selector.addOption("None");
-    for (var i = 0; i < devices.length; i++) {
-        selector.addOption(devices[i])
+    selector.addOption("None", "Valitse lähetin");
+    for (var id in devices) {
+        selector.addOption(id, devices[id]);
     }
+
 };
 
 //Shows and handles the popup box.
@@ -133,16 +131,16 @@ DeviceSorter.prototype.createIndividualSelector = function (individuals, species
         this.changeDeviceSelection(selector.val())
     }.bind(this));
 
-    selector.addOption = function (individualId, taxon) {
-        selector.append("<option value='" + individualId + "'>" + taxon + "</option>")
+    selector.addOption = function (id, nickname) {
+        selector.append("<option value='" + id + "'>" + nickname + "</option>")
     };
 
-    selector.addOption("None","Valitse");
-    $.each(species, function(key, s){
+    selector.addOption("None", "Valitse");
+    $.each(species, function (key, s) {
         selector.append("<option disabled='disabled'>" + s + "</option>")
-        $.each(individuals[s], function(key, individual){
-            $.each(individual, function(individualId, taxon){
-                selector.addOption(individualId, taxon)
+        $.each(individuals[s], function (key, individual) {
+            $.each(individual, function (id, nickname) {
+                selector.addOption(id, nickname)
             })
         })
     })

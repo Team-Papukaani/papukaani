@@ -78,6 +78,24 @@ Oletuksena ei näytetä mitä selaintesteissä tapahtuu. Testit voi ajaa näkyv�
 
     ./manage.py test -v 3 --visible
 
+Tässä vielä lisää ohjeita liittyen testien ajoon. 
+
+Esimerkki yhden kansion test-keissien ajosta:
+
+    ./manage.py test papukaaniApp.tests.lajistore_object_tests -v 3 --failfast
+
+Esimerkki yhden test-casen ajosta:
+
+    ./manage.py test papukaaniApp.tests.lajistore_object_tests.testDevice.TestDevice -v 3 --failfast
+
+Esimerkki yksittäisen testin ajosta:
+
+    ./manage.py test papukaaniApp.tests.lajistore_object_tests.testDevice.TestDevice.test_create_and_delete -v 3
+
+optio '-v 3' tarkoittaa että testien ajon aikana tulostuu mahdollisimman paljon tietoa siitä mitä tapahtuu testien ajon aikana.
+
+optio '--failfast' tarkoittaa että testien suoritus loppuu heti kun jokin testi ei mene läpi.
+
 ## 2 - Apache
 
 Papukaani deployataan Apachen kanssa. Mutta et tarvitse apachea papukaanin kehittämiseen ja testaamiseen -- Djangon `runserver` -testiserveri korvaa sen.

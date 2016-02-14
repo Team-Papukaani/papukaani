@@ -1,6 +1,8 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import DevicePage
+from papukaaniApp.services.deviceindividual_service import DeviceIndividual
+import time
 
 _filePath = "papukaaniApp/tests/test_files/"
 
@@ -23,15 +25,15 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
         self.page = DevicePage()
         self.page.navigate()
 
-        self.page.change_device_selection(self.D.id)
+        self.page.change_device_selection(str(self.D.id))
 
     def tearDown(self):
+        time.sleep(3) # previous test conflicts with the next one and results in stacktrace because of "null-pointers"
         device.delete_all()
         individual.delete_all()
-        self.D.delete()
-        self.I.delete()
-        self.page.close()
         document.delete_all()
+        DeviceIndividual.delete_all()
+        self.page.close()
 
     def test_individual_info_visible(self):
         self.assertEquals(self.I.nickname, self.page.get_individual_name(self.I.id))
@@ -79,8 +81,6 @@ class TestDeviceFrontend(StaticLiveServerTestCase):
     def test_errors_messages_are_shown_when_validation_fails(self):
         self.page.REMOVE_TIME.send_keys("03.11.2015 14:00")
         self.page.REMOVE.click()
-
-        self.page.attach_individual(str(self.I.id), "13.12.2114 00:00")
 
         self.assertTrue(len(self.page.driver.find_element_by_id("errors").text) > 0)
 

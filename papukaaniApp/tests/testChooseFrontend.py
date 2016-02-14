@@ -59,6 +59,7 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def test_save_button_is_disabled_while_waiting_for_response(self):
         self.page.click_save_button()
         self.assertEquals(self.page.save_button_is_enabled(), False)
+        time.sleep(5) # test conflicts with the next one and results in stacktrace because of "null-pointers"
 
     def test_reset_button_returns_marker_state_to_original(self):
         self.page.double_click_marker()

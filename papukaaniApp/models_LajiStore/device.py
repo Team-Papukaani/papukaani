@@ -47,10 +47,10 @@ class Device:
         Return currently attached individuals id or None for not currently attached
         :return: ID or None
         '''
-        individual = DeviceIndividual.get_attached_individual(self.id)
-        if individual is None:
+        attached = DeviceIndividual.get_attached_individual(self.id)
+        if attached is None:
             return None
-        return individual['individualID']
+        return attached['individualID']
 
     def get_individuals_for_device(self):
         '''
@@ -60,7 +60,7 @@ class Device:
         return DeviceIndividual.get_individuals_for_device(self.id)
 
     def is_attached(self):
-        return True if self.get_attached_individualid() else False
+        return False if self.get_attached_individualid() is None else True
 
 
 def find(**kwargs):

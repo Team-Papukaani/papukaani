@@ -10,7 +10,7 @@ class FileUploadTest(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber", timestamp="GPSTime",
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", manufacturerID="GpsNumber", timestamp="GPSTime",
                                               longitude="Longtitude", latitude="Latitude", altitude="Altitude",
                                               temperature="Temperature")
         self.ecotone_parser.save()

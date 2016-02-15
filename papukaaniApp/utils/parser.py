@@ -21,7 +21,7 @@ def _create_gatherings(data, parser):
     collections = {}
     devices = {}
     for point in data:
-        manufacturerID = point['gpsNumber']
+        manufacturerID = point['manufacturerID']
         deviceID = _manufacturerIDCheck(collections, devices, parser, manufacturerID)
         _create_one_gathering(collections, deviceID, point)
     return _update_gatherings_to_lajiStore(collections)

@@ -402,7 +402,7 @@ class FormatPage(Page):
     TIME = Element(By.ID, "time")
     LONGITUDE = Element(By.ID, "longitude")
     LATITUDE = Element(By.ID, "latitude")
-    GPS_NUMBER = Element(By.ID, "gpsNumber")
+    GPS_NUMBER = Element(By.ID, "manufacturerID")
     TEMPERATURE = Element(By.ID, "temperature")
     ALTITUDE = Element(By.ID, "altitude")
 

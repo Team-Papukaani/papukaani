@@ -108,7 +108,8 @@ USE_L10N = True
 
 STATIC_URL = '/static/'
 
-LAJISTORE_URL = 'http://fmnh-ws-prod2.it.helsinki.fi/lajistore/'
+LAJISTORE_URL = 'https://lajistore.laji.fi/'
+LAJISTORE_COLLECTIONID = 'http://tun.fi/HR.1427'
 TIPUAPI_URL = 'https://fmnh-ws-test.it.helsinki.fi/tipu-api/species'
 
 LAJIAUTH_URL =  "https://fmnh-ws-test.it.helsinki.fi/laji-auth/"

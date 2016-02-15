@@ -1,7 +1,6 @@
 import random
 from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.shortcuts import render
-from papukaaniApp.utils.view_utils import populate_facts
 
 from papukaaniApp.models_LajiStore import individual
 from papukaaniApp.models_TipuApi import species
@@ -29,10 +28,8 @@ def _update_individual(request):
 
     individuale = individual.get(request.POST.get('id'))
     individuale.taxon = request.POST.get('taxon')
-    individuale.facts = [
-        {'name': 'ring_id', 'value': request.POST.get('ring_id')},
-        {'name': 'nickname', 'value': request.POST.get('nickname')}
-    ]
+    individuale.ringID = request.POST.get('ring_id')
+    individuale.nickname = request.POST.get('nickname')
     individuale.update()
     messages.add_message(request, messages.INFO, 'Tiedot tallennettu onnistuneesti!')
 
@@ -46,12 +43,7 @@ def _create_individual(request):
     if not _post_is_valid(request):
         return _return_with_context(request)
 
-    individuale = individual.create(request.POST.get('taxon'))
-    individuale.individualId = individuale.id
-    individuale.facts = [
-        {'name': 'nickname', 'value': request.POST.get('nickname')}
-    ]
-    individuale.update()
+    individuale = individual.create(request.POST.get('nickname'),request.POST.get('taxon'))
     messages.add_message(request, messages.INFO, 'Lintu luotu onnistuneesti!')
 
 def _post_is_valid(request):
@@ -65,8 +57,7 @@ def _post_is_valid(request):
     return True
 
 def _return_with_context(request):
-    individual_list = individual.get_all_exclude_deleted()
-    populate_facts(individual_list)
+    individual_list = individual.find_exclude_deleted()
     try:
         species_list = species.get_all_in_finnish()
     except:

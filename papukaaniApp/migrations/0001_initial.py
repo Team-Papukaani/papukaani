@@ -24,15 +24,14 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
                 ('formatName', models.CharField(max_length=50)),
-                ('gpsNumber', models.CharField(blank=True, max_length=50)),
+                ('manufacturerID', models.CharField(blank=True, max_length=50)),
                 ('timestamp', models.CharField(blank=True, max_length=50)),
                 ('time', models.CharField(blank=True, max_length=50)),
                 ('date', models.CharField(blank=True, max_length=50)),
                 ('longitude', models.CharField(max_length=50)),
                 ('latitude', models.CharField(max_length=50)),
                 ('altitude', models.CharField(blank=True, max_length=50)),
-                ('temperature', models.CharField(blank=True, max_length=50)),
-                ('delimiter', models.CharField(max_length=50)),
+                ('temperature', models.CharField(blank=True, max_length=50))
             ],
         ),
     ]

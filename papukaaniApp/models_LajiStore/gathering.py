@@ -1,27 +1,35 @@
+from itertools import count
+
+
 class Gathering:
     '''
     Represets the gatherings in a Document table in LajiStore
     '''
-    def __init__(self, time, geometry, temperature = 0, publicity="private", facts=None):
-        self.time = time
+    def __init__(self, dateBegin, geometry, altitude = "",temperature = 0, higherGeography = 'x', country = 'x', publicityRestrictions="MZ.publicityRestrictionsPrivate"):
+        self.dateBegin = dateBegin
         self.geometry = geometry
+        self.altitude = altitude
         self.temperature = temperature
-        self.facts = facts
-        self.publicity = publicity
-
-        if not facts:
-            self.facts = []
+        self.publicityRestrictions = publicityRestrictions
+        self.higherGeography = higherGeography
+        self.country = country
 
     def to_lajistore_json(self):
         '''
         Returns the fields in a LajiStore-saveable format.
         :return: A dictionary
         '''
-        return {"dateTimeBegin":self.time, "wgs84Geometry":{ "type":"Point", "coordinates" : self.geometry}, "temperatureCelsius":self.temperature, "publicity":self.publicity,  "facts":self.facts}
+        return {"dateBegin":self.dateBegin,
+                "wgs84Geometry":{ "type":"Point", "coordinates" : self.geometry},
+                "temperature":self.temperature,
+                "notes":self.altitude,
+                "higherGeography":self.higherGeography,
+                "country":self.country,
+                "publicityRestrictions":self.publicityRestrictions}
 
 
     def __key(self):
-        return  (self.time, "%.9f" % self.geometry[0], "%.9f" % self.geometry[1], "%.9f" % self.temperature)
+        return  self.dateBegin, "%.9f" % self.geometry[0], "%.9f" % self.geometry[1], "%.9f" % self.temperature
 
     def __eq__(x, y):
         return x.__key() == y.__key()
@@ -38,5 +46,10 @@ def from_lajistore_json(**kwargs):
     :param kwargs: The data from LajiStore
     :return: a Gathering object
     '''
-    return Gathering( time = kwargs["dateTimeBegin"], geometry= kwargs["wgs84Geometry"]["coordinates"], temperature=kwargs["temperatureCelsius"],publicity=kwargs["publicity"], facts=kwargs["facts"])
-
+    return Gathering(dateBegin = kwargs["dateBegin"],
+                     geometry= kwargs["wgs84Geometry"]["coordinates"],
+                     temperature = kwargs["temperature"],
+                     altitude = kwargs["notes"],
+                     higherGeography=kwargs["higherGeography"],
+                     country=kwargs["country"],
+                     publicityRestrictions=kwargs["publicityRestrictions"])

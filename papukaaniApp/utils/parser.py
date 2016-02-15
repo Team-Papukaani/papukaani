@@ -1,8 +1,5 @@
-import uuid
 from papukaaniApp.models_LajiStore import gathering, device, document
 from papukaaniApp.utils.file_preparer import *
-import logging
-import datetime
 from dateutil import parser
 
 
@@ -17,35 +14,36 @@ def create_points(data, parser, name_of_file, time):
     :param data: The contents of the uploaded file.
     :return: A list containing all of the Gatherings found in the file.
     """
+    return _create_gatherings(data, parser)
 
-    return _create_gatherings(data, parser, name_of_file, time)
 
-
-def _create_gatherings(data, parser, name_of_file, time):
+def _create_gatherings(data, parser):
     collections = {}
-    devices = []
-    gathering_facts = _gathering_fact_dics(name_of_file, time)
+    devices = {}
     for point in data:
-        gpsNumber = point['gpsNumber']
-        _gpsNumberCheck(collections, devices, parser, gpsNumber)
-        facts = _additional_facts(point, gathering_facts)
-        _create_one_gathering(collections, gpsNumber, facts, point)
+        manufacturerID = point['manufacturerID']
+        deviceID = _manufacturerIDCheck(collections, devices, parser, manufacturerID)
+        _create_one_gathering(collections, deviceID, point)
     return _update_gatherings_to_lajiStore(collections)
 
 
-def _gpsNumberCheck(collections, devices, parser, gpsNumber):
-    if gpsNumber not in collections:
-        collections[gpsNumber] = []
-    if gpsNumber not in devices:
-        device.get_or_create(deviceId=gpsNumber, parserInfo=parser_Info(parser))
-        devices.append(gpsNumber)
+def _manufacturerIDCheck(collections, devices, parser, manufacturerID):
+    if manufacturerID not in devices:
+        found = device.find(deviceManufacturerID=manufacturerID)
+        if not found:
+            dev = device.create(parser_Info(parser)['deviceType'], parser_Info(parser)['deviceManufacturer'], manufacturerID)
+        else:
+            dev = found[0]
+        collections[dev.id] = []
+        devices[manufacturerID]=dev.id
+    return devices[manufacturerID]
 
 
-def _create_one_gathering(collections, gpsNumber, gathering_facts, point):
+def _create_one_gathering(collections, deviceID, point):
     timestamp = _extract_timestamp(point)
     try:
-        gathering = _generate_gathering(gathering_facts, point, timestamp)
-        collections[gpsNumber].append(gathering)
+        gathering = _generate_gathering(point, timestamp)
+        collections[deviceID].append(gathering)
     except ValueError:
         pass
 
@@ -58,22 +56,22 @@ def _extract_timestamp(point):
     return parse_time(timestamp)
 
 
-def _generate_gathering(gathering_facts, point, timestamp):
+def _generate_gathering(point, timestamp):
     return gathering.Gathering(
-        time=timestamp,
+        dateBegin=timestamp,
         geometry=[float(point["longitude"]), float(point["latitude"])],
-        temperature=float(point['temperature']),
-        facts=gathering_facts
+        altitude=str(point["altitude"]),
+        temperature=int(float(point['temperature'])),
     )
 
 
 def _update_gatherings_to_lajiStore(collections):
     points = []
     for k in collections.keys():
-        doc_array = document.find(deviceId=k)
+        doc_array = document.find(deviceID=k)
         points += collections[k]
         if len(doc_array) == 0:
-            document.create(str(uuid.uuid4()), collections[k], k)
+            document.create(collections[k], k)
         else:
             doc_array[0].gatherings = _union_of_gatherings(doc_array[0].gatherings, collections[k])
             _check_redundant_lajiStore_documents(doc_array)
@@ -111,35 +109,5 @@ def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings,
     for g in duplicates_from_new_gatherings:
         for g2 in duplicates_from_lajiStore_gatherings:
             if g == g2:
-                g.publicity = g2.publicity
-                g.facts = g.facts + g2.facts
+                g.publicityRestrictions = g2.publicityRestrictions
                 break
-
-
-def _gathering_fact_dics(name_of_file, time):
-    gathering_facts = []
-    fact1 = {}
-    fact1["name"] = "filename"
-    fact1["value"] = name_of_file
-    fact2 = {}
-    fact2["name"] = "upload_time"
-    fact2["value"] = time
-    gathering_facts.append(fact1)
-    gathering_facts.append(fact2)
-    return gathering_facts
-
-
-def _additional_facts(point, oldfacts):
-    """
-    Add any desired additional values as facts.
-    :param point: Data for the gathering.
-    :param oldfacts: The initial facts for the point.
-    :return: List with both original and newly added facts.
-    """
-    facts = oldfacts.copy()
-    if "altitude" in point and point["altitude"]:
-        fact = dict()
-        fact["name"] = "altitude"
-        fact["value"] = point["altitude"]
-        facts.append(fact)
-    return facts

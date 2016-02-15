@@ -14,7 +14,7 @@ def _uploaded_file_to_filestream(file):
     return filestream
 
 
-def prepare_file(uploaded_file, parser, static_gps_number=False):
+def prepare_file(uploaded_file, parser, static_manufacturer_id=False):
     """
     Reads the given file and extracts the values of individual events.
     :param file: data file
@@ -27,17 +27,17 @@ def prepare_file(uploaded_file, parser, static_gps_number=False):
 
     results = [row for row in reader]
 
-    return _to_dictionary(results, parser, static_gps_number)
+    return _to_dictionary(results, parser, static_manufacturer_id)
 
-def _to_dictionary(lines, parser, static_gps_number = False):
+def _to_dictionary(lines, parser, static_manufacturer_id = False):
     _check_that_file_is_valid(lines, parser)
     headers = _rename_attributes(lines, parser)
 
     parsed = []
     for line in lines[1:]:
         parsed_line = dict(zip(headers, line))
-        if "gpsNumber" not in parsed_line:
-            parsed_line["gpsNumber"] = static_gps_number
+        if "manufacturerID" not in parsed_line:
+            parsed_line["manufacturerID"] = static_manufacturer_id
         if "temperature" not in parsed_line:
             parsed_line["temperature"] = -273.15
         if "altitude" not in parsed_line:
@@ -66,4 +66,4 @@ def _rename_attributes(lines, parser):
 
 
 def parser_Info(parser):
-    return {"type": "GMS", "manufacturer": parser.formatName}
+    return {"deviceType": "GMS", "deviceManufacturer": parser.formatName}

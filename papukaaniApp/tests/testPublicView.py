@@ -11,43 +11,44 @@ import dateutil.parser
 
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
-        self.A = document.create("TestA",
-                                 [gathering.Gathering("2010-11-16T00:00:00+00:00", [23.00, 61.00], publicity="public"),
-                                  gathering.Gathering("2010-12-11T00:00:00+00:00", [63.01, 61.01], publicity="public"),
-                                  gathering.Gathering("2010-12-13T00:00:00+00:00", [65.01, 61.01], publicity="public"),
-                                  gathering.Gathering("2010-12-15T00:00:00+00:00", [68.01, 61.01], publicity="public")
-                                  ], "DeviceId")
-        self.B = document.create("TestB",
-                                 [gathering.Gathering("1235-12-12T12:12:12+00:00", [23.00, 61.00], publicity="public")],
-                                 "DeviceId2")
         dev = {
-            "deviceId": "DeviceId",
+            "deviceManufacturerID": "DeviceId",
             "deviceType": "Type",
             "deviceManufacturer": "Manufacturer",
-            "createdAt": "2015-09-29T14:00:00+03:00",
-            "lastModifiedAt": "2015-09-29T14:00:00+03:00",
-            "facts": []
+            "dateCreated": "2015-09-29T14:00:00+03:00",
+            "dateEdited": "2015-09-29T14:00:00+03:00"
         }
         dev2 = {
-            "deviceId": "DeviceId2",
+            "deviceManufacturerID": "DeviceId2",
             "deviceType": "Type",
             "deviceManufacturer": "Google",
-            "createdAt": "2014-09-29T14:00:00+03:00",
-            "lastModifiedAt": "2014-09-29T14:00:00+03:00",
-            "facts": []
+            "dateCreated": "2014-09-29T14:00:00+03:00",
+            "dateEdited": "2014-09-29T14:00:00+03:00"
         }
 
-        self.I = individual.create(taxon="GAVSTE", facts=[{"name": "nickname", "value": "Birdie"}])
-        self.I2 = individual.create(taxon="GAVSTE", facts=[{"name": "nickname", "value": "Birdie2"}])
+        self.I = individual.create("Birdie", "GAVSTE")
+        self.I2 = individual.create("Birdie2", "GAVSTE")
 
         self.D = device.create(**dev)
         self.D2 = device.create(**dev2)
 
-        self.D.attach_to(self.I, "1000-01-01T10:00:00+00:00")
-        self.D2.attach_to(self.I2, "1000-01-01T10:00:00+00:00")
+        self.D.attach_to(self.I.id, "1000-01-01T10:00:00+00:00")
+        self.D2.attach_to(self.I2.id, "1000-01-01T10:00:00+00:00")
 
-        self.D.update()
-        self.D2.update()
+        self.A = document.create(
+            [gathering.Gathering("2010-11-16T00:00:00+00:00", [23.00, 61.00],
+                                 publicityRestrictions="MZ.publicityRestrictionsPublic"),
+             gathering.Gathering("2010-12-11T00:00:00+00:00", [63.01, 61.01],
+                                 publicityRestrictions="MZ.publicityRestrictionsPublic"),
+             gathering.Gathering("2010-12-13T00:00:00+00:00", [65.01, 61.01],
+                                 publicityRestrictions="MZ.publicityRestrictionsPublic"),
+             gathering.Gathering("2010-12-15T00:00:00+00:00", [68.01, 61.01],
+                                 publicityRestrictions="MZ.publicityRestrictionsPublic")
+             ], self.D.id)
+        self.B = document.create(
+            [gathering.Gathering("1235-12-12T12:12:12+00:00", [23.00, 61.00],
+                                 publicityRestrictions="MZ.publicityRestrictionsPublic")],
+            self.D2.id)
 
         self.page = PublicPage()
         self.page.navigate()
@@ -59,7 +60,7 @@ class PublicView(StaticLiveServerTestCase):
         self.D.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
-        self.page.play_animation_for_device(str(self.I.individualId))
+        self.page.play_animation_for_device(str(self.I.id))
         start_location = self.page.SINGLE_MARKER.location
 
         def marker_is_moving(driver):
@@ -88,7 +89,7 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(start, self.page.get_map_polyline_elements())
 
     def test_marker_has_popup_with_individual_name_and_timestamp_when_loaded(self):
-        self.page.change_device_selection(str(self.I.individualId))
+        self.page.change_device_selection(str(self.I.id))
         self.assert_popup_contents()
 
     def test_marker_has_popup_with_individual_name_and_timestamp_when_playing(self):
@@ -101,7 +102,7 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals("2010" in popuptext, True)
 
     def select_device_and_play(self):
-        self.page.change_device_selection(str(self.I.individualId))
+        self.page.change_device_selection(str(self.I.id))
         self.page.play()
 
     def test_slider_label_value_changes_when_playing(self):
@@ -140,25 +141,25 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals('75', self.page.get_speed_set_as_param(75))
 
     def test_iframe_url_is_correct(self):
-        self.page.change_device_selection(str(self.I.individualId))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device=[' + str(
-            self.I.individualId) + ']&speed=50' + '&zoom=5&loc=[61,20]', self.page.get_iframe_url())
+        self.page.change_device_selection(str(self.I.id))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=' + str(
+            self.I.id) + '&speed=50' + '&zoom=5&loc=[61,20]', self.page.get_iframe_url())
 
     def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
         self.page.driver.get(self.page.url + "?zoom=6&loc=[20,40]")
-        self.page.change_device_selection(str(self.I.individualId))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device=[' + str(
-            self.I.individualId) + ']&speed=50' + '&zoom=6&loc=[20,40]', self.page.get_iframe_url())
+        self.page.change_device_selection(str(self.I.id))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=' + str(
+            self.I.id) + '&speed=50' + '&zoom=6&loc=[20,40]', self.page.get_iframe_url())
 
     def test_iframe_url_is_correct_if_url_parameters_are_invalid(self):
         self.page.driver.get(self.page.url + "?zoom=5&loc=5")
-        self.page.change_device_selection(str(self.I.individualId))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device=[' + str(
-            self.I.individualId) + ']&speed=50' + '&zoom=5&loc=[60,20]', self.page.get_iframe_url())
+        self.page.change_device_selection(str(self.I.id))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=' + str(
+            self.I.id) + '&speed=50' + '&zoom=5&loc=[60,20]', self.page.get_iframe_url())
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
-        self.page.change_device_selection(str(self.I.individualId))
-        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 482)
+        self.page.change_device_selection(str(self.I.id))
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 20)
 
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
         hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
@@ -169,14 +170,14 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
 
-        time.sleep(20)
-        self.page.change_device_selection(str(self.I.individualId))
+        time.sleep(5)
+        self.page.change_device_selection(str(self.I.id))
 
         self.assertTrue("11" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("13" in self.page.driver.find_element_by_id("playLabel_end").text)
 
     def test_time_selection_refresh_button_works(self):
-        self.page.change_device_selection(str(self.I.individualId))
+        self.page.change_device_selection(str(self.I.id))
 
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
@@ -188,18 +189,18 @@ class PublicView(StaticLiveServerTestCase):
         self.assertTrue("13" in self.page.driver.find_element_by_id("playLabel_end").text)
 
     def test_iframe_with_time_selection_is_correct(self):
-        self.page.change_device_selection(str(self.I.individualId))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device=[' + str(
-            self.I.individualId) + ']&speed=50' + '&zoom=5&loc=[61,20]', self.page.get_iframe_url())
+        self.page.change_device_selection(str(self.I.id))
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=' + str(
+            self.I.id) + '&speed=50' + '&zoom=5&loc=[61,20]', self.page.get_iframe_url())
 
         self.page.TIME_START.send_keys("11.12.2010 00:00")
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device=[' + str(
-            self.I.individualId) + ']&speed=50' + '&zoom=5&loc=[61,20]&start_time=11.12.2010 00:00',
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=' + str(
+            self.I.id) + '&speed=50' + '&zoom=5&loc=[61,20]&start_time=11.12.2010 00:00',
                           self.page.get_iframe_url())
 
         self.page.TIME_END.send_keys("14.12.2010 00:00")
-        self.assertEquals('http://127.0.0.1/papukaani/public/?device=[' + str(
-            self.I.individualId) + ']&speed=50' + '&zoom=5&loc=[61,20]&start_time=11.12.2010 00:00&end_time=14.12.2010 00:00',
+        self.assertEquals('http://127.0.0.1/papukaani/public/?device=' + str(
+            self.I.id) + '&speed=50' + '&zoom=5&loc=[61,20]&start_time=11.12.2010 00:00&end_time=14.12.2010 00:00',
                           self.page.get_iframe_url())
 
     def test_time_selection_in_get_parameters_show_correct_time_selection(self):

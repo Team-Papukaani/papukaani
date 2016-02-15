@@ -17,10 +17,10 @@ create_map_with_points = function(data) {
 function displayGpsField () {
     var selectedFormat = $( "#fileFormat" ).val();
     if(fileFormats[selectedFormat] != "") {
-        $("#gpsInputDiv").hide();
-        $("#gpsNumber").prop('required',false);
+        $("#manufacturerIdInputDiv").hide();
+        $("#manufacturerID").prop('required',false);
     } else {
-        $("#gpsInputDiv").show();
-        $("#gpsNumber").prop('required',true);
+        $("#manufacturerIdInputDiv").show();
+        $("#manufacturerID").prop('required',true);
     }
 }

@@ -28,7 +28,6 @@ def show_format(request, id):
                 return render(request, "papukaaniApp/formats.html")
 
             if int(id) > 0:
-                print("koe3")
                 parser = GeneralParser.objects.get(id=id)
                 for param in data:
                     setattr(parser, param, data[param])

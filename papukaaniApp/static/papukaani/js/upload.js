@@ -18,9 +18,9 @@ function displayGpsField () {
     var selectedFormat = $( "#fileFormat" ).val();
     if(fileFormats[selectedFormat] != "") {
         $("#manufacturerIdInputDiv").hide();
-        $("#manufacturerID").prop('required',false);
+        $("#gpsNumber").prop('required',false);
     } else {
         $("#manufacturerIdInputDiv").show();
-        $("#manufacturerID").prop('required',true);
+        $("#gpsNumber").prop('required',true);
     }
 }

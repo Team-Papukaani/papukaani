@@ -14,7 +14,6 @@ def create_points(data, parser, name_of_file, time):
     :param data: The contents of the uploaded file.
     :return: A list containing all of the Gatherings found in the file.
     """
-
     return _create_gatherings(data, parser)
 
 
@@ -22,7 +21,7 @@ def _create_gatherings(data, parser):
     collections = {}
     devices = {}
     for point in data:
-        manufacturerID = point['manufacturerID']
+        manufacturerID = point['gpsNumber']
         deviceID = _manufacturerIDCheck(collections, devices, parser, manufacturerID)
         _create_one_gathering(collections, deviceID, point)
     return _update_gatherings_to_lajiStore(collections)
@@ -61,7 +60,7 @@ def _generate_gathering(point, timestamp):
     return gathering.Gathering(
         dateBegin=timestamp,
         geometry=[float(point["longitude"]), float(point["latitude"])],
-        altitude=point["altitude"],
+        altitude=str(point["altitude"]),
         temperature=int(float(point['temperature'])),
     )
 
@@ -112,35 +111,3 @@ def _update_duplicates_from_new_gatherings(duplicates_from_lajiStore_gatherings,
             if g == g2:
                 g.publicityRestrictions = g2.publicityRestrictions
                 break
-
-
-def _gathering_fact_dics(name_of_file, time):
-    '''
-    gathering_facts = []
-    fact1 = {}
-    fact1["name"] = "filename"
-    fact1["value"] = name_of_file
-    fact2 = {}
-    fact2["name"] = "upload_time"
-    fact2["value"] = time
-    gathering_facts.append(fact1)
-    gathering_facts.append(fact2)
-    return gathering_facts
-    '''
-
-
-def _additional_facts(point, oldfacts):
-    '''
-    Add any desired additional values as facts.
-    :param point: Data for the gathering.
-    :param oldfacts: The initial facts for the point.
-    :return: List with both original and newly added facts.
-
-    facts = oldfacts.copy()
-    if "altitude" in point and point["altitude"]:
-        fact = dict()
-        fact["name"] = "altitude"
-        fact["value"] = point["altitude"]
-        facts.append(fact)
-    return facts
-    '''

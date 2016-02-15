@@ -36,8 +36,8 @@ def _to_dictionary(lines, parser, static_manufacturer_id = False):
     parsed = []
     for line in lines[1:]:
         parsed_line = dict(zip(headers, line))
-        if "manufacturerID" not in parsed_line:
-            parsed_line["manufacturerID"] = static_manufacturer_id
+        if "gpsNumber" not in parsed_line:
+            parsed_line["gpsNumber"] = static_manufacturer_id
         if "temperature" not in parsed_line:
             parsed_line["temperature"] = -273.15
         if "altitude" not in parsed_line:

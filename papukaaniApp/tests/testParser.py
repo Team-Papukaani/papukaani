@@ -10,7 +10,7 @@ from papukaaniApp.utils.parser import _extract_timestamp
 
 class FileParserTest(TestCase):
     def setUp(self):
-        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", manufacturerID="GpsNumber",
+        self.ecotone_parser = GeneralParser.objects.create(formatName="ecotone", gpsNumber="GpsNumber",
                                                            timestamp="GPSTime",
                                                            longitude="Longtitude", latitude="Latitude",
                                                            altitude="Altitude",

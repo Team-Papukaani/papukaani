@@ -97,22 +97,19 @@ class FileParserTest(TestCase):
 
         for attempt in range(3):
             documents = document.find()
-            result = False
-            if documents[0].gatherings[0].altitude == '1':
-                result = True
+            result = documents[0].gatherings[0].geometry[2] == 1
+            if result:
                 break
 
             time.sleep(4)
+
         self.assertEquals(result, True)
 
-    def test_gathering_altitude_is_empty_if_value_in_data_is_empty(self):
+    def test_altitude_not_in_gathering_if_not_in_file(self):
         document.delete_all()
         _create_points_from_ecotone(self, "/Ecotones_gps_pos_doc_create_test2.csv")
-
         documents = document.find()
-        result = False
-        if documents[0].gatherings[0].altitude == '':
-            result = True
+        result = len(documents[0].gatherings[0].geometry) == 2
 
         self.assertEquals(result, True)
 

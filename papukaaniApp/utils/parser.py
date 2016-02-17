@@ -58,8 +58,11 @@ def _extract_timestamp(point):
 
 def _generate_gathering(point, timestamp):
     geometry = [float(point['longitude']), float(point['latitude'])]
-    if 'altitude' in point and not point['altitude'] == '':
-        geometry.append(float(point['altitude']))
+    if 'altitude' in point:
+        try:
+            geometry.append(float(point['altitude']))
+        except ValueError:
+            pass
     return gathering.Gathering(
         dateBegin=timestamp,
         geometry=geometry,

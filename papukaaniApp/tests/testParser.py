@@ -83,7 +83,7 @@ class FileParserTest(TestCase):
                       datetime.datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
         documents = document.find()
         self.assertEqual(len(documents), 1)
-        self.assertEqual(len(documents[0].gatherings), 4)
+        self.assertEqual(len(documents[0].gatherings), 5)
 
     def test_generating_timestamp_works_with_separate_date_and_time(self):
         self.assertEqual(_extract_timestamp({'date': '12-10-2014', 'time': '10:01'}), '2014-10-12T10:01:00+00:00')

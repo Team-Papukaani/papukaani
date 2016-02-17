@@ -34,6 +34,13 @@
             {% endfor %}
         </select>
 
+        <input class="form-control" type="textarea" name="descriptionEN" id="descriptionEN" placeholder="EN Kuvaus"/>
+        <input class="form-control" type="textarea" name="descriptionFI" id="descriptionFI" placeholder="FI Kuvaus"/>
+        <input class="form-control" type="textarea" name="descriptionSV" id="descriptionSV" placeholder="SV Kuvaus"/>
+        <input class="form-control" type="text" name="descriptionUrlEN" id="descriptionUrlEN" placeholder="EN Kuvaus URL"/>
+        <input class="form-control" type="text" name="descriptionUrlFI" id="descriptionUrlFI" placeholder="FI Kuvaus URL"/>
+        <input class="form-control" type="text" name="descriptionUrlSV" id="descriptionUrlSV" placeholder="SV Kuvaus URL"/>
+
         <button type="submit" class="btn btn-default">Luo</button>
     </form>
 
@@ -53,6 +60,12 @@
                     <option value="{{ s.id }}" {% if individual.taxon == s.id %} selected{% endif %}>{{ s.name }}</option>
                 {% endfor %}
             </select>
+            <input class="form-control" type="textarea" name="descriptionEN" placeholder="EN Kuvaus" value="{{ individual.description.en }}"/>
+            <input class="form-control" type="textarea" name="descriptionFI" placeholder="FI Kuvaus" value="{{ individual.description.fi }}"/>
+            <input class="form-control" type="textarea" name="descriptionSV" placeholder="SV Kuvaus" value="{{ individual.description.sv }}"/>
+            <input class="form-control" type="text" name="descriptionUrlEN" placeholder="EN Kuvaus" value="{{ individual.descriptionURL.en }}"/>
+            <input class="form-control" type="text" name="descriptionUrlFI" placeholder="FI Kuvaus" value="{{ individual.descriptionURL.fi }}"/>
+            <input class="form-control" type="text" name="descriptionUrlSV" placeholder="SV Kuvaus" value="{{ individual.descriptionURL.se }}"/>
 
             <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
             <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">Poista</button>

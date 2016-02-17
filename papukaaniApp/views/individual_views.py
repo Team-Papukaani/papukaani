@@ -30,6 +30,9 @@ def _update_individual(request):
     individuale.taxon = request.POST.get('taxon')
     individuale.ringID = request.POST.get('ring_id')
     individuale.nickname = request.POST.get('nickname')
+    descriptionFields = _getDescriptionFields(request)
+    individuale.description = descriptionFields[0]
+    individuale.descriptionURL = descriptionFields[1]
     individuale.update()
     messages.add_message(request, messages.INFO, 'Tiedot tallennettu onnistuneesti!')
 
@@ -43,8 +46,23 @@ def _create_individual(request):
     if not _post_is_valid(request):
         return _return_with_context(request)
 
-    individuale = individual.create(request.POST.get('nickname'),request.POST.get('taxon'))
+    descriptionFields = _getDescriptionFields(request)
+
+    individual.create(request.POST.get('nickname'),request.POST.get('taxon'),
+                      description=descriptionFields[0] or None, descriptionURL=descriptionFields[1] or None)
+
     messages.add_message(request, messages.INFO, 'Lintu luotu onnistuneesti!')
+
+def _getDescriptionFields(request):
+    descriptionFields = [{}, {}]
+    descriptionFields[0]['en'] = request.POST.get('descriptionEN')
+    descriptionFields[0]['fi'] = request.POST.get('descriptionFI')
+    descriptionFields[0]['sv'] = request.POST.get('descriptionSV')
+    descriptionFields[1]['en'] = request.POST.get('descriptionUrlEN')
+    descriptionFields[1]['fi'] = request.POST.get('descriptionUrlFI')
+    descriptionFields[1]['sv'] = request.POST.get('descriptionUrlSV')
+    return descriptionFields
+
 
 def _post_is_valid(request):
     if request.POST.get('taxon') == "":
@@ -54,6 +72,7 @@ def _post_is_valid(request):
     if request.POST.get('nickname') == "":
         messages.add_message(request, messages.ERROR, 'Nimi puuttuu!')
         return False
+
     return True
 
 def _return_with_context(request):

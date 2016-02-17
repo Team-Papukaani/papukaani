@@ -11,10 +11,12 @@ class Individual:
     Represents the Individual table of LajiStore
     '''
 
-    def __init__(self, nickname, taxon, ringID="", id=None, deleted="", **kwargs):
+    def __init__(self, nickname, taxon, description=None, descriptionURL=None, ringID="", id=None, deleted="", **kwargs):
         self.id = id
         self.nickname = nickname
         self.taxon = taxon
+        self.description = description
+        self.descriptionURL = descriptionURL
         self.ringID = ringID
         self.deleted = deleted
 
@@ -94,14 +96,14 @@ def get(id):
     return Individual(**individual)
 
 
-def create(nickname, taxon):
+def create(nickname, taxon, description=None, descriptionURL=None):
     '''
     Creates an individual instance in LajiStore and a corresponding Indiviual object
     :param nickname: nickname for the individual
     :param taxon: The LajiStore taxon of the object
     :return: An Individual object
     '''
-    individual = Individual(nickname, taxon)
+    individual = Individual(nickname, taxon, description, descriptionURL)
     data = LajiStoreAPI.post_individual(**individual.__dict__)
 
     individual.id = data['id']

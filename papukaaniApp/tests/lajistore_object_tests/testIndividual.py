@@ -47,3 +47,22 @@ class TestIndividual(TestCase):
         gatherings = self.ind.get_gatherings()
 
         self.assertEquals(1, len(gatherings))
+
+    def test_descriptions_are_added(self):
+        self.ind.description = {'fi': 'testi', 'en': 'test'}
+        self.ind.descriptionURL = {'sv': 'testurl'}
+
+        self.ind.update()
+        laji_ind = individual.get(self.ind.id)
+
+        self.assertEquals('testi', laji_ind.description.get('fi'))
+        self.assertEquals('test', laji_ind.description.get('en'))
+        self.assertEquals('testurl', laji_ind.descriptionURL.get('sv'))
+
+
+
+
+
+
+
+

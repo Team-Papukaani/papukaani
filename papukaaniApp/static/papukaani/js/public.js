@@ -1,4 +1,3 @@
-/*
 var request = null;
 
 function IndividualSorter(restUrl, individuals, species, map) {
@@ -7,11 +6,14 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.map = map;
     this.createIndividualSelector(individuals, species);
     this.colorChart = new ColorChart();
-    this.slider = new Slider();
 }
+/*
+
 IndividualSorter.prototype.getRoutes = function () {
     return this.routes;
 }
+
+*/
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
     var messagebox = $("#loading");
@@ -27,21 +29,28 @@ IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
     for (var i = 0; i < this.routes.length; i++) {
         if (this.routes[i].individualId === individualId) {
+            /*
             if (this.routes[i].animation) {
                 this.routes[i].animation.clear();
                 this.routes[i].animation = null;
             }
+            */
+
             this.colorChart.freeColor(this.routes[i].individualId);
+            player.removeRoute(this.routes[i]);
             this.routes.splice(i, 1);
-            this.map.changePoints(this.routes);
+            //this.map.changePoints(this.routes);
             $("#individual" + individualId).find("div.sqr").css('background-color', "#fff");
             return;
         }
     }
 }
+/*
 IndividualSorter.prototype.refresh = function () {
     this.map.changePoints(this.routes);
 }
+*/
+
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForIndividual(individualId) {
     if (request.readyState === 4) {
@@ -60,26 +69,32 @@ function showPointsForIndividual(individualId) {
             var color = this.colorChart.getColor(individualId);
             indiv.find("div.sqr").css('background-color', color);
 
-            this.routes.push({
+            var route = {
                 individualId: individualId,
                 points: points,
                 individualname: individualname,
                 color: color,
                 latlngs: false
-            });
+            };
 
-            this.map.changePoints(this.routes);
+            this.routes.push(route);
+            player.addRoute(route);
+            player.showRoute(route);
+
+            //this.map.changePoints(this.routes);
             unlockButtons();
         }
         request = null;
     }
 }
 
+
 function ColorChart() {
     this.colors = [{color: "#CC0000"}, {color: "#FFFF00"}, {color: "#00CC00"},
         {color: "#00FFFF"}, {color: "#0000CC"}, {color: "#CC00CC"},
         {color: "#808080"}];
 }
+
 
 ColorChart.prototype.getColor = function (individualId) {
     var color;
@@ -143,7 +158,12 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         }
     });
 };
-*/
+
+function PublicMap(loc, zoom) {
+    this.map = create_map("map", loc, zoom);
+    return this.map;
+}
+
 function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, start_time, end_time) {
 
     zoom = typeof zoom == 'number' ? zoom : 5;
@@ -151,14 +171,12 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
     if (!(loc && loc instanceof Array && loc.length == 2 && typeof loc[0] == "number" && typeof loc[1] == "number")) {
         loc = [60, 20]
     }
-/*
+
     map = new PublicMap(loc, zoom);
 
-
     sorter = new IndividualSorter("../rest/gatheringsForIndividual?individualId=", individuals, species, map);
-*/
-    slider = new Slider(loc, zoom);
-    slider.drawRoute();
+
+    player = new Player(map);
 
 /*
 
@@ -213,9 +231,9 @@ var playSliderKeyboardControls = function () {
     };
 };
 
-function PublicMap(loc, zoom) {
-    this.map = create_map("map2", loc, zoom);
-}
+*/
+
+/*
 
 //Redraws the polyline
 PublicMap.prototype.changePoints = function (routes) {
@@ -276,6 +294,7 @@ PublicMap.prototype.createLatlngsFromPoints = function (points) {
     });
 };
 
+*/
 //Disables the select, save and reset buttons.
 function lockButtons() {
     $("#selectIndividual input").attr("disabled", true);
@@ -289,7 +308,7 @@ function unlockButtons() {
     $("#play").attr("disabled", false);
     $("#pause").attr("disabled", false);
 }
-
+/*
 //SpeedSlider settings
 $(function () {
     $("#speedSlider").slider({

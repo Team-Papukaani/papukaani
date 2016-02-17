@@ -1,3 +1,4 @@
+/*
 var request = null;
 
 function IndividualSorter(restUrl, individuals, species, map) {
@@ -6,6 +7,7 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.map = map;
     this.createIndividualSelector(individuals, species);
     this.colorChart = new ColorChart();
+    this.slider = new Slider();
 }
 IndividualSorter.prototype.getRoutes = function () {
     return this.routes;
@@ -141,7 +143,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         }
     });
 };
-
+*/
 function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, start_time, end_time) {
 
     zoom = typeof zoom == 'number' ? zoom : 5;
@@ -149,10 +151,16 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
     if (!(loc && loc instanceof Array && loc.length == 2 && typeof loc[0] == "number" && typeof loc[1] == "number")) {
         loc = [60, 20]
     }
-
+/*
     map = new PublicMap(loc, zoom);
 
+
     sorter = new IndividualSorter("../rest/gatheringsForIndividual?individualId=", individuals, species, map);
+*/
+    slider = new Slider(loc, zoom);
+    slider.drawRoute();
+
+/*
 
     playSliderKeyboardControls();
 
@@ -178,8 +186,9 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
         $('#speedSlider').slider("option", "value", defaultSpeed);
+        */
 }
-
+/*
 //Add play-on-spacebar-press to the map div, and prevent propagation of said event when play button is selected.
 var playSliderKeyboardControls = function () {
     $('#map').bind('keyup', function (event) {
@@ -205,7 +214,7 @@ var playSliderKeyboardControls = function () {
 };
 
 function PublicMap(loc, zoom) {
-    this.map = create_map("map", loc, zoom);
+    this.map = create_map("map2", loc, zoom);
 }
 
 //Redraws the polyline
@@ -373,3 +382,4 @@ function points_in_timerange(points, start, end) {
 
     return pts
 }
+*/

@@ -45,11 +45,10 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
         }
     }
 }
-/*
+
 IndividualSorter.prototype.refresh = function () {
-    this.map.changePoints(this.routes);
+    player.refreshRoutes();
 }
-*/
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForIndividual(individualId) {
@@ -386,7 +385,7 @@ $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
 });
-
+*/
 function points_in_timerange(points, start, end) {
     var a = start !== "" ? new Date(parseTime(start, "+00:00")) : new Date(1900, 1, 1, 0, 0, 0, 0);
     var b = end !== "" ? new Date(parseTime(end, "+00:00")) : new Date();
@@ -401,4 +400,3 @@ function points_in_timerange(points, start, end) {
 
     return pts
 }
-*/

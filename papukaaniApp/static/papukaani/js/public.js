@@ -182,7 +182,7 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
     playSliderKeyboardControls();
 
     createDummySlider();
-
+*/
     if (start_time !== "") $("#start_time").val(start_time);
     if (end_time !== "") $("#end_time").val(end_time);
 
@@ -203,7 +203,7 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
         $('#speedSlider').slider("option", "value", defaultSpeed);
-        */
+
 }
 /*
 //Add play-on-spacebar-press to the map div, and prevent propagation of said event when play button is selected.
@@ -307,15 +307,6 @@ function unlockButtons() {
     $("#play").attr("disabled", false);
     $("#pause").attr("disabled", false);
 }
-/*
-//SpeedSlider settings
-$(function () {
-    $("#speedSlider").slider({
-        value: 50,
-        min: 1,
-        max: 100
-    });
-});
 
 //Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.
 $(function () {
@@ -339,7 +330,7 @@ $(function () {
         $(this).children().css("opacity", 0.5);
     })
 });
-
+/*
 //Replaces the slider with a placeholder.
 var createDummySlider = function () {
     $("#playSlider").slider({min: 0, max: 0, paddingMin: 7, paddingMax: 7});
@@ -347,7 +338,7 @@ var createDummySlider = function () {
     $("#playLabel_end").text("");
     $("#play").html("&#9658;").prop("disabled", true);
 };
-
+*/
 function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
@@ -385,7 +376,7 @@ $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
 });
-*/
+
 function points_in_timerange(points, start, end) {
     var a = start !== "" ? new Date(parseTime(start, "+00:00")) : new Date(1900, 1, 1, 0, 0, 0, 0);
     var b = end !== "" ? new Date(parseTime(end, "+00:00")) : new Date();

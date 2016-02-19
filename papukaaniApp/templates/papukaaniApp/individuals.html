@@ -53,22 +53,46 @@
 
             <input class="form-control" type="text" name="nickname" placeholder="Nimi" value="{{ individual.nickname }}"/>
             <input class="form-control" type="text" name="ring_id" placeholder="Rengastunnus" value="{{ individual.ringID }}"/>
-
             <select class="form-control combobox" name="taxon" placeholder="Laji">
                 <option></option>
                 {% for s in species %}
                     <option value="{{ s.id }}" {% if individual.taxon == s.id %} selected{% endif %}>{{ s.name }}</option>
                 {% endfor %}
             </select>
-            <input class="form-control" type="textarea" name="descriptionEN" placeholder="EN Kuvaus" value="{{ individual.description.en }}"/>
-            <input class="form-control" type="textarea" name="descriptionFI" placeholder="FI Kuvaus" value="{{ individual.description.fi }}"/>
-            <input class="form-control" type="textarea" name="descriptionSV" placeholder="SV Kuvaus" value="{{ individual.description.sv }}"/>
-            <input class="form-control" type="text" name="descriptionUrlEN" placeholder="EN Kuvaus" value="{{ individual.descriptionURL.en }}"/>
-            <input class="form-control" type="text" name="descriptionUrlFI" placeholder="FI Kuvaus" value="{{ individual.descriptionURL.fi }}"/>
-            <input class="form-control" type="text" name="descriptionUrlSV" placeholder="SV Kuvaus" value="{{ individual.descriptionURL.se }}"/>
-
             <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
+            <button type="button" class="btn btn-info btn-cons" data-toggle="modal" data-target="#myModal">Muokkaa Kuvaukset</button>
             <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">Poista</button>
+        <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+            <label>EN kuvaus</label>
+                <input class="form-control" type="textarea" name="descriptionEN" style="width:80%" placeholder="EN Kuvaus" value="{{ individual.description.en }}"/><br>
+            <label>FI kuvaus </label>
+                <input class="form-control" type="textarea" name="descriptionFI" style="width:80%" placeholder="FI Kuvaus" value="{{ individual.description.fi }}"/><br>
+            <label>SV kuvaus </label>
+                <input class="form-control" type="textarea" name="descriptionSV" style="width:80%" placeholder="SV Kuvaus" value="{{ individual.description.sv }}"/><br>
+            <label>EN kuvaus URL</label>
+                <input class="form-control" name="descriptionUrlEN" type="url" style="width:80%" placeholder="EN Kuvaus URL" value="{{ individual.descriptionURL.en }}"/><br>
+            <label>FI kuvaus URL</label>
+                <input class="form-control" name="descriptionUrlFI" type="url" style="width:80%" placeholder="FI Kuvaus URL" value="{{ individual.descriptionURL.fi }}"/><br>
+            <label>SV kuvaus URL</label>
+                <input class="form-control" name="descriptionUrlSV" type="url" style="width:80%" placeholder="SV Kuvaus URL" value="{{ individual.descriptionURL.se }}"/><br>
+            <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
+            </form>
+        </div>
+          <br>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
         </form>
         <br>
     {% endfor %}

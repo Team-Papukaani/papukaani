@@ -183,7 +183,7 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_END.send_keys("14.12.2010 00:00")
 
         self.page.REFRESH.click()
-        time.sleep(1.5)
+        time.sleep(3)
 
         self.assertTrue("11" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("13" in self.page.driver.find_element_by_id("playLabel_end").text)

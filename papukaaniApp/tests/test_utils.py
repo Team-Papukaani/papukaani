@@ -1,4 +1,5 @@
 from logging import Logger
+from selenium import webdriver
 
 from papukaani.config.common import PROJECT_DIR
 
@@ -13,3 +14,11 @@ def take_screenshot_of_test_case(test_case, web_driver):
     """
     print("Screenshot saved into " + PROJECT_DIR + '/test_screenshots/'+test_case._testMethodName)
     web_driver.save_screenshot('test_screenshots/'+test_case._testMethodName)
+
+
+def get_configured_firefox():
+  profile = webdriver.FirefoxProfile()
+  profile.set_preference('intl.accept_languages', '')
+  driver = webdriver.Firefox(firefox_profile=profile)
+  return driver
+

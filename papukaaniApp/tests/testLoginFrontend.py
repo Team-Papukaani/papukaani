@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from pyvirtualdisplay import Display
-from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
+from papukaaniApp.tests.test_utils import * 
 from selenium import webdriver
 
 from django.conf import settings
@@ -13,7 +13,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
         settings.MOCK_AUTHENTICATION = "On"
         self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1280, 720))
         self.display.start()
-        self.driver = webdriver.Firefox()
+        self.driver = get_configured_firefox()
 
         self.choose_page = self.BASE_URL + '/papukaani/choose'
         self.index_page = self.BASE_URL + '/papukaani'

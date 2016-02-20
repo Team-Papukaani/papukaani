@@ -2,6 +2,7 @@ from selenium.common.exceptions import TimeoutException, ElementNotVisibleExcept
 from selenium.webdriver.support.wait import WebDriverWait
 from pyvirtualdisplay import Display
 from selenium import webdriver
+from papukaaniApp.tests.test_utils import get_configured_firefox
 
 from django.conf import settings
 
@@ -16,9 +17,7 @@ class Page:
     def __init__(self):
         self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1680, 720))
         self.display.start()
-        fp = webdriver.FirefoxProfile()
-        fp.set_preference('intl.accept_languages', 'fi')
-        self.driver = webdriver.Firefox(firefox_profile=fp)
+        self.driver = get_configured_firefox()
 
     def navigate(self):
         """

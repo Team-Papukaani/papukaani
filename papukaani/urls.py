@@ -30,6 +30,7 @@ js_info_dict = {
 }
 
 urlpatterns += [
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^jsi18n/$', javascript_catalog, js_info_dict,
       name='javascript-catalog'),
 ]

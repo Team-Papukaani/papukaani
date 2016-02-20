@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-05 11:59+0200\n"
+"POT-Creation-Date: 2016-02-08 01:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,6 +32,11 @@ msgstr "Swedish"
 #: papukaaniApp/templates/404.html:11
 msgid "Etsimääsi sivua ei ole olemassa."
 msgstr "The page you are looking for does not exist."
+
+#: papukaaniApp/templates/base.html:6
+#: papukaaniApp/templates/papukaaniApp/public.html:85
+msgid "fi"
+msgstr "en"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:25
 msgid "Tallennetaanko muutokset?"
@@ -65,7 +70,7 @@ msgstr "Show points in interval"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:59
 #: papukaaniApp/templates/papukaaniApp/formats.html:134
-#: papukaaniApp/templates/papukaaniApp/individuals.html:57
+#: papukaaniApp/templates/papukaaniApp/individuals.html:58
 msgid "Tallenna"
 msgstr "Save"
 
@@ -116,7 +121,7 @@ msgstr "A free-form name for the format. Required field."
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:43
 msgid "Aikaleima**"
-msgstr "Timestamp*"
+msgstr "Timestamp**"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:51
 msgid "Aikaleima-sarakkeen nimi. Pakollinen kenttä"
@@ -161,7 +166,7 @@ msgstr "The name of the latitude column. Required field."
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:99
 msgid "Lähettimen tunnus"
-msgstr "Device identifier"
+msgstr "Device ID"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:107
 msgid ""
@@ -189,67 +194,59 @@ msgstr "Height"
 msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
 msgstr "Name of the height column. Optional field."
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:16
+#: papukaaniApp/templates/papukaaniApp/individuals.html:17
 msgid "Haluatko varmasti poistaa linnun?"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:18
-#, fuzzy
-#| msgid " Kyllä"
-msgid "Kyllä"
-msgstr " Yes"
+msgstr "Are you sure you want to delete this bird?"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:19
-#, fuzzy
-#| msgid " Peruuta"
+msgid "Kyllä"
+msgstr "Yes"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:20
 msgid "Peruuta"
-msgstr " Cancel"
+msgstr "Cancel"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:22
-#, fuzzy
-#| msgid "Lintu"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:23
 msgid "Luo lintu"
-msgstr "Bird"
+msgstr "Create bird"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:37
-#: papukaaniApp/templates/papukaaniApp/public.html:101
+#: papukaaniApp/templates/papukaaniApp/individuals.html:38
+#: papukaaniApp/templates/papukaaniApp/public.html:104
 msgid "Luo"
 msgstr "Create"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:40
+#: papukaaniApp/templates/papukaaniApp/individuals.html:41
 msgid "Muokkaa lintua"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:47
-msgid "Nimi"
-msgstr ""
+msgstr "Edit bird"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:48
+msgid "Nimi"
+msgstr "Name"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:49
 msgid "Rengastunnus"
-msgstr ""
+msgstr "Ring number"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:50
+#: papukaaniApp/templates/papukaaniApp/individuals.html:51
 msgid "Laji"
-msgstr ""
+msgstr "Species"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:58
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:15
+#: papukaaniApp/templates/papukaaniApp/individuals.html:59
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:16
 msgid "Poista"
-msgstr ""
+msgstr "Delete"
 
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:12
-#, fuzzy
-#| msgid "Formaatin nimi*"
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:13
 msgid "Formaatin nimi"
-msgstr "Format name*"
+msgstr "Format name"
 
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:14
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:15
 msgid "Muokkaa"
-msgstr ""
+msgstr "Edit"
 
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:25
-msgid "Haluatko varmasti poistaa formaatin {{f.formatName}}?"
-msgstr ""
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:26
+msgid "Haluatko varmasti poistaa formaatin "
+msgstr "Are you sure you want to delete the format "
 
 #: papukaaniApp/templates/papukaaniApp/login.html:8
 msgid "Kirjaudu sisään:"
@@ -260,7 +257,7 @@ msgid "Kotisivu"
 msgstr "Home"
 
 #: papukaaniApp/templates/papukaaniApp/navigation.html:6
-#: papukaaniApp/templates/papukaaniApp/upload.html:19
+#: papukaaniApp/templates/papukaaniApp/upload.html:18
 msgid "Lataa tiedosto"
 msgstr "Upload file"
 
@@ -296,13 +293,17 @@ msgstr "Bird:"
 msgid "Päivitä "
 msgstr "Refresh "
 
-#: papukaaniApp/templates/papukaaniApp/public.html:96
+#: papukaaniApp/templates/papukaaniApp/public.html:99
 msgid "iFrame:"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/upload.html:24
+#: papukaaniApp/templates/papukaaniApp/upload.html:23
 msgid "Tiedosto:"
 msgstr "File:"
+
+#: papukaaniApp/templates/papukaaniApp/upload.html:25
+msgid "Selaa"
+msgstr "Browse"
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:29
 msgid "Tiedostomuoto:"
@@ -319,3 +320,55 @@ msgstr "Send"
 #: papukaaniApp/templates/papukaaniApp/upload.html:46
 msgid "Formaattien hallinta"
 msgstr "Manage formats"
+
+#: papukaaniApp/views/formats_views.py:29
+msgid "Pakollista tietoa puuttuu!"
+msgstr "Required information is missing!"
+
+#: papukaaniApp/views/formats_views.py:38
+msgid "Muutokset tallennettu!"
+msgstr "Changes saved!"
+
+#: papukaaniApp/views/formats_views.py:41
+msgid "Formaatti tallennettu!"
+msgstr "Format saved!"
+
+#: papukaaniApp/views/formats_views.py:43
+msgid "Jokin meni pieleen!"
+msgstr "Something went wrong!"
+
+#: papukaaniApp/views/individual_views.py:39
+msgid "Tiedot tallennettu onnistuneesti!"
+msgstr "Information saved successfully!"
+
+#: papukaaniApp/views/individual_views.py:45
+msgid "Lintu poistettu onnistuneesti!"
+msgstr "Bird deleted successfully!"
+
+#: papukaaniApp/views/individual_views.py:57
+msgid "Lintu luotu onnistuneesti!"
+msgstr "Bird created successfully!"
+
+#: papukaaniApp/views/individual_views.py:61
+msgid "Laji puuttuu!"
+msgstr "Species is missing!"
+
+#: papukaaniApp/views/individual_views.py:65
+msgid "Nimi puuttuu!"
+msgstr "Name is missing!"
+
+#: papukaaniApp/views/login_view.py:38
+msgid "Autentikaatio ei onnistunut!"
+msgstr "Authentication failed!"
+
+#: papukaaniApp/views/upload_views.py:36
+msgid "Tiedostosi formaatti ei ole kelvollinen!"
+msgstr "The format of your file is invalid!"
+
+#: papukaaniApp/views/upload_views.py:40
+msgid "Tiedoston lataus onnistui!"
+msgstr "File upload succeeded!"
+
+#: papukaaniApp/views/upload_views.py:43
+msgid "Et valinnut ladattavaa tiedostoa!"
+msgstr "You did not choose a file to upload!"

@@ -39,24 +39,7 @@
 	* allowing multiple different settings on the same page.
 	*/
 	var Timepicker = function () {
-		this.regional = []; // Available regional settings, indexed by language code
-		this.regional[''] = { // Default regional settings
-			currentText: 'Now',
-			closeText: 'Done',
-			amNames: ['AM', 'A'],
-			pmNames: ['PM', 'P'],
-			timeFormat: 'HH:mm',
-			timeSuffix: '',
-			timeOnlyTitle: 'Choose Time',
-			timeText: 'Time',
-			hourText: 'Hour',
-			minuteText: 'Minute',
-			secondText: 'Second',
-			millisecText: 'Millisecond',
-			microsecText: 'Microsecond',
-			timezoneText: 'Time Zone',
-			isRTL: false
-		};
+		this.regional = ['en', 'fi', 'sv']; // Available regional settings, indexed by language code
 		this._defaults = { // Global defaults for all the datetime picker instances
 			showButtonPanel: true,
 			timeOnly: false,
@@ -118,7 +101,7 @@
 			parse: 'strict',
 			afterInject: null
 		};
-		$.extend(this._defaults, this.regional['']);
+		$.extend(this._defaults, this.regional['en']);
 	};
 
 	$.extend(Timepicker.prototype, {

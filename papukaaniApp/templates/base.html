@@ -1,8 +1,9 @@
 {% load staticfiles %}
+{% load i18n %}
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="{% trans "fi" %}">
 <head>
     <title>{% block title %}Pelikaija{% endblock %}</title>
     {% include "papukaaniApp/include_headers.html" %}

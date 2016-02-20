@@ -5,6 +5,8 @@ from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.core import serializers
 from django.contrib import messages
 
+from django.utils.translation import ugettext_lazy as _
+
 @require_auth
 def list_formats(request):
     parsers = GeneralParser.objects.all()
@@ -24,7 +26,7 @@ def show_format(request, id):
 
         try:
             if not _parser_is_valid(data):
-                messages.add_message(request, messages.ERROR, "Pakollista tietoa puuttuu!")
+                messages.add_message(request, messages.ERROR, _("Pakollista tietoa puuttuu!"))
                 return render(request, "papukaaniApp/formats.html")
 
             if int(id) > 0:
@@ -33,12 +35,12 @@ def show_format(request, id):
                 for param in data:
                     setattr(parser, param, data[param])
                 parser.save()
-                messages.add_message(request, messages.SUCCESS, "Muutokset tallennettu!")
+                messages.add_message(request, messages.SUCCESS, _("Muutokset tallennettu!"))
             else:
                 GeneralParser.objects.create(**data)
-                messages.add_message(request, messages.SUCCESS, "Formaatti tallennettu!")
+                messages.add_message(request, messages.SUCCESS, _("Formaatti tallennettu!"))
         except:
-            messages.add_message(request, messages.ERROR, "Jokin meni pieleen!")
+            messages.add_message(request, messages.ERROR, _("Jokin meni pieleen!"))
             return redirect(list_formats)
 
         return redirect(list_formats)

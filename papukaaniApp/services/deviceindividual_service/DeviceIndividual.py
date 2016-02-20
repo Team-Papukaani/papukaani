@@ -1,4 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+
 from django.conf import settings
 
 _URL = settings.LAJISTORE_URL
@@ -35,7 +36,7 @@ def detach(deviceID, individualID, timestamp):
     '''
     individualID = '"' + _URL + _INDIVIDUAL_PATH + "/" + individualID + '"'
     deviceID = '"' + _URL + _DEVICE_PATH + "/" + deviceID + '"'
-    attachments = _get(individualID=individualID, deviceID=deviceID)
+    attachments = find(individualID=individualID, deviceID=deviceID)
     for attachment in attachments:
         if attachment["removed"] is None:
             attachment["removed"] = timestamp
@@ -71,7 +72,7 @@ def get_devices_for_individual(individualID):
         :return: List of attachments
     '''
     individualID = '"' + _URL + _INDIVIDUAL_PATH + "/" + individualID + '"'
-    return _get(individualID=individualID)
+    return find(individualID=individualID)
 
 
 def get_individuals_for_device(deviceID):
@@ -80,23 +81,33 @@ def get_individuals_for_device(deviceID):
         :return: List of attachments
     '''
     deviceID = '"' + _URL + _DEVICE_PATH + "/" + deviceID + '"'
-    return _get(deviceID=deviceID)
+    return find(deviceID=deviceID)
 
 
 def find(**kwargs):
-    '''
-    Return all attachments
-    :param kwargs:
-    :return:
-    '''
-    return _get(**kwargs)
+    attachments = LajiStoreAPI.get_all_deviceindividual(**kwargs)
 
+    devices = LajiStoreAPI.get_all_devices()
+    deviceIDs = set()
+    for device in devices:
+        deviceIDs.add(device['id'])
 
-def _get(**kwargs):
-    attachments = LajiStoreAPI.get_all_deviceindividual(**kwargs);
-    for a in attachments:
-        if "removed" not in a:
-            a["removed"] = None
+    individuals = LajiStoreAPI.get_all_individuals()
+    individualIDs = set()
+    for individual in individuals:
+        if not individual['deleted'] == True:
+            individualIDs.add(individual['id'])
+
+    unsynced = []
+
+    for attachment in attachments:
+        if not attachment['deviceID'] in deviceIDs or not attachment['individualID'] in individualIDs:
+            unsynced.append(attachment)
+
+        elif "removed" not in attachment:
+            attachment["removed"] = None
+
+    attachments = list([attachment for attachment in attachments if attachment not in unsynced])
     return attachments
 
 def delete_all():

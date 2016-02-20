@@ -16,7 +16,9 @@ class Page:
     def __init__(self):
         self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1680, 720))
         self.display.start()
-        self.driver = webdriver.Firefox()
+        fp = webdriver.FirefoxProfile()
+        fp.set_preference('intl.accept_languages', 'fi')
+        self.driver = webdriver.Firefox(firefox_profile=fp)
 
     def navigate(self):
         """

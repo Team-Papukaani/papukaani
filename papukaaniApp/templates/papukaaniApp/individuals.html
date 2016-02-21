@@ -45,7 +45,7 @@
     </form>
 
     <h1>Muokkaa lintua</h1>
-    {% for individual in individuals %}
+    {% for individual in individuals reversed %}
         <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
             {% csrf_token %}
 

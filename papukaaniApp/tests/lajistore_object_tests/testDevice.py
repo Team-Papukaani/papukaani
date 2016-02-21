@@ -17,7 +17,7 @@ class TestDevice(TestCase):
     def tearDown(self):
         self.d.delete()
 
-    def test_create_and_delete(self):
+    def test_create(self):
         self.assertEquals("ABCD1234567", self.d.deviceManufacturerID)
         self.assertEquals("Type", self.d.deviceType)
         self.assertEquals("Manufacturer", self.d.deviceManufacturer)
@@ -63,14 +63,13 @@ class TestDevice(TestCase):
 
     def test_device_not_attach_if_unremoved_devices_in_individuals(self):
         self.d.individuals = []
-        A, B = self._create_individuals()
 
+        A, B = self._create_individuals()
         self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
         self.d.attach_to(B.id, "2015-10-10T10:10:10+00:00")
-
         individuals = self.d.get_individuals_for_device()
-        self.assertEquals(len(individuals), 1)
 
+        self.assertEquals(len(individuals), 1)
         self.assertTrue(individuals[0]["removed"] is None)
 
         self._delete_individuals([A, B])
@@ -80,9 +79,7 @@ class TestDevice(TestCase):
 
         A, B = self._create_individuals()
         self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
-
         self.d.detach_from(A.id, "2015-10-10T10:10:10+00:00")
-
         self.assertTrue(self.d.attach_to(B.id, "2015-10-10T10:10:10+00:00") is None)
 
         self._delete_individuals([A, B])
@@ -94,6 +91,33 @@ class TestDevice(TestCase):
         individuals = self.d.get_individuals_for_device()
         self.assertEquals(len(individuals), 1)
         self.assertTrue(individuals[0]["removed"] is not None)
+
+        self._delete_individuals([A, B])
+
+    def test_getting_attached_individualid(self):
+        A, B = self._create_individuals()
+        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
+        id = self.d.get_attached_individualid()
+        self.assertEqual(id, A.id)
+
+        self._delete_individuals([A, B])
+
+    def test_getting_individuals(self):
+        A, B = self._create_individuals()
+        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
+        self.d.detach_from(A.id, "2015-10-10T10:10:10+00:01")
+        self.d.attach_to(B.id, "2015-10-10T10:10:10+00:02")
+        individuals = self.d.get_individuals_for_device()
+        self.assertEquals(len(individuals), 2)
+
+        self._delete_individuals([A, B])
+
+    def test_checking_if_an_individual_is_attached(self):
+        self.assertFalse(self.d.is_attached())
+
+        A, B = self._create_individuals()
+        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
+        self.assertTrue(self.d.is_attached())
 
         self._delete_individuals([A, B])
 

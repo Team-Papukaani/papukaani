@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% load staticfiles %}
 
@@ -21,23 +22,23 @@
     {% include "papukaaniApp/navigation.html" %}
 
     <div id="popup" class="overlay" hidden="true">
-        <p>Tallennetaanko muutokset?</p>
-        <button id="save_button" class="btn btn-default"> Kyllä</button>
-        <button id="no_save_button" class="btn btn-default"> Ei</button>
-        <button id="cancel_button" class="btn btn-default"> Peruuta</button>
+      <p>{% trans "Tallennetaanko muutokset?" %}</p>
+      <button id="save_button" class="btn btn-default">{% trans " Kyllä" %}</button>
+      <button id="no_save_button" class="btn btn-default">{% trans " Ei" %}</button>
+      <button id="cancel_button" class="btn btn-default">{% trans " Peruuta" %}</button>
     </div>
 
     <div class="choose_actions form-inline padded2">
         <form id="time_range">
             <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">Alku:</span>
+              <span class="input-group-addon" id="basic-addon1">{% trans "Alku:" %}</span>
                 <input type="text" id="start_time" name="start_time" class="dateinput datepicker form-control"
                        onblur="validateDateFormat(this)"
                        placeholder="dd.mm.yyyy HH:mm" maxlength="16">
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">Loppu:</span>
+              <span class="input-group-addon" id="basic-addon1">{% trans "Loppu:" %}</span>
                 <input type="text" id="end_time" name="end_time" class="dateinput datepicker form-control"
                        onblur="validateDateFormat(this)"
                        placeholder="dd.mm.yyyy HH:mm" maxlength="16">
@@ -47,7 +48,7 @@
 
             <button type="button" class="btn btn-default"
                     onclick="map.showMarkersWithinTimeRange(time_range.start_time.value, time_range.end_time.value)"
-                    id="show_time_range">Näytä pisteet aikavälillä
+                    id="show_time_range">{% trans "Näytä pisteet aikavälillä" %}
             </button>
         </form>
 
@@ -55,8 +56,8 @@
 
         {% csrf_token %}
 
-        <button id="save" onclick="map.send()" class="btn btn-default" disabled="true">Tallenna</button>
-        <button id="reset" onclick="resetMap(map)" class="btn btn-default">Reset</button>
+        <button id="save" onclick="map.send()" class="btn btn-default" disabled="true">{% trans "Tallenna" %}</button>
+        <button id="reset" onclick="resetMap(map)" class="btn btn-default">{% trans "Resetoi" %}</button>
 
         <span id="loading" class="help-block" style="display:inline"></span>
     </div>
@@ -72,6 +73,8 @@
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
+    {% trans "fi" as lang %}
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
     <script src="{% static 'papukaani/js/choose.js' %}"></script>
 {% endblock %}

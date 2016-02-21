@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% load staticfiles %}
 
@@ -8,7 +9,7 @@
     {% include "papukaaniApp/navigation.html" %}
 
     <div class="margin-container">
-        <h1>Määrittele formaatti:</h1>
+      <h1>{% trans "Määrittele formaatti:" %}</h1>
 
         {% if messages %}
             <ul class="messages">
@@ -27,7 +28,7 @@
             {% csrf_token %}
 
             <div class="input-group">
-                <span class="input-group-addon wide">Formaatin nimi*</span>
+              <span class="input-group-addon wide">{% trans "Formaatin nimi*" %}</span>
 
                 <input class="form-control" type="text" name="formatName" id="formatName" value="{{format.formatName}}">
 
@@ -35,11 +36,11 @@
             </div>
 
             <div id="help_formatName" class="panel panel-default help-box help">
-                <span>Vapaamuotoinen nimi formaatille. Pakollinen kenttä.</span>
+              <span>{% trans "Vapaamuotoinen nimi formaatille. Pakollinen kenttä." %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Aikaleima**</span>
+              <span class="input-group-addon wide">{% trans "Aikaleima**" %}</span>
 
                 <input class="form-control" type="text" name="timestamp" id="timestamp" value="{{format.timestamp}}">
 
@@ -47,21 +48,21 @@
             </div>
 
             <div id="help_gpsTime" class="panel panel-default help-box help">
-                <span>Aikaleima-sarakkeen nimi. Pakollinen kenttä</span>
+              <span>{% trans "Aikaleima-sarakkeen nimi. Pakollinen kenttä" %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Päivämäärä**</span>
+              <span class="input-group-addon wide">{% trans "Päivämäärä**" %}</span>
                 <input class="form-control" type="text" name="date" id="date" value="{{format.date}}">
                 <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_date')"></span>
             </div>
 
             <div id="help_date" class="panel panel-default help-box help">
-                <span>Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä</span>
+              <span>{% trans "Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä" %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Kellonaika**</span>
+              <span class="input-group-addon wide">{% trans "Kellonaika**" %}</span>
 
                 <input class="form-control" type="text" name="time" id="time" value="{{format.time}}">
 
@@ -69,21 +70,21 @@
             </div>
 
             <div id="help_time" class="panel panel-default help-box help">
-                <span>Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä</span>
+              <span>{% trans "Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä" %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Longitudi*</span>
+              <span class="input-group-addon wide">{% trans "Longitudi*" %}</span>
                 <input class="form-control" type="text" name="longitude" id="longitude" value="{{format.longitude}}">
                 <span class="input-group-addon  glyphicon glyphicon-question-sign small button" onclick="toggleElement('help_longitude')"></span>
             </div>
 
             <div id="help_longitude" class="panel panel-default help-box help">
-                <span>Longitudi-sarakkeen nimi. Pakollinen kenttä.</span>
+              <span>{% trans "Longitudi-sarakkeen nimi. Pakollinen kenttä." %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Latitudi*</span>
+              <span class="input-group-addon wide">{% trans "Latitudi*" %}</span>
 
                 <input class="form-control" type="text" name="latitude" id="latitude" value="{{format.latitude}}">
 
@@ -91,11 +92,11 @@
             </div>
 
             <div id="help_latitude" class="panel panel-default help-box help">
-                <span>Latitudi-sarakkeen nimi. Pakollinen kenttä.</span>
+              <span>{% trans "Latitudi-sarakkeen nimi. Pakollinen kenttä." %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Lähettimen tunnus</span>
+              <span class="input-group-addon wide">{% trans "Lähettimen tunnus" %}</span>
 
                 <input class="form-control" type="text" name="manufacturerID" id="manufacturerID" value="{{format.manufacturerID}}">
 
@@ -103,11 +104,11 @@
             </div>
 
             <div id="help_manufacturerID" class="panel panel-default help-box help">
-                <span>Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste annetaan latauksen yhteydessä.</span>
+              <span>{% trans "Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste annetaan latauksen yhteydessä." %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Lämpötila</span>
+              <span class="input-group-addon wide">{% trans "Lämpötila" %}</span>
 
                 <input class="form-control" type="text" name="temperature" id="temperature" value="{{format.temperature}}">
 
@@ -115,11 +116,11 @@
             </div>
 
             <div id="help_temperature" class="panel panel-default help-box help">
-                <span>Lämpötila-sarakkeen nimi.</span>
+              <span>{% trans "Lämpötila-sarakkeen nimi." %}</span>
             </div>
 
             <div class="input-group">
-                <span class="input-group-addon wide">Korkeus</span>
+              <span class="input-group-addon wide">{% trans "Korkeus" %}</span>
 
                 <input class="form-control" type="text" name="altitude" id="altitude" value="{{format.altitude}}">
 
@@ -127,10 +128,10 @@
             </div>
 
             <div id="help_altitude" class="panel panel-default help-box help">
-                <span>Korkeus-sarakkeen nimi. Valinnainen kenttä.</span>
+              <span>{% trans "Korkeus-sarakkeen nimi. Valinnainen kenttä." %}</span>
             </div>
 
-            <button type="submit" class="btn btn-default" id="submit">Tallenna</button>
+            <button type="submit" class="btn btn-default" id="submit">{% trans "Tallenna" %}</button>
         </form>
     </div>
 

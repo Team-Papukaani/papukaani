@@ -1,3 +1,5 @@
+
+
 function DeviceSorter(restUrl) {
 
     this.points = [];
@@ -24,7 +26,7 @@ function DeviceSorter(restUrl) {
 DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     if (deviceId != 'None') {
         var messagebox = $("#loading");
-        messagebox.text("Tietoja ladataan...");
+        messagebox.text(gettext("Tietoja ladataan..."));
         lockButtons();
         request = new XMLHttpRequest;
         var path = this.requestPath(deviceId);
@@ -86,7 +88,7 @@ DeviceSorter.prototype.createDeviceSelector = function (devices) {
         selector.append("<option value='" + val + "'>" + text + "</option>")
     };
 
-    selector.addOption("None", "Valitse lähetin");
+    selector.addOption("None", gettext("Valitse lähetin"));
     for (var id in devices) {
         selector.addOption(id, devices[id]);
     }
@@ -135,7 +137,7 @@ DeviceSorter.prototype.createIndividualSelector = function (individuals, species
         selector.append("<option value='" + id + "'>" + nickname + "</option>")
     };
 
-    selector.addOption("None", "Valitse");
+    selector.addOption("None", gettext("Valitse"));
     $.each(species, function (key, s) {
         selector.append("<option disabled='disabled'>" + s + "</option>")
         $.each(individuals[s], function (key, individual) {

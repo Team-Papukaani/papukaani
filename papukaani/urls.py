@@ -16,9 +16,22 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
+from django.views.i18n import javascript_catalog
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^papukaani/', include('papukaaniApp.urls')),
     url(r'^$', RedirectView.as_view(url='/papukaani/', permanent=True))
 ]
+
+js_info_dict = {
+    'domain': 'djangojs',
+    'packages': ('papukaaniApp',),
+}
+
+urlpatterns += [
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^jsi18n/$', javascript_catalog, js_info_dict,
+      name='javascript-catalog'),
+]
+

@@ -22,11 +22,11 @@ def public(request):
         individuals.setdefault(key, [])
         individuals[key].append({individuale.id: individuale.nickname})
 
-    all_species = species.get_all_in_finnish()
+    all_species = species.get_all_in_user_language(request.LANGUAGE_CODE)
     ordered_species = []
     for s in all_species:
         if s.id in individuals:
-            individuals[s.name] = individuals.pop(s.id)  # Renames the species id to Finnish
+            individuals[s.name] = individuals.pop(s.id)  # Renames the species
             ordered_species.append(s.name)
     ordered_species.sort()
 

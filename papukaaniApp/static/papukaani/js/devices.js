@@ -24,7 +24,8 @@ function displayIndividuals(device) {
             if(!individual.removed) {
                 $("#attacher").hide();
                 row += '<td><input type="text" id="remove_time" name="remove_time" class="dateinput datepicker" placeholder="dd.mm.yyyy HH:mm" onblur="validateDateFormat(this)"></td>'
-                row += '<td><a class="btn btn-sm btn-danger" onclick="removeDevice('+ index +')">Irroita</a></td>'
+                var irr = gettext('Irroita');
+                row += '<td><a class="btn btn-sm btn-danger" onclick="removeDevice('+ index +')">'+ irr +'</a></td>'
             } else {
                 row += '<td>' + $.format.date(individual.removed, "dd.MM.yyyy HH:mm") + '</td>'
                 row += '<td></td>'
@@ -36,7 +37,10 @@ function displayIndividuals(device) {
       $(".datepicker").datetimepicker();
 
       if(devices_and_individuals[device].length == 0) {
-            $('#individuals').html('<tr><td colspan="4">Ei lintuja</td></tr>');
+            $('#individuals').html(
+                '<tr><td colspan="4">'
+                + gettext('Ei lintuja')
+                + '</td></tr>');
       }
 
       showErrors()
@@ -75,7 +79,8 @@ function attachDevice(){
         displayIndividuals(deviceId);
     }
     if(errors.length == 0){
-        errors.push("Kiinnitysajankohdan lisäys onnistui. ")
+        errors.push(gettext(
+              "Kiinnitysajankohdan lisäys onnistui. "))
     }
     showErrors()
 }
@@ -105,7 +110,8 @@ function removeDevice(index){
         displayIndividuals(deviceId);
     }
     if(errors.length == 0){
-        errors.push("Irrotusajankohdan lisäys onnistui. ")
+        errors.push(gettext(
+              "Irrotusajankohdan lisäys onnistui. "))
     }
     showErrors()
 }
@@ -115,7 +121,7 @@ function attachedBeforeRemoved(removed, attached){
     var b = new Date(pruneTimestring(removed))
 
     if(b.getTime() < a.getTime()){
-        errors.push("Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. ")
+        errors.push(gettext("Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "))
         return false;
     }
     return true;
@@ -132,7 +138,7 @@ function noOverlappingTimeSlices(timestring){
             var end = new Date(pruneTimestring(individual.removed))
 
             if(dateIsBetween(time, start, end)){
-                errors.push("Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite on jo merkitty kiinnitetyksi. ")
+                errors.push(gettext("Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite on jo merkitty kiinnitetyksi. "))
                 valid = false;
             }
         }
@@ -145,7 +151,7 @@ function notInFuture(timestring){
     time = new Date(pruneTimestring(timestring))
 
     if(time.getTime() > Date.now()){
-        errors.push("Päivämäärä ei saa olla tulevaisuudessa. ")
+        errors.push(gettext("Päivämäärä ei saa olla tulevaisuudessa. "))
         return false;
     }
 
@@ -156,7 +162,7 @@ function validate(timestring, attached){
     valid = true
 
     if(!validTimestring(timestring)){
-        errors.push("Päivämäärä ei määritelty! ")
+        errors.push(gettext("Päivämäärä ei määritelty! "))
         return false
     }
 
@@ -167,9 +173,10 @@ function validate(timestring, attached){
     return valid
 }
 
+
 function validateIndividual(individualID){
     if(individualID == null){
-        errors.push("Lintua ei määritelty! ")
+        errors.push(gettext("Lintua ei määritelty! "))
         return false
     }
     return true

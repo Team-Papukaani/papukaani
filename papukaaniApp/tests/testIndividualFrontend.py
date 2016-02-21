@@ -17,6 +17,24 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
     def test_individual_info_visible(self):
         self.assertEquals("ERIEUR", self.page.get_first_individual_taxon())
 
+    def test_individual_description_info_visible(self):
+        self.page.delete_individual()
+        self.page.create_new_individual_with_description("PODCRI", "Sockbird", "ENGLANTI", "SUOMI", "RUOTSI", "https://www.google.com/", "https://www.google.fi/", "https://www.google.se/")
+        self.assertEquals("ENGLANTI", self.page.get_first_individual_en())
+        self.assertEquals("SUOMI", self.page.get_first_individual_fi())
+        self.assertEquals("RUOTSI", self.page.get_first_individual_sv())
+        self.assertEquals("https://www.google.com/", self.page.get_first_individual_enurl())
+        self.assertEquals("https://www.google.fi/", self.page.get_first_individual_fiurl())
+        self.assertEquals("https://www.google.se/", self.page.get_first_individual_svurl())
+
+    def test_modify_individual_description(self):
+        self.page.delete_individual()
+        self.page.create_new_individual_with_description("PODCRI", "Sockbird", "ENGLANTI", "SUOMI", "RUOTSI", "https://www.google.com/", "https://www.google.fi/", "https://www.google.se/")
+        self.page.modify_description("uusi")
+        print("123")
+        self.assertEquals("uusi", self.page.get_first_individual_en())
+
+
     def test_modify_individual(self):
         self.page.modify_individual("GAVARC", "DEM123456")
         self.assertEquals("GAVARC", self.page.get_first_individual_nickname())

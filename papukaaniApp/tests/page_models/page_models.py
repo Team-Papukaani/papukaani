@@ -335,6 +335,21 @@ class IndividualPage(Page):
     FIRST_NICKNAME_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="nickname"]')
     FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
+    MODIFY2_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify2"]')
+    CONFIRM_MODIFY_BUTTON = Element(By.XPATH, '//button[@id="confirm_modify]')
+    FIRST_DESCRIPTION_EN_FIELD = Element(By.ID, 'desen')
+    FIRST_DESCRIPTION_FI_FIELD = Element(By.ID, 'desfi')
+    FIRST_DESCRIPTION_SV_FIELD = Element(By.ID, 'dessv')
+    FIRST_DESCRIPTION_ENURL_FIELD = Element(By.ID, 'desenurl')
+    FIRST_DESCRIPTION_FIURL_FIELD = Element(By.ID, 'desfiurl')
+    FIRST_DESCRIPTION_SVURL_FIELD = Element(By.ID, 'dessvurl')
+    NEW_DESCRIPTION_EN_FIELD = Element(By.ID, 'descriptionEN')
+    NEW_DESCRIPTION_FI_FIELD = Element(By.ID, 'descriptionFI')
+    NEW_DESCRIPTION_SV_FIELD = Element(By.ID, 'descriptionSV')
+    NEW_DESCRIPTION_ENURL_FIELD = Element(By.ID, 'descriptionUrlEN')
+    NEW_DESCRIPTION_FIURL_FIELD = Element(By.ID, 'descriptionUrlFI')
+    NEW_DESCRIPTION_SVURL_FIELD = Element(By.ID, 'descriptionUrlSV')
+    MODIFY_DESCRIPTION_BUTTON = Element(By.XPATH, '//form[@name="modify_description"][1]/button[@name="modify"]')
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
     DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
     MESSAGE = Element(By.ID, 'messages')
@@ -358,6 +373,33 @@ class IndividualPage(Page):
         namefield.submit()
         time.sleep(5)
 
+    def create_new_individual_with_description(self, taxon, name, en, fi, sv, enurl, fiurl, svurl):
+        """
+        Inputs the name of the new individual and submits the form.
+        """
+        self.set_taxon_field_visible_for_input()
+        namefield2 = self.NEW_TAXON_FIELD
+        namefield2.send_keys(taxon)
+
+        namefield = self.NEW_NAME_FIELD
+        namefield.send_keys(name)
+        f1 = self.NEW_DESCRIPTION_EN_FIELD
+        f1.send_keys(en)
+        f2 = self.NEW_DESCRIPTION_FI_FIELD
+        f2.send_keys(fi)
+        f3 = self.NEW_DESCRIPTION_SV_FIELD
+        f3.send_keys(sv)
+        f4 = self.NEW_DESCRIPTION_ENURL_FIELD
+        f4.send_keys(enurl)
+        f5 = self.NEW_DESCRIPTION_FIURL_FIELD
+        f5.send_keys(fiurl)
+        f6 = self.NEW_DESCRIPTION_SVURL_FIELD
+        f6.send_keys(svurl)
+        namefield.submit()
+        modify_button = self.MODIFY2_BUTTON
+        modify_button.click()
+        time.sleep(5)
+
     def set_taxon_field_visible_for_input(self):
         for attempt in range(10):
             try:
@@ -366,6 +408,24 @@ class IndividualPage(Page):
                 break
             except:
                 time.sleep(1)
+
+    def get_first_individual_en(self):
+        return self.FIRST_DESCRIPTION_EN_FIELD.get_attribute("value")
+
+    def get_first_individual_fi(self):
+        return self.FIRST_DESCRIPTION_FI_FIELD.get_attribute("value")
+
+    def get_first_individual_sv(self):
+        return self.FIRST_DESCRIPTION_SV_FIELD.get_attribute("value")
+
+    def get_first_individual_enurl(self):
+        return self.FIRST_DESCRIPTION_ENURL_FIELD.get_attribute("value")
+
+    def get_first_individual_fiurl(self):
+        return self.FIRST_DESCRIPTION_FIURL_FIELD.get_attribute("value")
+
+    def get_first_individual_svurl(self):
+        return self.FIRST_DESCRIPTION_SVURL_FIELD.get_attribute("value")
 
     def get_first_individual_taxon(self):
         self.driver.execute_script('return $(".combobox").show;')  # set taxon select visible
@@ -376,6 +436,18 @@ class IndividualPage(Page):
 
     def get_first_individual_ring_id(self):
         return self.FIRST_RING_ID_FIELD.get_attribute("value")
+
+    def modify_description(self, en):
+        """
+        Inputs the name and ring_id of an existing individual and submits the form.
+        """
+        modify_button = self.MODIFY2_BUTTON
+        confirm_modify = self.CONFIRM_MODIFY_BUTTON
+        modify_button.click()
+        f1 = self.FIRST_DESCRIPTION_EN_FIELD
+        f1.clear()
+        f1.send_keys(en)
+        confirm_modify.click()
 
     def modify_individual(self, nickname, ring_id):
         """

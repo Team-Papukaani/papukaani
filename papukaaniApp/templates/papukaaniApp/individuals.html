@@ -60,7 +60,7 @@
                 {% endfor %}
             </select>
             <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
-            <button type="button" class="btn btn-info btn-cons" data-toggle="modal" data-target="#{{ individual.id }}">Muokkaa Kuvaukset</button>
+            <button type="button" name="modify2" class="btn btn-info btn-cons" data-toggle="modal" data-target="#{{ individual.id }}">Muokkaa Kuvaukset</button>
             <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">Poista</button>
         <div id="{{ individual.id }}" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -70,24 +70,24 @@
           <h4 class="modal-title">Muokkaa kuvaukset</h4>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal">
+            <form class="form-horizontal" name="modify_description">
             <label>EN kuvaus</label>
-                <input class="form-control" type="textarea" name="descriptionEN" style="width:80%" placeholder="EN Kuvaus" value="{{ individual.description.en }}"/><br>
+                <input class="form-control" id="desen" type="textarea" name="descriptionEN" style="width:80%" placeholder="EN Kuvaus" value="{{ individual.description.en }}"/><br>
             <label>FI kuvaus </label>
-                <input class="form-control" type="textarea" name="descriptionFI" style="width:80%" placeholder="FI Kuvaus" value="{{ individual.description.fi }}"/><br>
+                <input class="form-control" id="desfi" type="textarea" name="descriptionFI" style="width:80%" placeholder="FI Kuvaus" value="{{ individual.description.fi }}"/><br>
             <label>SV kuvaus </label>
-                <input class="form-control" type="textarea" name="descriptionSV" style="width:80%" placeholder="SV Kuvaus" value="{{ individual.description.sv }}"/><br>
+                <input class="form-control" id="dessv" type="textarea" name="descriptionSV" style="width:80%" placeholder="SV Kuvaus" value="{{ individual.description.sv }}"/><br>
             <label>EN kuvaus URL</label>
-                <input class="form-control" name="descriptionUrlEN" type="url" style="width:80%" placeholder="EN Kuvaus URL" value="{{ individual.descriptionURL.en }}"/><br>
+                <input class="form-control" id="desenurl" name="descriptionUrlEN" type="url" style="width:80%" placeholder="EN Kuvaus URL" value="{{ individual.descriptionURL.en }}"/><br>
             <label>FI kuvaus URL</label>
-                <input class="form-control" name="descriptionUrlFI" type="url" style="width:80%" placeholder="FI Kuvaus URL" value="{{ individual.descriptionURL.fi }}"/><br>
+                <input class="form-control" id="desfiurl" name="descriptionUrlFI" type="url" style="width:80%" placeholder="FI Kuvaus URL" value="{{ individual.descriptionURL.fi }}"/><br>
             <label>SV kuvaus URL</label>
-                <input class="form-control" name="descriptionUrlSV" type="url" style="width:80%" placeholder="SV Kuvaus URL" value="{{ individual.descriptionURL.sv }}"/><br>
-            <button type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
+                <input class="form-control" id="dessvurl" name="descriptionUrlSV" type="url" style="width:80%" placeholder="SV Kuvaus URL" value="{{ individual.descriptionURL.sv }}"/><br>
+            <button id="confirm_modify" type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
             </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="confirm_close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

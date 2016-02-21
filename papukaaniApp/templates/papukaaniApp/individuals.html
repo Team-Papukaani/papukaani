@@ -25,7 +25,7 @@
 <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
     {% csrf_token %}
 
-    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="Nimi"/>
+    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}"/>
 
     <select class="form-control combobox" name="taxon" id="new_individual_taxon">
         <option></option>
@@ -35,12 +35,12 @@
         {% endfor %}
     </select>
 
-    <input class="form-control" type="textarea" name="descriptionEN" id="descriptionEN" placeholder="EN Kuvaus"/>
-    <input class="form-control" type="textarea" name="descriptionFI" id="descriptionFI" placeholder="FI Kuvaus"/>
-    <input class="form-control" type="textarea" name="descriptionSV" id="descriptionSV" placeholder="SV Kuvaus"/>
-    <input class="form-control" type="text" name="descriptionUrlEN" id="descriptionUrlEN" placeholder="EN Kuvaus URL"/>
-    <input class="form-control" type="text" name="descriptionUrlFI" id="descriptionUrlFI" placeholder="FI Kuvaus URL"/>
-    <input class="form-control" type="text" name="descriptionUrlSV" id="descriptionUrlSV" placeholder="SV Kuvaus URL"/>
+    <input class="form-control" type="textarea" name="descriptionEN" id="descriptionEN" placeholder="{% trans "Englanninkielinen Kuvaus" %}"/>
+    <input class="form-control" type="textarea" name="descriptionFI" id="descriptionFI" placeholder="{% trans "Suomenkielinen Kuvaus" %}"/>
+    <input class="form-control" type="textarea" name="descriptionSV" id="descriptionSV" placeholder="{% trans "Ruotsinkielinen kuvaus" %}"/>
+    <input class="form-control" type="text" name="descriptionUrlEN" id="descriptionUrlEN" placeholder="{% trans "URL englanninkieliseen kuvaukseen" %}"/>
+    <input class="form-control" type="text" name="descriptionUrlFI" id="descriptionUrlFI" placeholder="{% trans "URL suomenkieliseen kuvaukseen" %}"/>
+    <input class="form-control" type="text" name="descriptionUrlSV" id="descriptionUrlSV" placeholder="{% trans "URL ruotsinkieliseen kuvaukseen" %}"/>
 
     <button type="submit" class="btn btn-default">{% trans "Luo" %}</button>
 </form>
@@ -53,8 +53,8 @@
 
     <input type="hidden" name="id" value="{{ individual.id }}"/>
 
-    <input class="form-control" type="text" name="nickname" placeholder="{% trans Nimi' %}" value="{{ individual.nickname }}"/>
-            <input class="form-control" type="text" name="ring_id" placeholder="{% trans 'Rengastunnus' %}" value="{{ individual.ringID }}"/>
+    <input class="form-control" type="text" name="nickname" placeholder="{% trans "Nimi" %}" value="{{ individual.nickname }}"/>
+            <input class="form-control" type="text" name="ring_id" placeholder="{% trans "Rengastunnus" %}" value="{{ individual.ringID }}"/>
             <select class="form-control combobox" name="taxon" placeholder="{% trans "Laji" %}">
 
                 <option></option>
@@ -63,34 +63,34 @@
                 {% endfor %}
             </select>
             <button type="submit" name="modify" value="1" class="btn btn-default">{% trans "Tallenna" %}</button>
-            <button type="button" name="modify2" class="btn btn-info btn-cons" data-toggle="modal" data-target="#{{ individual.id }}">Muokkaa Kuvaukset</button>
+            <button type="button" name="modify2" class="btn btn-info btn-cons" data-toggle="modal" data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
             <button type="button" name="delete" onclick="confirm(this.form)" class="btn btn-danger">{% trans "Poista" %}</button>
         <div id="{{ individual.id }}" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialo">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Muokkaa kuvaukset</h4>
+          <h4 class="modal-title">{% trans "Muokkaa kuvauksia" %}</h4>
         </div>
         <div class="modal-body">
             <form class="form-horizontal" name="modify_description">
-            <label>EN kuvaus</label>
-                <input class="form-control" id="desen" type="textarea" name="descriptionEN" style="width:80%" placeholder="EN Kuvaus" value="{{ individual.description.en }}"/><br>
-            <label>FI kuvaus </label>
-                <input class="form-control" id="desfi" type="textarea" name="descriptionFI" style="width:80%" placeholder="FI Kuvaus" value="{{ individual.description.fi }}"/><br>
-            <label>SV kuvaus </label>
-                <input class="form-control" id="dessv" type="textarea" name="descriptionSV" style="width:80%" placeholder="SV Kuvaus" value="{{ individual.description.sv }}"/><br>
-            <label>EN kuvaus URL</label>
-                <input class="form-control" id="desenurl" name="descriptionUrlEN" type="url" style="width:80%" placeholder="EN Kuvaus URL" value="{{ individual.descriptionURL.en }}"/><br>
-            <label>FI kuvaus URL</label>
-                <input class="form-control" id="desfiurl" name="descriptionUrlFI" type="url" style="width:80%" placeholder="FI Kuvaus URL" value="{{ individual.descriptionURL.fi }}"/><br>
-            <label>SV kuvaus URL</label>
-                <input class="form-control" id="dessvurl" name="descriptionUrlSV" type="url" style="width:80%" placeholder="SV Kuvaus URL" value="{{ individual.descriptionURL.sv }}"/><br>
-            <button id="confirm_modify" type="submit" name="modify" value="1" class="btn btn-default">Tallenna</button>
+                <label>{% trans "Englanninkielinen kuvaus" %}</label>
+                    <input class="form-control" id="desen" type="textarea" name="descriptionEN" style="width:80%"  value="{{ individual.description.en }}"/><br>
+                <label>{% trans "Suomenkielinen kuvaus" %}</label>
+                    <input class="form-control" id="dessv" type="textarea" name="descriptionFI" style="width:80%"  value="{{ individual.description.fi }}"/><br>
+                <label>{% trans "Ruotsinkielinen kuvaus" %}</label>
+                    <input class="form-control" id="dessv" type="textarea" name="descriptionSV" style="width:80%"  value="{{ individual.description.sv }}"/><br>
+                <label>{% trans "URL englanninkieliseen kuvaukseen" %}</label>
+                    <input class="form-control" id="desenurl" name="descriptionUrlEN" type="url" style="width:80%"  value="{{ individual.descriptionURL.en }}"/><br>
+                <label>{% trans "URL suomenkieliseen kuvaukseen" %}</label>
+                    <input class="form-control" id="desfiurl" name="descriptionUrlFI" type="url" style="width:80%"  value="{{ individual.descriptionURL.fi }}"/><br>
+                <label>{% trans "URL ruotsinkieliseen kuvaukseen" %}</label>
+                    <input class="form-control" id="dessvurl" name="descriptionUrlSV" type="url" style="width:80%"  value="{{ individual.descriptionURL.sv }}"/><br>
+                    <button id="confirm_modify" type="submit" name="modify" value="1" class="btn btn-default">{% trans "Tallenna" %}</button>
             </form>
         </div>
         <div class="modal-footer">
-          <button id="confirm_close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="confirm_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "Sulje" %}</button>
         </div>
       </div>
     </div>

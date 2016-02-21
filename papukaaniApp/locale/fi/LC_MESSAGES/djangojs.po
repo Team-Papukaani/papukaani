@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-08 01:29+0200\n"
+"POT-Creation-Date: 2016-02-22 00:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papukaaniApp/static/papukaani/js/devices.js:30
+#: papukaaniApp/static/papukaani/js/devices.js:27
 msgid "Irroita"
 msgstr "Irroita"
 
-#: papukaaniApp/static/papukaani/js/devices.js:45
+#: papukaaniApp/static/papukaani/js/devices.js:42
 msgid "Ei lintuja"
 msgstr "Ei lintuja"
 
-#: papukaaniApp/static/papukaani/js/devices.js:86
+#: papukaaniApp/static/papukaani/js/devices.js:83
 msgid "Kiinnitysajankohdan lisäys onnistui. "
 msgstr "Kiinnitysajankohdan lisäys onnistui. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:117
+#: papukaaniApp/static/papukaani/js/devices.js:114
 msgid "Irrotusajankohdan lisäys onnistui. "
 msgstr "Irrotusajankohdan lisäys onnistui. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:127
+#: papukaaniApp/static/papukaani/js/devices.js:124
 msgid "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
 msgstr "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:144
+#: papukaaniApp/static/papukaani/js/devices.js:141
 msgid ""
 "Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite "
 "on jo merkitty kiinnitetyksi. "
@@ -46,226 +46,206 @@ msgstr ""
 "Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite "
 "on jo merkitty kiinnitetyksi. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:157
+#: papukaaniApp/static/papukaani/js/devices.js:154
 msgid "Päivämäärä ei saa olla tulevaisuudessa. "
 msgstr "Päivämäärä ei saa olla tulevaisuudessa. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:168
+#: papukaaniApp/static/papukaani/js/devices.js:165
 msgid "Päivämäärä ei määritelty! "
 msgstr "Päivämäärä ei määritelty! "
 
-#: papukaaniApp/static/papukaani/js/devices.js:181
+#: papukaaniApp/static/papukaani/js/devices.js:179
 msgid "Lintua ei määritelty! "
 msgstr "Lintua ei määritelty! "
 
-#: papukaaniApp/static/papukaani/js/map.js:26
-msgid "Maailmankartta"
-msgstr ""
-
-#: papukaaniApp/static/papukaani/js/map.js:27
-msgid "Topografia"
-msgstr ""
-
-#: papukaaniApp/static/papukaani/js/map.js:28
-msgid "Maanmittauslaitos"
-msgstr ""
-
-#: papukaaniApp/static/papukaani/js/map.js:29
-msgid "Satelliitti"
-msgstr ""
-
-#: papukaaniApp/static/papukaani/js/map.js:33
-msgid "Eliömaakunnat"
-msgstr ""
-
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:48
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:63
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:65
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:75
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:67
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:69
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:79
 msgid "fi"
 msgstr "en"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:49
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
 msgid "Edellinen"
 msgstr "Edellinen"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:50
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:54
 msgid "Seuraava"
 msgstr "Seuraava"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:51
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
 msgid "Tammikuu"
 msgstr "Tammikuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:51
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
 msgid "Helmikuu"
 msgstr "Helmikuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:51
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
 msgid "Maaliskuu"
 msgstr "Maaliskuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:51
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
 msgid "Huhtikuu"
 msgstr "Huhtikuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:51
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
 msgid "Toukokuu"
 msgstr "Toukokuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:51
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
 msgid "Kesäkuu"
 msgstr "Kesäkuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
 msgid "Heinäkuu"
 msgstr "Heinäkuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
 msgid "Elokuu"
 msgstr "Elokuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
 msgid "Syyskuu"
 msgstr "Syyskuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
 msgid "Lokakuu"
 msgstr "Lokakuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
 msgid "Marraskuu"
 msgstr "Marraskuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
 msgid "Joulukuu"
 msgstr "Joulukuu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:57
 msgid "Tammi"
 msgstr "Tammi"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:57
 msgid "Helmi"
 msgstr "Helmi"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:57
 msgid "Maalis"
 msgstr "Maalis"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:57
 msgid "Huhti"
 msgstr "Huhti"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:57
 msgid "Touko"
 msgstr "Touko"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:57
 msgid "Kesä"
 msgstr "Kesä"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:57
 msgid "Heinä"
 msgstr "Heinä"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:54
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:58
 msgid "Elo"
 msgstr "Elo"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:54
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:58
 msgid "Syys"
 msgstr "Syys"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:54
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:58
 msgid "Loka"
 msgstr "Loka"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:54
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:58
 msgid "Marras"
 msgstr "Marras"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:54
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:58
 msgid "Joulu"
 msgstr "Joulu"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:59
 msgid "Sunnuntai"
 msgstr "Sunnuntai"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:59
 msgid "Maanantai"
 msgstr "Maanantai"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:59
 msgid "Tiistai"
 msgstr "Tiistai"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:59
 msgid "Keskiviikko"
 msgstr "Keskiviikko"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:59
 msgid "Torstai"
 msgstr "Torstai"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:59
 msgid "Perjantai"
 msgstr "Perjantai"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:55
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:59
 msgid "Lauantai"
 msgstr "Lauantai"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:60
 msgid "Su"
 msgstr "Su"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:60
 msgid "Ma"
 msgstr "Ma"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:60
 msgid "Ti"
 msgstr "Ti"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:60
 msgid "Ke"
 msgstr "Ke"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:60
 msgid "To"
 msgstr "To"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:60
 msgid "Pe"
 msgstr "Pe"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:56
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:60
 msgid "La"
 msgstr "La"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:67
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:71
 msgid "Aika"
 msgstr "Aika"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:68
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:72
 msgid "Tunnit"
 msgstr "Tunnit"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:69
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:73
 msgid "Minuutit"
 msgstr "Minuutit"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:70
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:74
 msgid "Nyt"
 msgstr "Nyt"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:71
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:75
 msgid "Sulje"
 msgstr "Sulje"
 
-#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:72
+#: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:76
 msgid "TT:mm"
 msgstr ""
 
@@ -273,11 +253,11 @@ msgstr ""
 msgid "Tietoja ladataan..."
 msgstr "Tietoja ladataan..."
 
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:94
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
 msgid "Valitse lähetin"
 msgstr "Valitse lähetin"
 
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:142
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:140
 msgid "Valitse"
 msgstr "Valitse"
 

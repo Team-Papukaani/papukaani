@@ -363,8 +363,8 @@ function generateIframeUrl() {
 
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
 
-    var zoom = 'zoom=' + map.map.getZoom();
-    var ltlng = map.map.getCenter();
+    var zoom = 'zoom=' + player.map.getZoom();
+    var ltlng = player.map.getCenter();
     var loc = 'loc=' + "[" + ltlng.lat + "," + ltlng.lng + "]";
 
     var time = "";

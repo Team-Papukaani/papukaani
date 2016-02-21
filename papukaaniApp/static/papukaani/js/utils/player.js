@@ -16,8 +16,10 @@ function Player(map) {
             if (this.runner) {
                 clearInterval(this.runner);
             }
-            this.refreshRoutes(true);
-            this.drawRoutes();
+            for (var i = 0, len = this.routes.length; i < len; i++) {
+                this.clearRoute(this.routes[i]);
+            }
+            this.drawRoutes(true);
             if (this.runner) {
                 this.run();
             }
@@ -53,7 +55,7 @@ Player.prototype.addRoute = function (route) {
 
     var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;
     route.marker = L.marker([markerPosition[1], markerPosition[0]], {zIndexOffset: 1000});
-    route.featureGroup.addLayer(route.marker);
+    route.marker.addTo(route.featureGroup);
     route.marker.bindPopup(route.individualname + "<br>" +
         new Date(route.points[route.pointer].dateBegin).toLocaleString(), {autoPan: false}).openPopup();
     route.marker.on("move", function (event) {
@@ -62,7 +64,7 @@ Player.prototype.addRoute = function (route) {
     });
 
     this.routes.push(route);
-    this.updateMinMax();
+    this.refreshRoutes();
 }
 
 Player.prototype.removeRoute = function (route) {
@@ -71,7 +73,7 @@ Player.prototype.removeRoute = function (route) {
         this.routes.splice(index, 1);
         this.map.removeLayer(route.featureGroup);
         route.lines = null;
-        this.updateMinMax();
+        this.refreshRoutes();
     }
     if (this.routes.length === 0) {
         this.stop();
@@ -82,7 +84,7 @@ Player.prototype.stop = function () {
     clearInterval(this.runner);
     this.runner = undefined;
     this.animating = false;
-    this.updateMinMax();
+    this.refreshRoutes();
     this.slider.slider("option", "value", this.slider.slider("option", "min"));
     $("#play").html("&#9658;");
     $('#playLabel').html("N/A");
@@ -98,7 +100,6 @@ Player.prototype.refreshTimeBounds = function () {
 Player.prototype.updateMinMax = function () {
     var min = 9007199254740991;
     var max = 0;
-    this.refreshTimeBounds();
     for (var i = 0; i < this.routes.length; i++) {
         min = Math.min(datetimestringToUnixtime(this.routes[i].points[0].dateBegin), min);
         max = Math.max(datetimestringToUnixtime(this.routes[i].points[this.routes[i].points.length - 1].dateBegin), max);
@@ -108,7 +109,7 @@ Player.prototype.updateMinMax = function () {
 
     var options = {min: min, max: max};
     options.value = this.slider.slider("option", "value");
-    if (options.value > max || options.value < min) {
+    if (options.value > max || options.value < min || !this.runner) {
         options.value = min;
     }
     this.slider.slider("option", options);
@@ -126,9 +127,12 @@ Player.prototype.play = function () {
         this.runner = undefined;
     } else {
         $("#play").html("&#9646;&#9646;");
-        this.refreshRoutes(true);
-        this.refreshTimeBounds();
-        this.drawRoutes();
+        var options = this.slider.slider("option");
+        if (options.value > options.min) {
+            this.drawRoutes(true);
+        } else {
+            this.refreshRoutes(true);
+        }
         this.run();
     }
 };
@@ -139,6 +143,7 @@ Player.prototype.run = function () {
         that.drawRoutes();
         if (!that.animating) {
             clearInterval(that.runner);
+            that.play();
         } else {
             var step = Math.round((that.slider.slider("option", "max") - that.slider.slider("option", "min")) / 300);
             that.slider.slider("option", "value", that.slider.slider("option", "value") + step);
@@ -146,25 +151,30 @@ Player.prototype.run = function () {
     }, that.speedslider.slider("option", "max") - that.speedslider.slider("option", "value") + that.speedslider.slider("option", "min"));
 }
 
-Player.prototype.drawRoutes = function () {
+Player.prototype.drawRoutes = function (animate) {
     var options = this.slider.slider("option");
+    if (!this.runner && !animate) {
+        options.value = options.max;
+    }
     this.animating = false;
 
     for (var i = 0, len = this.routes.length; i < len; i++) {
         var route = this.routes[i];
-        var pointcount = route.points.length;
-        if (pointcount <= route.pointer) continue;
-        this.animating = true;
+        var pointCount = route.points.length;
+        if (pointCount <= route.pointer) continue;
         var point = route.points[route.pointer];
         var dateBegin = datetimestringToUnixtime(point.dateBegin);
-        while (pointcount > route.pointer && dateBegin <= options.value) {
+        if (dateBegin > options.max) continue;
+        this.animating = true;
+
+        while (pointCount > route.pointer && dateBegin <= options.value) {
             var coordinates = point.wgs84Geometry.coordinates;
             if (dateBegin >= options.min && dateBegin <= options.max) {
                 route.lines.addLatLng([coordinates[1], coordinates[0]]);
                 route.marker.setLatLng([coordinates[1], coordinates[0]]);
             }
             route.pointer++;
-            if (pointcount > route.pointer) {
+            if (pointCount > route.pointer) {
                 point = route.points[route.pointer];
                 dateBegin = datetimestringToUnixtime(point.dateBegin);
             }
@@ -177,17 +187,16 @@ Player.prototype.clearRoute = function (route) {
     route.lines = L.polyline([], {color: route.color});
     route.lines.addTo(route.featureGroup);
     route.pointer = 0;
-    if (route.marker) {
-        var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;
-        route.marker.setLatLng([markerPosition[1], markerPosition[0]]);
-        route.featureGroup.addLayer(route.marker);
-        route.marker.openPopup();
-    }
+    var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;
+    route.marker.setLatLng([markerPosition[1], markerPosition[0]]);
+    route.marker.addTo(route.featureGroup);
 }
 
-Player.prototype.refreshRoutes = function (animation) {
+Player.prototype.refreshRoutes = function (animate) {
     for (var i = 0, len = this.routes.length; i < len; i++) {
         this.clearRoute(this.routes[i]);
     }
-    this.drawRoutes();
+    this.refreshTimeBounds();
+    this.updateMinMax();
+    this.drawRoutes(animate);
 }

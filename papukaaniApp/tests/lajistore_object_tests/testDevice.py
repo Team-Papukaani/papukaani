@@ -113,11 +113,11 @@ class TestDevice(TestCase):
         self._delete_individuals([A, B])
 
     def test_checking_if_an_individual_is_attached(self):
-        self.assertFalse(self.d.get_attached_individualid())
+        self.assertFalse(self.d.is_attached())
 
         A, B = self._create_individuals()
         self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
-        self.assertTrue(self.d.get_attached_individualid())
+        self.assertTrue(self.d.is_attached())
 
         self._delete_individuals([A, B])
 

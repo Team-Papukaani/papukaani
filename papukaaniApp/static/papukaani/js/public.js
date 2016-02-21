@@ -131,18 +131,20 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         var color = (Math.random() * 0xFFFFFF << 0).toString(16);
         color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
 
+        var lang = gettext('fi');
+        console.log(taxon.descriptionURL["'" + lang + "'"])
         var e = '<li id="individual' + individualId + '">';
         e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
         e = e + '<div class="sqr"></div>';
-        if(taxon.descriptionURL !== null &&  taxon.descriptionURL.fi !== null && 
-                  taxon.descriptionURL.fi !== undefined && taxon.descriptionURL.fi !== ""){
-            e = e + '<a href="' + taxon.descriptionURL.fi + '"><span>' + taxon.nickname +'</a>';
-        }else {
+        if(taxon.descriptionURL !== null &&  taxon.descriptionURL[lang] !== null && 
+                  taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang]!== ""){
+            e = e + '<a href="' + taxon.descriptionURL[lang] + '"><span>' + taxon.nickname +'</a>';
+        } else {
            e = e + '<span>' + taxon.nickname + '</span>';
         }
         if(taxon.description !== null && taxon.description.fi !== null &&
-                taxon.description.fi !== undefined && taxon.description.fi !== ""){
-            e = e + "<br> Description: " + taxon.description.fi + '</span>';
+                taxon.description[lang] !== undefined && taxon.description[lang] !== ""){
+            e = e + "<br> Description: " + taxon.description[lang] + '</span>';
         }
 
         e = e + '</label>';

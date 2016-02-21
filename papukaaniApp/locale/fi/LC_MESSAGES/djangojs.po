@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-22 00:02+0200\n"
+"POT-Creation-Date: 2016-02-22 01:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,12 +58,13 @@ msgstr "Päivämäärä ei määritelty! "
 msgid "Lintua ei määritelty! "
 msgstr "Lintua ei määritelty! "
 
+#: papukaaniApp/static/papukaani/js/public.js:134
 #: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:52
 #: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:67
 #: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:69
 #: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:79
 msgid "fi"
-msgstr "en"
+msgstr "fi"
 
 #: papukaaniApp/static/papukaani/js/utils/datetimepicker.js:53
 msgid "Edellinen"

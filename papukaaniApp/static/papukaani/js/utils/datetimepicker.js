@@ -1,3 +1,7 @@
+function datetimestringToUnixtime(string){
+    return Math.round(new Date(string) / 1000);
+}
+
 function validateDateFormat(element) {
     var format = new RegExp("[0-3][0-9].[0,1][0-9].[0-9]{4} [0-2][0-9]:[0-5][0-9]");
     var val = element.value;

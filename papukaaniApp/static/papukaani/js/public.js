@@ -78,7 +78,7 @@ function showPointsForIndividual(individualId) {
 
             this.routes.push(route);
             player.addRoute(route);
-            player.showRoute(route);
+            player.refreshRoutes();
 
             //this.map.changePoints(this.routes);
             unlockButtons();

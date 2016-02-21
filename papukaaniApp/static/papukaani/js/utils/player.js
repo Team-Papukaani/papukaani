@@ -78,17 +78,27 @@ Player.prototype.removeRoute = function (route) {
     }
 }
 
-Player.prototype.updateMinMax = function() {
-    var min= Number.MAX_VALUE;
-    var max= 0;
+Player.prototype.refreshTimeBounds = function () {
+    this.start = Math.round(new Date(parseTime($("#start_time").val(), "+00:00")) / 1000);
+    this.end = Math.round(new Date(parseTime($("#end_time").val(), "+00:00")) / 1000);
+    if (isNaN(this.start)) this.start = 0;
+    if (isNaN(this.end)) this.end = Number.MAX_VALUE;
+}
 
+Player.prototype.updateMinMax = function() {
+    var min = Number.MAX_VALUE;
+    var max = 0;
+    this.refreshTimeBounds();
     for (var i = 0; i < this.routes.length; i++) {
-        if(this.routes[i].points.length  === 0) { // muuta tsekkamaan onko pisteitä aikarajauksen mukaan
+        if (this.routes[i].points.length  === 0) { // muuta tsekkamaan onko pisteitä aikarajauksen mukaan
             continue;
         }
 
         min = Math.min(Math.round(new Date(this.routes[i].points[0].dateBegin)/1000), min);
+        min = (this.start < min) ? min : this.start;
+
         max = Math.max(Math.round(new Date(this.routes[i].points[this.routes[i].points.length-1].dateBegin)/1000), max);
+        max = (this.end > max) ? max : this.end;
     }
 
     this.slider.slider("option", "min", min);
@@ -124,6 +134,7 @@ Player.prototype.play = function () {
     } else {
         $("#play").html("&#9646;&#9646;");
         this.refreshRoutes(true);
+        this.refreshTimeBounds();
         this.drawRoutes();
         this.run();
     }
@@ -153,12 +164,16 @@ Player.prototype.drawRoutes = function () {
 
         this.animating = true;
         var point = route.points[route.pointer];
-        while (route.points.length > route.pointer && Math.round(new Date(point.dateBegin))/1000 <= curTime) {
+        var date = Math.round((new Date(point.dateBegin))/1000);
+        while (route.points.length > route.pointer && date <= curTime) {
             var coordinates = point.wgs84Geometry.coordinates;
-            route.lines.addLatLng([coordinates[1], coordinates[0]]);
-            route.marker.setLatLng([coordinates[1], coordinates[0]]);
+            if (date >= this.start && date <= this.end) {
+                route.lines.addLatLng([coordinates[1], coordinates[0]]);
+                route.marker.setLatLng([coordinates[1], coordinates[0]]);
+            }
             route.pointer++;
             point = route.points[route.pointer];
+            if (route.pointer < route.points.length) date = Math.round((new Date(point.dateBegin))/1000);
         }
     }
 }

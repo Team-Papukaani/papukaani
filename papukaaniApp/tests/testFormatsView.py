@@ -18,7 +18,7 @@ class TestFormatsView(TestCase):
         GeneralParser.objects.all().delete()
         response = self.c.post(self.url, data={
             "formatName":"testParser",
-            "gpsNumber":"testNumber",
+            "manufacturerID":"testNumber",
             "timestamp" : "testTime",
             "latitude": "latitude",
             "longitude" : "longitude",
@@ -30,7 +30,7 @@ class TestFormatsView(TestCase):
         GeneralParser.objects.all().delete()
         self.c.post(self.url, data={
             "formatName":"",
-            "gpsNumber":"testNumber",
+            "manufacturerID":"testNumber",
             "gpsTime" : "testGPS",
             "latitude": "latitude",
             "longitude" : "longitude",

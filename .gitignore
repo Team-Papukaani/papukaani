@@ -6,5 +6,7 @@ db.sqlite3
 ghostdriver.log
 test_screenshots/*
 papukaaniApp/migrations/*
-ecotones.csv
 my
+ecotones*.csv
+Ecotones*.csv
+big*.csv

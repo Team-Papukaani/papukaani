@@ -1,6 +1,3 @@
-// ZZZ
-console.log('hello');
-
 $('#table').hide()
 errors = []
 
@@ -21,7 +18,7 @@ function displayIndividuals(device) {
       var rows = '';
       $.each(devices_and_individuals[device], function(index, individual) {
             var row = '<tr>';
-            row += '<td><span id="name' + individual.individualId + '">' + individuals[individual.individualId] + '</span></td>'
+            row += '<td><span id="name' + individual.individualID + '">' + individuals[individual.individualID] + '</span></td>'
             row += '<td>' + $.format.date(individual.attached, "dd.MM.yyyy HH:mm") + '</td>'
 
             if(!individual.removed) {
@@ -75,7 +72,7 @@ function attachDevice(){
         })
 
         devices_and_individuals[deviceId].push({
-            individualId : individualId,
+            individualID : individualId,
             attached : timestamp
         })
 
@@ -91,7 +88,7 @@ function attachDevice(){
 function removeDevice(index){
 
     var deviceId = $("#selectDevice").val();
-    var individualId = devices_and_individuals[deviceId][index].individualId;
+    var individualId = devices_and_individuals[deviceId][index].individualID;
     var attached = devices_and_individuals[deviceId][index].attached;
     var timestamp = parseTime($("#remove_time").val());
 
@@ -176,8 +173,9 @@ function validate(timestring, attached){
     return valid
 }
 
-function validateIndividual(individualId){
-    if(individualId == null){
+
+function validateIndividual(individualID){
+    if(individualID == null){
         errors.push(gettext("Lintua ei määritelty! "))
         return false
     }

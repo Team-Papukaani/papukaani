@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
 {% endblock %}
 
-{% autoescape off %}
-    {% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }} , {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
-{% endautoescape %}
-
 {% block content %}
 
     {% include "papukaaniApp/navigation.html" %}
@@ -21,8 +17,10 @@
         <form enctype="multipart/form-data" method="post"> {% csrf_token %}
             <div class="input-group">
               <span class="input-group-addon">{% trans "Tiedosto:" %}</span>
-                <input type="file" class="filestyle" data-classButton="btn btn-primary" data-input="false"
-                       data-classIcon="icon-plus" data-buttonText="{% trans "Selaa" %}">
+              <input type="file" id="file" name="file"
+                class="filestyle" data-classButton="btn btn-primary" 
+                data-input="false" data-classIcon="icon-plus" 
+                data-buttonText="{% trans "Selaa" %}">
             </div>
 
             <div class="input-group">
@@ -34,10 +32,10 @@
                 </select>
             </div>
 
-            <div id="gpsInputDiv" style="display: inline">
+            <div id="manufacturerIdInputDiv" style="display: inline">
                 <div class="input-group">
-                  <span class="input-group-addon">{% trans "GPS-numero:" %}</span>
-                    <input type="text" name="gpsNumber" id="gpsNumber" class="form-control form-field">
+<span class="input-group-addon">{% trans 'GPS-numero:' %}</span>
+                    <input type="text" name="manufacturerID" id="manufacturerID" class="form-control form-field">
                 </div>
             </div>
 
@@ -66,7 +64,7 @@
             create_map_with_points('{{points}}');
 
             fileFormats = {{% for parser in parsers %}
-                "{{ parser.formatName }}": "{{ parser.gpsNumber }}",
+                "{{ parser.formatName }}": "{{ parser.manufacturerID }}",
             {% endfor %}};
         {% endautoescape%}
 

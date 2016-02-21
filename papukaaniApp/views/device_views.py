@@ -4,25 +4,22 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
-from papukaaniApp.utils.view_utils import populate_facts
+
 
 @require_auth
 def devices(request):
-    devices = device.get_all()
-    devices.sort(key=lambda x: x.deviceId)
-    individuals = individual.get_all_exclude_deleted()
-    populate_facts(individuals)
-    selection = individuals
+    devices = device.find()
+    devices.sort(key=lambda x: x.id)
+    individuals = individual.find_exclude_deleted()
 
     # Directory, where key is deviceId and value is an array of individual data
-    individuals_of_devices = {dev.deviceId: dev.individuals for dev in devices}
+    individuals_of_devices = {dev.id: dev.get_individuals_for_device() for dev in devices}
 
     # Directory, where key is individualId and value is it's name (taxon)
-    individual_names = {indiv.individualId: indiv.nickname if hasattr(indiv, "nickname") else indiv.individualId for indiv in individuals}
+    individual_names = {indiv.id: indiv.nickname for indiv in individuals}
 
     context = {
-        'individuals': individuals,
-        'selection': selection,
+        'selection': individuals,
         'devices': devices,
         'device_json': json.dumps(individuals_of_devices),
         'individual_json': json.dumps(individual_names)
@@ -46,13 +43,11 @@ def attach_to(request, device_id):
     if _append_missing_to_erros(response, missing):
         return Response(response)
 
-    dev = device.find(deviceId=device_id)[0]
-    indiv = individual.find(individualId=request.POST['individualId'])[0]
+    dev = device.get(device_id)
 
-    attached = dev.attach_to(indiv, request.POST['timestamp'])
-    dev.update()
+    dev.attach_to(request.POST['individualId'], request.POST['timestamp'])
 
-    response["status"] = "attached" if attached else "not attached"
+    response["status"] = "attached" if dev.is_attached() else "not attached"
 
     return Response(response)
 
@@ -69,11 +64,9 @@ def remove_from(request, device_id):
     if _append_missing_to_erros(response, missing):
         return Response(response)
 
-    dev = device.find(deviceId=device_id)[0]
-    indiv = individual.find(individualId=request.POST['individualId'])[0]
+    dev = device.get(device_id)
 
-    dev.detach_from(indiv, request.POST['timestamp'])
-    dev.update()
+    dev.detach_from(request.POST['individualId'], request.POST['timestamp'])
 
     return Response(response)
 

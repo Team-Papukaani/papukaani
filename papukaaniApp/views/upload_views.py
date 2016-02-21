@@ -24,11 +24,12 @@ def upload(request):
         if 'file' in request.FILES:
 
             uploaded_file = request.FILES['file']
+
             parser = GeneralParser.objects.filter(formatName=request.POST.get('fileFormat'))[0]
 
             try:
-                if parser.gpsNumber == '':
-                    data = prepare_file(uploaded_file, parser, request.POST.get('gpsNumber'))
+                if parser.manufacturerID == '':
+                    data = prepare_file(uploaded_file, parser, request.POST.get('manufacturerID'))
                 else:
                     data = prepare_file(uploaded_file, parser)
 

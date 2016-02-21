@@ -1,6 +1,7 @@
 
 from django.test.runner import DiscoverRunner
 from papukaaniApp.models_LajiStore import *
+from papukaaniApp.services.deviceindividual_service import DeviceIndividual
 
 class TestRunner(DiscoverRunner):
 
@@ -14,3 +15,4 @@ class TestRunner(DiscoverRunner):
         document.delete_all()
         device.delete_all()
         individual.delete_all()
+        DeviceIndividual.delete_all()

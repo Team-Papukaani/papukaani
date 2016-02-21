@@ -1,4 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from papukaaniApp.services.deviceindividual_service import DeviceIndividual
 from papukaaniApp.utils.model_utils import *
 
 
@@ -7,25 +8,14 @@ class Device:
     Represents the Device table of LajiStore
     '''
 
-    def __init__(self, deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt,
-                 facts=None, individuals=None, id=None, **kwargs):
-        self.id = id
-        self.deviceId = deviceId
+    def __init__(self, deviceType, deviceManufacturer, deviceManufacturerID,
+                 dateCreated, dateEdited, id=None, **kwargs):
         self.deviceType = deviceType
         self.deviceManufacturer = deviceManufacturer
-        self.createdAt = createdAt
-        self.lastModifiedAt = lastModifiedAt
-        self.facts = facts
-        self.individuals = individuals
-
-        if not facts:
-            self.facts = [{"name": "status", "value": "not attached"}]
-
-        if len(self.facts) == 0:
-            self.facts = [{"name":"status", "value":"not attached"}]
-
-        if not individuals:
-            self.individuals = []
+        self.deviceManufacturerID = deviceManufacturerID
+        self.dateCreated = dateCreated
+        self.dateEdited = dateEdited
+        self.id = id
 
     def delete(self):
         '''
@@ -37,73 +27,53 @@ class Device:
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
-        self.lastModifiedAt = current_time_as_lajistore_timestamp()
-        LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here
+        self.dateEdited = current_time_as_lajistore_timestamp()
+        LajiStoreAPI.update_device(**self.__dict__)  # __dict__ puts all arguments here.
 
-    def attach_to(self, individual, timestamp):
+    def attach_to(self, individualid, timestamp):
         '''
-        Attaches this device to an individual. Previously attached device will be removed.
+        Attaches this device to an individual
         '''
-        if self.facts[0]["value"] == "not attached":
-            self.individuals.append({
-                "individualId": individual.individualId,
-                "attached": timestamp,
-                "removed": None
-            })
-            self.change_status()
-            return True
-        return False
+        DeviceIndividual.attach(self.id, individualid, timestamp)
 
-    def detach_from(self, individual, timestamp):
+    def detach_from(self, individualid, timestamp):
         '''
-        Removes this device from an individual. If the individual is already removed, old removal date will be rewritten.
+        Removes this device from an individual
         '''
-        for indiv in self.individuals:
-            if indiv["individualId"] == individual.individualId and indiv["removed"] is None:
-                indiv["removed"] = timestamp
-        self.change_status()
+        DeviceIndividual.detach(self.id, individualid, timestamp)
 
-    def change_status(self):
+    def get_attached_individualid(self):
         '''
-        Changes the status of the device to attached if not attached and vice versa.
+        Return currently attached individuals id or None for not currently attached
+        :return: ID or None
         '''
-        self.facts[0]["value"] = "attached" if self.facts[0]["value"] == "not attached" else "not attached"
+        attached = DeviceIndividual.get_attached_individual(self.id)
+        if attached is None:
+            return None
+        return attached['individualID']
+
+    def get_individuals_for_device(self):
+        '''
+        Return all attached individuals id or None for none attached
+        :return: ID or None
+        '''
+        return DeviceIndividual.get_individuals_for_device(self.id)
+
+    def is_attached(self):
+        return False if self.get_attached_individualid() is None else True
 
 
 def find(**kwargs):
     '''
     Find all matching devices.
-    :param kwargs: Search parameters.
+    :param kwargs: Search parameters. No parameters will search all devices.
     :return: A list of Device objects.
     '''
-    return _get_many(**kwargs)
-
-
-def get_all():
-    '''
-    Returns all devices
-    :return A list of Device objects:
-    '''
-    return _get_many()
-
-
-def get_or_create(deviceId, parserInfo):
-    '''
-    Gets the device with the given deviceId, or creates it if not found.
-    :return: a Device object
-    '''
-    result = find(deviceId=deviceId)
-    if len(result) == 0:
-        return create(
-            deviceId=deviceId,
-            deviceType=parserInfo["type"],
-            deviceManufacturer=parserInfo["manufacturer"],
-            createdAt=current_time_as_lajistore_timestamp(),
-            lastModifiedAt=current_time_as_lajistore_timestamp(),
-            facts=[]
-        )
-    else:
-        return result[0]
+    data = LajiStoreAPI.get_all_devices(**kwargs)
+    devices = []
+    for device in data:  # Creates a list of devices to return
+        devices.append(Device(**device))
+    return devices
 
 
 def get(id):
@@ -112,20 +82,32 @@ def get(id):
     :param id: The LajiStore ID of the device
     :return: A Device object
     '''
+
     device = LajiStoreAPI.get_device(id)
-    return Device(**device)
+    if '@id' in device:
+        return Device(**device)
+
+    else:
+        return None
 
 
-def create(deviceId, deviceType, deviceManufacturer, createdAt =None, lastModifiedAt=None, facts=None):
+def create(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated=None, dateEdited=None):
     '''
     Creates a device instance in LajiStore and a corresponding Device object
     :return: A Device object
     '''
-    createdAt = createdAt if createdAt else current_time_as_lajistore_timestamp()
-    lastModifiedAt = lastModifiedAt if lastModifiedAt else current_time_as_lajistore_timestamp()
-    device = Device(deviceId, deviceType, deviceManufacturer, createdAt, lastModifiedAt, facts)
+    originaldevice = _find_duplicate(deviceManufacturerID)
+    if originaldevice is not None:
+        return originaldevice
+
+    current_time = current_time_as_lajistore_timestamp()
+
+    dateCreated = dateCreated if dateCreated else current_time
+    dateEdited = dateEdited if dateEdited else current_time
+    device = Device(deviceType, deviceManufacturer, deviceManufacturerID, dateCreated, dateEdited)
     data = LajiStoreAPI.post_device(**device.__dict__)
-    device.id = data["id"]
+
+    device.id = data['id']
 
     return device
 
@@ -137,9 +119,8 @@ def delete_all():
     LajiStoreAPI.delete_all_devices()
 
 
-def _get_many(**kwargs):
-    data = LajiStoreAPI.get_all_devices(**kwargs)
-    devices = []
-    for device in data:  # creates a list of devices to return
-        devices.append(Device(**device))
-    return devices
+def _find_duplicate(deviceManufacturerID):
+    devices = find(deviceManufacturerID=deviceManufacturerID)
+    if devices:
+        return devices[0]
+    return None

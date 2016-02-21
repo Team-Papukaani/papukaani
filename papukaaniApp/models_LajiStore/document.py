@@ -1,7 +1,9 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.models_LajiStore import gathering
-from datetime import datetime
 from papukaaniApp.utils.model_utils import *
+from django.conf import settings
+
+_LAJISTORE_COLLECTIONID = settings.LAJISTORE_COLLECTIONID
 
 
 class Document:
@@ -9,17 +11,18 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=None, id=None, **kwargs):
-        self.id = id
-        self.documentId = documentId
-        self.lastModifiedAt = lastModifiedAt
-        self.createdAt = createdAt
-        self.facts = facts if facts else []
+    def __init__(self, gatherings, deviceID, dateCreated, dateEdited, collectionID=None, id=None, **kwargs):
+
         if len(gatherings) > 0 and isinstance(gatherings[0], gathering.Gathering):
             self.gatherings = gatherings
         else:
             self.gatherings = _parse_gathering(gatherings)
-        self.deviceId = deviceId
+
+        self.collectionID = collectionID if collectionID else _LAJISTORE_COLLECTIONID
+        self.deviceID = deviceID
+        self.dateCreated = dateCreated
+        self.dateEdited = dateEdited
+        self.id = id
 
     def delete(self):
         '''
@@ -31,9 +34,10 @@ class Document:
         '''
         Saves changes to the object to the corresponding LajiStore entry.
         '''
-        self.lastModifiedAt = current_time_as_lajistore_timestamp()
+
+        self.dateEdited = current_time_as_lajistore_timestamp()
         dict = self.to_dict()
-        LajiStoreAPI.update_document(**dict)  # __dict__ puts all arguments here
+        LajiStoreAPI.update_document(**dict)  # to_dict() puts all arguments here
 
     def to_dict(self):
         dict = self.__dict__.copy()
@@ -47,19 +51,11 @@ def find(**kwargs):
     :param kwargs: Search parameters.
     :return: A list of Document objects.
     '''
-    return _get_many(**kwargs)
-
-
-def update_from_dict(**kwargs):
-    LajiStoreAPI.update_document(**kwargs)
-
-
-def get_all():
-    '''
-    Returns all documents
-    :return A list of Document objects:
-    '''
-    return _get_many()
+    data = LajiStoreAPI.get_all_documents(**kwargs)
+    documents = []
+    for document in data:  # creates a list of documents to return
+        documents.append(Document(**document))
+    return documents
 
 
 def get(id):
@@ -72,27 +68,23 @@ def get(id):
     return Document(**document)
 
 
-def create(documentId, gatherings, deviceId, facts=None, lastModifiedAt=None, createdAt=None):
+def create(gatherings, deviceID, dateCreated=None, dateEdited=None):
     '''
     Creates a document instance in LajiStore and a corresponding Document object
     :return: A Document object
     '''
-    if lastModifiedAt == None:
-        lastModifiedAt = current_time_as_lajistore_timestamp()
-
-    if createdAt == None:
-        createdAt = current_time_as_lajistore_timestamp()
-
-    document = Document(documentId, lastModifiedAt, createdAt, gatherings, deviceId, facts=facts)
-
+    current_time = current_time_as_lajistore_timestamp()
+    dateCreated = dateCreated if dateCreated else current_time
+    dateEdited = dateEdited if dateEdited else current_time
+    document = Document(gatherings, deviceID, dateCreated, dateEdited)
     data = LajiStoreAPI.post_document(**document.to_dict())
     document.id = data["id"]
 
     return document
 
 
-def get_document_without_private_gatherings(id):
-    return find(filter={"gatherings_publicity": "public"}, id=id)[0]
+def _parse_gathering(data):
+    return [gathering.from_lajistore_json(**point) for point in data]
 
 
 def delete_all():
@@ -100,15 +92,3 @@ def delete_all():
     Deletes all documents. Can only be used in test enviroment.
     '''
     LajiStoreAPI.delete_all_documents()
-
-
-def _get_many(**kwargs):
-    data = LajiStoreAPI.get_all_documents(**kwargs)
-    documents = []
-    for document in data:  # creates a list of documents to return
-        documents.append(Document(**document))
-    return documents
-
-
-def _parse_gathering(data):
-    return [gathering.from_lajistore_json(**point) for point in data]

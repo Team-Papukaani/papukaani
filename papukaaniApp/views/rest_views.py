@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from papukaaniApp.models_LajiStore import document, individual
+from papukaaniApp.models_LajiStore import document, individual, gathering
 from datetime import datetime
 
 
@@ -10,11 +10,12 @@ def getGatheringsForDevice(request):
     Django REST-interface controller for getting device-specific (devId request parameter) documents.
     :return: List of documents that match the deviceId.
     """
-    docs = document.find(deviceId=request.GET.get('devId'))
-    gatherings = docs[0].gatherings if len(docs) > 0 else []
-
-    docs = [g.to_lajistore_json() for g in gatherings]
-    return Response(docs)
+    docs = document.find(deviceID=request.GET.get('devId'))
+    doc = docs[0].gatherings if len(docs) > 0 else []
+    gatherings = [g.to_lajistore_json() for g in doc]
+    for g in gatherings:
+        _move_altitude(g)
+    return Response(gatherings)
 
 
 @api_view(['GET'])
@@ -27,24 +28,23 @@ def getGatheringsForIndividual(request):
     indiv = individual.get(request.GET.get('individualId'))
     gatherings = [g.to_lajistore_json() for g in indiv.get_gatherings()]
     for g in gatherings:
-        remove_unwanted_info_from_gathering(g)
-    for fact in indiv.facts:
-        if fact['name'] == 'nickname':
-            gatherings.append(fact['value'])
-            break
-
+        _remove_unwanted_info_from_gathering(g)
+        _move_altitude(g)
+    gatherings.append(indiv.nickname)
     return Response(gatherings)
 
 
-def remove_unwanted_info_from_gathering(gathering):
+def _remove_unwanted_info_from_gathering(gathering):
     """
     Removes any unwanted information from the gathering before sending.
     :param gathering: Gathering to be processed.
     :return: Gathering containing only necessary information.
     """
-    if 'facts' in gathering:
-        del gathering['facts']
-    if 'publicity' in gathering:
-        del gathering['publicity']
-    if 'temperatureCelsius' in gathering:
-        del gathering['temperatureCelsius']
+    if 'publicityRestrictions' in gathering:
+        del gathering['publicityRestrictions']
+
+
+def _move_altitude(g):
+    coordinates = g['wgs84Geometry']['coordinates']
+    if len(coordinates) == 3:
+        g['altitude'] = coordinates.pop()

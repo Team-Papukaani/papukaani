@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from .views import index
 from papukaaniApp.services.laji_auth_service.laji_auth import *
-
+from django.utils.translation import ugettext_lazy as _
 
 @csrf_exempt
 def login(request):
@@ -35,7 +35,7 @@ def _process_lajiauth_response(request):
     if authenticate(request, request.POST["token"]):
         return redirect(index)
     else:
-        messages.add_message(request, messages.ERROR, "Autentikaatio ei onnistunut!")
+        messages.add_message(request, messages.ERROR, _("Autentikaatio ei onnistunut!"))
         return redirect(login)
 
 

@@ -49,34 +49,34 @@ function initDatepicker(){
         });
 
     $(function () {
-    $.datepicker.regional['fi'] = {
-        prevText: 'Edellinen',
-        nextText: 'Seuraava',
-        monthNames: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu',
-            'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
-        monthNamesShort: ['Tammi', 'Helmi', 'Maalis', 'Huhti', 'Touko', 'Kesä', 'Heinä',
-            'Elo', 'Syys', 'Loka', 'Marras', 'Joulu'],
-        dayNames: ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'],
-        dayNamesMin: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
+    $.datepicker.regional[gettext('fi')] = {
+        prevText: gettext('Edellinen'),
+        nextText: gettext('Seuraava'),
+        monthNames: [gettext('Tammikuu'), gettext('Helmikuu'), gettext('Maaliskuu'), gettext('Huhtikuu'), gettext('Toukokuu'), gettext('Kesäkuu'),
+            gettext('Heinäkuu'), gettext('Elokuu'), gettext('Syyskuu'), gettext('Lokakuu'), gettext('Marraskuu'), gettext('Joulukuu')],
+        monthNamesShort: [gettext('Tammi'), gettext('Helmi'), gettext('Maalis'), gettext('Huhti'), gettext('Touko'), gettext('Kesä'), gettext('Heinä'),
+            gettext('Elo'), gettext('Syys'), gettext('Loka'), gettext('Marras'), gettext('Joulu')],
+        dayNames: [gettext('Sunnuntai'), gettext('Maanantai'), gettext('Tiistai'), gettext('Keskiviikko'), gettext('Torstai'), gettext('Perjantai'), gettext('Lauantai')],
+        dayNamesMin: [gettext('Su'), gettext('Ma'), gettext('Ti'), gettext('Ke'), gettext('To'), gettext('Pe'), gettext('La')],
         dateFormat: 'dd.mm.yy',
         firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
     };
-    $.datepicker.setDefaults($.datepicker.regional['fi']);
+    $.datepicker.setDefaults($.datepicker.regional[gettext('fi')]);
 
-    $.timepicker.regional['fi'] = {
+    $.timepicker.regional[gettext('fi')] = {
         timeOnlyTitle: '',
-        timeText: 'Aika',
-        hourText: 'Tunnit',
-        minuteText: 'Minuutit',
-        currentText: 'Nyt',
-        closeText: 'Sulje',
-        timeFormat: 'HH:mm',
+        timeText: gettext('Aika'),
+        hourText: gettext('Tunnit'),
+        minuteText: gettext('Minuutit'),
+        currentText: gettext('Nyt'),
+        closeText: gettext('Sulje'),
+        timeFormat: gettext('TT:mm'),
         isRTL: false
     };
-    $.timepicker.setDefaults($.timepicker.regional['fi']);
+    $.timepicker.setDefaults($.timepicker.regional[gettext('fi')]);
     });
 }
 

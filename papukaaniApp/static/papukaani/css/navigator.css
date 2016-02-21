@@ -34,7 +34,7 @@
   color: #ffffff;
   text-decoration: none;
   display: block;
-  padding: 15px 25px;
+  padding: 15px 15px;
   font-family: 'Open Sans', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
@@ -117,4 +117,37 @@
   #cssmenu ul li a:before {
     display: none;
   }
+}
+
+.nav-right {
+  float: right;
+}
+#last_left:after {
+  opacity: 0 !important;
+}
+
+
+#language_form {
+  display: none;
+}
+a#language_choose {
+  text-transform: none !important;
+}
+a#language_choose:hover {
+  /* color: #333333; */
+  color: #ffffff !important;
+}
+a#language_choose:hover:before {
+  /* width: 100%; */
+  width: 0% !important;
+}
+.language_option {
+  color: #ffffff;
+}
+.language_option:hover {
+  color: #333333;
+  cursor: pointer;
+}
+.language_current {
+  text-decoration: underline;
 }

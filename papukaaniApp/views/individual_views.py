@@ -7,6 +7,9 @@ from papukaaniApp.models_TipuApi import species
 
 from django.contrib import messages
 
+from django.utils.translation import ugettext_lazy as _
+
+
 @require_auth
 def individuals(request):
     """
@@ -22,6 +25,7 @@ def individuals(request):
             _create_individual(request)
     return _return_with_context(request)
 
+
 def _update_individual(request):
     if not _post_is_valid(request):
         return _return_with_context(request)
@@ -34,24 +38,25 @@ def _update_individual(request):
     individuale.description = descriptionFields[0]
     individuale.descriptionURL = descriptionFields[1]
     individuale.update()
-    messages.add_message(request, messages.INFO, 'Tiedot tallennettu onnistuneesti!')
+    messages.add_message(request, messages.INFO, _('Tiedot tallennettu onnistuneesti!'))
+
 
 def _delete_individual(request):
     individuale = individual.get(request.POST.get('id'))
     individuale.deleted = True
     individuale.update()
-    messages.add_message(request, messages.INFO, 'Lintu poistettu onnistuneesti!')
+    messages.add_message(request, messages.INFO, _('Lintu poistettu onnistuneesti!'))
+
 
 def _create_individual(request):
     if not _post_is_valid(request):
         return _return_with_context(request)
 
     descriptionFields = _getDescriptionFields(request)
-
-    individual.create(request.POST.get('nickname'),request.POST.get('taxon'),
+    individual.create(request.POST.get('nickname'), request.POST.get('taxon'),
                       description=descriptionFields[0] or None, descriptionURL=descriptionFields[1] or None)
+    messages.add_message(request, messages.INFO, _('Lintu luotu onnistuneesti!'))
 
-    messages.add_message(request, messages.INFO, 'Lintu luotu onnistuneesti!')
 
 def _getDescriptionFields(request):
     descriptionFields = [{}, {}]
@@ -66,19 +71,20 @@ def _getDescriptionFields(request):
 
 def _post_is_valid(request):
     if request.POST.get('taxon') == "":
-        messages.add_message(request, messages.ERROR, 'Laji puuttuu!')
+        messages.add_message(request, messages.ERROR, _('Laji puuttuu!'))
         return False
 
     if request.POST.get('nickname') == "":
-        messages.add_message(request, messages.ERROR, 'Nimi puuttuu!')
+        messages.add_message(request, messages.ERROR, _('Nimi puuttuu!'))
         return False
 
     return True
 
+
 def _return_with_context(request):
     individual_list = individual.find_exclude_deleted()
     try:
-        species_list = species.get_all_in_finnish()
+        species_list = species.get_all_in_user_language(request.LANGUAGE_CODE)
     except:
         species_list = []
 

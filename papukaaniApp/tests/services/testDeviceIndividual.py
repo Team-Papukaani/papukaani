@@ -132,3 +132,16 @@ class testDeviceIndividual(TestCase):
 
         self.assertEquals(2, len(DeviceIndividual.get_individuals_for_device(self.D.id)))
         self.assertEquals(self.I2.id, DeviceIndividual.get_attached_individual(self.D.id)["individualID"])
+
+    def testDeletedDevicesDontStopNewAttachments(self):
+        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        self.D.delete();
+        DeviceIndividual.attach(self.D2.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        self.assertEquals(self.D2.id, DeviceIndividual.get_attached_device(self.I.id)['deviceID'])
+
+    def testDeletedIndividualsDontStopNewAttachments(self):
+        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        self.I.delete();
+        DeviceIndividual.attach(self.D.id, self.I2.id, "2015-09-29T14:00:00+03:00")
+        self.assertEquals(self.I2.id, DeviceIndividual.get_attached_individual(self.D.id)['individualID'])
+

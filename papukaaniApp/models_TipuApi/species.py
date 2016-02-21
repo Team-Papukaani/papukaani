@@ -23,7 +23,7 @@ def get_all():
     return species
 
 
-def get_all_in_finnish():
+def get_all_in_user_language(user_language):
     '''
     Returns all species and sets the name in Finnish
     :return A list of Species objects:
@@ -31,7 +31,7 @@ def get_all_in_finnish():
     all_species = get_all()
     for species in all_species:
         for name in species.name:
-            if name['lang'] == 'FI':
+            if name['lang'] == user_language.upper():
                 species.name = name['content']
                 break
     return all_species

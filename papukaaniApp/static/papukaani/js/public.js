@@ -360,6 +360,7 @@ function generateIframeUrl() {
     }
 
     var device = 'device=[' + a.join(",") + ']';
+    var lang = 'lang=' + $('#language_choose').attr('data-currentlang');
 
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
 
@@ -377,7 +378,7 @@ function generateIframeUrl() {
         time += end_time !== "" ? "&end_time=" + end_time : "";
     }
 
-    inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc + time);
+    inputBox.val(url + '?' + lang + '&' + device + '&' + speed + '&' + zoom + '&' + loc + time);
     inputBox.select()
 }
 

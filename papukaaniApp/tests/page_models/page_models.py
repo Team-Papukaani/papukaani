@@ -336,7 +336,7 @@ class IndividualPage(Page):
     FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
     MODIFY2_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify2"]')
-    CONFIRM_MODIFY_BUTTON = Element(By.XPATH, '//button[@id="confirm_modify]')
+    CONFIRM_MODIFY_BUTTON = Element(By.ID, 'confirm_modify')
     FIRST_DESCRIPTION_EN_FIELD = Element(By.ID, 'desen')
     FIRST_DESCRIPTION_FI_FIELD = Element(By.ID, 'desfi')
     FIRST_DESCRIPTION_SV_FIELD = Element(By.ID, 'dessv')
@@ -441,12 +441,10 @@ class IndividualPage(Page):
         """
         Inputs the name and ring_id of an existing individual and submits the form.
         """
-        modify_button = self.MODIFY2_BUTTON
-        confirm_modify = self.CONFIRM_MODIFY_BUTTON
-        modify_button.click()
         f1 = self.FIRST_DESCRIPTION_EN_FIELD
         f1.clear()
         f1.send_keys(en)
+        confirm_modify = self.CONFIRM_MODIFY_BUTTON
         confirm_modify.click()
 
     def modify_individual(self, nickname, ring_id):

@@ -183,6 +183,8 @@ function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
 
+    var lang = 'lang=' + $('#language_choose').attr('data-currentlang');
+
     var device = 'device=' + $('#selectDevice').val();
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
 
@@ -200,7 +202,7 @@ function generateIframeUrl() {
         time += end_time !== "" ? "&end_time=" + end_time : "";
     }
 
-    inputBox.val(url + '?' + device + '&' + speed + '&' + zoom + '&' + loc + time);
+    inputBox.val(url + '?' + lang + '&' + device + '&' + speed + '&' + zoom + '&' + loc + time);
     inputBox.select()
 }
 

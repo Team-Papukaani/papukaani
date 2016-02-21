@@ -9,3 +9,4 @@ papukaaniApp/migrations/*
 ecotones*.csv
 Ecotones*.csv
 big*.csv
+nbproject/*

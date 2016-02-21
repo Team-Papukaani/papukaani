@@ -20,7 +20,12 @@ def public(request):
     for individuale in inds_objects:
         key = individuale.taxon
         individuals.setdefault(key, [])
-        individuals[key].append({individuale.id: individuale.nickname})
+        individualInfo = {  'nickname': individuale.nickname,
+                    'description': individuale.description,
+                    'descriptionURL': individuale.descriptionURL
+                }
+
+        individuals[key].append({individuale.id: individualInfo})
 
     all_species = species.get_all_in_finnish()
     ordered_species = []

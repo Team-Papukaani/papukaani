@@ -134,7 +134,17 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         var e = '<li id="individual' + individualId + '">';
         e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
         e = e + '<div class="sqr"></div>';
-        e = e + '<span>' + taxon + '</span>';
+        if(taxon.descriptionURL !== null &&  taxon.descriptionURL.fi !== null && 
+                  taxon.descriptionURL.fi !== undefined && taxon.descriptionURL.fi !== ""){
+            e = e + '<a href="' + taxon.descriptionURL.fi + '"><span>' + taxon.nickname +'</a>';
+        }else {
+           e = e + '<span>' + taxon.nickname + '</span>';
+        }
+        if(taxon.description !== null && taxon.description.fi !== null &&
+                taxon.description.fi !== undefined && taxon.description.fi !== ""){
+            e = e + "<br> Description: " + taxon.description.fi + '</span>';
+        }
+
         e = e + '</label>';
         e = e + '</li>';
         selector.append(e);

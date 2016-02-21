@@ -31,7 +31,6 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
         self.page.delete_individual()
         self.page.create_new_individual_with_description("PODCRI", "Sockbird", "ENGLANTI", "SUOMI", "RUOTSI", "https://www.google.com/", "https://www.google.fi/", "https://www.google.se/")
         self.page.modify_description("uusi")
-        print("123")
         self.assertEquals("uusi", self.page.get_first_individual_en())
 
 

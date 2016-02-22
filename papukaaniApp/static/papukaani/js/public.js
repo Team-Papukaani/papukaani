@@ -131,8 +131,12 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         var color = (Math.random() * 0xFFFFFF << 0).toString(16);
         color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
 
+
         var lang = gettext('fi');
-        console.log(taxon.descriptionURL["'" + lang + "'"])
+        console.log(taxon.descriptionURL[lang]);
+        if (lang != 'fi' && (taxon.descriptionURL[lang] == null || taxon.descriptionURL[lang] == "")) {
+            lang = 'fi';
+        }
         var e = '<li id="individual' + individualId + '">';
         e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
         e = e + '<div class="sqr"></div>';

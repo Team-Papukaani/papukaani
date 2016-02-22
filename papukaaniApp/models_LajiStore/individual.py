@@ -81,7 +81,7 @@ def find_exclude_deleted():
     '''
     individuals = find()
     for individual in individuals:
-        if individual.deleted:
+        if individual.deleted or individual.deleted!="":
             individuals.remove(individual)
     return individuals
 

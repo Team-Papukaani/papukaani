@@ -28,7 +28,8 @@ IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
 
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
     for (var i = 0; i < this.routes.length; i++) {
-        if (this.routes[i].individualId === individualId) {
+
+        if (this.routes[i].individualId == individualId) {
             /*
              if (this.routes[i].animation) {
              this.routes[i].animation.clear();
@@ -139,7 +140,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
             lang = 'fi';
         }
         var e = '<li id="individual' + individualId + '">';
-        e = e + '<label><input type="checkbox" style="" value="' + individualId + '">';
+        e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
         e = e + '<div class="sqr"></div>';
         if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
             taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
@@ -149,7 +150,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         }
         if (taxon.description !== null && taxon.description.fi !== null &&
             taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
-            e = e + "<br> Description: " + taxon.description[lang] + '</span>';
+            e = e + "<br>" + taxon.description[lang] + '</span>';
         }
 
         e = e + '</label>';
@@ -170,7 +171,6 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         if ($(this).is(":checked")) {
             that.changeDeviceSelection([$(this).val()])
         } else {
-            alert("moi");
             that.removePointsForIndividual($(this).val())
         }
     });

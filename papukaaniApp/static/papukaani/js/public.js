@@ -9,11 +9,11 @@ function IndividualSorter(restUrl, individuals, species, map) {
 }
 /*
 
-IndividualSorter.prototype.getRoutes = function () {
-    return this.routes;
-}
+ IndividualSorter.prototype.getRoutes = function () {
+ return this.routes;
+ }
 
-*/
+ */
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
     var messagebox = $("#loading");
@@ -30,11 +30,11 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
     for (var i = 0; i < this.routes.length; i++) {
         if (this.routes[i].individualId === individualId) {
             /*
-            if (this.routes[i].animation) {
-                this.routes[i].animation.clear();
-                this.routes[i].animation = null;
-            }
-            */
+             if (this.routes[i].animation) {
+             this.routes[i].animation.clear();
+             this.routes[i].animation = null;
+             }
+             */
 
             this.colorChart.freeColor(this.routes[i].individualId);
             player.removeRoute(this.routes[i]);
@@ -51,25 +51,28 @@ IndividualSorter.prototype.refresh = function () {
 }
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
-function showPointsForIndividual(individualId) {
+function showPointsForIndividual(ids) {
     if (request.readyState === 4) {
 
         var messagebox = $("#loading");
         messagebox.text("");
 
-        var points = JSON.parse(request.response);
+        var data = JSON.parse(request.response);
 
-        if (points.length == 0) {
-            $("#selectIndividual input").attr("disabled", false);
-        } else {
+        for (var i = 0; i < ids.length; i++) {
+
+            if (typeof data[ids[i]] === 'undefined') {
+                continue;
+            }
+
+            var points = data[ids[i]];
             var individualname = points.pop();
-
-            var indiv = $("#individual" + individualId);
-            var color = this.colorChart.getColor(individualId);
+            var indiv = $("#individual" + ids[i]);
+            var color = this.colorChart.getColor(ids[i]);
             indiv.find("div.sqr").css('background-color', color);
 
             var route = {
-                individualId: individualId,
+                individualId: ids[i],
                 points: points,
                 individualname: individualname,
                 color: color,
@@ -78,11 +81,10 @@ function showPointsForIndividual(individualId) {
 
             this.routes.push(route);
             player.addRoute(route);
-            player.refreshRoutes();
 
-            //this.map.changePoints(this.routes);
-            unlockButtons();
         }
+        player.refreshRoutes();
+        unlockButtons();
         request = null;
     }
 }
@@ -132,18 +134,18 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
 
         var lang = gettext('fi');
-        console.log(taxon.descriptionURL["'" + lang + "'"])
+
         var e = '<li id="individual' + individualId + '">';
-        e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
+        e = e + '<label><input type="checkbox" style="" value="' + individualId + '">';
         e = e + '<div class="sqr"></div>';
-        if(taxon.descriptionURL !== null &&  taxon.descriptionURL[lang] !== null && 
-                  taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang]!== ""){
-            e = e + '<a href="' + taxon.descriptionURL[lang] + '"><span>' + taxon.nickname +'</a>';
+        if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
+            taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
+            e = e + '<a href="' + taxon.descriptionURL[lang] + '"><span>' + taxon.nickname + '</a>';
         } else {
-           e = e + '<span>' + taxon.nickname + '</span>';
+            e = e + '<span>' + taxon.nickname + '</span>';
         }
-        if(taxon.description !== null && taxon.description.fi !== null &&
-                taxon.description[lang] !== undefined && taxon.description[lang] !== ""){
+        if (taxon.description !== null && taxon.description.fi !== null &&
+            taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
             e = e + "<br> Description: " + taxon.description[lang] + '</span>';
         }
 
@@ -163,8 +165,9 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
 
     $("#selectIndividual input").change(function () {
         if ($(this).is(":checked")) {
-            that.changeDeviceSelection($(this).val())
+            that.changeDeviceSelection([$(this).val()])
         } else {
+            alert("moi");
             that.removePointsForIndividual($(this).val())
         }
     });
@@ -189,27 +192,29 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     player = new Player(map);
 
-/*
+    /*
 
-    playSliderKeyboardControls();
+     playSliderKeyboardControls();
 
-    createDummySlider();
-*/
+     createDummySlider();
+     */
     if (start_time !== "") $("#start_time").val(start_time);
     if (end_time !== "") $("#end_time").val(end_time);
 
 
     if (defaultDevice != '') {
         if (defaultDevice instanceof Array && defaultDevice.length > 0) {
+            var ids = [];
             for (var i = 0; i < defaultDevice.length; i++) {
                 if (typeof defaultDevice[i] == "number") {
                     try {
                         $("#individual" + defaultDevice[i]).find('input').prop('checked', true);
-                        sorter.changeDeviceSelection(defaultDevice[i]);
+                        ids.push(defaultDevice[i]);
                     } catch (err) {
                     }
                 }
             }
+            sorter.changeDeviceSelection(ids);
         }
     }
 
@@ -218,94 +223,94 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
 }
 /*
-//Add play-on-spacebar-press to the map div, and prevent propagation of said event when play button is selected.
-var playSliderKeyboardControls = function () {
-    $('#map').bind('keyup', function (event) {
-        if (event.keyCode == 32) {
-            map.play();
-        }
-    });
+ //Add play-on-spacebar-press to the map div, and prevent propagation of said event when play button is selected.
+ var playSliderKeyboardControls = function () {
+ $('#map').bind('keyup', function (event) {
+ if (event.keyCode == 32) {
+ map.play();
+ }
+ });
 
-    $('#play').keyup(function (e) {
-        if (e.keyCode == 32) {
-            e.stopPropagation();
-        }
-    });
+ $('#play').keyup(function (e) {
+ if (e.keyCode == 32) {
+ e.stopPropagation();
+ }
+ });
 
-    //Prevent screen scrolling when spacebar pressed.
-    window.onkeydown = function (e) {
-        var elem = e.target.nodeName;
-        if (e.keyCode == 32 && elem != "INPUT") {
-            e.preventDefault();
-            return false;
-        }
-    };
-};
+ //Prevent screen scrolling when spacebar pressed.
+ window.onkeydown = function (e) {
+ var elem = e.target.nodeName;
+ if (e.keyCode == 32 && elem != "INPUT") {
+ e.preventDefault();
+ return false;
+ }
+ };
+ };
 
-*/
+ */
 
 /*
 
-//Redraws the polyline
-PublicMap.prototype.changePoints = function (routes) {
-    for (var i = 0; i < routes.length; i++) {
+ //Redraws the polyline
+ PublicMap.prototype.changePoints = function (routes) {
+ for (var i = 0; i < routes.length; i++) {
 
-        var start = $("#start_time").val();
-        var end = $("#end_time").val();
-        var points = points_in_timerange(routes[i].points, start, end);
+ var start = $("#start_time").val();
+ var end = $("#end_time").val();
+ var points = points_in_timerange(routes[i].points, start, end);
 
-        if (routes[i].animation) {
-            routes[i].animation.clear();
-            routes[i].animation = null;
-        }
+ if (routes[i].animation) {
+ routes[i].animation.clear();
+ routes[i].animation = null;
+ }
 
-        if (points.length > 0) {
-            try {
-                if (routes[i].latlngs === false) {
-                    routes[i].latlngs = this.createLatlngsFromPoints(points);
-                }
-                routes[i].animation = new Animator(routes[i].latlngs, routes[i].individualname, this.map, routes[i].color);
-                routes[i].animation.forwardToEnd();
+ if (points.length > 0) {
+ try {
+ if (routes[i].latlngs === false) {
+ routes[i].latlngs = this.createLatlngsFromPoints(points);
+ }
+ routes[i].animation = new Animator(routes[i].latlngs, routes[i].individualname, this.map, routes[i].color);
+ routes[i].animation.forwardToEnd();
 
-            } catch (e) {
-            }
-        }
-    }
-    this.routes = routes;
-};
+ } catch (e) {
+ }
+ }
+ }
+ this.routes = routes;
+ };
 
-//Plays the animation if paused, or pauses if currently playing.
-PublicMap.prototype.play = function () {
-    for (var i = 0; i < this.routes.length; i++) {
-        if (this.routes[i].animation) {
-            if (this.routes[i].animation.start()) {
-                animationStart();
-            } else if (this.routes[i].animation.stop()) {
-                animationEnd();
-            }
-        }
-    }
-};
-var animationStart = function () {
-    $("#play").html("&#9646;&#9646;");
-};
-//Performed when the animation reaches its end.
-var animationEnd = function () {
-    $("#play").html("&#9658;");
-};
+ //Plays the animation if paused, or pauses if currently playing.
+ PublicMap.prototype.play = function () {
+ for (var i = 0; i < this.routes.length; i++) {
+ if (this.routes[i].animation) {
+ if (this.routes[i].animation.start()) {
+ animationStart();
+ } else if (this.routes[i].animation.stop()) {
+ animationEnd();
+ }
+ }
+ }
+ };
+ var animationStart = function () {
+ $("#play").html("&#9646;&#9646;");
+ };
+ //Performed when the animation reaches its end.
+ var animationEnd = function () {
+ $("#play").html("&#9658;");
+ };
 
-//Creates latLng objects from points
-PublicMap.prototype.createLatlngsFromPoints = function (points) {
-    return points.map(function (point) {
-        var coordinates = point.wgs84Geometry.coordinates;
-        return {
-            coordinates: Victor.fromArray(coordinates.reverse()),
-            time: Date.parse(point.dateBegin)
-        };
-    });
-};
+ //Creates latLng objects from points
+ PublicMap.prototype.createLatlngsFromPoints = function (points) {
+ return points.map(function (point) {
+ var coordinates = point.wgs84Geometry.coordinates;
+ return {
+ coordinates: Victor.fromArray(coordinates.reverse()),
+ time: Date.parse(point.dateBegin)
+ };
+ });
+ };
 
-*/
+ */
 //Disables the select, save and reset buttons.
 function lockButtons() {
     $("#selectIndividual input").attr("disabled", true);
@@ -343,14 +348,14 @@ $(function () {
     })
 });
 /*
-//Replaces the slider with a placeholder.
-var createDummySlider = function () {
-    $("#playSlider").slider({min: 0, max: 0, paddingMin: 7, paddingMax: 7});
-    $("#playLabel").text("N/A");
-    $("#playLabel_end").text("");
-    $("#play").html("&#9658;").prop("disabled", true);
-};
-*/
+ //Replaces the slider with a placeholder.
+ var createDummySlider = function () {
+ $("#playSlider").slider({min: 0, max: 0, paddingMin: 7, paddingMax: 7});
+ $("#playLabel").text("N/A");
+ $("#playLabel_end").text("");
+ $("#play").html("&#9658;").prop("disabled", true);
+ };
+ */
 function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;

@@ -7,7 +7,7 @@ ghostdriver.log
 test_screenshots/*
 papukaaniApp/migrations/*
 my
-ecotones*.csv
-Ecotones*.csv
-big*.csv
+/ecotones*.csv
+/Ecotones*.csv
+/big*.csv
 nbproject/*

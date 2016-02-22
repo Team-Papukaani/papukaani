@@ -74,27 +74,7 @@ Sitten aja kaikki testit tekemällä
 
 Varmista että kaikki testit menevät läpi. Jos ne menevät, olet nyt valmis aloittamaan papukaanin kehittämisen. 
 
-Oletuksena ei näytetä mitä selaintesteissä tapahtuu. Testit voi ajaa näkyvästi tekemällä:
-
-    ./manage.py test -v 3 --visible
-
-Tässä vielä lisää ohjeita liittyen testien ajoon. 
-
-Esimerkki yhden kansion test-keissien ajosta:
-
-    ./manage.py test papukaaniApp.tests.lajistore_object_tests -v 3 --failfast
-
-Esimerkki yhden test-casen ajosta:
-
-    ./manage.py test papukaaniApp.tests.lajistore_object_tests.testDevice.TestDevice -v 3 --failfast
-
-Esimerkki yksittäisen testin ajosta:
-
-    ./manage.py test papukaaniApp.tests.lajistore_object_tests.testDevice.TestDevice.test_create_and_delete -v 3
-
-optio '-v 3' tarkoittaa että testien ajon aikana tulostuu mahdollisimman paljon tietoa siitä mitä tapahtuu testien ajon aikana.
-
-optio '--failfast' tarkoittaa että testien suoritus loppuu heti kun jokin testi ei mene läpi.
+Lisää tietoa testaamisesta on [papukaanin wikissä](https://github.com/Team-Papukaani/papukaani/wiki/Testaaminen).
 
 ## 2 - Apache
 

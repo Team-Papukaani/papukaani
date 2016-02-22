@@ -133,7 +133,6 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
 
 
         var lang = gettext('fi');
-        console.log(taxon.descriptionURL[lang]);
         if (lang != 'fi' && (taxon.descriptionURL[lang] == null || taxon.descriptionURL[lang] == "")) {
             lang = 'fi';
         }

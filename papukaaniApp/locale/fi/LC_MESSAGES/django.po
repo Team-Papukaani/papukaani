@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-22 00:51+0200\n"
+"POT-Creation-Date: 2016-02-23 17:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,15 +47,17 @@ msgid "Tallennetaanko muutokset?"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:26
-msgid " Kyllä"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:19
+msgid "Kyllä"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:27
-msgid " Ei"
+msgid "Ei"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:28
-msgid " Peruuta"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:20
+msgid "Peruuta"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:34
@@ -129,7 +131,9 @@ msgid "Aikaleima**"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:51
-msgid "Aikaleima-sarakkeen nimi. Pakollinen kenttä"
+msgid ""
+"Aikaleima-sarakkeen nimi. Täytä joko tämä kenttä tai sekä päivämäärä- että "
+"kellonaika-kenttä."
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:55
@@ -137,7 +141,9 @@ msgid "Päivämäärä**"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:61
-msgid "Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä"
+msgid ""
+"Päivämääräsarakkeen nimi. Täytä joko tämä ja kellonaika-kenttä tai "
+"pelkästään aikaleima-kenttä."
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:65
@@ -146,7 +152,8 @@ msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:73
 msgid ""
-"Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä"
+"Kellonaikasarakkeen nimi. Täytä joko tämä ja päivämäärä-kenttä tai "
+"pelkästään aikaleima-kenttä."
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:77
@@ -166,42 +173,34 @@ msgid "Latitudi-sarakkeen nimi. Pakollinen kenttä."
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:99
-msgid "Lähettimen tunnus"
+msgid "Korkeus"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:107
+msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/formats.html:111
+msgid "Lähettimen tunnus"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/formats.html:119
 msgid ""
 "Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy "
 "tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste "
 "annetaan latauksen yhteydessä."
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:111
+#: papukaaniApp/templates/papukaaniApp/formats.html:123
 msgid "Lämpötila"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:119
-msgid "Lämpötila-sarakkeen nimi."
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/formats.html:123
-msgid "Korkeus"
-msgstr ""
-
 #: papukaaniApp/templates/papukaaniApp/formats.html:131
-msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
+msgid "Lämpötila-sarakkeen nimi. Valinnainen kenttä."
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:17
 msgid "Haluatko varmasti poistaa linnun?"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:19
-msgid "Kyllä"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:20
-msgid "Peruuta"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:23
@@ -367,20 +366,32 @@ msgstr ""
 msgid "Formaattien hallinta"
 msgstr ""
 
-#: papukaaniApp/views/formats_views.py:29
-msgid "Pakollista tietoa puuttuu!"
-msgstr ""
-
-#: papukaaniApp/views/formats_views.py:37
+#: papukaaniApp/views/formats_views.py:36
 msgid "Muutokset tallennettu!"
 msgstr ""
 
-#: papukaaniApp/views/formats_views.py:40
+#: papukaaniApp/views/formats_views.py:39
 msgid "Formaatti tallennettu!"
 msgstr ""
 
-#: papukaaniApp/views/formats_views.py:42
-msgid "Jokin meni pieleen!"
+#: papukaaniApp/views/formats_views.py:41
+msgid "Jokin meni pieleen."
+msgstr ""
+
+#: papukaaniApp/views/formats_views.py:60
+msgid "Formaatin nimi puuttuu."
+msgstr ""
+
+#: papukaaniApp/views/formats_views.py:63
+msgid "Longitudi puuttuu."
+msgstr ""
+
+#: papukaaniApp/views/formats_views.py:67
+msgid "Latitudi puuttuu."
+msgstr ""
+
+#: papukaaniApp/views/formats_views.py:69
+msgid "Täytä joko aikaleima-kenttä tai kellonaika- ja päivämäärä-kentät."
 msgstr ""
 
 #: papukaaniApp/views/individual_views.py:41

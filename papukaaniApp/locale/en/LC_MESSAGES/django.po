@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-22 00:51+0200\n"
+"POT-Creation-Date: 2016-02-23 17:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,16 +45,18 @@ msgid "Tallennetaanko muutokset?"
 msgstr "Save changes?"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:26
-msgid " Kyllä"
-msgstr " Yes"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:19
+msgid "Kyllä"
+msgstr "Yes"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:27
-msgid " Ei"
-msgstr " No"
+msgid "Ei"
+msgstr "No"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:28
-msgid " Peruuta"
-msgstr " Cancel"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:20
+msgid "Peruuta"
+msgstr "Cancel"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:34
 #: papukaaniApp/templates/papukaaniApp/public.html:35
@@ -112,7 +114,7 @@ msgstr "Attach"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:12
 msgid "Määrittele formaatti:"
-msgstr "Define format:"
+msgstr "Define a format:"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:31
 msgid "Formaatin nimi*"
@@ -127,29 +129,36 @@ msgid "Aikaleima**"
 msgstr "Timestamp**"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:51
-msgid "Aikaleima-sarakkeen nimi. Pakollinen kenttä"
-msgstr "The name of the timestamp column. Required field"
+msgid ""
+"Aikaleima-sarakkeen nimi. Täytä joko tämä kenttä tai sekä päivämäärä- että "
+"kellonaika-kenttä."
+msgstr ""
+"The name of the timestamp column. Either Fill in this field or both the date "
+"and clock time fields."
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:55
 msgid "Päivämäärä**"
 msgstr "Date**"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:61
-msgid "Päivämääräsarakkeen nimi. Täytä tämä ja alempi kenttä tai ylempi kenttä"
+msgid ""
+"Päivämääräsarakkeen nimi. Täytä joko tämä ja kellonaika-kenttä tai "
+"pelkästään aikaleima-kenttä."
 msgstr ""
-"The name of the date column. Fill in this and the below field or the above "
-"field."
+"The name of the date column. Either fill in this field and the clock time "
+"field or only the timestamp field. "
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:65
 msgid "Kellonaika**"
-msgstr "Time of day**"
+msgstr "Clock time**"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:73
 msgid ""
-"Kellonaikasarakkeen nimi. Täytä tämä ja ylempi kenttä tai aikaleima-kenttä"
+"Kellonaikasarakkeen nimi. Täytä joko tämä ja päivämäärä-kenttä tai "
+"pelkästään aikaleima-kenttä."
 msgstr ""
-"Name of the time of day column. Fill in this and the above field or the "
-"timestamp field"
+"The name of the clock time column. Either Fill in this field and the date-"
+"field or only the timestamp-field."
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:77
 msgid "Longitudi*"
@@ -168,10 +177,18 @@ msgid "Latitudi-sarakkeen nimi. Pakollinen kenttä."
 msgstr "The name of the latitude column. Required field."
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:99
+msgid "Korkeus"
+msgstr "Altitude"
+
+#: papukaaniApp/templates/papukaaniApp/formats.html:107
+msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
+msgstr "The name of the altitude column. Optional field."
+
+#: papukaaniApp/templates/papukaaniApp/formats.html:111
 msgid "Lähettimen tunnus"
 msgstr "Device ID"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:107
+#: papukaaniApp/templates/papukaaniApp/formats.html:119
 msgid ""
 "Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy "
 "tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste "
@@ -179,35 +196,19 @@ msgid ""
 msgstr ""
 "The name of the device identifier column. If the device identifier is not "
 "found in the file, you must leave this field empty. In this case the device "
-"identifier will be obtained when uploading."
+"identifier is provided when uploading."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:111
+#: papukaaniApp/templates/papukaaniApp/formats.html:123
 msgid "Lämpötila"
 msgstr "Temperature"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:119
-msgid "Lämpötila-sarakkeen nimi."
-msgstr "Name of the temperature column."
-
-#: papukaaniApp/templates/papukaaniApp/formats.html:123
-msgid "Korkeus"
-msgstr "Height"
-
 #: papukaaniApp/templates/papukaaniApp/formats.html:131
-msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
-msgstr "Name of the height column. Optional field."
+msgid "Lämpötila-sarakkeen nimi. Valinnainen kenttä."
+msgstr "The name of the temperature column. Optional field."
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:17
 msgid "Haluatko varmasti poistaa linnun?"
 msgstr "Are you sure you want to delete this bird?"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:19
-msgid "Kyllä"
-msgstr "Yes"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:20
-msgid "Peruuta"
-msgstr "Cancel"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:23
 msgid "Luo lintu"
@@ -372,21 +373,34 @@ msgstr "Send"
 msgid "Formaattien hallinta"
 msgstr "Manage formats"
 
-#: papukaaniApp/views/formats_views.py:29
-msgid "Pakollista tietoa puuttuu!"
-msgstr "Required information is missing!"
-
-#: papukaaniApp/views/formats_views.py:37
+#: papukaaniApp/views/formats_views.py:36
 msgid "Muutokset tallennettu!"
 msgstr "Changes saved!"
 
-#: papukaaniApp/views/formats_views.py:40
+#: papukaaniApp/views/formats_views.py:39
 msgid "Formaatti tallennettu!"
 msgstr "Format saved!"
 
-#: papukaaniApp/views/formats_views.py:42
-msgid "Jokin meni pieleen!"
-msgstr "Something went wrong!"
+#: papukaaniApp/views/formats_views.py:41
+msgid "Jokin meni pieleen."
+msgstr "Something went wrong."
+
+#: papukaaniApp/views/formats_views.py:60
+msgid "Formaatin nimi puuttuu."
+msgstr "Format name is missing."
+
+#: papukaaniApp/views/formats_views.py:63
+msgid "Longitudi puuttuu."
+msgstr "Longutude is missing."
+
+#: papukaaniApp/views/formats_views.py:67
+msgid "Latitudi puuttuu."
+msgstr "Latitude is missing."
+
+#: papukaaniApp/views/formats_views.py:69
+msgid "Täytä joko aikaleima-kenttä tai kellonaika- ja päivämäärä-kentät."
+msgstr ""
+"Either Fill in the timestamp field or both the date and clock time fields."
 
 #: papukaaniApp/views/individual_views.py:41
 msgid "Tiedot tallennettu onnistuneesti!"
@@ -423,6 +437,3 @@ msgstr "File upload succeeded!"
 #: papukaaniApp/views/upload_views.py:44
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"
-
-#~ msgid "Lintu:"
-#~ msgstr "Bird:"

@@ -1,4 +1,4 @@
-(function($) {
+g(function($) {
     $.timepicker.regional['en'] = {
         currentText: 'Now',
         closeText: 'Done',

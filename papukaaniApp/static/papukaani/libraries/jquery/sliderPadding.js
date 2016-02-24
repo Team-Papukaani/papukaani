@@ -1,4 +1,4 @@
-g(function ($, undefined) {
+(function ($, undefined) {
     $.ui.slider.prototype.options =
         $.extend(
             {},

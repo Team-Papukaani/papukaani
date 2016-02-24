@@ -83,11 +83,12 @@
     <script src="{% static 'papukaani/libraries/jquery/sliderPadding.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
-    <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-addon.js' %}"></script>
     {% trans "fi" as lang %}
-    <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/locale/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/locale/datepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/polylineAnimate.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/player.js' %}"></script>

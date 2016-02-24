@@ -427,6 +427,3 @@ msgstr "File upload succeeded!"
 #: papukaaniApp/views/upload_views.py:44
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"
-
-#~ msgid "pp-kk-vvvv TT:mm"
-#~ msgstr "dd-mm-yyyy HH:mm"

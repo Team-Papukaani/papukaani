@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-23 17:49+0200\n"
+"POT-Creation-Date: 2016-02-24 13:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,38 +57,26 @@ msgstr "The date was not defined! "
 msgid "Lintua ei määritelty! "
 msgstr "A bird was not defined! "
 
+#: papukaaniApp/static/papukaani/js/map.js:25
+msgid "Maailmankartta"
+msgstr "World map"
+
+#: papukaaniApp/static/papukaani/js/map.js:26
+msgid "Topografia"
+msgstr "Topography"
+
+#: papukaaniApp/static/papukaani/js/map.js:27
+msgid "Maanmittauslaitos"
+msgstr "National land survey of Finland"
+
+#: papukaaniApp/static/papukaani/js/map.js:28
+msgid "Satelliitti"
+msgstr "Satellite"
+
+#: papukaaniApp/static/papukaani/js/map.js:37
+msgid "Eliömaakunnat"
+msgstr "Biogeographical provinces"
+
 #: papukaaniApp/static/papukaani/js/public.js:138
 msgid "fi"
 msgstr "en"
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
-msgid "Tietoja ladataan..."
-msgstr "Loading information..."
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
-msgid "Valitse lähetin"
-msgstr "Choose device"
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:140
-msgid "Valitse"
-msgstr "Choose"
-
-#: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
-msgid "'"
-msgstr ""
-
-
-#~ msgid "Maailmankartta"
-#~ msgstr "World map"
-
-#~ msgid "Topografia"
-#~ msgstr "Topography"
-
-#~ msgid "Maanmittauslaitos"
-#~ msgstr "National land survey of Finland"
-
-#~ msgid "Satelliitti"
-#~ msgstr "Satellite"
-
-#~ msgid "Eliömaakunnat"
-#~ msgstr "Biogeographical provinces"

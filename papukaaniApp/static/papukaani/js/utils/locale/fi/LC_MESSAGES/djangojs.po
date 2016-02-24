@@ -16,7 +16,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
-msgid "'"
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
+msgid "Tietoja ladataan..."
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
+msgid "Valitse lähetin"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:140
+msgid "Valitse"
 msgstr ""

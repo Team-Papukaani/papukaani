@@ -8,19 +8,13 @@ class SessionBasedLocaleMiddleware(object):
     The SessionMiddleware has to be activated.
     """
     def process_request(self, request):
-        if request.method == 'GET' and 'lang' in request.GET:
-                language = request.GET['lang']
-                request.session['language'] = language
-        elif 'language' in request.session:
-                language = request.session['language']
-        else:
-                language = translation.get_language_from_request(request)
-        
-        for lang in settings.LANGUAGES:
-            if lang[0] == language:
-                translation.activate(language)
-                
-        request.LANGUAGE_CODE = translation.get_language()
+        if not (request.method == 'GET' and 'lang' in request.GET):
+            return
+        lang_code = request.GET['lang']
+        if not translation.check_for_language(lang_code):
+            return
+        request.session[translation.LANGUAGE_SESSION_KEY] = lang_code
+        translation.activate(lang_code)
 
     def process_response(self, request, response):
         patch_vary_headers(response, ('Accept-Language',))

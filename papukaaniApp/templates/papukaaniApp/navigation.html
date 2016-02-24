@@ -27,9 +27,11 @@
 </div>
 
 <!-- Invisible, used by script -->
-<form id='language_form' action="{% url 'set_language' %}" method="post"> 
+<form id='language_form' action="{% url 'set_language' %}" method="post" 
+  data-currenturl='{{ request.path }}' 
+  data-currentfullurl='{{ request.get_full_path }}'> 
   {% csrf_token %}
-  <!-- <input name="next" type="hidden" value="{{ redirect_to }}" /> -->
+  <input id='language_form_next' name="next" type="hidden" value="/" />
   <select name="language" id='language_form_select'>
     {% get_available_languages as LANGUAGES %}
     {% get_language_info_list for LANGUAGES as languages %}

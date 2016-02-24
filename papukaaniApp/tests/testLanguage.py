@@ -64,6 +64,14 @@ class TestLanguage(StaticLiveServerTestCase):
         self.assertTrue(self._page_with_nav_is_in_lang(page, self.other_lang))
         page.close()
 
+    def test_lang_parameter_does_not_break_picker(self):
+        page = Page()
+        page.url = '%s?lang=%s' % (NavigationPage.url, self.other_lang)
+        page.navigate()
+        self.assertTrue(self._page_with_nav_is_in_lang(page, self.other_lang))
+        self._change_language_via_picker(page.driver, self.default_lang)
+        self.assertTrue(self._page_with_nav_is_in_lang(page, self.default_lang))
+
     def test_iframe_has_correct_language(self):
         public = PublicPage()
         public.url += '?lang=%s' % self.other_lang
@@ -76,7 +84,6 @@ class TestLanguage(StaticLiveServerTestCase):
         page = PublicPage()
         page.url = good_url
         page.navigate()
-        # import pdb; pdb.set_trace() # ZZZ
         self.assertTrue(self._public_page_is_in_lang(page, self.other_lang))
         page.close()
 
@@ -107,7 +114,6 @@ class TestLanguage(StaticLiveServerTestCase):
         with translation.override(self._get_other_lang(lang)):
             is_in_other_lang = self._similarStrings(page.REFRESH.text, 
                     refresh_in(self._get_other_lang(lang)))
-        # import pdb; pdb.set_trace(); # ZZZ
         return (is_in_lang and not is_in_other_lang)
 
     def _get_other_lang(self, lang):

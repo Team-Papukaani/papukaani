@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-23 17:56+0200\n"
+"POT-Creation-Date: 2016-02-24 12:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 
 #: papukaaniApp/templates/base.html:6
 #: papukaaniApp/templates/papukaaniApp/choose.html:76
-#: papukaaniApp/templates/papukaaniApp/devices.html:69
+#: papukaaniApp/templates/papukaaniApp/devices.html:68
 #: papukaaniApp/templates/papukaaniApp/public.html:87
 msgid "fi"
 msgstr ""
@@ -89,28 +89,27 @@ msgstr ""
 msgid "Hallitse lähettimiä"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:25
-#: papukaaniApp/templates/papukaaniApp/devices.html:28
+#: papukaaniApp/templates/papukaaniApp/devices.html:27
 msgid "Valitse lähetin"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:39
+#: papukaaniApp/templates/papukaaniApp/devices.html:38
 msgid "Lintu"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:40
+#: papukaaniApp/templates/papukaaniApp/devices.html:39
 msgid "Kiinnitetty"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:41
+#: papukaaniApp/templates/papukaaniApp/devices.html:40
 msgid "Irroitettu"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:48
+#: papukaaniApp/templates/papukaaniApp/devices.html:47
 msgid "Valitse kiinnitettävä lintu"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:58
+#: papukaaniApp/templates/papukaaniApp/devices.html:57
 msgid "Kiinnitä"
 msgstr ""
 
@@ -329,17 +328,8 @@ msgstr ""
 msgid "Kirjaudu sisään"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/public.html:38
-#: papukaaniApp/templates/papukaaniApp/public.html:45
-msgid "pp-kk-vvvv TT:mm"
-msgstr ""
-
 #: papukaaniApp/templates/papukaaniApp/public.html:51
 msgid "Päivitä "
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/public.html:101
-msgid "iFrame:"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:19

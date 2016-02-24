@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-23 17:56+0200\n"
+"POT-Creation-Date: 2016-02-24 12:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr "The page you are looking for does not exist."
 
 #: papukaaniApp/templates/base.html:6
 #: papukaaniApp/templates/papukaaniApp/choose.html:76
-#: papukaaniApp/templates/papukaaniApp/devices.html:69
+#: papukaaniApp/templates/papukaaniApp/devices.html:68
 #: papukaaniApp/templates/papukaaniApp/public.html:87
 msgid "fi"
 msgstr "en"
@@ -87,28 +87,27 @@ msgstr "Reset"
 msgid "Hallitse lähettimiä"
 msgstr "Manage devices"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:25
-#: papukaaniApp/templates/papukaaniApp/devices.html:28
+#: papukaaniApp/templates/papukaaniApp/devices.html:27
 msgid "Valitse lähetin"
 msgstr "Select device"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:39
+#: papukaaniApp/templates/papukaaniApp/devices.html:38
 msgid "Lintu"
 msgstr "Bird"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:40
+#: papukaaniApp/templates/papukaaniApp/devices.html:39
 msgid "Kiinnitetty"
 msgstr "Attached"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:41
+#: papukaaniApp/templates/papukaaniApp/devices.html:40
 msgid "Irroitettu"
 msgstr "Detached"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:48
+#: papukaaniApp/templates/papukaaniApp/devices.html:47
 msgid "Valitse kiinnitettävä lintu"
 msgstr "Choose bird to attach"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:58
+#: papukaaniApp/templates/papukaaniApp/devices.html:57
 msgid "Kiinnitä"
 msgstr "Attach"
 
@@ -336,18 +335,9 @@ msgstr "Log out"
 msgid "Kirjaudu sisään"
 msgstr "Log in"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:38
-#: papukaaniApp/templates/papukaaniApp/public.html:45
-msgid "pp-kk-vvvv TT:mm"
-msgstr "dd-mm-yyyy HH:mm"
-
 #: papukaaniApp/templates/papukaaniApp/public.html:51
 msgid "Päivitä "
 msgstr "Refresh "
-
-#: papukaaniApp/templates/papukaaniApp/public.html:101
-msgid "iFrame:"
-msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:19
 msgid "Tiedosto:"
@@ -437,3 +427,6 @@ msgstr "File upload succeeded!"
 #: papukaaniApp/views/upload_views.py:44
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"
+
+#~ msgid "pp-kk-vvvv TT:mm"
+#~ msgstr "dd-mm-yyyy HH:mm"

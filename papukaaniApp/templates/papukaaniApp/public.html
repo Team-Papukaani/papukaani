@@ -35,14 +35,14 @@
                 <span class="input-group-addon" id="basic-addon1">{% trans "Alku:" %}</span>
                 <input type="text" id="start_time" name="start_time" class="dateinput datepicker form-control"
                        onblur="validateDateFormat(this)"
-                       placeholder="{% trans "pp-kk-vvvv TT:mm" %}" maxlength="16">
+                       placeholder="dd-mm-yyyy HH:mm" maxlength="16">
             </div>
 
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">{% trans "Loppu:" %}</span>
                 <input type="text" id="end_time" name="end_time" class="dateinput datepicker form-control"
                        onblur="validateDateFormat(this)"
-                       placeholder="{% trans "pp-kk-vvvv TT:mm" %}" maxlength="16">
+                       placeholder="dd-mm-yyyy HH:mm" maxlength="16">
             </div>
 
             <span id="formatError" style="margin:0"></span>
@@ -98,7 +98,7 @@
     {% if display_navigation %}
         <div class="choose_actions form-inline padded2">
             <div class="input-group">
-                <span class="input-group-addon">{% trans "iFrame:" %}</span>
+                <span class="input-group-addon">iFrame</span>
                 <input class="form-control" type="text" size="100" id="iframeSrc"/>
             </div>
 

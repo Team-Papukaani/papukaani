@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-23 17:56+0200\n"
+"POT-Creation-Date: 2016-02-24 12:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "Sidan finns inte."
 
 #: papukaaniApp/templates/base.html:6
 #: papukaaniApp/templates/papukaaniApp/choose.html:76
-#: papukaaniApp/templates/papukaaniApp/devices.html:69
+#: papukaaniApp/templates/papukaaniApp/devices.html:68
 #: papukaaniApp/templates/papukaaniApp/public.html:87
 msgid "fi"
 msgstr "sv"
@@ -88,28 +88,27 @@ msgstr "Återställ"
 msgid "Hallitse lähettimiä"
 msgstr "Administrera sändare"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:25
-#: papukaaniApp/templates/papukaaniApp/devices.html:28
+#: papukaaniApp/templates/papukaaniApp/devices.html:27
 msgid "Valitse lähetin"
 msgstr "Välj sändare"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:39
+#: papukaaniApp/templates/papukaaniApp/devices.html:38
 msgid "Lintu"
 msgstr "Fågel"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:40
+#: papukaaniApp/templates/papukaaniApp/devices.html:39
 msgid "Kiinnitetty"
 msgstr "Fäst"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:41
+#: papukaaniApp/templates/papukaaniApp/devices.html:40
 msgid "Irroitettu"
 msgstr "Uttagen"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:48
+#: papukaaniApp/templates/papukaaniApp/devices.html:47
 msgid "Valitse kiinnitettävä lintu"
 msgstr "Välj fågel som skall fästas"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:58
+#: papukaaniApp/templates/papukaaniApp/devices.html:57
 msgid "Kiinnitä"
 msgstr "Fäst"
 
@@ -336,18 +335,9 @@ msgstr "Logga ut"
 msgid "Kirjaudu sisään"
 msgstr "Logga in"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:38
-#: papukaaniApp/templates/papukaaniApp/public.html:45
-msgid "pp-kk-vvvv TT:mm"
-msgstr "dd-mm-åååå TT:mm"
-
 #: papukaaniApp/templates/papukaaniApp/public.html:51
 msgid "Päivitä "
 msgstr "Uppdatera "
-
-#: papukaaniApp/templates/papukaaniApp/public.html:101
-msgid "iFrame:"
-msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:19
 msgid "Tiedosto:"
@@ -374,16 +364,12 @@ msgid "Formaattien hallinta"
 msgstr "Administrera formater"
 
 #: papukaaniApp/views/formats_views.py:36
-#, fuzzy
-#| msgid "Muutokset tallennettu."
 msgid "Muutokset tallennettu!"
-msgstr "Ändringarna har sparats."
+msgstr "Ändringarna har sparats!"
 
 #: papukaaniApp/views/formats_views.py:39
-#, fuzzy
-#| msgid "Formaatti tallennettu."
 msgid "Formaatti tallennettu!"
-msgstr "Format sparats."
+msgstr "Format sparats!"
 
 #: papukaaniApp/views/formats_views.py:41
 msgid "Jokin meni pieleen."

@@ -56,11 +56,35 @@ Player.prototype.addRoute = function (route) {
             var pointB = orig[i + 1];
 
             route.points.push(pointA);
+
+            var slice = Math.floor((datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin)) / this.fillerDistance);
+            var directionVector = [pointB.wgs84Geometry.coordinates[0] - pointA.wgs84Geometry.coordinates[0], pointB.wgs84Geometry.coordinates[1] - pointA.wgs84Geometry.coordinates[1]];
+            var directionVectorScalar = 1 / slice;
+
+            for (var j = 0; j < slice - 1; j++) {
+
+                var time = new Date((datetimestringToUnixtime(pointA.dateBegin) + this.fillerDistance * (j + 1)) * 1000);
+                var day = ('0' + time.getUTCDate()).slice(-2);
+                var month = ('0' + (time.getUTCMonth() + 1)).slice(-2);
+                var hours = ('0' + time.getUTCHours()).slice(-2);
+                var minutes = ('0' + time.getUTCMinutes()).slice(-2);
+                var seconds = ('0' + time.getUTCSeconds()).slice(-2);
+                var year = time.getUTCFullYear();
+
+                pointA = {
+                    wgs84Geometry: {coordinates: [pointA.wgs84Geometry.coordinates[0] + directionVector[0] * directionVectorScalar, pointA.wgs84Geometry.coordinates[1] + directionVector[1] * directionVectorScalar]},
+                    filler: true,
+                    dateBegin: year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds + '+00:00'
+                }
+                route.points.push(pointA);
+            }
+
+
+            /*
             var timeSincePointA = 0;
             while ((datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin)) > this.fillerDistance) {
 
                 timeSincePointA = timeSincePointA + this.fillerDistance;
-                var directionVector = [pointB.wgs84Geometry.coordinates[0] - pointA.wgs84Geometry.coordinates[0], pointB.wgs84Geometry.coordinates[1] - pointA.wgs84Geometry.coordinates[1]];
                 var pointTimeDifference = datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin);
                 var directionVectorScalar = timeSincePointA / pointTimeDifference;
 
@@ -79,6 +103,7 @@ Player.prototype.addRoute = function (route) {
                 }
                 route.points.push(pointA);
             }
+            */
         }
         route.points.push(orig[orig.length - 1]);
     }

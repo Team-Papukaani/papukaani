@@ -63,7 +63,7 @@ Player.prototype.addRoute = function (route) {
 
             for (var j = 0; j < slice - 1; j++) {
 
-                var time = new Date((datetimestringToUnixtime(pointA.dateBegin) + this.fillerDistance * (j + 1)) * 1000);
+                var time = new Date((datetimestringToUnixtime(pointA.dateBegin) + this.fillerDistance) * 1000);
                 var day = ('0' + time.getUTCDate()).slice(-2);
                 var month = ('0' + (time.getUTCMonth() + 1)).slice(-2);
                 var hours = ('0' + time.getUTCHours()).slice(-2);

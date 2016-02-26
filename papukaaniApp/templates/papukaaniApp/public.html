@@ -77,6 +77,8 @@
         </div>
     </div>
 
+    {% include "papukaaniApp/include_scripts.html" %}
+
     <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
@@ -85,16 +87,16 @@
     <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-addon.js' %}"></script>
     {% trans "fi" as lang %}
-    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/locale/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
-    <script src="{% static 'papukaani/js/utils/locale/datepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/polylineAnimate.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/player.js' %}"></script>
     <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
     <script src="{% static 'papukaani/js/public.js' %}"></script>
-    <script src="{% url 'javascript-catalog' %}"></script>
+
 
     {% if display_navigation %}
         <div class="choose_actions form-inline padded2">

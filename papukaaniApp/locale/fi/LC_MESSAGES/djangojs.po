@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-24 13:02+0200\n"
+"POT-Creation-Date: 2016-02-26 10:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: papukaaniApp/static/papukaani/js/choose.js:26
+msgid "Virheellinen aikaformaatti!"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/choose.js:128
+msgid "Lämpötila"
+msgstr "Lämpötila"
+
+#: papukaaniApp/static/papukaani/js/choose.js:160
+msgid "Tallennetaan..."
+msgstr "Tallennetaan..."
+
+#: papukaaniApp/static/papukaani/js/choose.js:230
+msgid "Valmis!"
+msgstr "Valmis!"
+
+#: papukaaniApp/static/papukaani/js/choose.js:232
+msgid "Tapahtui virhe!"
+msgstr "Tapahtui virhe!"
 
 #: papukaaniApp/static/papukaani/js/devices.js:27
 msgid "Irroita"
@@ -58,26 +78,42 @@ msgstr "Päivämäärä ei määritelty! "
 msgid "Lintua ei määritelty! "
 msgstr "Lintua ei määritelty! "
 
-#: papukaaniApp/static/papukaani/js/map.js:25
+#: papukaaniApp/static/papukaani/js/map.js:27
 msgid "Maailmankartta"
 msgstr "Maailmankartta"
 
-#: papukaaniApp/static/papukaani/js/map.js:26
+#: papukaaniApp/static/papukaani/js/map.js:28
 msgid "Topografia"
 msgstr "Topografia"
 
-#: papukaaniApp/static/papukaani/js/map.js:27
+#: papukaaniApp/static/papukaani/js/map.js:29
 msgid "Maanmittauslaitos"
 msgstr "Maanmittauslaitos"
 
-#: papukaaniApp/static/papukaani/js/map.js:28
+#: papukaaniApp/static/papukaani/js/map.js:30
 msgid "Satelliitti"
 msgstr "Satelliitti"
 
-#: papukaaniApp/static/papukaani/js/map.js:37
+#: papukaaniApp/static/papukaani/js/map.js:34
 msgid "Eliömaakunnat"
 msgstr "Eliömaakunnat"
 
-#: papukaaniApp/static/papukaani/js/public.js:138
+#: papukaaniApp/static/papukaani/js/public.js:137
 msgid "fi"
 msgstr "fi"
+
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
+msgid "Tietoja ladataan"
+msgstr "Tietoja ladataan"
+
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
+msgid "Valitse lähetin"
+msgstr "Valitse lähetin"
+
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:140
+msgid "Valitse"
+msgstr "Valitse"
+
+#: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"

@@ -26,7 +26,7 @@ function DeviceSorter(restUrl) {
 DeviceSorter.prototype.changeDeviceSelection = function (deviceId) {
     if (deviceId != 'None') {
         var messagebox = $("#loading");
-        messagebox.text(gettext("Tietoja ladataan..."));
+        messagebox.text(gettext('Tietoja ladataan') + "...");
         lockButtons();
         request = new XMLHttpRequest;
         var path = this.requestPath(deviceId);

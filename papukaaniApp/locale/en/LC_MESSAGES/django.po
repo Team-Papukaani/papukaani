@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-24 12:30+0200\n"
+"POT-Creation-Date: 2016-02-26 10:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "The page you are looking for does not exist."
 #: papukaaniApp/templates/base.html:6
 #: papukaaniApp/templates/papukaaniApp/choose.html:76
 #: papukaaniApp/templates/papukaaniApp/devices.html:68
-#: papukaaniApp/templates/papukaaniApp/public.html:87
+#: papukaaniApp/templates/papukaaniApp/public.html:89
 msgid "fi"
 msgstr "en"
 
@@ -247,7 +247,7 @@ msgid "URL ruotsinkieliseen kuvaukseen"
 msgstr "URL to Swedish description"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:45
-#: papukaaniApp/templates/papukaaniApp/public.html:107
+#: papukaaniApp/templates/papukaaniApp/public.html:110
 msgid "Luo"
 msgstr "Create"
 
@@ -418,11 +418,11 @@ msgstr "Authentication failed!"
 
 #: papukaaniApp/views/upload_views.py:37
 msgid "Tiedostosi formaatti ei ole kelvollinen!"
-msgstr "The format of your file is invalid!"
+msgstr "Invalid file format!"
 
 #: papukaaniApp/views/upload_views.py:41
 msgid "Tiedoston lataus onnistui!"
-msgstr "File upload succeeded!"
+msgstr "Upload successful!"
 
 #: papukaaniApp/views/upload_views.py:44
 msgid "Et valinnut ladattavaa tiedostoa!"

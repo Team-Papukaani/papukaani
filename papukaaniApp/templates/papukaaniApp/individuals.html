@@ -30,7 +30,6 @@
 
         <select class="form-control combobox" name="taxon" id="new_individual_taxon">
             <option value="">{% trans "Laji" %}</option>
-
             {% for s in species %}
                 <option value="{{ s.id }}">{{ s.name }}</option>
             {% endfor %}
@@ -75,8 +74,7 @@
             <button type="submit" name="modify" value="1" class="btn btn-default">{% trans "Tallenna" %}</button>
             <button type="button" name="modify2" class="btn btn-info btn-cons" data-toggle="modal"
                     data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
-            <button type="button" name="delete" onclick="confirm(this.form)"
-                    class="btn btn-danger">{% trans "Poista" %}</button>
+            <button type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
             <div id="{{ individual.id }}" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 10:06+0200\n"
+"POT-Creation-Date: 2016-02-26 12:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,13 +98,14 @@ msgstr "Satelliitti"
 msgid "Eliömaakunnat"
 msgstr "Eliömaakunnat"
 
-#: papukaaniApp/static/papukaani/js/public.js:137
-msgid "fi"
-msgstr "fi"
-
+#: papukaaniApp/static/papukaani/js/public.js:20
 #: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
 msgid "Tietoja ladataan"
 msgstr "Tietoja ladataan"
+
+#: papukaaniApp/static/papukaani/js/public.js:137
+msgid "fi"
+msgstr "fi"
 
 #: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
 msgid "Valitse lähetin"

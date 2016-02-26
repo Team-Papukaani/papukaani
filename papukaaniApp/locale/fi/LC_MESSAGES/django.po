@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 10:06+0200\n"
+"POT-Creation-Date: 2016-02-26 12:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,8 +76,8 @@ msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:59
 #: papukaaniApp/templates/papukaaniApp/formats.html:134
-#: papukaaniApp/templates/papukaaniApp/individuals.html:65
-#: papukaaniApp/templates/papukaaniApp/individuals.html:89
+#: papukaaniApp/templates/papukaaniApp/individuals.html:74
+#: papukaaniApp/templates/papukaaniApp/individuals.html:106
 msgid "Tallenna"
 msgstr ""
 
@@ -206,75 +206,76 @@ msgstr ""
 msgid "Luo lintu"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:28
-#: papukaaniApp/templates/papukaaniApp/individuals.html:56
+#: papukaaniApp/templates/papukaaniApp/individuals.html:29
+#: papukaaniApp/templates/papukaaniApp/individuals.html:62
 msgid "Nimi"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:38
-msgid "Englanninkielinen Kuvaus"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:32
+#: papukaaniApp/templates/papukaaniApp/individuals.html:68
+msgid "Laji"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:39
-msgid "Suomenkielinen Kuvaus"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:40
-#: papukaaniApp/templates/papukaaniApp/individuals.html:81
-msgid "Ruotsinkielinen kuvaus"
+msgid "Englanninkielinen Kuvaus"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:41
-#: papukaaniApp/templates/papukaaniApp/individuals.html:83
-msgid "URL englanninkieliseen kuvaukseen"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:42
-#: papukaaniApp/templates/papukaaniApp/individuals.html:85
-msgid "URL suomenkieliseen kuvaukseen"
+msgid "Suomenkielinen Kuvaus"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:43
-#: papukaaniApp/templates/papukaaniApp/individuals.html:87
-msgid "URL ruotsinkieliseen kuvaukseen"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:93
+msgid "Ruotsinkielinen kuvaus"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:45
+#: papukaaniApp/templates/papukaaniApp/individuals.html:96
+msgid "URL englanninkieliseen kuvaukseen"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:47
+#: papukaaniApp/templates/papukaaniApp/individuals.html:99
+msgid "URL suomenkieliseen kuvaukseen"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:49
+#: papukaaniApp/templates/papukaaniApp/individuals.html:102
+msgid "URL ruotsinkieliseen kuvaukseen"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:51
 #: papukaaniApp/templates/papukaaniApp/public.html:110
 msgid "Luo"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:48
+#: papukaaniApp/templates/papukaaniApp/individuals.html:54
 msgid "Muokkaa lintua"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:57
+#: papukaaniApp/templates/papukaaniApp/individuals.html:64
 msgid "Rengastunnus"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:58
-msgid "Laji"
-msgstr ""
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:66
-#: papukaaniApp/templates/papukaaniApp/individuals.html:73
+#: papukaaniApp/templates/papukaaniApp/individuals.html:76
+#: papukaaniApp/templates/papukaaniApp/individuals.html:83
 msgid "Muokkaa kuvauksia"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:67
+#: papukaaniApp/templates/papukaaniApp/individuals.html:77
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:16
 msgid "Poista"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:77
+#: papukaaniApp/templates/papukaaniApp/individuals.html:87
 msgid "Englanninkielinen kuvaus"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:79
+#: papukaaniApp/templates/papukaaniApp/individuals.html:90
 msgid "Suomenkielinen kuvaus"
 msgstr ""
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:93
+#: papukaaniApp/templates/papukaaniApp/individuals.html:111
 msgid "Sulje"
 msgstr ""
 
@@ -330,6 +331,11 @@ msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/public.html:51
 msgid "Päivitä "
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/public.html:68
+#: papukaaniApp/templates/papukaaniApp/public.html:71
+msgid "Nopeus"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:19

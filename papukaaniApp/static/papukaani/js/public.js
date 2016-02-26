@@ -17,7 +17,7 @@ function IndividualSorter(restUrl, individuals, species, map) {
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
     var messagebox = $("#loading");
-    messagebox.text("Tietoja ladataan...");
+    messagebox.text(gettext('Tietoja ladataan') + "...");
     lockButtons();
     request = new XMLHttpRequest;
     var path = this.restUrl + individualId + "&format=json";

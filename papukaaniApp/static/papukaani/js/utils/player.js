@@ -78,37 +78,10 @@ Player.prototype.addRoute = function (route) {
                 }
                 route.points.push(pointA);
             }
-
-
-            /*
-            var timeSincePointA = 0;
-            while ((datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin)) > this.fillerDistance) {
-
-                timeSincePointA = timeSincePointA + this.fillerDistance;
-                var pointTimeDifference = datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin);
-                var directionVectorScalar = timeSincePointA / pointTimeDifference;
-
-                var time = new Date((datetimestringToUnixtime(pointA.dateBegin) + this.fillerDistance) * 1000);
-                var day = ('0' + time.getUTCDate()).slice(-2);
-                var month = ('0' + (time.getUTCMonth() + 1)).slice(-2);
-                var hours = ('0' + time.getUTCHours()).slice(-2);
-                var minutes = ('0' + time.getUTCMinutes()).slice(-2);
-                var seconds = ('0' + time.getUTCSeconds()).slice(-2);
-                var year = time.getUTCFullYear();
-
-                pointA = {
-                    wgs84Geometry: {coordinates: [pointA.wgs84Geometry.coordinates[0] + directionVector[0] * directionVectorScalar, pointA.wgs84Geometry.coordinates[1] + directionVector[1] * directionVectorScalar]},
-                    filler: true,
-                    dateBegin: year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds + '+00:00'
-                }
-                route.points.push(pointA);
-            }
-            */
         }
         route.points.push(orig[orig.length - 1]);
     }
     route.pointer = 0;
-
     route.featureGroup = L.featureGroup();
     route.featureGroup.addTo(this.map);
     route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"})];
@@ -125,7 +98,6 @@ Player.prototype.addRoute = function (route) {
     });
 
     this.routes.push(route);
-    this.refreshRoutes();
 }
 
 Player.prototype.removeRoute = function (route) {
@@ -244,7 +216,6 @@ Player.prototype.drawRoutes = function (animate) {
                     route.lines[++newestPolylineIndex].addTo(route.featureGroup);
                 }
                 route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);
-                route.marker.setLatLng([coordinates[1], coordinates[0]]);
             }
             ++route.pointer;
             if (pointCount > route.pointer) {
@@ -252,6 +223,9 @@ Player.prototype.drawRoutes = function (animate) {
                 dateBegin = datetimestringToUnixtime(point.dateBegin);
             }
         }
+        --route.pointer;
+        var coordinates = point.wgs84Geometry.coordinates;
+        route.marker.setLatLng([coordinates[1], coordinates[0]]);
     }
 }
 

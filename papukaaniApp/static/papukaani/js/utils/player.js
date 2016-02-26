@@ -2,7 +2,7 @@ function Player(map) {
     this.map = map;
     this.routes = [];
     this.animating = false;
-    this.fillerDistance = 3600; // time in seconds between fake points of data for smoother animation
+    this.fillerDistance = 360; // time in seconds between fake points of data for smoother animation
     this.slider = $("#playSlider");
     this.slider.slider({
         range: "min",
@@ -111,7 +111,7 @@ Player.prototype.addRoute = function (route) {
 
     route.featureGroup = L.featureGroup();
     route.featureGroup.addTo(this.map);
-    route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2})];
+    route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"})];
     route.lines[0].addTo(route.featureGroup);
 
     var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;
@@ -207,7 +207,7 @@ Player.prototype.run = function () {
             that.play();
             that.slider.slider("option", "value", that.slider.slider("option", "max"));
         } else {
-            var step = Math.round((that.slider.slider("option", "max") - that.slider.slider("option", "min")) / 300);
+            var step = Math.round((that.slider.slider("option", "max") - that.slider.slider("option", "min")) / 3000);
             that.slider.slider("option", "value", that.slider.slider("option", "value") + step);
         }
     }, that.speedslider.slider("option", "max") - that.speedslider.slider("option", "value") + that.speedslider.slider("option", "min"));
@@ -222,7 +222,7 @@ Player.prototype.drawRoutes = function (animate) {
 
     for (var i = 0, len = this.routes.length; i < len; i++) {
         var route = this.routes[i];
-        var routeLinesIndex = route.lines.length - 1;
+        var newestPolylineIndex = route.lines.length - 1;
         var pointCount = route.points.length;
         if (pointCount <= route.pointer) continue;
         var point = route.points[route.pointer];
@@ -233,17 +233,17 @@ Player.prototype.drawRoutes = function (animate) {
         while (pointCount > route.pointer && dateBegin <= options.value) {
             var coordinates = point.wgs84Geometry.coordinates;
             if (dateBegin >= options.min && dateBegin <= options.max) {
-                if (route.pointer % 20 === 0) {
-                    for (var r = routeLinesIndex; r >= 0; r--) {
-                        var opacity = 1 - (routeLinesIndex - r + 1) * 0.1;
+                if (route.pointer % 10 === 0) {
+                    for (var r = newestPolylineIndex; r >= 0; r--) {
+                        var opacity = 1 - (newestPolylineIndex - r + 1) * 0.1;
                         if (opacity < 0.3) break;
-                        route.lines[routeLinesIndex].setStyle({opacity: opacity});
+                        route.lines[r].setStyle({opacity: opacity});
                     }
-                    route.lines[routeLinesIndex].addLatLng([coordinates[1], coordinates[0]]);
-                    route.lines.push(L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2}));
-                    route.lines[++routeLinesIndex].addTo(route.featureGroup);
+                    route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);
+                    route.lines.push(L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"}));
+                    route.lines[++newestPolylineIndex].addTo(route.featureGroup);
                 }
-                route.lines[routeLinesIndex].addLatLng([coordinates[1], coordinates[0]]);
+                route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);
                 route.marker.setLatLng([coordinates[1], coordinates[0]]);
             }
             ++route.pointer;
@@ -257,7 +257,7 @@ Player.prototype.drawRoutes = function (animate) {
 
 Player.prototype.clearRoute = function (route) {
     route.featureGroup.clearLayers();
-    route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2})];
+    route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"})];
     route.lines[0].addTo(route.featureGroup);
     route.pointer = 0;
     var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;

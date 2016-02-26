@@ -6,6 +6,7 @@
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/individuals.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.css' %}">
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -22,11 +23,11 @@
 
     <h1>{% trans "Luo lintu" %}</h1>
 
-    <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
+    <form id="new_individual_form" data-toggle="validator" class="form-inline" action='{% url "individuals" %}' method="post">
         {% csrf_token %}
 
         <input class="form-control" type="text" name="nickname" id="new_individual_nickname"
-               placeholder="{% trans "Nimi" %}"/>
+               placeholder="{% trans "Nimi" %}" required/>
 
         <select class="form-control combobox" name="taxon" id="new_individual_taxon">
             <option value="">{% trans "Laji" %}</option>
@@ -75,44 +76,52 @@
             <button type="button" name="modify2" class="btn btn-info btn-cons" data-toggle="modal"
                     data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
             <button type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
-            <div id="{{ individual.id }}" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">{% trans "Muokkaa kuvauksia" %}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal" name="modify_description">
-                                <label>{% trans "Englanninkielinen kuvaus" %}</label>
-                                <input class="form-control" id="desen" type="textarea" name="descriptionEN"
-                                       style="width:80%" value="{{ individual.description.en }}"/><br>
-                                <label>{% trans "Suomenkielinen kuvaus" %}</label>
-                                <input class="form-control" id="dessv" type="textarea" name="descriptionFI"
-                                       style="width:80%" value="{{ individual.description.fi }}"/><br>
-                                <label>{% trans "Ruotsinkielinen kuvaus" %}</label>
-                                <input class="form-control" id="dessv" type="textarea" name="descriptionSV"
-                                       style="width:80%" value="{{ individual.description.sv }}"/><br>
-                                <label>{% trans "URL englanninkieliseen kuvaukseen" %}</label>
-                                <input class="form-control" id="desenurl" name="descriptionUrlEN" type="url"
-                                       style="width:80%" value="{{ individual.descriptionURL.en }}"/><br>
-                                <label>{% trans "URL suomenkieliseen kuvaukseen" %}</label>
-                                <input class="form-control" id="desfiurl" name="descriptionUrlFI" type="url"
-                                       style="width:80%" value="{{ individual.descriptionURL.fi }}"/><br>
-                                <label>{% trans "URL ruotsinkieliseen kuvaukseen" %}</label>
-                                <input class="form-control" id="dessvurl" name="descriptionUrlSV" type="url"
-                                       style="width:80%" value="{{ individual.descriptionURL.sv }}"/><br>
-                                <button id="confirm_modify" type="submit" name="modify" value="1"
-                                        class="btn btn-default">{% trans "Tallenna" %}</button>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="confirm_close" type="button" class="btn btn-default"
-                                    data-dismiss="modal">{% trans "Sulje" %}</button>
-                        </div>
-                    </div>
+     <div class="modal fade bd-example-modal-lg" id="{{ individual.id }}" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">KUVAUKSET</h4>
+          </div>
+          <div class="modal-body">
+            <div class="tabbable">
+              <!-- Only required for left/right tabs -->
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1" data-toggle="tab">EN KUVAUS</a></li>
+                <li><a href="#tab2" data-toggle="tab">FI KUVAUS</a></li>
+                <li><a href="#tab3" data-toggle="tab">SV KUVAUS</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
+                  <textarea name="descriptionEN">{{ individual.description.en }}</textarea>
+                  <p>EN URL</p>
+                  <input class="form-control" name="descriptionUrlEN" type="url"
+                                       style="width:100%" value="{{ individual.descriptionURL.en }}"/>
                 </div>
+                <div class="tab-pane" id="tab2">
+                  <textarea name="descriptionFI">{{ individual.description.fi }}</textarea>
+                  <p>FN URL</p>
+                    <input class="form-control" name="descriptionUrlFI" type="url"
+                           style="width:100%" value="{{ individual.descriptionURL.fi }}"/><br>
+                </div>
+                <div class="tab-pane" id="tab3">
+                  <textarea name="descriptionSV">{{ individual.description.sv }}</textarea>
+                  <p>SV URL</p>
+                    <input class="form-control" name="descriptionUrlSV" type="url"
+                         style="width:100%" value="{{ individual.descriptionURL.sv }}"/><br>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn btn-primary">TALLENNA</button>  -->
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
         </form>
         <br>
     {% endfor %}

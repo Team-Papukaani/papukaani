@@ -135,7 +135,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
 
         var lang = gettext('fi');
-        if (lang != 'fi' && (taxon.description[lang] == null || taxon.description[lang] == "")) {
+        if (lang != 'fi' && taxon.description != null && (taxon.description[lang] == null || taxon.description[lang] == "")) {
             lang = 'fi';
         }
         var e = '<li id="individual' + individualId + '">';

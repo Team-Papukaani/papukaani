@@ -67,10 +67,10 @@ class TestDevice(TestCase):
         A, B = self._create_individuals()
         self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
         self.d.attach_to(B.id, "2015-10-10T10:10:10+00:00")
-        individuals = self.d.get_individuals_for_device()
+        attachments = self.d.get_attachments()
 
-        self.assertEquals(len(individuals), 1)
-        self.assertTrue(individuals[0]["removed"] is None)
+        self.assertEquals(len(attachments), 1)
+        self.assertTrue(attachments[0]["removed"] is None)
 
         self._delete_individuals([A, B])
 
@@ -88,7 +88,7 @@ class TestDevice(TestCase):
         A, B = self._create_individuals()
         self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
         self.d.detach_from(A.id, "2015-10-10T10:10:10+00:00")
-        individuals = self.d.get_individuals_for_device()
+        individuals = self.d.get_attachments()
         self.assertEquals(len(individuals), 1)
         self.assertTrue(individuals[0]["removed"] is not None)
 
@@ -107,7 +107,7 @@ class TestDevice(TestCase):
         self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
         self.d.detach_from(A.id, "2015-10-10T10:10:10+00:01")
         self.d.attach_to(B.id, "2015-10-10T10:10:10+00:02")
-        individuals = self.d.get_individuals_for_device()
+        individuals = self.d.get_attachments()
         self.assertEquals(len(individuals), 2)
 
         self._delete_individuals([A, B])

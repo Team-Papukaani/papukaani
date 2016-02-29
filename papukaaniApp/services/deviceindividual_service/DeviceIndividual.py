@@ -18,8 +18,8 @@ def attach(deviceID, individualID, timestamp):
     :param individualID:  individual.id
     :param timestamp: time of attachment e.g.'2016-02-11T09:45:58+00:00'
     '''
-    if get_attached_individual(deviceID) is None:
-        if get_attached_device(individualID) is None:
+    if get_active_attachment_of_device(deviceID) is None:
+        if get_active_attachment_of_individual(individualID) is None:
             LajiStoreAPI.post_deviceindividual(
                 deviceID=deviceID,
                 individualID=individualID,
@@ -43,43 +43,27 @@ def detach(deviceID, individualID, timestamp):
             LajiStoreAPI.update_deviceindividual(**attachment)
 
 
-def get_attached_individual(deviceID):
-    '''
-        Return currently attached individuals id or None for not currently attached
-        :return: ID or None
-    '''
-    attachments = get_individuals_for_device(deviceID)
+def get_active_attachment_of_device(deviceID):
+    attachments = get_attachments_of_device(deviceID)
     for attachment in attachments:
         if attachment["removed"] is None:
             return attachment
     return None
 
-def get_attached_device(individualID):
-    '''
-        Return currently attached devices id or None for not currently attached
-        :return: ID or None
-    '''
-    attachments = get_devices_for_individual(individualID)
+def get_active_attachment_of_individual(individualID):
+    attachments = get_attachments_of_individual(individualID)
     for attachment in attachments:
         if attachment["removed"] is None:
             return attachment
     return None
 
 
-def get_devices_for_individual(individualID):
-    '''
-        Return all attached devices for individual
-        :return: List of attachments
-    '''
+def get_attachments_of_individual(individualID):
     individualID = '"' + _URL + _INDIVIDUAL_PATH + "/" + individualID + '"'
     return find(individualID=individualID)
 
 
-def get_individuals_for_device(deviceID):
-    '''
-        Return all attached inviduals for device
-        :return: List of attachments
-    '''
+def get_attachments_of_device(deviceID):
     deviceID = '"' + _URL + _DEVICE_PATH + "/" + deviceID + '"'
     return find(deviceID=deviceID)
 

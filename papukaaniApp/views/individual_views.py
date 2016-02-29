@@ -4,11 +4,13 @@ from django.shortcuts import render
 
 from papukaaniApp.models_LajiStore import individual
 from papukaaniApp.models_TipuApi import species
+from papukaaniApp.views.decorators import count_lajistore_requests
 
 from django.contrib import messages
 
 from django.utils.translation import ugettext_lazy as _
 
+@count_lajistore_requests
 @require_auth
 def individuals(request):
     """

@@ -4,25 +4,24 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
+from papukaaniApp.views.decorators import count_lajistore_requests
 
-
+@count_lajistore_requests
 @require_auth
 def devices(request):
     devices = device.find()
     devices.sort(key=lambda x: x.id)
     individuals = individual.find_exclude_deleted()
 
-    # Directory, where key is deviceId and value is an array of individual data
-    individuals_of_devices = {dev.id: dev.get_individuals_for_device() for dev in devices}
+    attachments_of_devices = {dev.id: dev.get_attachments() for dev in devices}
 
-    # Directory, where key is individualId and value is it's name (taxon)
     individual_names = {indiv.id: indiv.nickname for indiv in individuals}
 
     context = {
-        'selection': individuals,
+        'individuals': individuals,
         'devices': devices,
-        'device_json': json.dumps(individuals_of_devices),
-        'individual_json': json.dumps(individual_names)
+        'attachments_of_devices': json.dumps(attachments_of_devices),
+        'individual_names': json.dumps(individual_names)
     }
 
     return render(request, 'papukaaniApp/devices.html', context)
@@ -31,6 +30,7 @@ def devices(request):
 _RESPONSE_BASE = {"errors": [], "status": ""}
 
 
+@count_lajistore_requests
 @api_view(['POST'])
 @require_auth
 def attach_to(request, device_id):
@@ -52,6 +52,7 @@ def attach_to(request, device_id):
     return Response(response)
 
 
+@count_lajistore_requests
 @api_view(['POST'])
 @require_auth
 def remove_from(request, device_id):

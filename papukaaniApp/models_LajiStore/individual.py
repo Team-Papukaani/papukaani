@@ -38,23 +38,24 @@ class Individual:
         Get all public gatherings related to this individual.
         :return: a list of gatherings
         '''
-        devices = DeviceIndividual.get_devices_for_individual(self.id)
+        attachments = DeviceIndividual.get_attachments_of_individual(self.id)
 
         gatherings = []
-        for d in devices:
-            timeranges = [(d["attached"], d["removed"])]
-            docs = document.find(deviceID=d["deviceID"])
-            self._filter_gatherings_by_timeranges(docs, gatherings, timeranges)
+        for a in attachments:
+            timerange = (a["attached"], a["removed"])
+            dev_docs = document.find(deviceID=a["deviceID"])
+            self._filter_gatherings_by_timerange(dev_docs, timerange, gatherings)
         return gatherings
 
-    def _filter_gatherings_by_timeranges(self, docs, gatherings, timeranges):
+    def _filter_gatherings_by_timerange(self, docs, timerange, gatherings_accumulator):
         for doc in docs:
             for g in doc.gatherings:
-                for tr in timeranges:
-                    if _timestamp_to_datetime(tr[0]) <= _timestamp_to_datetime(g.dateBegin) <= (_timestamp_to_datetime(
-                            tr[1]) if tr[1] else timezone.now()) and g.publicityRestrictions == "MZ.publicityRestrictionsPublic":
-                        gatherings.append(g)
-
+                start = _timestamp_to_datetime(timerange[0])
+                end = _timestamp_to_datetime(timerange[1]) if timerange[1] else timezone.now()
+                gBegin = _timestamp_to_datetime(g.dateBegin)
+                pubOk = g.publicityRestrictions == "MZ.publicityRestrictionsPublic"
+                if (start <= gBegin <= end) and pubOk:
+                    gatherings_accumulator.append(g)
 
 def _timestamp_to_datetime(timestamp):
     timestamp = timestamp[:-3] + timestamp[-2:]

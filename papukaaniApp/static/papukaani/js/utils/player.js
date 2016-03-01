@@ -13,6 +13,7 @@ function Player(map) {
         paddingMax: 7,
 
         slide: function (event, ui) {
+            /*
             if (this.runner) {
                 clearInterval(this.runner);
             }
@@ -23,6 +24,7 @@ function Player(map) {
             if (this.runner) {
                 this.run();
             }
+            */
         }.bind(this),
         change: function (event, ui) {
             $('#playLabel').html(new Date(ui.value * 1000).toLocaleString());
@@ -202,10 +204,28 @@ Player.prototype.drawRoutes = function (animate) {
         if (dateBegin > options.max) continue;
         this.animating = true;
 
+
+        while (dateBegin > options.value) {
+            route.pointer -= 10;
+
+            if (route.pointer < 0) {
+                route.pointer = 0;
+                break;
+            }
+
+            route.featureGroup.removeLayer(route.lines.pop());
+            newestPolylineIndex--;
+
+            point = route.points[route.pointer];
+            dateBegin = datetimestringToUnixtime(point.dateBegin);
+        }
+
+        console.log(route.pointer + " " + dateBegin + " " + options.value);
+
         while (pointCount > route.pointer && dateBegin <= options.value) {
             var coordinates = point.wgs84Geometry.coordinates;
             if (dateBegin >= options.min && dateBegin <= options.max) {
-                if (route.pointer % 10 === 0) {
+                if (route.pointer % 10 === 0 && Math.floor(route.pointer / 10) === newestPolylineIndex + 1) {
                     for (var r = newestPolylineIndex; r >= 0; r--) {
                         var opacity = 1 - (newestPolylineIndex - r + 1) * 0.1;
                         if (opacity < 0.3) break;
@@ -223,8 +243,8 @@ Player.prototype.drawRoutes = function (animate) {
                 dateBegin = datetimestringToUnixtime(point.dateBegin);
             }
         }
-        --route.pointer;
-        var coordinates = point.wgs84Geometry.coordinates;
+        route.pointer = route.pointer > 0 ? route.pointer - 1 : 0;
+        var coordinates = route.points[route.pointer].wgs84Geometry.coordinates;
         route.marker.setLatLng([coordinates[1], coordinates[0]]);
     }
 }

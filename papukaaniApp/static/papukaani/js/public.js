@@ -109,7 +109,7 @@ ColorChart.prototype.getColor = function (individualId) {
     }
     if (!color) {
         color = (Math.random() * 0xFFFFFF << 0).toString(16);
-        color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
+        color = "#" + ("000000" + color).slice(-6); // ensure color is always six hexadecimals long
     }
     this.colors.push({color: color, individualId: individualId});
     return color;

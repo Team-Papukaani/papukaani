@@ -13,18 +13,10 @@ function Player(map) {
         paddingMax: 7,
 
         slide: function (event, ui) {
-            /*
-            if (this.runner) {
-                clearInterval(this.runner);
-            }
-            for (var i = 0, len = this.routes.length; i < len; i++) {
-                this.clearRoute(this.routes[i]);
-            }
+            if (this.lastEdit) return;
+            this.lastEdit = true;
             this.drawRoutes(true);
-            if (this.runner) {
-                this.run();
-            }
-            */
+            this.lastEdit = false;
         }.bind(this),
         change: function (event, ui) {
             $('#playLabel').html(new Date(ui.value * 1000).toLocaleString());
@@ -153,7 +145,6 @@ Player.prototype.updateMinMax = function () {
 
 Player.prototype.play = function () {
     if (this.routes.length === 0) {
-        this.stop();
         return;
     }
     if (this.runner) {
@@ -176,13 +167,14 @@ Player.prototype.run = function () {
     var that = this;
     this.runner = setInterval(function () {
         that.drawRoutes();
+        var options = that.slider.slider("option");
         if (!that.animating) {
-            clearInterval(that.runner);
-            that.play();
-            that.slider.slider("option", "value", that.slider.slider("option", "max"));
+            that.play(); // pausee
+            that.slider.slider("option", "value", options.max);
         } else {
-            var step = Math.round((that.slider.slider("option", "max") - that.slider.slider("option", "min")) / 3000);
-            that.slider.slider("option", "value", that.slider.slider("option", "value") + step);
+            var step = Math.round((options.max - options.min) / 3000);
+            step = Math.max(Math.min(step,options.max-options.value),1);
+            that.slider.slider("option", "value", options.value + step);
         }
     }, that.speedslider.slider("option", "max") - that.speedslider.slider("option", "value") + that.speedslider.slider("option", "min"));
 }
@@ -202,6 +194,7 @@ Player.prototype.drawRoutes = function (animate) {
         var point = route.points[route.pointer];
         var dateBegin = datetimestringToUnixtime(point.dateBegin);
         if (dateBegin > options.max) continue;
+        if (options.value > options.max) continue;
         this.animating = true;
 
 
@@ -220,7 +213,6 @@ Player.prototype.drawRoutes = function (animate) {
             dateBegin = datetimestringToUnixtime(point.dateBegin);
         }
 
-        console.log(route.pointer + " " + dateBegin + " " + options.value);
 
         while (pointCount > route.pointer && dateBegin <= options.value) {
             var coordinates = point.wgs84Geometry.coordinates;

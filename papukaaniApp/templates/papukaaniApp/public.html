@@ -22,6 +22,33 @@
         {% include "papukaaniApp/navigation.html" %}
     {% endif %}
 
+    <div id="map" class="largeMap" tabindex="1">
+        <div id="in-map">
+            <div id="in-map-slider" class="img-rounded">
+                <div id="playSlider"></div>
+            </div>
+
+            <div id="in-map-control" class="img-rounded">
+                <div class="form-inline">
+                    <button id="play" onclick="player.play()" class="btn btn-default">&#9658;</button>
+
+                    <label id="playLabel">N/A</label>
+
+                    <div id="speedSlider" class="small-slider" data-toggle="tooltip" title="{% trans "Nopeus" %}"
+                         data-placement="top"></div>
+
+                    <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}" alt="{% trans "Nopeus" %}"
+                         width="30"
+                         height="30"/>
+
+                    <label id="playLabel_end"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="choose_actions form-inline padded2">
 
         <div id="birds">
@@ -51,31 +78,23 @@
                     id="show_time_range">{% trans "Päivitä " %}</button>
 
         </form>
-    </div>
 
-    <div id="map" class="largeMap" tabindex="1">
-        <div id="in-map">
-            <div id="in-map-slider" class="img-rounded">
-                <div id="playSlider"></div>
+        <div class="choose_actions form-inline padded2">
+            <div class="input-group">
+                <span class="input-group-addon">iFrame</span>
+                <input class="form-control" type="text" size="100" id="iframeSrc"/>
             </div>
 
-            <div id="in-map-control" class="img-rounded">
-                <div class="form-inline">
-                    <button id="play" onclick="player.play()" class="btn btn-default">&#9658;</button>
-
-                    <label id="playLabel">N/A</label>
-
-                    <div id="speedSlider" class="small-slider" data-toggle="tooltip" title="{% trans "Nopeus" %}"
-                         data-placement="top"></div>
-
-                    <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}" alt="{% trans "Nopeus" %}" width="30"
-                         height="30"/>
-
-                    <label id="playLabel_end"></label>
-                </div>
+            <div class="input-group">
+                <button type="button" class="btn btn-primary" onclick="generateIframeUrl()"
+                        id="generateIframeButton">{% trans "Luo" %}</button>
             </div>
         </div>
     </div>
+
+
+
+
 
     {% include "papukaaniApp/include_scripts.html" %}
 
@@ -98,17 +117,4 @@
     <script src="{% static 'papukaani/js/public.js' %}"></script>
 
 
-    {% if display_navigation %}
-        <div class="choose_actions form-inline padded2">
-            <div class="input-group">
-                <span class="input-group-addon">iFrame</span>
-                <input class="form-control" type="text" size="100" id="iframeSrc"/>
-            </div>
-
-            <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="generateIframeUrl()"
-                        id="generateIframeButton">{% trans "Luo" %}</button>
-            </div>
-        </div>
-    {% endif %}
 {% endblock %}

@@ -4,7 +4,6 @@
 {% load staticfiles %}
 
 {% block header %}
-    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
@@ -17,11 +16,13 @@
     {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
 {% endautoescape %}
 
+{% block footer %}{% endblock %}
+
 {% block content %}
 
     <div class="container-fluid" id="mapContainer">
         <div class="row no-gutters" style="height:100%;">
-            <div class="col-sm-8 col-lg-9" style="height:100%;">
+            <div class="col-sm-12 col-md-9" style="height:100%;">
                 <div id="map" tabindex="1">
 
                     <div id="in-map">
@@ -95,7 +96,7 @@
                     </div>
                 </div>
             </div>
-            <div class="hidden-sm col-lg-3">
+            <div class="hidden-sm col-md-3">
                 <div id="nyheter">
                     <h1>Nyhe
                         34534

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 12:43+0200\n"
+"POT-Creation-Date: 2016-03-03 12:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,7 +45,7 @@ msgid "Tallennetaanko muutokset?"
 msgstr "Save changes?"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:26
-#: papukaaniApp/templates/papukaaniApp/individuals.html:19
+#: papukaaniApp/templates/papukaaniApp/individuals.html:20
 msgid "Kyllä"
 msgstr "Yes"
 
@@ -54,7 +54,7 @@ msgid "Ei"
 msgstr "No"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:28
-#: papukaaniApp/templates/papukaaniApp/individuals.html:20
+#: papukaaniApp/templates/papukaaniApp/individuals.html:21
 msgid "Peruuta"
 msgstr "Cancel"
 
@@ -74,8 +74,7 @@ msgstr "Show points in interval"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:59
 #: papukaaniApp/templates/papukaaniApp/formats.html:134
-#: papukaaniApp/templates/papukaaniApp/individuals.html:74
-#: papukaaniApp/templates/papukaaniApp/individuals.html:106
+#: papukaaniApp/templates/papukaaniApp/individuals.html:64
 msgid "Tallenna"
 msgstr "Save"
 
@@ -205,86 +204,73 @@ msgstr "Temperature"
 msgid "Lämpötila-sarakkeen nimi. Valinnainen kenttä."
 msgstr "The name of the temperature column. Optional field."
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:17
+#: papukaaniApp/templates/papukaaniApp/individuals.html:18
 msgid "Haluatko varmasti poistaa linnun?"
 msgstr "Are you sure you want to delete this bird?"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:23
+#: papukaaniApp/templates/papukaaniApp/individuals.html:24
 msgid "Luo lintu"
 msgstr "Create bird"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:29
-#: papukaaniApp/templates/papukaaniApp/individuals.html:62
+#: papukaaniApp/templates/papukaaniApp/individuals.html:30
+#: papukaaniApp/templates/papukaaniApp/individuals.html:50
 msgid "Nimi"
 msgstr "Name"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:32
-#: papukaaniApp/templates/papukaaniApp/individuals.html:68
+#: papukaaniApp/templates/papukaaniApp/individuals.html:33
+#: papukaaniApp/templates/papukaaniApp/individuals.html:54
 msgid "Laji"
 msgstr "Species"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:39
-msgid "Englanninkielinen Kuvaus"
-msgstr "English description"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:41
-msgid "Suomenkielinen Kuvaus"
-msgstr "Finnish description"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:43
-#: papukaaniApp/templates/papukaaniApp/individuals.html:93
-msgid "Ruotsinkielinen kuvaus"
-msgstr "Swedish description"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:45
-#: papukaaniApp/templates/papukaaniApp/individuals.html:96
-msgid "URL englanninkieliseen kuvaukseen"
-msgstr "URL to English description"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:47
-#: papukaaniApp/templates/papukaaniApp/individuals.html:99
-msgid "URL suomenkieliseen kuvaukseen"
-msgstr "URL to Finnish description"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:49
-#: papukaaniApp/templates/papukaaniApp/individuals.html:102
-msgid "URL ruotsinkieliseen kuvaukseen"
-msgstr "URL to Swedish description"
-
-#: papukaaniApp/templates/papukaaniApp/individuals.html:51
 #: papukaaniApp/templates/papukaaniApp/public.html:110
 msgid "Luo"
 msgstr "Create"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:54
+#: papukaaniApp/templates/papukaaniApp/individuals.html:42
 msgid "Muokkaa lintua"
 msgstr "Edit bird"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:64
+#: papukaaniApp/templates/papukaaniApp/individuals.html:60
 msgid "Rengastunnus"
 msgstr "Ring number"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:76
-#: papukaaniApp/templates/papukaaniApp/individuals.html:83
+#: papukaaniApp/templates/papukaaniApp/individuals.html:63
 msgid "Muokkaa kuvauksia"
 msgstr "Edit descriptions"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:77
+#: papukaaniApp/templates/papukaaniApp/individuals.html:65
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:16
 msgid "Poista"
 msgstr "Delete"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:87
-msgid "Englanninkielinen kuvaus"
-msgstr "English description"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:72
+msgid "KUVAUKSET"
+msgstr "DESCRIPTIONS"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:77
+msgid "ENGLANTI"
+msgstr "ENGLISH"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:78
+msgid "SUOMI"
+msgstr "FINNISH"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:79
+msgid "RUOTSI"
+msgstr "SWEDISH"
+
+#: papukaaniApp/templates/papukaaniApp/individuals.html:84
+msgid "URL englanninkieliseen kuvaukseen"
+msgstr "URL to English description"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:90
-msgid "Suomenkielinen kuvaus"
-msgstr "Finnish description"
+msgid "URL suomenkieliseen kuvaukseen"
+msgstr "URL to Finnish description"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:111
-msgid "Sulje"
-msgstr "Close"
+#: papukaaniApp/templates/papukaaniApp/individuals.html:96
+msgid "URL ruotsinkieliseen kuvaukseen"
+msgstr "URL to Swedish description"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:13
 msgid "Formaatin nimi"
@@ -433,3 +419,21 @@ msgstr "Upload successful!"
 #: papukaaniApp/views/upload_views.py:44
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"
+
+#~ msgid "Englanninkielinen Kuvaus"
+#~ msgstr "English description"
+
+#~ msgid "Suomenkielinen Kuvaus"
+#~ msgstr "Finnish description"
+
+#~ msgid "Ruotsinkielinen kuvaus"
+#~ msgstr "Swedish description"
+
+#~ msgid "Englanninkielinen kuvaus"
+#~ msgstr "English description"
+
+#~ msgid "Suomenkielinen kuvaus"
+#~ msgstr "Finnish description"
+
+#~ msgid "Sulje"
+#~ msgstr "Close"

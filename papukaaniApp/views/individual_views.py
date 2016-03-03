@@ -60,12 +60,12 @@ def _create_individual(request):
 
 def _getDescriptionFields(request):
     descriptionFields = [{}, {}]
-    descriptionFields[0]['en'] = request.POST.get('descriptionEN')
-    descriptionFields[0]['fi'] = request.POST.get('descriptionFI')
-    descriptionFields[0]['sv'] = request.POST.get('descriptionSV')
-    descriptionFields[1]['en'] = request.POST.get('descriptionUrlEN')
-    descriptionFields[1]['fi'] = request.POST.get('descriptionUrlFI')
-    descriptionFields[1]['sv'] = request.POST.get('descriptionUrlSV')
+    descriptionFields[0]['en'] = request.POST.get('descriptionEN') or ""
+    descriptionFields[0]['fi'] = request.POST.get('descriptionFI') or ""
+    descriptionFields[0]['sv'] = request.POST.get('descriptionSV') or ""
+    descriptionFields[1]['en'] = request.POST.get('descriptionUrlEN') or ""
+    descriptionFields[1]['fi'] = request.POST.get('descriptionUrlFI') or ""
+    descriptionFields[1]['sv'] = request.POST.get('descriptionUrlSV') or ""
     return descriptionFields
 
 

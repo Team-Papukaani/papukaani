@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends extended %}
 {% load i18n %}
 
 {% load staticfiles %}
@@ -18,87 +18,105 @@
 {% endautoescape %}
 
 {% block content %}
-    {% if display_navigation %}
-        {% include "papukaaniApp/navigation.html" %}
-    {% endif %}
 
-    <div id="map" class="largeMap" tabindex="1">
-        <div id="in-map">
-            <div id="in-map-slider" class="img-rounded">
-                <div id="playSlider"></div>
+    <div class="container-fluid" id="mapContainer">
+        <div class="row no-gutters" style="height:100%;">
+            <div class="col-sm-8 col-lg-9" style="height:100%;">
+                <div id="map" tabindex="1">
+
+                    <div id="in-map">
+                        <div id="in-map-slider" class="img-rounded">
+                            <div id="playSlider"></div>
+                        </div>
+
+                        <div id="in-map-control" class="img-rounded">
+
+                            <div class="form-inline">
+                                <button id="play" onclick="player.play()" class="btn btn-default">&#9658;</button>
+
+                                <label id="playLabel">N/A</label>
+
+                                <div id="speedSlider" class="small-slider" data-toggle="tooltip"
+                                     title="{% trans "Nopeus" %}"
+                                     data-placement="top"></div>
+
+                                <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}"
+                                     alt="{% trans "Nopeus" %}"
+                                     width="30"
+                                     height="30"/>
+
+                                <label id="playLabel_end"></label>
+                            </div>
+                            <div class="choose_actions form-inline padded2">
+
+                                <div id="birds">
+                                    <ul id="selectIndividual"></ul>
+                                </div>
+
+                                <span id="loading" class="help-block" style="display:inline"></span>
+
+                                <form id="time_range">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">{% trans "Alku:" %}</span>
+                                        <input type="text" id="start_time" name="start_time"
+                                               class="dateinput datepicker form-control"
+                                               onblur="validateDateFormat(this)"
+                                               placeholder="dd-mm-yyyy HH:mm" maxlength="16">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">{% trans "Loppu:" %}</span>
+                                        <input type="text" id="end_time" name="end_time"
+                                               class="dateinput datepicker form-control"
+                                               onblur="validateDateFormat(this)"
+                                               placeholder="dd-mm-yyyy HH:mm" maxlength="16">
+                                    </div>
+
+                                    <span id="formatError" style="margin:0"></span>
+
+                                    <button type="button" class="btn btn-default" onclick="sorter.refresh()"
+                                            id="show_time_range">{% trans "Päivitä " %}</button>
+
+                                </form>
+
+                                <div class="choose_actions form-inline padded2">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">iFrame</span>
+                                        <input class="form-control" type="text" size="100" id="iframeSrc"/>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <button type="button" class="btn btn-primary" onclick="generateIframeUrl()"
+                                                id="generateIframeButton">{% trans "Luo" %}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div id="in-map-control" class="img-rounded">
-                <div class="form-inline">
-                    <button id="play" onclick="player.play()" class="btn btn-default">&#9658;</button>
-
-                    <label id="playLabel">N/A</label>
-
-                    <div id="speedSlider" class="small-slider" data-toggle="tooltip" title="{% trans "Nopeus" %}"
-                         data-placement="top"></div>
-
-                    <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}" alt="{% trans "Nopeus" %}"
-                         width="30"
-                         height="30"/>
-
-                    <label id="playLabel_end"></label>
+            <div class="hidden-sm col-lg-3">
+                <div id="nyheter">
+                    <h1>Nyhe
+                        34534
+                        543534
+                        543
+                        5345
+                        43534
+                        5435345345
+                        435435
+                        435
+                        435
+                        435
+                        435
+                        435435ter</h1>a sdfasf
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <div class="choose_actions form-inline padded2">
-
-        <div id="birds">
-            <ul id="selectIndividual"></ul>
-        </div>
-
-        <span id="loading" class="help-block" style="display:inline"></span>
-
-        <form id="time_range">
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">{% trans "Alku:" %}</span>
-                <input type="text" id="start_time" name="start_time" class="dateinput datepicker form-control"
-                       onblur="validateDateFormat(this)"
-                       placeholder="dd-mm-yyyy HH:mm" maxlength="16">
-            </div>
-
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">{% trans "Loppu:" %}</span>
-                <input type="text" id="end_time" name="end_time" class="dateinput datepicker form-control"
-                       onblur="validateDateFormat(this)"
-                       placeholder="dd-mm-yyyy HH:mm" maxlength="16">
-            </div>
-
-            <span id="formatError" style="margin:0"></span>
-
-            <button type="button" class="btn btn-default" onclick="sorter.refresh()"
-                    id="show_time_range">{% trans "Päivitä " %}</button>
-
-        </form>
-
-        <div class="choose_actions form-inline padded2">
-            <div class="input-group">
-                <span class="input-group-addon">iFrame</span>
-                <input class="form-control" type="text" size="100" id="iframeSrc"/>
-            </div>
-
-            <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="generateIframeUrl()"
-                        id="generateIframeButton">{% trans "Luo" %}</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-    {% include "papukaaniApp/include_scripts.html" %}
-
-    <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
+{% endblock %}
+{% block scripts %}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/sliderPadding.js' %}"></script>
@@ -115,6 +133,4 @@
     <script src="{% static 'papukaani/js/utils/player.js' %}"></script>
     <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
     <script src="{% static 'papukaani/js/public.js' %}"></script>
-
-
 {% endblock %}

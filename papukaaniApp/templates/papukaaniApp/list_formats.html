@@ -1,50 +1,50 @@
-{% extends 'base.html' %}
+{% extends 'base_with_nav.html' %}
 {% load i18n %}
 
 {% load staticfiles %}
 
 {% block content %}
-    {% include "papukaaniApp/navigation.html" %}
-    {% include "papukaaniApp/popup_box.html"%}
+    {% include "papukaaniApp/popup_box.html" %}
 
     <div class="margin-container">
         <table class="table table-stripped table-nonfluid outlined">
             <tr>
-              <th>{% trans "Formaatin nimi" %}</th>
+                <th>{% trans "Formaatin nimi" %}</th>
                 <th></th>
                 <th>{% trans "Muokkaa" %}</th>
                 <th>{% trans "Poista" %}</th>
             </tr>
             {% for f in formats %}
                 <tr>
-                    <td>{{f.formatName}}</td>
+                    <td>{{ f.formatName }}</td>
                     <td></td>
                     <td><a class="glyphicon glyphicon-pencil" href="{% url 'show_format' f.id %}"></a></td>
                     <script>
                         delete_url = "{% url 'delete_format' f.id %}";
                     </script>
-                    <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('{% trans "Haluatko varmasti poistaa formaatin " %} {{f.formatName}}?',delete_url)"></a></td>
+                    <td><a id="delete" class="glyphicon glyphicon-trash"
+                           onclick="showPopup('{% trans "Haluatko varmasti poistaa formaatin " %} {{ f.formatName }}?',delete_url)"></a>
+                    </td>
                 </tr>
             {% endfor %}
-                <tr>
-                    <td><a class="glyphicon glyphicon-plus" href="{% url 'create_format' 0 %}"></a></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+            <tr>
+                <td><a class="glyphicon glyphicon-plus" href="{% url 'create_format' 0 %}"></a></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         </table>
 
         {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
-
     </div>
 
-    {% include "papukaaniApp/include_scripts.html" %}
-
+{% endblock %}
+{% block scripts %}
     <script src="{% static 'papukaani/js/utils/confirm.js' %}"></script>
 {% endblock %}

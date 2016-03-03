@@ -1,22 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'base_with_nav.html' %}
 {% load i18n %}
 
 {% load staticfiles %}
 
 {% block header %}
-    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/css/devices.css' %}">
-
-    <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 {% endblock %}
 
 {% autoescape off %}
-    {% block body_attr %} onload='init({{ attachments_of_devices }}, {{ individual_names }}, "{{ csrf_token }}")'{% endblock %}
+{% block body_attr %} onload='init({{ attachments_of_devices }}, {{ individual_names }}, "{{ csrf_token }}
+    ")'{% endblock %}
 {% endautoescape %}
 
 {% block content %}
-    {% include "papukaaniApp/navigation.html" %}
 
     <h1 class="heading">{% trans "Hallitse lähettimiä" %}</h1>
 
@@ -24,7 +23,7 @@
         <p class="heading">
             <select id="selectDevice" class="form-control form-field" style="display:inline"
                     onchange="displayIndividuals(this.value)">
-                    <option selected disabled>{% trans "Valitse lähetin" %}</option>
+                <option selected disabled>{% trans "Valitse lähetin" %}</option>
                 {% for device in devices %}
                     <option value="{{ device.id }}">{{ device.deviceManufacturerID }}</option>
                 {% endfor %}
@@ -35,16 +34,16 @@
 
         <table id="table" class="table table-stripped table-nonfluid">
             <tr>
-              <th>{% trans "Lintu" %}</th>
-              <th>{% trans "Kiinnitetty" %}</th>
-              <th>{% trans "Irroitettu" %}</th>
+                <th>{% trans "Lintu" %}</th>
+                <th>{% trans "Kiinnitetty" %}</th>
+                <th>{% trans "Irroitettu" %}</th>
                 <th></th>
             </tr>
             <tbody id="individuals"></tbody>
             <tr id="attacher">
                 <td>
                     <select id="individualId">
-                      <option disabled selected>{% trans "Valitse kiinnitettävä lintu" %}</option>
+                        <option disabled selected>{% trans "Valitse kiinnitettävä lintu" %}</option>
                         {% for individual in individuals %}
                             <option value="{{ individual.id }}">{{ individual.nickname }}</option>
                         {% endfor %}
@@ -54,13 +53,14 @@
                     <input type="text" id="start_time" name="start_time" class="dateinput datepicker"
                            onblur="validateDateFormat(this)" placeholder="dd.mm.yyyy HH:mm"></td>
                 <td></td>
-                <td><a id="attach" class="btn btn-sm btn-primary" onclick="attachDevice()">{% trans "Kiinnitä" %}</a></td>
+                <td><a id="attach" class="btn btn-sm btn-primary" onclick="attachDevice()">{% trans "Kiinnitä" %}</a>
+                </td>
             </tr>
         </table>
     </form>
+{% endblock %}
 
-    {% include "papukaaniApp/include_scripts.html" %}
-
+{% block scripts %}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
     <script src="{% static 'papukaani/js/devices.js' %}"></script>

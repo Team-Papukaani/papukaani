@@ -1,21 +1,60 @@
-.largeMap {
-    height: 78%;
-    clear: none;
-}
-
 html, body {
     font-family: 'Ubuntu', sans-serif !important;
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
     background-color: #fff;
+}
+
+html, body, #mapContainer {
     height: 100%;
     width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
-#birds{
-    float:left;
-    margin-right:20px;
+
+#contentWrapper {
+    padding-top: 50px; /* navbarheight */
+    height: 100%;
 }
+
+#mapContainer {
+    height: 100%;
+}
+
+#mapContainer #map {
+    width: auto;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#nyheter {
+    padding: 20px;
+}
+
+.row.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.largeMap {
+    height: 78%;
+    clear: none;
+}
+
+#birds {
+    float: left;
+    margin-right: 20px;
+}
+
 #time_range_selection .input_field {
     float: left;
     margin-right: 10px;
@@ -127,7 +166,7 @@ html, body {
 
 #playLabel_end {
     float: right;
-    margin-right:30px;
+    margin-right: 30px;
     padding-top: 7px;
 }
 
@@ -199,23 +238,22 @@ html, body {
     padding: 1em;
 }
 
-
-#table{
-    margin-left : 5%;
-    width : 90%;
-    outline: 1px solid rgb(150,150,150);
+#table {
+    margin-left: 5%;
+    width: 90%;
+    outline: 1px solid rgb(150, 150, 150);
 }
 
-.outlined{
-    outline: 1px solid rgb(150,150,150);
+.outlined {
+    outline: 1px solid rgb(150, 150, 150);
 }
 
-#formatForm .input-group{
-    padding : 2px;
+#formatForm .input-group {
+    padding: 2px;
 }
 
-#formatForm button{
-    padding-top : 5px;
+#formatForm button {
+    padding-top: 5px;
 }
 
 .ui-slider-handle {
@@ -231,18 +269,55 @@ html, body {
 #selectIndividual {
     list-style: none;
 }
-#selectIndividual li label{
+
+#selectIndividual li label {
     cursor: pointer;
 }
-#selectIndividual li span{
-   line-height: 30px;
+
+#selectIndividual li span {
+    line-height: 30px;
 }
+
 .sqr {
-    float:left;
+    float: left;
     width: 20px;
     height: 20px;
     margin: 5px;
     border-width: 1px;
     border-style: solid;
     border-color: #000;
+}
+
+
+/* kielijutut */
+
+#language_form {
+    display: none;
+}
+
+a#language_choose {
+    text-transform: none !important;
+}
+
+a#language_choose:hover {
+    /* color: #333333; */
+    color: #ffffff !important;
+}
+
+a#language_choose:hover:before {
+    /* width: 100%; */
+    width: 0% !important;
+}
+
+.language_option {
+    color: #ffffff;
+}
+
+.language_option:hover {
+    color: #333333;
+    cursor: pointer;
+}
+
+.language_current {
+    text-decoration: underline;
 }

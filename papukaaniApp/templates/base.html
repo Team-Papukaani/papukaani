@@ -1,16 +1,30 @@
 {% load staticfiles %}
 {% load i18n %}
-
 <!DOCTYPE html>
-
 <html lang="{% trans "fi" %}">
 <head>
     <title>{% block title %}Pelikaija{% endblock %}</title>
-    {% include "papukaaniApp/include_headers.html" %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'papukaani/css/general.css' %}">
+    <link rel="shortcut icon" href="{% static 'papukaaniApp/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'papukaani/libraries/bootstrap/bootstrap-select/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href='//fonts.googleapis.com/css?family=Ubuntu'>
+
     {% block header %}{% endblock %}
 </head>
-
 <body{% block body_attr %}{% endblock %}>
-    {% block content %}{% endblock %}
+{% block baseContent %}{% endblock %}
+<script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
+<script src='{% static "papukaani/js/language.js" %}'></script>
+<script src="{% static 'papukaani/libraries/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'papukaani/libraries/bootstrap/bootstrap-select/bootstrap-select.min.js' %}"></script>
+<script src="{% url 'javascript-catalog' %}"></script>
+<script src="{% static 'papukaani/js/utils/onclickdisable.js' %}"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

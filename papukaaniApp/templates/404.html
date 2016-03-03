@@ -1,14 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base_w.html' %}
 {% load i18n %}
-
 {% load staticfiles %}
-
 {% block title %}404 Page not found{% endblock %}
 
 {% block content %}
     <img src="{% static "papukaaniApp/logo.png" %}" alt="Papukaani" style="height:90%; display: block;margin:0 auto"/>
 
     <h1 style="text-align: center"><b>{% trans "Etsimääsi sivua ei ole olemassa." %}</b></h1>
-
-    {% include "papukaaniApp/include_scripts.html" %}
 {% endblock %}

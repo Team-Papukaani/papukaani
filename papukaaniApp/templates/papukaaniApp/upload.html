@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_with_nav.html' %}
 {% load i18n %}
 
 {% load staticfiles %}
@@ -9,22 +9,20 @@
 
 {% block content %}
 
-    {% include "papukaaniApp/navigation.html" %}
-
     <h2>{% trans "Lataa tiedosto" %}</h2>
 
     <div class="choose_actions form-inline padded2">
         <form enctype="multipart/form-data" method="post"> {% csrf_token %}
             <div class="input-group">
-              <span class="input-group-addon">{% trans "Tiedosto:" %}</span>
-              <input type="file" id="file" name="file"
-                class="filestyle" data-classButton="btn btn-primary" 
-                data-input="false" data-classIcon="icon-plus" 
-                data-buttonText="{% trans "Selaa" %}">
+                <span class="input-group-addon">{% trans "Tiedosto:" %}</span>
+                <input type="file" id="file" name="file"
+                       class="filestyle" data-classButton="btn btn-primary"
+                       data-input="false" data-classIcon="icon-plus"
+                       data-buttonText="{% trans "Selaa" %}">
             </div>
 
             <div class="input-group">
-              <span class="input-group-addon">{% trans "Tiedostomuoto:" %}</span>
+                <span class="input-group-addon">{% trans "Tiedostomuoto:" %}</span>
                 <select name="fileFormat" id="fileFormat" onchange="displayGpsField()" class="form-control form-field">
                     {% for parser in parsers %}
                         <option value="{{ parser.formatName }}">{{ parser.formatName }}</option>
@@ -34,14 +32,14 @@
 
             <div id="manufacturerIdInputDiv" style="display: inline">
                 <div class="input-group">
-<span class="input-group-addon">{% trans 'GPS-numero:' %}</span>
+                    <span class="input-group-addon">{% trans 'GPS-numero:' %}</span>
                     <input type="text" name="manufacturerID" id="manufacturerID" class="form-control form-field">
                 </div>
             </div>
 
             <input type="submit" class="btn btn-default" value="{% trans "Lähetä" %}" name="submitButton">
 
-            <a href="{% url 'list_formats'%}">{% trans "Formaattien hallinta" %}</a>
+            <a href="{% url 'list_formats' %}">{% trans "Formaattien hallinta" %}</a>
         </form>
     </div>
 
@@ -53,21 +51,22 @@
 
     <div id="map" class="largeMap"></div>
 
-    {% include "papukaaniApp/include_scripts.html" %}
+{% endblock %}
 
-    <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
-    <script src="{% static 'papukaani/js/map.js' %}"></script>
-    <script src="{% static 'papukaani/js/upload.js' %}"></script>
-    <script src="{% static 'papukaani/libraries/bootstrap/bootstrap-filestyle.min.js' %}"></script>
-    <script>
-        {% autoescape off %}
-            create_map_with_points('{{points}}');
+{% block scripts %}
+<script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'papukaani/js/map.js' %}"></script>
+<script src="{% static 'papukaani/js/upload.js' %}"></script>
+<script src="{% static 'papukaani/libraries/bootstrap/bootstrap-filestyle.min.js' %}"></script>
+<script>
+    {% autoescape off %}
+    create_map_with_points('{{points}}');
 
-            fileFormats = {{% for parser in parsers %}
-                "{{ parser.formatName }}": "{{ parser.manufacturerID }}",
-            {% endfor %}};
-        {% endautoescape%}
+    fileFormats = {{% for parser in parsers %}
+        "{{ parser.formatName }}": "{{ parser.manufacturerID }}",
+    {% endfor %}};
+    {% endautoescape%}
 
-        displayGpsField();
-    </script>
+    displayGpsField();
+</script>
 {% endblock %}

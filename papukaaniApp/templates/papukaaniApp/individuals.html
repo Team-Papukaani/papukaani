@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_with_nav.html' %}
 {% load i18n %}
 
 {% load staticfiles %}
@@ -6,13 +6,9 @@
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/individuals.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.css' %}">
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 {% endblock %}
 
 {% block content %}
-    {% include "papukaaniApp/navigation.html" %}
-
-    {% include "papukaaniApp/include_scripts.html" %}
 
     <div id="delete_confirm_popup" class="overlay" hidden="true">
         <p>{% trans "Haluatko varmasti poistaa linnun?" %}</p>
@@ -26,7 +22,8 @@
     <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
         {% csrf_token %}
 
-        <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}"/>
+        <input class="form-control" type="text" name="nickname" id="new_individual_nickname"
+               placeholder="{% trans "Nimi" %}"/>
 
         <select class="form-control combobox" name="taxon" id="new_individual_taxon">
             <option value="">{% trans "Laji" %}</option>
@@ -59,7 +56,7 @@
             <input class="form-control" type="text" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
                    value="{{ individual.ringID }}"/>
             <button type="button" name="modifyDescription" class="btn btn-info btn-cons" data-toggle="modal"
-            data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
+                    data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
             <button type="submit" name="modify" value="1" class="btn btn-default">{% trans "Tallenna" %}</button>
             <button type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
 
@@ -67,34 +64,38 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">{% trans "KUVAUKSET" %}</h4>
                         </div>
                         <div class="modal-body">
                             <div class="tabbable">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab{{ individual.id}}-en" data-toggle="tab">{% trans "ENGLANTI" %}</a></li>
-                                    <li><a href="#tab{{ individual.id}}-fi" data-toggle="tab">{% trans "SUOMI" %}</a></li>
-                                    <li><a href="#tab{{ individual.id}}-sv" data-toggle="tab">{% trans "RUOTSI" %}</a></li>
+                                    <li class="active"><a href="#tab{{ individual.id }}-en"
+                                                          data-toggle="tab">{% trans "ENGLANTI" %}</a></li>
+                                    <li><a href="#tab{{ individual.id }}-fi" data-toggle="tab">{% trans "SUOMI" %}</a>
+                                    </li>
+                                    <li><a href="#tab{{ individual.id }}-sv" data-toggle="tab">{% trans "RUOTSI" %}</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="tab{{ individual.id}}-en">
+                                    <div class="tab-pane active" id="tab{{ individual.id }}-en">
                                         <textarea name="descriptionEN">{{ individual.description.en }}</textarea>
                                         <p>{% trans "URL englanninkieliseen kuvaukseen" %}</p>
                                         <input class="form-control" name="descriptionUrlEN" type="url"
-                                        style="width:100%" value="{{ individual.descriptionURL.en }}"/>
+                                               style="width:100%" value="{{ individual.descriptionURL.en }}"/>
                                     </div>
-                                    <div class="tab-pane" id="tab{{ individual.id}}-fi">
+                                    <div class="tab-pane" id="tab{{ individual.id }}-fi">
                                         <textarea name="descriptionFI">{{ individual.description.fi }}</textarea>
                                         <p>{% trans "URL suomenkieliseen kuvaukseen" %}</p>
                                         <input class="form-control" name="descriptionUrlFI" type="url"
-                                        style="width:100%" value="{{ individual.descriptionURL.fi }}"/><br>
+                                               style="width:100%" value="{{ individual.descriptionURL.fi }}"/><br>
                                     </div>
-                                    <div class="tab-pane" id="tab{{ individual.id}}-sv">
+                                    <div class="tab-pane" id="tab{{ individual.id }}-sv">
                                         <textarea name="descriptionSV">{{ individual.description.sv }}</textarea>
                                         <p>{% trans "URL ruotsinkieliseen kuvaukseen" %}</p>
                                         <input class="form-control" name="descriptionUrlSV" type="url"
-                                        style="width:100%" value="{{ individual.descriptionURL.sv }}"/><br>
+                                               style="width:100%" value="{{ individual.descriptionURL.sv }}"/><br>
                                     </div>
                                 </div>
                             </div>
@@ -106,9 +107,9 @@
                     </div>
                     <!-- /.modal-content -->
                 </div>
-                 <!-- /.modal-dialog -->
+                <!-- /.modal-dialog -->
             </div>
-    </form>
+        </form>
         <br>
     {% endfor %}
 
@@ -118,6 +119,11 @@
         {% endfor %}
     </p>
 
+
+{% endblock %}
+
+{% block scripts %}
     <script src="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.js' %}"></script>
     <script src="{% static 'papukaani/js/individuals.js' %}"></script>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 {% endblock %}

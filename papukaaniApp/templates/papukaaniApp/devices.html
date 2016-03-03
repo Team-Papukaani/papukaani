@@ -16,48 +16,55 @@
 {% endautoescape %}
 
 {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
 
-    <h1 class="heading">{% trans "Hallitse lähettimiä" %}</h1>
+                <h1 class="heading">{% trans "Hallitse lähettimiä" %}</h1>
 
-    <form>
-        <p class="heading">
-            <select id="selectDevice" class="form-control form-field" style="display:inline"
-                    onchange="displayIndividuals(this.value)">
-                <option selected disabled>{% trans "Valitse lähetin" %}</option>
-                {% for device in devices %}
-                    <option value="{{ device.id }}">{{ device.deviceManufacturerID }}</option>
-                {% endfor %}
-            </select>
+                <form>
+                    <p class="heading">
+                        <select id="selectDevice" class="form-control form-field" style="display:inline"
+                                onchange="displayIndividuals(this.value)">
+                            <option selected disabled>{% trans "Valitse lähetin" %}</option>
+                            {% for device in devices %}
+                                <option value="{{ device.id }}">{{ device.deviceManufacturerID }}</option>
+                            {% endfor %}
+                        </select>
 
-            <span id="errors"></span>
-        </p>
+                        <span id="errors"></span>
+                    </p>
 
-        <table id="table" class="table table-stripped table-nonfluid">
-            <tr>
-                <th>{% trans "Lintu" %}</th>
-                <th>{% trans "Kiinnitetty" %}</th>
-                <th>{% trans "Irroitettu" %}</th>
-                <th></th>
-            </tr>
-            <tbody id="individuals"></tbody>
-            <tr id="attacher">
-                <td>
-                    <select id="individualId">
-                        <option disabled selected>{% trans "Valitse kiinnitettävä lintu" %}</option>
-                        {% for individual in individuals %}
-                            <option value="{{ individual.id }}">{{ individual.nickname }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
-                <td>
-                    <input type="text" id="start_time" name="start_time" class="dateinput datepicker"
-                           onblur="validateDateFormat(this)" placeholder="dd.mm.yyyy HH:mm"></td>
-                <td></td>
-                <td><a id="attach" class="btn btn-sm btn-primary" onclick="attachDevice()">{% trans "Kiinnitä" %}</a>
-                </td>
-            </tr>
-        </table>
-    </form>
+                    <table id="table" class="table table-stripped table-nonfluid">
+                        <tr>
+                            <th>{% trans "Lintu" %}</th>
+                            <th>{% trans "Kiinnitetty" %}</th>
+                            <th>{% trans "Irroitettu" %}</th>
+                            <th></th>
+                        </tr>
+                        <tbody id="individuals"></tbody>
+                        <tr id="attacher">
+                            <td>
+                                <select id="individualId">
+                                    <option disabled selected>{% trans "Valitse kiinnitettävä lintu" %}</option>
+                                    {% for individual in individuals %}
+                                        <option value="{{ individual.id }}">{{ individual.nickname }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" id="start_time" name="start_time" class="dateinput datepicker"
+                                       onblur="validateDateFormat(this)" placeholder="dd.mm.yyyy HH:mm"></td>
+                            <td></td>
+                            <td><a id="attach" class="btn btn-sm btn-primary"
+                                   onclick="attachDevice()">{% trans "Kiinnitä" %}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}

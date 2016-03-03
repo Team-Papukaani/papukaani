@@ -16,102 +16,114 @@
         <button id="yes_button" class="btn btn-default">{% trans "Kyllä" %}</button>
         <button id="cancel_button" class="btn btn-default">{% trans "Peruuta" %}</button>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>{% trans "Luo lintu" %}</h1>
 
-    <h1>{% trans "Luo lintu" %}</h1>
+                <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
+                    {% csrf_token %}
 
-    <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
-        {% csrf_token %}
+                    <input class="form-control" type="text" name="nickname" id="new_individual_nickname"
+                           placeholder="{% trans "Nimi" %}"/>
 
-        <input class="form-control" type="text" name="nickname" id="new_individual_nickname"
-               placeholder="{% trans "Nimi" %}"/>
+                    <select class="form-control combobox" name="taxon" id="new_individual_taxon">
+                        <option value="">{% trans "Laji" %}</option>
+                        {% for s in species %}
+                            <option value="{{ s.id }}">{{ s.name }}</option>
+                        {% endfor %}
+                    </select>
 
-        <select class="form-control combobox" name="taxon" id="new_individual_taxon">
-            <option value="">{% trans "Laji" %}</option>
-            {% for s in species %}
-                <option value="{{ s.id }}">{{ s.name }}</option>
-            {% endfor %}
-        </select>
+                    <button type="submit" class="btn btn-default">{% trans "Luo" %}</button>
+                </form>
 
-        <button type="submit" class="btn btn-default">{% trans "Luo" %}</button>
-    </form>
+                <h1>{% trans "Muokkaa lintua" %}</h1>
+                {% for individual in individuals %}
 
-    <h1>{% trans "Muokkaa lintua" %}</h1>
-    {% for individual in individuals %}
+                    <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
+                        {% csrf_token %}
 
-        <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
-            {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ individual.id }}"/>
 
-            <input type="hidden" name="id" value="{{ individual.id }}"/>
+                        <input class="form-control" type="text" name="nickname" placeholder="{% trans "Nimi" %}"
+                               value="{{ individual.nickname }}"/>
+                        <select class="form-control combobox" name="taxon">
 
-            <input class="form-control" type="text" name="nickname" placeholder="{% trans "Nimi" %}"
-                   value="{{ individual.nickname }}"/>
-            <select class="form-control combobox" name="taxon">
+                            <option value="">{% trans "Laji" %}</option>
+                            {% for s in species %}
+                                <option value="{{ s.id }}" {% if individual.taxon == s.id %}
+                                        selected{% endif %}>{{ s.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input class="form-control" type="text" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
+                               value="{{ individual.ringID }}"/>
+                        <button type="button" name="modifyDescription" class="btn btn-info btn-cons" data-toggle="modal"
+                                data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
+                        <button type="submit" name="modify" value="1"
+                                class="btn btn-default">{% trans "Tallenna" %}</button>
+                        <button type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
 
-                <option value="">{% trans "Laji" %}</option>
-                {% for s in species %}
-                    <option value="{{ s.id }}" {% if individual.taxon == s.id %}
-                            selected{% endif %}>{{ s.name }}</option>
-                {% endfor %}
-            </select>
-            <input class="form-control" type="text" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
-                   value="{{ individual.ringID }}"/>
-            <button type="button" name="modifyDescription" class="btn btn-info btn-cons" data-toggle="modal"
-                    data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
-            <button type="submit" name="modify" value="1" class="btn btn-default">{% trans "Tallenna" %}</button>
-            <button type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
-
-            <div class="modal fade bd-example-modal-lg" id="{{ individual.id }}" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">{% trans "KUVAUKSET" %}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="tabbable">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab{{ individual.id }}-en"
-                                                          data-toggle="tab">{% trans "ENGLANTI" %}</a></li>
-                                    <li><a href="#tab{{ individual.id }}-fi" data-toggle="tab">{% trans "SUOMI" %}</a>
-                                    </li>
-                                    <li><a href="#tab{{ individual.id }}-sv" data-toggle="tab">{% trans "RUOTSI" %}</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="tab{{ individual.id }}-en">
-                                        <textarea name="descriptionEN">{{ individual.description.en }}</textarea>
-                                        <p>{% trans "URL englanninkieliseen kuvaukseen" %}</p>
-                                        <input class="form-control" name="descriptionUrlEN" type="url"
-                                               style="width:100%" value="{{ individual.descriptionURL.en }}"/>
+                        <div class="modal fade bd-example-modal-lg" id="{{ individual.id }}" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">{% trans "KUVAUKSET" %}</h4>
                                     </div>
-                                    <div class="tab-pane" id="tab{{ individual.id }}-fi">
-                                        <textarea name="descriptionFI">{{ individual.description.fi }}</textarea>
-                                        <p>{% trans "URL suomenkieliseen kuvaukseen" %}</p>
-                                        <input class="form-control" name="descriptionUrlFI" type="url"
-                                               style="width:100%" value="{{ individual.descriptionURL.fi }}"/><br>
+                                    <div class="modal-body">
+                                        <div class="tabbable">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#tab{{ individual.id }}-en"
+                                                                      data-toggle="tab">{% trans "ENGLANTI" %}</a></li>
+                                                <li><a href="#tab{{ individual.id }}-fi"
+                                                       data-toggle="tab">{% trans "SUOMI" %}</a>
+                                                </li>
+                                                <li><a href="#tab{{ individual.id }}-sv"
+                                                       data-toggle="tab">{% trans "RUOTSI" %}</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="tab{{ individual.id }}-en">
+                                                    <textarea
+                                                            name="descriptionEN">{{ individual.description.en }}</textarea>
+                                                    <p>{% trans "URL englanninkieliseen kuvaukseen" %}</p>
+                                                    <input class="form-control" name="descriptionUrlEN" type="url"
+                                                           style="width:100%"
+                                                           value="{{ individual.descriptionURL.en }}"/>
+                                                </div>
+                                                <div class="tab-pane" id="tab{{ individual.id }}-fi">
+                                                    <textarea
+                                                            name="descriptionFI">{{ individual.description.fi }}</textarea>
+                                                    <p>{% trans "URL suomenkieliseen kuvaukseen" %}</p>
+                                                    <input class="form-control" name="descriptionUrlFI" type="url"
+                                                           style="width:100%"
+                                                           value="{{ individual.descriptionURL.fi }}"/><br>
+                                                </div>
+                                                <div class="tab-pane" id="tab{{ individual.id }}-sv">
+                                                    <textarea
+                                                            name="descriptionSV">{{ individual.description.sv }}</textarea>
+                                                    <p>{% trans "URL ruotsinkieliseen kuvaukseen" %}</p>
+                                                    <input class="form-control" name="descriptionUrlSV" type="url"
+                                                           style="width:100%"
+                                                           value="{{ individual.descriptionURL.sv }}"/><br>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="tab-pane" id="tab{{ individual.id }}-sv">
-                                        <textarea name="descriptionSV">{{ individual.description.sv }}</textarea>
-                                        <p>{% trans "URL ruotsinkieliseen kuvaukseen" %}</p>
-                                        <input class="form-control" name="descriptionUrlSV" type="url"
-                                               style="width:100%" value="{{ individual.descriptionURL.sv }}"/><br>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                        </button>
+                                        <!-- <button type="button" class="btn btn-primary">TALLENNA</button>  -->
                                     </div>
                                 </div>
+                                <!-- /.modal-content -->
                             </div>
+                            <!-- /.modal-dialog -->
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <!-- <button type="button" class="btn btn-primary">TALLENNA</button>  -->
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-        </form>
-        <br>
-    {% endfor %}
+                    </form>
+                {% endfor %}
 
     <p id="messages">
         {% for message in messages %}
@@ -119,6 +131,9 @@
         {% endfor %}
     </p>
 
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 

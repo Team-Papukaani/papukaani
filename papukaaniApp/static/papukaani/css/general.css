@@ -16,7 +16,7 @@ html, body, #mapContainer {
 }
 
 #contentWrapper {
-    padding-top: 50px; /* navbarheight */
+    padding-top: 52px; /* navbarheight */
     height: 100%;
 }
 
@@ -186,11 +186,6 @@ html, body, #mapContainer {
     float: right;
 }
 
-.margin-container {
-    width: 80%;
-    margin-left: 10%;
-}
-
 .input-group-addon.wide {
     min-width: 12em;
 }
@@ -218,20 +213,17 @@ html, body, #mapContainer {
 
 .login-body {
     background-color: #00537C;
-    text-align: center;
 }
 
 .login-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
     background-color: #FFFFFF;
-    margin-left: -11em;
-    margin-top: -11em;
     width: 22em;
     height: 22em;
     border-radius: 25px;
+    padding:20px;
+    box-sizing: border-box;
     text-align: center;
+    margin:20% auto;
 }
 
 .login-container p {

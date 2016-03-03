@@ -18,7 +18,7 @@
     {% block header %}{% endblock %}
 </head>
 <body{% block body_attr %}{% endblock %}>
-{% block baseContent %}{% endblock %}
+{% block baseContent %}{% block content %}{% endblock %}{% endblock %}
 <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 <script src='{% static "papukaani/js/language.js" %}'></script>
 <script src="{% static 'papukaani/libraries/bootstrap/bootstrap.min.js' %}"></script>

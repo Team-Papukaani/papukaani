@@ -130,9 +130,8 @@ Player.prototype.updateMinMax = function () {
         min = Math.min(datetimestringToUnixtime(this.routes[i].points[0].dateBegin), min);
         max = Math.max(datetimestringToUnixtime(this.routes[i].points[this.routes[i].points.length - 1].dateBegin), max);
     }
-    min = (this.start < min) ? min : this.start;
-    max = (this.end > max) ? max : this.end;
-
+    min = Math.max(min, this.start);
+    max = Math.min(max, this.end);
     var options = {min: min, max: max};
     options.value = this.slider.slider("option", "value");
     if (options.value > max || options.value < min || !this.runner) {
@@ -167,7 +166,7 @@ Player.prototype.run = function () {
             that.slider.slider("option", "value", options.max);
         } else {
             var step = Math.round((options.max - options.min) / 3000);
-            step = Math.max(Math.min(step,options.max-options.value),1);
+            step = Math.max(Math.min(step,options.max-options.value), 1);
             that.slider.slider("option", "value", options.value + step);
         }
     }, that.speedslider.slider("option", "max") - that.speedslider.slider("option", "value") + that.speedslider.slider("option", "min"));
@@ -187,21 +186,23 @@ Player.prototype.drawRoutes = function (animate) {
         if (pointCount <= route.pointer) continue;
         var point = route.points[route.pointer];
         var dateBegin = datetimestringToUnixtime(point.dateBegin);
-        if (dateBegin > options.max) continue;
         if (options.value > options.max) continue;
         this.animating = true;
 
-
         while (dateBegin > options.value) {
             route.pointer -= 10;
-
-            if (route.pointer < 0) {
-                route.pointer = 0;
+            if (route.pointer <= 0) {
+                this.clearRoute(route);
+                newestPolylineIndex = 0;
                 break;
             }
 
-            route.featureGroup.removeLayer(route.lines.pop());
             newestPolylineIndex--;
+            if (newestPolylineIndex < 0) {
+                newestPolylineIndex = 0;
+                break;
+            }
+            route.featureGroup.removeLayer(route.lines.pop());
 
             point = route.points[route.pointer];
             dateBegin = datetimestringToUnixtime(point.dateBegin);
@@ -210,7 +211,7 @@ Player.prototype.drawRoutes = function (animate) {
         while (pointCount > route.pointer && dateBegin <= options.value) {
             var coordinates = point.wgs84Geometry.coordinates;
             if (dateBegin >= options.min && dateBegin <= options.max) {
-                if (route.pointer % 10 === 0 && Math.floor(route.pointer / 10) === newestPolylineIndex + 1) {
+                if (route.pointer % 10 === 0) {
                     for (var r = newestPolylineIndex; r >= 0; r--) {
                         var opacity = 1 - (newestPolylineIndex - r + 1) * 0.1;
                         if (opacity < 0.3) break;
@@ -222,19 +223,32 @@ Player.prototype.drawRoutes = function (animate) {
                 }
                 route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);
             }
-            ++route.pointer;
+            route.pointer++;
             if (pointCount > route.pointer) {
                 point = route.points[route.pointer];
                 dateBegin = datetimestringToUnixtime(point.dateBegin);
             }
         }
-        route.pointer = Math.max(route.pointer - 1, 0);
+        if (pointCount === route.pointer) route.pointer--;
         var coordinates = route.points[route.pointer].wgs84Geometry.coordinates;
         route.marker.setLatLng([coordinates[1], coordinates[0]]);
     }
 }
 
+Player.prototype.clearRoute = function (route) {
+    route.featureGroup.clearLayers();
+    route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"})];
+    route.lines[0].addTo(route.featureGroup);
+    route.pointer = 0;
+    var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;
+    route.marker.setLatLng([markerPosition[1], markerPosition[0]]);
+    route.marker.addTo(route.featureGroup);
+}
+
 Player.prototype.refreshRoutes = function (animate) {
     this.updateMinMax();
+    for (var i = 0, len = this.routes.length; i < len; i++) {
+        this.clearRoute(this.routes[i]);
+    }
     this.drawRoutes(animate);
 }

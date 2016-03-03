@@ -74,24 +74,24 @@
                         <div class="modal-body">
                             <div class="tabbable">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab1" data-toggle="tab">{% trans "ENGLANTI" %}</a></li>
-                                    <li><a href="#tab2" data-toggle="tab">{% trans "SUOMI" %}</a></li>
-                                    <li><a href="#tab3" data-toggle="tab">{% trans "RUOTSI" %}</a></li>
+                                    <li class="active"><a href="#tab{{ individual.id}}-en" data-toggle="tab">{% trans "ENGLANTI" %}</a></li>
+                                    <li><a href="#tab{{ individual.id}}-fi" data-toggle="tab">{% trans "SUOMI" %}</a></li>
+                                    <li><a href="#tab{{ individual.id}}-sv" data-toggle="tab">{% trans "RUOTSI" %}</a></li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="tab1">
+                                    <div class="tab-pane active" id="tab{{ individual.id}}-en">
                                         <textarea name="descriptionEN">{{ individual.description.en }}</textarea>
                                         <p>{% trans "URL englanninkieliseen kuvaukseen" %}</p>
                                         <input class="form-control" name="descriptionUrlEN" type="url"
                                         style="width:100%" value="{{ individual.descriptionURL.en }}"/>
                                     </div>
-                                    <div class="tab-pane" id="tab2">
+                                    <div class="tab-pane" id="tab{{ individual.id}}-fi">
                                         <textarea name="descriptionFI">{{ individual.description.fi }}</textarea>
                                         <p>{% trans "URL suomenkieliseen kuvaukseen" %}</p>
                                         <input class="form-control" name="descriptionUrlFI" type="url"
                                         style="width:100%" value="{{ individual.descriptionURL.fi }}"/><br>
                                     </div>
-                                    <div class="tab-pane" id="tab3">
+                                    <div class="tab-pane" id="tab{{ individual.id}}-sv">
                                         <textarea name="descriptionSV">{{ individual.description.sv }}</textarea>
                                         <p>{% trans "URL ruotsinkieliseen kuvaukseen" %}</p>
                                         <input class="form-control" name="descriptionUrlSV" type="url"

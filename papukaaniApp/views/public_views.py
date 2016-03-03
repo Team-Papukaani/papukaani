@@ -8,8 +8,9 @@ from papukaaniApp.utils.view_utils import extract_latlongs
 from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.views.login_view import *
+from papukaaniApp.views.decorators import count_lajistore_requests
 
-
+@count_lajistore_requests
 @xframe_options_exempt  # Allows the view to be loaded in an iFrame
 def public(request):
     """

@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% autoescape off %}
-    {% block body_attr %} onload='init({{ device_json }}, {{ individual_json }}, "{{ csrf_token }}")'{% endblock %}
+    {% block body_attr %} onload='init({{ attachments_of_devices }}, {{ individual_names }}, "{{ csrf_token }}")'{% endblock %}
 {% endautoescape %}
 
 {% block content %}
@@ -45,7 +45,7 @@
                 <td>
                     <select id="individualId">
                       <option disabled selected>{% trans "Valitse kiinnitettävä lintu" %}</option>
-                        {% for individual in selection %}
+                        {% for individual in individuals %}
                             <option value="{{ individual.id }}">{{ individual.nickname }}</option>
                         {% endfor %}
                     </select>

@@ -26,8 +26,7 @@
     <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
         {% csrf_token %}
 
-        <input class="form-control" type="text" name="nickname" id="new_individual_nickname"
-               placeholder="{% trans "Nimi" %}"/>
+        <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}"/>
 
         <select class="form-control combobox" name="taxon" id="new_individual_taxon">
             <option value="">{% trans "Laji" %}</option>

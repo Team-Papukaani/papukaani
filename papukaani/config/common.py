@@ -1,3 +1,5 @@
+import logging
+
 """
 Django settings for papukaani project.
 
@@ -33,7 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'papukaaniApp',
-    'rest_framework'
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -44,6 +46,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'papukaaniApp.middleware.SessionBasedLocaleMiddleware',
+    'papukaaniApp.middleware.RequestLoggingMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -147,11 +150,29 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
         },
+        'logfile': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'papukaani.log',
+            'maxBytes': 1024 * 100,
+            'backupCount': 3,
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'logfile'], 
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+        'papukaaniApp.lajistore_requests_summary' : {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+        },
+        'papukaaniApp.lajistore_requests' : {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+        },
+        'papukaaniApp.requests' : {
+            'handlers': ['logfile'],
+            'level': 'DEBUG',
         },
     },
 }

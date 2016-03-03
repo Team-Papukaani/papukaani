@@ -1,0 +1,12 @@
+[run]
+
+source = papukaaniApp/
+
+omit =
+        *__init__*
+        *tests*
+	*middleware*
+	*migrations*
+
+[html]
+directory = coverage

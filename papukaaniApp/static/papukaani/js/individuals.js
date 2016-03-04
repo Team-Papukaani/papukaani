@@ -39,13 +39,6 @@ $(function validate() {
             }
         });
         $("#modify_individuals").validate({
-             errorPlacement: function(error, element) {
-                if (element.attr("name") == "nickname" || element.attr("name") == "taxon" ) {
-                    error.insertAfter("#luo");
-                } else {
-                    error.insertAfter(element);
-                }
-             },
             rules: {
                 id: {
                     required: true,

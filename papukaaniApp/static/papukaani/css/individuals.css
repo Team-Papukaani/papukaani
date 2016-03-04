@@ -27,7 +27,7 @@ input.error {
 }
 
 label.error {
-    margin-left: 2cm;
+    margin-left: 2px;
     border:1px solid #99182c;
     color:black;
     padding:1px 5px 5px 1px;

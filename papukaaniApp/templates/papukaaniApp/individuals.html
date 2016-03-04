@@ -24,7 +24,7 @@
                 <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
                     {% csrf_token %}
 
-                    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}" min="3" max="20" required/>
+                    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}" minlength="3" maxlength="20" required/>
 
                     <select class="form-control combobox" name="taxon" id="new_individual_taxon" required>
                         <option value="">{% trans "Laji" %}</option>
@@ -39,13 +39,13 @@
                 <h1>{% trans "Muokkaa lintua" %}</h1>
                 {% for individual in individuals %}
 
-                    <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
+                    <form id="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
                         {% csrf_token %}
 
                         <input type="hidden" name="id" value="{{ individual.id }}"/>
 
                         <input class="form-control" type="text" name="nickname" placeholder="{% trans "Nimi" %}"
-                   value="{{ individual.nickname }}" min="3" max="20" required/>
+                   value="{{ individual.nickname }}" minlength="3" maxlength="20" required/>
                         <select class="form-control combobox" name="taxon" required>
 
                             <option value="">{% trans "Laji" %}</option>

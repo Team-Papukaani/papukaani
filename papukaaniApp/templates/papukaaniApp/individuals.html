@@ -5,6 +5,7 @@
 
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/individuals.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -23,10 +24,9 @@
                 <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
                     {% csrf_token %}
 
-                    <input class="form-control" type="text" name="nickname" id="new_individual_nickname"
-                           placeholder="{% trans "Nimi" %}"/>
+                    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}" min="3" max="20" required/>
 
-                    <select class="form-control combobox" name="taxon" id="new_individual_taxon">
+                    <select class="form-control combobox" name="taxon" id="new_individual_taxon" required>
                         <option value="">{% trans "Laji" %}</option>
                         {% for s in species %}
                             <option value="{{ s.id }}">{{ s.name }}</option>
@@ -45,8 +45,8 @@
                         <input type="hidden" name="id" value="{{ individual.id }}"/>
 
                         <input class="form-control" type="text" name="nickname" placeholder="{% trans "Nimi" %}"
-                               value="{{ individual.nickname }}"/>
-                        <select class="form-control combobox" name="taxon">
+                   value="{{ individual.nickname }}" min="3" max="20" required/>
+                        <select class="form-control combobox" name="taxon" required>
 
                             <option value="">{% trans "Laji" %}</option>
                             {% for s in species %}
@@ -54,8 +54,8 @@
                                         selected{% endif %}>{{ s.name }}</option>
                             {% endfor %}
                         </select>
-                        <input class="form-control" type="text" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
-                               value="{{ individual.ringID }}"/>
+                        <input class="form-control" type="number" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
+                        value="{{ individual.ringID }}" />
                         <button type="button" name="modifyDescription" class="btn btn-info btn-cons" data-toggle="modal"
                                 data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
                         <button type="submit" name="modify" value="1"
@@ -137,7 +137,9 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
     <script src="{% static 'papukaani/libraries/bootstrap/bootstrap-combobox.js' %}"></script>
     <script src="{% static 'papukaani/js/individuals.js' %}"></script>
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 {% endblock %}

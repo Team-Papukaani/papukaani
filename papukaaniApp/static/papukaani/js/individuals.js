@@ -118,7 +118,6 @@ $("#modify_individuals").validate({
 
 
 $(document).ready(function() {
-  runtinymce();
   $('.combobox').combobox();
 
   $("button.confirmdelete").click(function(e) {

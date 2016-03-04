@@ -7,13 +7,6 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.createIndividualSelector(individuals, species);
     this.colorChart = new ColorChart();
 }
-/*
-
- IndividualSorter.prototype.getRoutes = function () {
- return this.routes;
- }
-
- */
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
     var messagebox = $("#loading");
@@ -28,19 +21,10 @@ IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
 
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
     for (var i = 0; i < this.routes.length; i++) {
-
         if (this.routes[i].individualId == individualId) {
-            /*
-             if (this.routes[i].animation) {
-             this.routes[i].animation.clear();
-             this.routes[i].animation = null;
-             }
-             */
-
             this.colorChart.freeColor(this.routes[i].individualId);
             player.removeRoute(this.routes[i]);
             this.routes.splice(i, 1);
-            //this.map.changePoints(this.routes);
             $("#individual" + individualId).find("div.sqr").css('background-color', "#fff");
             return;
         }
@@ -68,9 +52,7 @@ function showPointsForIndividual(ids) {
 
             var points = data[ids[i]];
             var individualname = points.pop();
-            var indiv = $("#individual" + ids[i]);
             var color = this.colorChart.getColor(ids[i]);
-            indiv.find("div.sqr").css('background-color', color);
 
             var route = {
                 individualId: ids[i],
@@ -79,6 +61,20 @@ function showPointsForIndividual(ids) {
                 color: color,
                 latlngs: false
             };
+
+
+            var html = [];
+
+            html.push('<div class="row no-gutters" id="individual' + ids[i] + '">');
+            html.push('<div class="col-xs-3">');
+            html.push(individualname);
+            html.push('</div>');
+            html.push('<div class="col-xs-9">');
+            html.push('<span style="background: ' + color + ';width:100%;"></span>');
+            html.push('</div>');
+            html.push('</div>');
+
+            $("#birdies").append(html.join(''));
 
             this.routes.push(route);
             player.addRoute(route);
@@ -130,35 +126,30 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     var that = this;
 
     selector.addOption = function (individualId, taxon) {
-
-        var color = (Math.random() * 0xFFFFFF << 0).toString(16);
-        color = "#" + ("FFFFFF" + color).slice(-6); // ensure color is always six hexadecimals long
-
         var lang = gettext('fi');
         if (lang != 'fi' && taxon.description != null && (taxon.description[lang] == null || taxon.description[lang] == "")) {
             lang = 'fi';
         }
-        var e = '<li id="individual' + individualId + '">';
-        e = e + '<label><input type="checkbox" style="display:none;" value="' + individualId + '">';
-        e = e + '<div class="sqr"></div>';
-        if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
-            taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
-            e = e + '<a href="' + taxon.descriptionURL[lang] + '"><span>' + taxon.nickname + '</a>';
-        } else {
-            e = e + '<span>' + taxon.nickname + '</span>';
-        }
-        if (taxon.description !== null && taxon.description.fi !== null &&
-            taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
-            e = e + "<br>" + taxon.description[lang] + '</span>';
-        }
+        var e = '<option value="' + individualId + '">';
+        e = e + taxon.nickname;
+        e = e + '</option>';
 
-        e = e + '</label>';
-        e = e + '</li>';
+
+        //if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
+        //    taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
+        //    e = e + '<a href="' + taxon.descriptionURL[lang] + '"><span>' + taxon.nickname + '</a>';
+        //} else {
+        //
+        //}
+        //if (taxon.description !== null && taxon.description.fi !== null &&
+        //    taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
+        //    e = e + "<br>" + taxon.description[lang] + '</span>';
+        //}
         selector.append(e);
     };
 
     $.each(species, function (key, s) {
-        selector.append("<li>" + s + "</li>")
+        selector.append('<option value="" disabled>' + s + '</option>');
         $.each(individuals[s], function (key, individual) {
             $.each(individual, function (individualId, taxon) {
                 selector.addOption(individualId, taxon)
@@ -166,12 +157,10 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         })
     })
 
-    $("#selectIndividual input").change(function () {
-        if ($(this).is(":checked")) {
-            that.changeDeviceSelection([$(this).val()])
-        } else {
-            that.removePointsForIndividual($(this).val())
-        }
+    $("#selectIndividual").change(function () {
+        if ($(this).val() === "") return;
+        that.changeDeviceSelection([$(this).val()]);
+        //that.removePointsForIndividual($(this).val())
     });
 };
 
@@ -194,12 +183,6 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
 
     player = new Player(map);
 
-    /*
-
-     playSliderKeyboardControls();
-
-     createDummySlider();
-     */
     if (start_time !== "") $("#start_time").val(start_time);
     if (end_time !== "") $("#end_time").val(end_time);
 
@@ -252,55 +235,6 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
  */
 
 /*
-
- //Redraws the polyline
- PublicMap.prototype.changePoints = function (routes) {
- for (var i = 0; i < routes.length; i++) {
-
- var start = $("#start_time").val();
- var end = $("#end_time").val();
- var points = points_in_timerange(routes[i].points, start, end);
-
- if (routes[i].animation) {
- routes[i].animation.clear();
- routes[i].animation = null;
- }
-
- if (points.length > 0) {
- try {
- if (routes[i].latlngs === false) {
- routes[i].latlngs = this.createLatlngsFromPoints(points);
- }
- routes[i].animation = new Animator(routes[i].latlngs, routes[i].individualname, this.map, routes[i].color);
- routes[i].animation.forwardToEnd();
-
- } catch (e) {
- }
- }
- }
- this.routes = routes;
- };
-
- //Plays the animation if paused, or pauses if currently playing.
- PublicMap.prototype.play = function () {
- for (var i = 0; i < this.routes.length; i++) {
- if (this.routes[i].animation) {
- if (this.routes[i].animation.start()) {
- animationStart();
- } else if (this.routes[i].animation.stop()) {
- animationEnd();
- }
- }
- }
- };
- var animationStart = function () {
- $("#play").html("&#9646;&#9646;");
- };
- //Performed when the animation reaches its end.
- var animationEnd = function () {
- $("#play").html("&#9658;");
- };
-
  //Creates latLng objects from points
  PublicMap.prototype.createLatlngsFromPoints = function (points) {
  return points.map(function (point) {
@@ -315,32 +249,32 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
  */
 //Disables the select, save and reset buttons.
 function lockButtons() {
-    $("#selectIndividual input").attr("disabled", true);
+    $("#selectIndividual").attr("disabled", true);
     $("#play").attr("disabled", true);
     $("#pause").attr("disabled", true);
 }
 
 //Enables the select, save and reset buttons.
 function unlockButtons() {
-    $("#selectIndividual input").attr("disabled", false);
+    $("#selectIndividual").attr("disabled", false);
     $("#play").attr("disabled", false);
     $("#pause").attr("disabled", false);
 }
 
 //Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.
-$(function () {
-    var slider = L.DomUtil.get('in-map-slider');
-    var play = L.DomUtil.get('in-map-control');
-    if (!L.Browser.touch) {
-        L.DomEvent.disableClickPropagation(play);
-        L.DomEvent.on(play, 'mousewheel', L.DomEvent.stopPropagation);
-        L.DomEvent.disableClickPropagation(slider);
-        L.DomEvent.on(slider, 'mousewheel', L.DomEvent.stopPropagation);
-    } else {
-        L.DomEvent.on(play, 'click', L.DomEvent.stopPropagation);
-        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
-    }
-});
+//$(function () {
+//    var slider = L.DomUtil.get('in-map-slider');
+//    var play = L.DomUtil.get('in-map-control');
+//    if (!L.Browser.touch) {
+//        L.DomEvent.disableClickPropagation(play);
+//        L.DomEvent.on(play, 'mousewheel', L.DomEvent.stopPropagation);
+//        L.DomEvent.disableClickPropagation(slider);
+//        L.DomEvent.on(slider, 'mousewheel', L.DomEvent.stopPropagation);
+//    } else {
+//        L.DomEvent.on(play, 'click', L.DomEvent.stopPropagation);
+//        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
+//    }
+//});
 
 $(function () {
     $("#in-map").on("mouseover", function () {
@@ -349,15 +283,7 @@ $(function () {
         $(this).children().css("opacity", 0.5);
     })
 });
-/*
- //Replaces the slider with a placeholder.
- var createDummySlider = function () {
- $("#playSlider").slider({min: 0, max: 0, paddingMin: 7, paddingMax: 7});
- $("#playLabel").text("N/A");
- $("#playLabel_end").text("");
- $("#play").html("&#9658;").prop("disabled", true);
- };
- */
+
 function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;

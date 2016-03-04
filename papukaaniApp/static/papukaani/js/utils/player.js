@@ -14,8 +14,8 @@ function Player(map) {
         slide: function (event, ui) {
             $('#playLabel').html(new Date(ui.value * 1000).toLocaleString());
             if (this.sliding) return;
-            this.slider.slider("option",{
-                value:ui.value
+            this.slider.slider("option", {
+                value: ui.value
             });
             this.sliding = true;
             this.drawRoutes(true);
@@ -28,9 +28,11 @@ function Player(map) {
 
     this.speedslider = $("#speedSlider");
     this.speedslider.slider({
-        value: 50,
+        paddingMin: 8,
+        paddingMax: 8,
+        value: 250,
         min: 5,
-        max: 100
+        max: 1000
     });
 }
 
@@ -117,6 +119,7 @@ Player.prototype.stop = function () {
     this.slider.slider("option", "value", this.slider.slider("option", "min"));
     $("#play").html("&#9658;");
     $('#playLabel').html("N/A");
+    $('#playLabel_end').html("N/A");
 }
 
 Player.prototype.updateMinMax = function () {
@@ -138,6 +141,7 @@ Player.prototype.updateMinMax = function () {
         options.value = min;
     }
     this.slider.slider("option", options);
+    $('#playLabel_end').html(new Date(options.max * 1000).toLocaleString());
     $('#playLabel').html(new Date(options.value * 1000).toLocaleString());
 }
 
@@ -166,7 +170,7 @@ Player.prototype.run = function () {
             that.slider.slider("option", "value", options.max);
         } else {
             var step = Math.round((options.max - options.min) / 3000);
-            step = Math.max(Math.min(step,options.max-options.value), 1);
+            step = Math.max(Math.min(step, options.max - options.value), 1);
             that.slider.slider("option", "value", options.value + step);
         }
     }, that.speedslider.slider("option", "max") - that.speedslider.slider("option", "value") + that.speedslider.slider("option", "min"));
@@ -218,7 +222,12 @@ Player.prototype.drawRoutes = function (animate) {
                         route.lines[r].setStyle({opacity: opacity});
                     }
                     route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);
-                    route.lines.push(L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"}));
+                    route.lines.push(L.polyline([], {
+                        color: route.color,
+                        opacity: 1,
+                        smoothFactor: 2,
+                        lineCap: "butt"
+                    }));
                     route.lines[++newestPolylineIndex].addTo(route.featureGroup);
                 }
                 route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);

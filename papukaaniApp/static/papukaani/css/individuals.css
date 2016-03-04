@@ -21,15 +21,3 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield;
 }
-
-input.error {
-    border:1px solid #99182c;
-}
-
-label.error {
-    margin-left: 2px;
-    border:1px solid #99182c;
-    color:black;
-    padding:1px 5px 5px 1px;
-    font-size: smaller;
-}

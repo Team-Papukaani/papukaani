@@ -30,7 +30,14 @@ function Player(map) {
     this.speedslider.slider({
         value: 50,
         min: 5,
-        max: 100
+        max: 100,
+
+        change: function (event, ui) {
+            if (this.runner) {
+                clearInterval(this.runner);
+                this.run();
+            }
+        }.bind(this)
     });
 }
 

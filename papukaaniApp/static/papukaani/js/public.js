@@ -36,6 +36,7 @@ IndividualSorter.prototype.refresh = function () {
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForIndividual(ids) {
+
     if (request.readyState === 4) {
 
         var messagebox = $("#loading");
@@ -63,13 +64,14 @@ function showPointsForIndividual(ids) {
 
 
             var html = [];
-
-            html.push('<div class="firstCol" id="individual' + ids[i] + '">');
-            html.push(individualname);
+            var id = "individual" + ids[i];
+            html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
+            html.push('<button type="button" class="remove">X</button>' + " " + individualname);
             html.push('</div>');
             html.push('<div class="secondCol" style="background: ' + color + ';">');
             html.push('&nbsp;');
             html.push('</div>');
+
 
             $("#birdies").append(html.join(''));
 

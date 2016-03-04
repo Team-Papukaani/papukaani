@@ -116,10 +116,6 @@ body {
     outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
 
-.choose_actions {
-    display: inline-block;
-}
-
 #time_range label {
     display: inline-block;
 }
@@ -158,7 +154,7 @@ body {
     width: 40px;
     margin-right: 7px;
     vertical-align: middle;
-    float:left;
+    float: left;
 }
 
 #playSlider {
@@ -274,16 +270,6 @@ body {
 
 #selectIndividual li span {
     line-height: 30px;
-}
-
-.sqr {
-    float: left;
-    width: 20px;
-    height: 20px;
-    margin: 5px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #000;
 }
 
 /* kielijutut */
@@ -421,3 +407,23 @@ code {
 /*height: 100%;*/
 /*}*/
 /*}*/
+
+.ui-datepicker select {
+    background: #fff;
+    color: #000;
+}
+
+#birdies{
+    float:left;
+    width:100%;
+}
+
+.firstCol {
+    float:left;
+    width: 200px;
+}
+
+.secondCol {
+    float:left;
+    width: calc(100% - 200px);
+}

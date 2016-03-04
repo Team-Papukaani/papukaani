@@ -26,87 +26,112 @@
                 <div id="map" tabindex="1"></div>
 
                 <div id="timeline">
-                    <div class="row no-gutters">
-                        <div class="col-xs-3">
-                            <div class="choose_actions form-inline padded2">
-                                <div id="birds">
-                                    <select id="selectIndividual"><option value="">Lisää lintu</option></select>
-                                </div>
+                    <style>
+                        table td {
+                            border: 1px solid;
+                        }
+
+                        table {
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+
+                        #birdies {
+                            height: 100px;
+                            overflow-y: scroll; /* Trigger vertical scroll    */
+                            overflow-x: hidden; /* Hide the horizontal scroll */
+                        }
+                    </style>
+                    <div class="firstCol">
+                        <div class="choose_actions form-inline padded2">
+                            <div id="birds">
+                                <select id="selectIndividual">
+                                    <option value="">Lisää lintu</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-xs-9">
-                            <div class="row no-gutters">
-                                <div class="col-xs-6">
+                    </div>
+                    <div class="secondCol">
+                        <table>
+                            <tr>
+                                <td>
                                     <button id="play" onclick="player.play()" class="btn btn-default">
                                         &#9658;</button>
+                                </td>
+                                <td>
                                     <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}"
                                          alt="{% trans "Nopeus" %}"
                                          width="30"
                                          height="30"/>
+                                </td>
+                                <td>
                                     <div id="speedSlider" class="small-slider" data-toggle="tooltip"
                                          title="{% trans "Nopeus" %}"
                                          data-placement="top"></div>
-                                </div>
-                                <div class="col-xs-3">
+                                </td>
+                                <td>
                                     <label id="playLabel">N/A</label>
-                                </div>
-                                <div class="col-xs-3">
+                                </td>
+                                <td>
                                     <label id="playLabel_end">N/A</label>
-                                </div>
-                            </div>
-                            <div class="row no-gutters">
-                                <div class="col-xs-10">
-                                    <div class="input-group" id="time_range">
-                                        <span class="input-group-addon" id="basic-addon1">{% trans "Alku:" %}</span>
-                                        <input type="text" id="start_time" name="start_time"
-                                               class="dateinput datepicker form-control"
-                                               onblur="validateDateFormat(this)"
-                                               placeholder="dd-mm-yyyy HH:mm" maxlength="16">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#iframedialog">Link
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <span id="loading" style="display:inline"></span>
+
+
+                        <div class="modal fade" tabindex="-1" role="dialog" id="iframedialog">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Linkki</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input class="form-control" type="text" readonly id="iframeSrc"/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </div>
+                    <div class="firstCol">
+                        &nbsp;
+                    </div>
+                    <div class="secondCol">
+                        <div class="input-group" id="time_range">
+                                                <span class="input-group-addon"
+                                                      id="basic-addon1">{% trans "Alku:" %}</span>
+                            <input type="text" id="start_time" name="start_time"
+                                   class="dateinput datepicker form-control"
+                                   placeholder="dd-mm-yyyy HH:mm" maxlength="16">
                                             <span class="input-group-addon"
                                                   id="basic-addon1">{% trans "Loppu:" %}</span>
-                                        <input type="text" id="end_time" name="end_time"
-                                               class="dateinput datepicker form-control"
-                                               onblur="validateDateFormat(this)"
-                                               placeholder="dd-mm-yyyy HH:mm" maxlength="16">
-                                    </div>
-                                </div>
-                                <div class="col-xs-2">
-                                    <button type="button" class="btn btn-default" onclick="sorter.refresh()"
-                                            id="show_time_range">{% trans "Päivitä " %}</button>
-                                    <span id="formatError" style="margin:0"></span>
-                                </div>
-                            </div>
+                            <input type="text" id="end_time" name="end_time"
+                                   class="dateinput datepicker form-control"
+                                   placeholder="dd-mm-yyyy HH:mm" maxlength="16">
                         </div>
+                    </div>
+                    <div class="firstCol">
+                        &nbsp;
+                    </div>
+                    <div class="secondCol">
+                        <div id="playSlider"></div>
                     </div>
 
                     <div id="birdies"></div>
-                    <div class="row no-gutters">
-                        <div class="col-xs-3">
-
-                        </div>
-                        <div class="col-xs-9">
-                            <div id="playSlider"></div>
-                            <span id="loading" style="display:inline"></span>
-                        </div>
-                    </div>
-                    <div class="row no-gutters">
-                        <div class="col-xs-3">
-
-                        </div>
-                        <div class="col-xs-9">
-                            <div class="choose_actions form-inline padded2">
-                                <div class="input-group">
-                                    <span class="input-group-addon">iFrame</span>
-                                    <input class="form-control" type="text" size="100" id="iframeSrc"/>
-                                </div>
-
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-primary" onclick="generateIframeUrl()"
-                                            id="generateIframeButton">{% trans "Luo" %}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="hidden-sm col-md-3 col-lg-2">
@@ -128,7 +153,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
@@ -147,4 +171,22 @@
     <script src="{% static 'papukaani/js/utils/player.js' %}"></script>
     <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
     <script src="{% static 'papukaani/js/public.js' %}"></script>
+    <script>
+        $(function () {
+            $('.datepicker').change(function () {
+                if (validateDateFormat(this) || this.value === "") {
+                    sorter.refresh();
+                }
+            });
+            $('#iframedialog').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var modal = $(this)
+                generateIframeUrl();
+                $("#iframeSrc").select();
+            });
+            $('#iframedialog').on('shown.bs.modal', function (event) {
+                $("#iframeSrc").select();
+            });
+        });
+    </script>
 {% endblock %}

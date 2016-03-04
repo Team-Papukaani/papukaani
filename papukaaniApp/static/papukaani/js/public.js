@@ -25,7 +25,6 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
             this.colorChart.freeColor(this.routes[i].individualId);
             player.removeRoute(this.routes[i]);
             this.routes.splice(i, 1);
-            $("#individual" + individualId).find("div.sqr").css('background-color', "#fff");
             return;
         }
     }
@@ -65,13 +64,11 @@ function showPointsForIndividual(ids) {
 
             var html = [];
 
-            html.push('<div class="row no-gutters" id="individual' + ids[i] + '">');
-            html.push('<div class="col-xs-3">');
+            html.push('<div class="firstCol" id="individual' + ids[i] + '">');
             html.push(individualname);
             html.push('</div>');
-            html.push('<div class="col-xs-9">');
-            html.push('<span style="background: ' + color + ';width:100%;"></span>');
-            html.push('</div>');
+            html.push('<div class="secondCol" style="background: ' + color + ';">');
+            html.push('&nbsp;');
             html.push('</div>');
 
             $("#birdies").append(html.join(''));
@@ -275,14 +272,6 @@ function unlockButtons() {
 //        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
 //    }
 //});
-
-$(function () {
-    $("#in-map").on("mouseover", function () {
-        $(this).children().css("opacity", 1);
-    }).on("mouseout", function () {
-        $(this).children().css("opacity", 0.5);
-    })
-});
 
 function generateIframeUrl() {
     var inputBox = $('#iframeSrc');

@@ -7,11 +7,11 @@
     <link rel="stylesheet" type="text/css"
           href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
+
 {% endblock %}
 
 {% autoescape off %}
-{% block body_attr %} onload='init({{ attachments_of_devices }}, {{ individual_names }}, "{{ csrf_token }}
-    ")'{% endblock %}
+{% block body_attr %} onload='init({{ attachments_of_devices }}, {{ individual_names }}, "{{ csrf_token }}")'{% endblock %}
 {% endautoescape %}
 
 {% block content %}
@@ -53,9 +53,11 @@
                             </td>
                             <td>
                                 <input type="text" id="start_time" name="start_time" class="dateinput datepicker"
-                                       onblur="validateDateFormat(this)" placeholder="dd.mm.yyyy HH:mm"></td>
+                                       onblur="validateDateFormat(this)" placeholder="dd.mm.yyyy HH:mm">
+                            </td>
                             <td></td>
-                            <td><a id="attach" class="btn btn-sm btn-primary"
+                            <td>
+                                <a id="attach" class="btn btn-sm btn-primary"
                                    onclick="attachDevice()">{% trans "Kiinnitä" %}</a>
                             </td>
                         </tr>
@@ -69,10 +71,12 @@
 {% block scripts %}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
-    <script src="{% static 'papukaani/js/devices.js' %}"></script>
+
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-addon.js' %}"></script>
     {% trans "fi" as lang %}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="{% static 'papukaani/js/devices.js' %}"></script>
+
 {% endblock %}

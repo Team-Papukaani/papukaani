@@ -32,7 +32,13 @@ function Player(map) {
         paddingMax: 8,
         value: 250,
         min: 5,
-        max: 1000
+        max: 100,
+        change: function (event, ui) {
+            if (this.runner) {
+                clearInterval(this.runner);
+                this.run();
+            }
+        }.bind(this)
     });
 }
 
@@ -95,6 +101,7 @@ Player.prototype.addRoute = function (route) {
         route.marker.getPopup().setContent(route.individualname + "<br>" +
             new Date(route.points[route.pointer].dateBegin).toLocaleString());
     });
+
 
     this.routes.push(route);
 }

@@ -26,7 +26,7 @@
 
                     <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}" minlength="3" maxlength="20" required/>
 
-                    <select class="form-control combobox" name="taxon" id="new_individual_taxon" required>
+                    <select class="form-control combobox" name="taxon" id="new_individual_taxon">
                         <option value="">{% trans "Laji" %}</option>
                         {% for s in species %}
                             <option value="{{ s.id }}">{{ s.name }}</option>
@@ -39,7 +39,7 @@
                 <h1>{% trans "Muokkaa lintua" %}</h1>
                 {% for individual in individuals %}
 
-                    <form id="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
+                    <form name="modify_individuals" class="form-inline" action='{% url "individuals" %}' method="post">
                         {% csrf_token %}
 
                         <input type="hidden" name="id" value="{{ individual.id }}"/>
@@ -60,7 +60,7 @@
                                 data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
                         <button type="submit" name="modify" value="1"
                                 class="btn btn-default">{% trans "Tallenna" %}</button>
-                        <button type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
+                        <button name="delete" type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
 
                         <div class="modal fade bd-example-modal-lg" id="{{ individual.id }}" role="dialog">
                             <div class="modal-dialog">

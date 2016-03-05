@@ -20,6 +20,28 @@
 
 {% block content %}
 
+    <div class="modal" tabindex="-1" role="dialog" id="descriptionModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body"></div>
+                    <p id="desc" class="modal-body"></p>
+                    <a id="url" class="modal-body" href="#"></a>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        {% trans "Sulje" %}
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
     <div class="container-fluid" id="mapContainer">
         <div class="row no-gutters" style="height:100%;">
             <div class="col-sm-12 col-md-9 col-lg-10" style="height:100%;">
@@ -93,14 +115,14 @@
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-label="Close"><span
                                                 aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">Linkki</h4>
+                                        <h4 class="modal-title">{% trans "Linkki" %}</h4>
                                     </div>
                                     <div class="modal-body">
                                         <input class="form-control" type="text" readonly id="iframeSrc"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">
-                                            Close
+                                            Sulje
                                         </button>
                                     </div>
                                 </div><!-- /.modal-content -->
@@ -109,6 +131,7 @@
                     </div>
                     <div class="firstCol">
                         &nbsp;
+
                     </div>
                     <div class="secondCol">
                         <div class="input-group" id="time_range">
@@ -189,10 +212,28 @@
             });
         });
         $("#birdies").on('click', 'button.remove', function (e) {
-	        e.preventDefault();
-	        sorter.removePointsForIndividual($(this).closest('div.firstCol').data('id'));
-	        $(this).closest('div.firstCol').next().remove();
-	        $(this).closest('div.firstCol').remove();
+            e.preventDefault();
+            sorter.removePointsForIndividual($(this).closest('div.firstCol').data('id'));
+            $(this).closest('div.firstCol').next().remove();
+            $(this).closest('div.firstCol').remove();
+        });
+
+       $('#descriptionModal').on('show.bs.modal', function (event) {
+           var button = $(event.relatedTarget);
+           var modal = $(this);
+           var id = button.data('id');
+           var bird = sorter.getBird(id);
+
+           modal.find('.modal-title').text(bird.name);
+
+           if (bird.description != undefined) {
+               $('#desc').html(bird.description);
+           }
+           if (bird.url != undefined) {
+               $('#url').attr('href', bird.url);
+               $('#url').text("{% trans "Lisää tietoa" %}");
+           }
+
         });
     </script>
 {% endblock %}

@@ -4,6 +4,7 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.restUrl = restUrl;
     this.routes = [];
     this.map = map;
+    this.birdInfo = {};
     this.createIndividualSelector(individuals, species);
     this.colorChart = new ColorChart();
 }
@@ -28,11 +29,11 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
             return;
         }
     }
-}
+};
 
 IndividualSorter.prototype.refresh = function () {
     player.refreshRoutes();
-}
+};
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForIndividual(ids) {
@@ -66,7 +67,10 @@ function showPointsForIndividual(ids) {
             var html = [];
             var id = "individual" + ids[i];
             html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
-            html.push('<button type="button" class="remove">X</button>' + " " + individualname);
+            html.push('<button type="button" class="remove close" style="float: left" aria-hidden="true"><span>&times;</span></button>' + " <span>" + individualname + "</span> ");
+            if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
+                html.push('<button type="button" class="showDescription btn btn-info btn-xs" data-toggle="modal" data-target="#descriptionModal" data-id="' + ids[i] + '">Lisätietoja</button>');
+            }
             html.push('</div>');
             html.push('<div class="secondCol" style="background: ' + color + ';">');
             html.push('&nbsp;');
@@ -108,7 +112,7 @@ ColorChart.prototype.getColor = function (individualId) {
     }
     this.colors.push({color: color, individualId: individualId});
     return color;
-}
+};
 
 ColorChart.prototype.freeColor = function (individualId) {
     for (var i = 0; i < this.colors.length; i++) {
@@ -117,7 +121,7 @@ ColorChart.prototype.freeColor = function (individualId) {
             break;
         }
     }
-}
+};
 
 //Creates a selector for individuals (individualId:taxon).
 IndividualSorter.prototype.createIndividualSelector = function (individuals, species) {
@@ -132,19 +136,21 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         var e = '<option value="' + individualId + '">';
         e = e + taxon.nickname;
         e = e + '</option>';
-
-
-        //if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
-        //    taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
-        //    e = e + '<a href="' + taxon.descriptionURL[lang] + '"><span>' + taxon.nickname + '</a>';
-        //} else {
-        //
-        //}
-        //if (taxon.description !== null && taxon.description.fi !== null &&
-        //    taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
-        //    e = e + "<br>" + taxon.description[lang] + '</span>';
-        //}
+        var bird = {
+            name: taxon.nickname,
+            url: "",
+            description: ""
+        };
+        if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
+            taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
+            bird.url = taxon.descriptionURL[lang];
+        }
+        if (taxon.description !== null && taxon.description.fi !== null &&
+            taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
+            bird.description = taxon.description[lang];
+        }
         selector.append(e);
+        that.birdInfo[individualId] = bird;
     };
 
     $.each(species, function (key, s) {
@@ -161,6 +167,10 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         that.changeDeviceSelection([$(this).val()]);
         //that.removePointsForIndividual($(this).val())
     });
+};
+
+IndividualSorter.prototype.getBird = function (individualId) {
+    return this.birdInfo[individualId];
 };
 
 function PublicMap(loc, zoom) {

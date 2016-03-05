@@ -421,7 +421,6 @@ code {
 .firstCol {
     float:left;
     width: 200px;
-    clear: left;
 }
 
 .secondCol {

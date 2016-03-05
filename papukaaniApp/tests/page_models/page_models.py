@@ -7,6 +7,7 @@ import time
 from selenium.webdriver.support.wait import WebDriverWait
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
+
 BASE_URL = "http://127.0.0.1:8081"
 
 
@@ -335,24 +336,20 @@ class IndividualPage(Page):
     FIRST_NICKNAME_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="nickname"]')
     FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
-    MODIFY2_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify2"]')
     CONFIRM_MODIFY_BUTTON = Element(By.ID, 'confirm_modify')
-    FIRST_DESCRIPTION_EN_FIELD = Element(By.ID, 'desen')
-    FIRST_DESCRIPTION_FI_FIELD = Element(By.ID, 'desfi')
-    FIRST_DESCRIPTION_SV_FIELD = Element(By.ID, 'dessv')
-    FIRST_DESCRIPTION_ENURL_FIELD = Element(By.ID, 'desenurl')
-    FIRST_DESCRIPTION_FIURL_FIELD = Element(By.ID, 'desfiurl')
-    FIRST_DESCRIPTION_SVURL_FIELD = Element(By.ID, 'dessvurl')
-    NEW_DESCRIPTION_EN_FIELD = Element(By.ID, 'descriptionEN')
-    NEW_DESCRIPTION_FI_FIELD = Element(By.ID, 'descriptionFI')
-    NEW_DESCRIPTION_SV_FIELD = Element(By.ID, 'descriptionSV')
-    NEW_DESCRIPTION_ENURL_FIELD = Element(By.ID, 'descriptionUrlEN')
-    NEW_DESCRIPTION_FIURL_FIELD = Element(By.ID, 'descriptionUrlFI')
-    NEW_DESCRIPTION_SVURL_FIELD = Element(By.ID, 'descriptionUrlSV')
-    MODIFY_DESCRIPTION_BUTTON = Element(By.XPATH, '//form[@name="modify_description"][1]/button[@name="modify"]')
+    FIRST_DESCRIPTION_EN_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//textarea[@name="descriptionEN"]')
+    FIRST_DESCRIPTION_FI_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//textarea[@name="descriptionFI"]')
+    FIRST_DESCRIPTION_SV_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//textarea[@name="descriptionSV"]')
+    FIRST_DESCRIPTION_ENURL_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="descriptionUrlEN"]')
+    FIRST_DESCRIPTION_FIURL_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="descriptionUrlFI"]')
+    FIRST_DESCRIPTION_SVURL_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="descriptionUrlSV"]')
+    MODIFY_DESCRIPTION_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]//button[@name="modifyDescription"]')
+    CLOSE_MODAL_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]//button[@name="close"]')
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
     DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
     MESSAGE = Element(By.ID, 'messages')
+    MODAL_TAB_LINK_FI = Element(By.XPATH, '//form[@name="modify_individuals"][1]//li[2]//a')
+    MODAL_TAB_LINK_SV = Element(By.XPATH, '//form[@name="modify_individuals"][1]//li[3]//a')
 
     def get_message(self):
         """
@@ -364,6 +361,7 @@ class IndividualPage(Page):
         """
         Inputs the name of the new individual and submits the form.
         """
+        self.driver.execute_script('return $(".combobox").removeAttr("required");')
         self.set_taxon_field_visible_for_input()
         namefield2 = self.NEW_TAXON_FIELD
         namefield2.send_keys(taxon)
@@ -371,33 +369,6 @@ class IndividualPage(Page):
         namefield = self.NEW_NAME_FIELD
         namefield.send_keys(name)
         namefield.submit()
-        time.sleep(5)
-
-    def create_new_individual_with_description(self, taxon, name, en, fi, sv, enurl, fiurl, svurl):
-        """
-        Inputs the name of the new individual and submits the form.
-        """
-        self.set_taxon_field_visible_for_input()
-        namefield2 = self.NEW_TAXON_FIELD
-        namefield2.send_keys(taxon)
-
-        namefield = self.NEW_NAME_FIELD
-        namefield.send_keys(name)
-        f1 = self.NEW_DESCRIPTION_EN_FIELD
-        f1.send_keys(en)
-        f2 = self.NEW_DESCRIPTION_FI_FIELD
-        f2.send_keys(fi)
-        f3 = self.NEW_DESCRIPTION_SV_FIELD
-        f3.send_keys(sv)
-        f4 = self.NEW_DESCRIPTION_ENURL_FIELD
-        f4.send_keys(enurl)
-        f5 = self.NEW_DESCRIPTION_FIURL_FIELD
-        f5.send_keys(fiurl)
-        f6 = self.NEW_DESCRIPTION_SVURL_FIELD
-        f6.send_keys(svurl)
-        namefield.submit()
-        modify_button = self.MODIFY2_BUTTON
-        modify_button.click()
         time.sleep(5)
 
     def set_taxon_field_visible_for_input(self):
@@ -437,15 +408,28 @@ class IndividualPage(Page):
     def get_first_individual_ring_id(self):
         return self.FIRST_RING_ID_FIELD.get_attribute("value")
 
-    def modify_description(self, en):
+    def modify_descriptionurl(self, en, fi, sv):
         """
         Inputs the name and ring_id of an existing individual and submits the form.
         """
-        f1 = self.FIRST_DESCRIPTION_EN_FIELD
-        f1.clear()
+        self.MODIFY_DESCRIPTION_BUTTON.click()
+        time.sleep(1)
+        f1 = self.FIRST_DESCRIPTION_ENURL_FIELD
         f1.send_keys(en)
-        confirm_modify = self.CONFIRM_MODIFY_BUTTON
-        confirm_modify.click()
+        time.sleep(1)
+        self.MODAL_TAB_LINK_FI.click()
+        time.sleep(1)
+        f2 = self.FIRST_DESCRIPTION_FIURL_FIELD
+        f2.send_keys(fi)
+        self.MODAL_TAB_LINK_SV.click()
+        time.sleep(1)
+        f3 = self.FIRST_DESCRIPTION_SVURL_FIELD
+        f3.send_keys(sv)
+        time.sleep(1)
+        self.CLOSE_MODAL_BUTTON.click()
+        time.sleep(1)
+        self.MODIFY_BUTTON.click()
+
 
     def modify_individual(self, nickname, ring_id):
         """

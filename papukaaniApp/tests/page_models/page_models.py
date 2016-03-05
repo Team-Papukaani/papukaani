@@ -91,10 +91,10 @@ class PublicPage(PageWithDeviceSelector):
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')
     IFRAME_SRC = Element(By.ID, 'iframeSrc')
-    IFRAME_BUTTON = Element(By.ID, 'generateIframeButton')
+    IFRAME_BUTTON = Element(By.ID, 'iframedialog')
     TIME_START = Element(By.ID, 'start_time')
     TIME_END = Element(By.ID, 'end_time')
-    REFRESH = Element(By.ID, "show_time_range")
+    INDIVIDUAL_SELECTOR = Element(By.ID, "selectIndividual")
 
     def __init__(self):
         super().__init__()
@@ -129,21 +129,13 @@ class PublicPage(PageWithDeviceSelector):
         return self.driver.find_element_by_class_name("leaflet-popup-content-wrapper")
 
     def get_navigation(self):
-        return self.driver.find_element_by_id("cssmenu")
+        return self.driver.find_element_by_id("navbar")
 
     def change_device_selection(self, key):
-        if(key == "None"):
-            elem = self.driver.find_element_by_xpath("//li[1]")
-            elem.click()
-            time.sleep(1)
-            return
-
-        elem = self.driver.find_element_by_xpath("//li[@id='individual"+key+"']")
-        elem.click()
-        while self.driver.find_element_by_xpath("//input[@value='"+key+"']").get_attribute('disabled'):
+        sel = Select(self.INDIVIDUAL_SELECTOR)
+        sel.select_by_value(key)
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(0.1)
-        time.sleep(1)
-
 
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
@@ -156,7 +148,7 @@ class PublicPage(PageWithDeviceSelector):
 
 
     def get_iframe_url(self):
-        self.IFRAME_BUTTON.click()
+        #self.IFRAME_BUTTON.click()
         return self.IFRAME_SRC.get_attribute('value')
 
 

@@ -432,3 +432,14 @@ code {
     width:100%;
     float:left;
 }
+
+.loadinggif{
+    display:block;
+    margin:0 auto;
+}
+
+.loadingtext{
+    display:block;
+    margin:0 auto;
+    text-align: center;
+}

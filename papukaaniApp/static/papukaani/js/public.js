@@ -10,9 +10,10 @@ function IndividualSorter(restUrl, individuals, species, map) {
 }
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeIndividualSelection = function (individualId) {
-    var messagebox = $("#loading");
-    messagebox.text(gettext('Tietoja ladataan') + "...");
-    lockButtons();
+    $('#loading').modal({
+       backdrop: 'static',
+       keyboard: false
+    })
     request = new XMLHttpRequest;
     var path = this.restUrl + individualId + "&format=json";
     request.open("GET", path, true);
@@ -40,9 +41,7 @@ IndividualSorter.prototype.refresh = function () {
 function showPointsForIndividual(ids) {
 
     if (request.readyState === 4) {
-
-        var messagebox = $("#loading");
-        messagebox.text("");
+        $('#loading').modal('hide');
 
         var data = JSON.parse(request.response);
 
@@ -92,7 +91,6 @@ function showPointsForIndividual(ids) {
 
         }
         player.refreshRoutes();
-        unlockButtons();
         request = null;
     }
 }
@@ -264,7 +262,7 @@ function init(individuals, species, individualIds, defaultSpeed, loc, zoom, star
  });
  };
 
- */
+
 //Disables the select, save and reset buttons.
 function lockButtons() {
     $("#selectIndividual").attr("disabled", true);
@@ -280,7 +278,7 @@ function unlockButtons() {
     $("#pause").attr("disabled", false);
     $("button").attr("disabled", false);
 }
-
+/*
 //Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.
 //$(function () {
 //    var slider = L.DomUtil.get('in-map-slider');

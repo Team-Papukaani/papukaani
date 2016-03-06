@@ -19,6 +19,17 @@
 
 {% block content %}
 
+    <div class="modal" tabindex="-1" role="dialog" id="loading">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="{% static 'papukaaniApp/loading.gif' %}" alt="Ladataan" class="loadinggif">
+                    <h4 class="loadingtext">{% trans "Reittiä ladataan..." %}</h4>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div class="modal" tabindex="-1" role="dialog" id="descriptionModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -107,10 +118,6 @@
                                 </td>
                             </tr>
                         </table>
-
-                        <span id="loading" style="display:inline"></span>
-
-
                         <div class="modal fade" tabindex="-1" role="dialog" id="iframedialog">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">

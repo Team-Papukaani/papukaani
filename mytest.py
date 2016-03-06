@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import subprocess
+fails = 0
 while True:
 	try:
 		print("\033[92m{}\033[00m" .format("Start tests\n"))
@@ -9,9 +10,11 @@ while True:
 		if ret==0:
 			for x in range(0, 100):
 				print("\033[92m{}\033[00m" .format("Great success!! Praise the Gods!"))
+			print("\033[92m{}\033[00m" .format("Failed " + fails + " times before success"))
 			break
 		for x in range(0, 100):
 			print("\033[91m{}\033[00m" .format("Ei onnaa"))
 		print("\n");
+		fails += 1
 	except:
 		raise

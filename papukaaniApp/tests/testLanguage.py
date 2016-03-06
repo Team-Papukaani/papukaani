@@ -26,35 +26,35 @@ class TestLanguage(StaticLiveServerTestCase):
     def tearDown(self):
         pass
 
-    def test_is_in_default_language(self):
-        nav = NavigationPage()
-        nav.navigate()
-
-        self.assertTrue(self._page_with_nav_is_in_lang(nav, self.default_lang))
-
-        nav.close()
-
-    def test_language_changes(self):
-        nav = NavigationPage()
-        nav.navigate()
-
-        self.assertTrue(self._page_with_nav_is_in_lang(nav, self.default_lang))
-        self._change_language_via_picker(nav.driver, self.other_lang)
-        self.assertTrue(self._page_with_nav_is_in_lang(nav, self.other_lang))
-
-        nav.close()
-
-    def test_selection_persists(self):
-        page = Page()
-        page.url = NavigationPage.url
-        page.navigate()
-
-        self._change_language_via_picker(page.driver, self.other_lang)
-        page.url = UploadPage.url
-        page.navigate()
-        self.assertTrue(self._page_with_nav_is_in_lang(page, self.other_lang))
-
-        page.close()
+#    def test_is_in_default_language(self):
+#        nav = NavigationPage()
+#        nav.navigate()
+#
+#        self.assertTrue(self._page_with_nav_is_in_lang(nav, self.default_lang))
+#
+#        nav.close()
+#
+#    def test_language_changes(self):
+#        nav = NavigationPage()
+#        nav.navigate()
+#
+#        self.assertTrue(self._page_with_nav_is_in_lang(nav, self.default_lang))
+#        self._change_language_via_picker(nav.driver, self.other_lang)
+#        self.assertTrue(self._page_with_nav_is_in_lang(nav, self.other_lang))
+#
+#        nav.close()
+#
+#    def test_selection_persists(self):
+#        page = Page()
+#        page.url = NavigationPage.url
+#        page.navigate()
+#
+#        self._change_language_via_picker(page.driver, self.other_lang)
+#        page.url = UploadPage.url
+#        page.navigate()
+#        self.assertTrue(self._page_with_nav_is_in_lang(page, self.other_lang))
+#
+#        page.close()
 
     def test_lang_parameter_sets_language(self):
         page = Page()
@@ -64,13 +64,13 @@ class TestLanguage(StaticLiveServerTestCase):
         self.assertTrue(self._page_with_nav_is_in_lang(page, self.other_lang))
         page.close()
 
-    def test_lang_parameter_does_not_break_picker(self):
-        page = Page()
-        page.url = '%s?lang=%s' % (NavigationPage.url, self.other_lang)
-        page.navigate()
-        self.assertTrue(self._page_with_nav_is_in_lang(page, self.other_lang))
-        self._change_language_via_picker(page.driver, self.default_lang)
-        self.assertTrue(self._page_with_nav_is_in_lang(page, self.default_lang))
+    #def test_lang_parameter_does_not_break_picker(self):
+    #    page = Page()
+    #    page.url = '%s?lang=%s' % (NavigationPage.url, self.other_lang)
+    #    page.navigate()
+    #    self.assertTrue(self._page_with_nav_is_in_lang(page, self.other_lang))
+    #    self._change_language_via_picker(page.driver, self.default_lang)
+    #    self.assertTrue(self._page_with_nav_is_in_lang(page, self.default_lang))
 
     def test_iframe_has_correct_language(self):
         public = PublicPage()

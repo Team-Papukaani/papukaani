@@ -2,6 +2,7 @@ import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
@@ -25,7 +26,7 @@ class PublicView(StaticLiveServerTestCase):
             "dateEdited": "2014-09-29T14:00:00+03:00"
         }
 
-        self.I = individual.create("Birdie", "GAVSTE")
+        self.I = individual.create("Birdie", "GAVSTE", description={"fi": "birdiekuvaus"}, descriptionURL={"fi": "http://www.birdie.kek"})
         self.I2 = individual.create("Birdie2", "GAVSTE")
 
         self.D = device.create(**dev)
@@ -228,3 +229,27 @@ class PublicView(StaticLiveServerTestCase):
 
         self.assertEquals(self.page.TIME_START.get_attribute("value"), "11.12.2010 00:00")
         self.assertEquals(self.page.TIME_END.get_attribute("value"), "14.12.2010 00:00")
+
+    def test_description_button_opens_modal_with_correct_info(self):
+        self.page.change_device_selection(str(self.I.id))
+        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription").click()
+        time.sleep(1)
+        print(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text)
+        self.assertTrue(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
+        self.assertTrue(self.page.driver.find_element_by_id("desc").text.equals("birdiekuvaus"))
+        self.assertTrue(self.page.driver.find_element_by_id("url").get_attribute("href").equals("http://www.birdie.kek"))
+
+    def test_description_button_missing_when_no_desc_or_url_available(self):
+        self.page.change_device_selection(str(self.I2.id))
+        with self.assertRaises(NoSuchElementException):
+            self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription")
+
+    def test_description_button_opens_modal_with_correct_info(self):
+        self.page.change_device_selection(str(self.I.id))
+        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription").click()
+        time.sleep(1)
+        print(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text)
+        self.assertTrue(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
+        self.assertTrue(self.page.driver.find_element_by_id("desc").text.equals("birdiekuvaus"))
+        self.assertTrue(self.page.driver.find_element_by_id("url").get_attribute("href").equals("http://www.birdie.kek"))
+

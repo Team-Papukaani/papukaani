@@ -153,9 +153,10 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_iframe_url_is_correct(self):
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
-        self.page.get_iframe_url())
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
+            self.page.get_iframe_url())
 
     """
     def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
@@ -175,12 +176,12 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
         number_of_polylines = 71
-        self.page.change_device_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I.id))
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), number_of_polylines)
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen_with_two_birds(self):
-        self.page.change_device_selection(str(self.I2.id))
-        self.page.change_device_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.change_individual_selection(str(self.I.id))
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 72)
 
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
@@ -213,19 +214,24 @@ class PublicView(StaticLiveServerTestCase):
     def test_iframe_with_time_selection_is_correct(self):
         self.page.change_individual_selection(str(self.I.id))
 
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
-        self.page.get_iframe_url())
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
+            self.page.get_iframe_url())
 
         self.page.TIME_START.send_keys("11.12.2010 00:00")
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}'.format(
-          lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]', start_time='11.12.2010 00:00'),
-        self.page.get_iframe_url())
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]',
+                start_time='11.12.2010 00:00'),
+            self.page.get_iframe_url())
 
         self.page.TIME_END.send_keys("14.12.2010 00:00")
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}&end_time={end_time}'.format(
-          lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]', start_time='11.12.2010 00:00', end_time='14.12.2010 00:00'),
-        self.page.get_iframe_url())
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}&end_time={end_time}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]',
+                start_time='11.12.2010 00:00', end_time='14.12.2010 00:00'),
+            self.page.get_iframe_url())
 
     def test_time_selection_in_get_parameters_show_correct_time_selection(self):
         self.page.driver.get(self.page.url + "?start_time=11.12.2010 00:00&end_time=14.12.2010 00:00")
@@ -235,14 +241,14 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_description_button_opens_modal_with_correct_info(self):
         self.page.change_individual_selection(str(self.I.id))
-        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription").click()
+        self.page.driver.find_element_by_css_selector(
+            "#individual" + str(self.I.id) + " button.showDescription").click()
         time.sleep(1)
-        print(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text)
         self.assertTrue(
             self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
-        self.assertTrue(self.page.driver.find_element_by_id("desc").text.equals("birdiekuvaus"))
+        self.assertEquals(self.page.driver.find_element_by_id("desc").text,"birdiekuvaus")
         self.assertTrue(
-            self.page.driver.find_element_by_id("url").get_attribute("href").equals("http://www.birdie.kek"))
+            self.page.driver.find_element_by_id("url").get_attribute("href")==("http://www.birdie.kek/"))
 
     def test_description_button_missing_when_no_desc_or_url_available(self):
         self.page.change_individual_selection(str(self.I2.id))

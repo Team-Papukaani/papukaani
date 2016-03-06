@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-03 12:36+0200\n"
+"POT-Creation-Date: 2016-03-06 19:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,116 +18,116 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papukaani/config/common.py:101
+#: papukaani/config/common.py:104
 msgid "Suomi"
 msgstr "Finska"
 
-#: papukaani/config/common.py:102
+#: papukaani/config/common.py:105
 msgid "Englanti"
 msgstr "Engelska"
 
-#: papukaani/config/common.py:103
+#: papukaani/config/common.py:106
 msgid "Ruotsi"
 msgstr "Svenska"
 
-#: papukaaniApp/templates/404.html:11
+#: papukaaniApp/templates/404.html:9
 msgid "Etsimääsi sivua ei ole olemassa."
 msgstr "Sidan finns inte."
 
-#: papukaaniApp/templates/base.html:6
-#: papukaaniApp/templates/papukaaniApp/choose.html:76
-#: papukaaniApp/templates/papukaaniApp/devices.html:68
-#: papukaaniApp/templates/papukaaniApp/public.html:89
+#: papukaaniApp/templates/base.html:4
+#: papukaaniApp/templates/papukaaniApp/choose.html:84
+#: papukaaniApp/templates/papukaaniApp/devices.html:76
+#: papukaaniApp/templates/papukaaniApp/public.html:191
 msgid "fi"
 msgstr "sv"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:25
+#: papukaaniApp/templates/papukaaniApp/choose.html:23
 msgid "Tallennetaanko muutokset?"
 msgstr "Spara ändringar?"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:26
-#: papukaaniApp/templates/papukaaniApp/individuals.html:20
+#: papukaaniApp/templates/papukaaniApp/choose.html:24
+#: papukaaniApp/templates/papukaaniApp/individuals.html:16
 msgid "Kyllä"
 msgstr "Ja"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:27
+#: papukaaniApp/templates/papukaaniApp/choose.html:25
 msgid "Ei"
 msgstr "Nej"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:28
-#: papukaaniApp/templates/papukaaniApp/individuals.html:21
+#: papukaaniApp/templates/papukaaniApp/choose.html:26
+#: papukaaniApp/templates/papukaaniApp/individuals.html:17
 msgid "Peruuta"
 msgstr "Avbryt"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:34
-#: papukaaniApp/templates/papukaaniApp/public.html:35
+#: papukaaniApp/templates/papukaaniApp/choose.html:36
+#: papukaaniApp/templates/papukaaniApp/public.html:143
 msgid "Alku:"
 msgstr "Start:"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:41
-#: papukaaniApp/templates/papukaaniApp/public.html:42
+#: papukaaniApp/templates/papukaaniApp/choose.html:44
+#: papukaaniApp/templates/papukaaniApp/public.html:148
 msgid "Loppu:"
 msgstr "Slut:"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:51
+#: papukaaniApp/templates/papukaaniApp/choose.html:54
 msgid "Näytä pisteet aikavälillä"
 msgstr "Visa punkter under tidsintervall"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:59
-#: papukaaniApp/templates/papukaaniApp/formats.html:134
-#: papukaaniApp/templates/papukaaniApp/individuals.html:64
+#: papukaaniApp/templates/papukaaniApp/choose.html:63
+#: papukaaniApp/templates/papukaaniApp/formats.html:149
+#: papukaaniApp/templates/papukaaniApp/individuals.html:63
 msgid "Tallenna"
 msgstr "Spara"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:60
+#: papukaaniApp/templates/papukaaniApp/choose.html:64
 msgid "Resetoi"
 msgstr "Återställ"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:21
+#: papukaaniApp/templates/papukaaniApp/devices.html:22
 msgid "Hallitse lähettimiä"
 msgstr "Administrera sändare"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:27
+#: papukaaniApp/templates/papukaaniApp/devices.html:28
 msgid "Valitse lähetin"
 msgstr "Välj sändare"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:38
+#: papukaaniApp/templates/papukaaniApp/devices.html:39
 msgid "Lintu"
 msgstr "Fågel"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:39
+#: papukaaniApp/templates/papukaaniApp/devices.html:40
 msgid "Kiinnitetty"
 msgstr "Fäst"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:40
+#: papukaaniApp/templates/papukaaniApp/devices.html:41
 msgid "Irroitettu"
 msgstr "Uttagen"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:47
+#: papukaaniApp/templates/papukaaniApp/devices.html:48
 msgid "Valitse kiinnitettävä lintu"
 msgstr "Välj fågel som skall fästas"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:57
+#: papukaaniApp/templates/papukaaniApp/devices.html:61
 msgid "Kiinnitä"
 msgstr "Fäst"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:12
+#: papukaaniApp/templates/papukaaniApp/formats.html:13
 msgid "Määrittele formaatti:"
 msgstr "Definiera ett format:"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:31
+#: papukaaniApp/templates/papukaaniApp/formats.html:32
 msgid "Formaatin nimi*"
 msgstr "Formatets namn*"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:39
+#: papukaaniApp/templates/papukaaniApp/formats.html:42
 msgid "Vapaamuotoinen nimi formaatille. Pakollinen kenttä."
 msgstr "Namnet på formatet. Obligatorisk uppgift."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:43
+#: papukaaniApp/templates/papukaaniApp/formats.html:46
 msgid "Aikaleima**"
 msgstr "Tidsstämpel**"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:51
+#: papukaaniApp/templates/papukaaniApp/formats.html:56
 msgid ""
 "Aikaleima-sarakkeen nimi. Täytä joko tämä kenttä tai sekä päivämäärä- että "
 "kellonaika-kenttä."
@@ -135,11 +135,11 @@ msgstr ""
 "Namnet på tidsstämpel-fältet. Fylla i antigen denna fält eller både datumn-"
 "fältet och klockslag-fältet."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:55
+#: papukaaniApp/templates/papukaaniApp/formats.html:60
 msgid "Päivämäärä**"
 msgstr "Datum**"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:61
+#: papukaaniApp/templates/papukaaniApp/formats.html:67
 msgid ""
 "Päivämääräsarakkeen nimi. Täytä joko tämä ja kellonaika-kenttä tai "
 "pelkästään aikaleima-kenttä."
@@ -147,11 +147,11 @@ msgstr ""
 "Namnet på datum-fältet. Fylla i antigen denna fält samt klockslag-fältet "
 "eller endast tidsstämpel-fältet."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:65
+#: papukaaniApp/templates/papukaaniApp/formats.html:71
 msgid "Kellonaika**"
 msgstr "Klockslag**"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:73
+#: papukaaniApp/templates/papukaaniApp/formats.html:80
 msgid ""
 "Kellonaikasarakkeen nimi. Täytä joko tämä ja päivämäärä-kenttä tai "
 "pelkästään aikaleima-kenttä."
@@ -159,35 +159,35 @@ msgstr ""
 "Namnet på klockslag-fältet. Fylla i antigen denna fält samt datum-fältet "
 "eller endast tidsstämpel-fältet."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:77
+#: papukaaniApp/templates/papukaaniApp/formats.html:84
 msgid "Longitudi*"
 msgstr "Longitud*"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:83
+#: papukaaniApp/templates/papukaaniApp/formats.html:92
 msgid "Longitudi-sarakkeen nimi. Pakollinen kenttä."
 msgstr "Namnet på longitud-fältet. Obligatorisk uppgift."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:87
+#: papukaaniApp/templates/papukaaniApp/formats.html:96
 msgid "Latitudi*"
 msgstr "Latitud*"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:95
+#: papukaaniApp/templates/papukaaniApp/formats.html:105
 msgid "Latitudi-sarakkeen nimi. Pakollinen kenttä."
 msgstr "Namnet på latitud-fältet. Obligatorisk uppgift."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:99
+#: papukaaniApp/templates/papukaaniApp/formats.html:109
 msgid "Korkeus"
 msgstr "Altitud"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:107
+#: papukaaniApp/templates/papukaaniApp/formats.html:118
 msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
 msgstr "Namnet på altitud-fältet. Frivillig uppgift."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:111
+#: papukaaniApp/templates/papukaaniApp/formats.html:122
 msgid "Lähettimen tunnus"
 msgstr "Sändarens ID"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:119
+#: papukaaniApp/templates/papukaaniApp/formats.html:132
 msgid ""
 "Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy "
 "tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste "
@@ -196,162 +196,175 @@ msgstr ""
 "Namnet på sändarens ID-fältet. Ifall sändarens ID hittas inte i filen bör "
 "fältet lämnas tomt. I detta fall anges ID:n i samband med filens uppladdning."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:123
+#: papukaaniApp/templates/papukaaniApp/formats.html:136
 msgid "Lämpötila"
 msgstr "Temperatur"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:131
+#: papukaaniApp/templates/papukaaniApp/formats.html:146
 msgid "Lämpötila-sarakkeen nimi. Valinnainen kenttä."
 msgstr "Namnet på temperatur-fältet. Frivillig uppgift."
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:18
+#: papukaaniApp/templates/papukaaniApp/individuals.html:14
 msgid "Haluatko varmasti poistaa linnun?"
 msgstr "Är du säker att du vill radera fågeln?"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:24
+#: papukaaniApp/templates/papukaaniApp/individuals.html:22
 msgid "Luo lintu"
 msgstr "Skapa fågel"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:30
-#: papukaaniApp/templates/papukaaniApp/individuals.html:50
+#: papukaaniApp/templates/papukaaniApp/individuals.html:28
+#: papukaaniApp/templates/papukaaniApp/individuals.html:48
 msgid "Nimi"
 msgstr "Namn"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:33
-#: papukaaniApp/templates/papukaaniApp/individuals.html:54
+#: papukaaniApp/templates/papukaaniApp/individuals.html:31
+#: papukaaniApp/templates/papukaaniApp/individuals.html:52
 msgid "Laji"
 msgstr "Art"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:39
-#: papukaaniApp/templates/papukaaniApp/public.html:110
+#: papukaaniApp/templates/papukaaniApp/individuals.html:37
 msgid "Luo"
 msgstr "Skapa"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:42
+#: papukaaniApp/templates/papukaaniApp/individuals.html:40
 msgid "Muokkaa lintua"
 msgstr "Redigera fågel"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:60
+#: papukaaniApp/templates/papukaaniApp/individuals.html:58
 msgid "Rengastunnus"
 msgstr "Ringnummer"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:63
+#: papukaaniApp/templates/papukaaniApp/individuals.html:61
 msgid "Muokkaa kuvauksia"
 msgstr "Redigera beskrivningar"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:65
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:16
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:22
 msgid "Poista"
 msgstr "Radera"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:72
+#: papukaaniApp/templates/papukaaniApp/individuals.html:74
 msgid "KUVAUKSET"
 msgstr "BESKRIVNINGAR"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:77
+#: papukaaniApp/templates/papukaaniApp/individuals.html:80
 msgid "ENGLANTI"
 msgstr "ENGELSKA"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:78
+#: papukaaniApp/templates/papukaaniApp/individuals.html:82
 msgid "SUOMI"
 msgstr "FINSKA"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:79
+#: papukaaniApp/templates/papukaaniApp/individuals.html:85
 msgid "RUOTSI"
 msgstr "SVENSKA"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:84
+#: papukaaniApp/templates/papukaaniApp/individuals.html:92
 msgid "URL englanninkieliseen kuvaukseen"
 msgstr "URL till beskrivning på engelska"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:90
+#: papukaaniApp/templates/papukaaniApp/individuals.html:100
 msgid "URL suomenkieliseen kuvaukseen"
 msgstr "URL till beskrivning på finska"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:96
+#: papukaaniApp/templates/papukaaniApp/individuals.html:108
 msgid "URL ruotsinkieliseen kuvaukseen"
 msgstr "URL till beskrivning på svenska"
 
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:13
+#: papukaaniApp/templates/papukaaniApp/individuals.html:118
+#: papukaaniApp/templates/papukaaniApp/public.html:40
+#: papukaaniApp/templates/papukaaniApp/public.html:129
+msgid "Sulje"
+msgstr "Stäng"
+
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:19
 msgid "Formaatin nimi"
 msgstr "Formatets namn"
 
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:15
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:21
 msgid "Muokkaa"
 msgstr "Redigera"
 
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:26
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:33
 msgid "Haluatko varmasti poistaa formaatin "
 msgstr "Är du säker att du vill radera formaten "
 
-#: papukaaniApp/templates/papukaaniApp/login.html:8
+#: papukaaniApp/templates/papukaaniApp/login.html:11
 msgid "Kirjaudu sisään:"
 msgstr "Logga in:"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:5
+#: papukaaniApp/templates/papukaaniApp/navigation.html:17
 msgid "Kotisivu"
 msgstr "Framsida"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:6
-#: papukaaniApp/templates/papukaaniApp/upload.html:14
-#: papukaaniApp/tests/testLanguage.py:89 papukaaniApp/tests/testLanguage.py:91
+#: papukaaniApp/templates/papukaaniApp/navigation.html:18
+#: papukaaniApp/templates/papukaaniApp/upload.html:15
+#: papukaaniApp/tests/testLanguage.py:96 papukaaniApp/tests/testLanguage.py:98
 msgid "Lataa tiedosto"
 msgstr "Ladda upp fil"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:7
+#: papukaaniApp/templates/papukaaniApp/navigation.html:20
 msgid "Valitse julkiset pisteet"
 msgstr "Välj publika punkter"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:8
+#: papukaaniApp/templates/papukaaniApp/navigation.html:21
 msgid "Valitse linnun lähetin"
 msgstr "Välj fågelns sändare"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:9
+#: papukaaniApp/templates/papukaaniApp/navigation.html:22
 msgid "Hallinnoi lintuja"
 msgstr "Administrera fåglar"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:10
+#: papukaaniApp/templates/papukaaniApp/navigation.html:23
 msgid "Julkinen"
 msgstr "Publik"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:21
+#: papukaaniApp/templates/papukaaniApp/navigation.html:35
 msgid "Kirjaudu ulos"
 msgstr "Logga ut"
 
-#: papukaaniApp/templates/papukaaniApp/navigation.html:23
+#: papukaaniApp/templates/papukaaniApp/navigation.html:37
 msgid "Kirjaudu sisään"
 msgstr "Logga in"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:51
-msgid "Päivitä "
-msgstr "Uppdatera "
-
-#: papukaaniApp/templates/papukaaniApp/public.html:68
-#: papukaaniApp/templates/papukaaniApp/public.html:71
+#: papukaaniApp/templates/papukaaniApp/public.html:89
+#: papukaaniApp/templates/papukaaniApp/public.html:95
 msgid "Nopeus"
 msgstr "Hastighet"
 
-#: papukaaniApp/templates/papukaaniApp/upload.html:19
+#: papukaaniApp/templates/papukaaniApp/public.html:106
+msgid "Jaa"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/public.html:122
+msgid "Linkki"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/public.html:241
+msgid "Lisää tietoa"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/upload.html:20
 msgid "Tiedosto:"
 msgstr "Fil:"
 
-#: papukaaniApp/templates/papukaaniApp/upload.html:23
+#: papukaaniApp/templates/papukaaniApp/upload.html:24
 msgid "Selaa"
 msgstr "Bläddra"
 
-#: papukaaniApp/templates/papukaaniApp/upload.html:27
+#: papukaaniApp/templates/papukaaniApp/upload.html:28
 msgid "Tiedostomuoto:"
 msgstr "Filformat:"
 
-#: papukaaniApp/templates/papukaaniApp/upload.html:37
+#: papukaaniApp/templates/papukaaniApp/upload.html:39
 msgid "GPS-numero:"
 msgstr "GPS-nummer:"
 
-#: papukaaniApp/templates/papukaaniApp/upload.html:42
+#: papukaaniApp/templates/papukaaniApp/upload.html:45
 msgid "Lähetä"
 msgstr "Sänd"
 
-#: papukaaniApp/templates/papukaaniApp/upload.html:44
+#: papukaaniApp/templates/papukaaniApp/upload.html:47
 msgid "Formaattien hallinta"
 msgstr "Administrera formater"
 
@@ -384,23 +397,23 @@ msgid "Täytä joko aikaleima-kenttä tai kellonaika- ja päivämäärä-kentät
 msgstr ""
 "Fylla i antigen denna fält eller både datumn-fältet och klockslag-fältet."
 
-#: papukaaniApp/views/individual_views.py:41
+#: papukaaniApp/views/individual_views.py:42
 msgid "Tiedot tallennettu onnistuneesti!"
 msgstr "Informationen har sparats!"
 
-#: papukaaniApp/views/individual_views.py:48
+#: papukaaniApp/views/individual_views.py:49
 msgid "Lintu poistettu onnistuneesti!"
 msgstr "Raderingen av fågeln lyckades!"
 
-#: papukaaniApp/views/individual_views.py:58
+#: papukaaniApp/views/individual_views.py:59
 msgid "Lintu luotu onnistuneesti!"
 msgstr "Skapandet av fågeln lyckades!"
 
-#: papukaaniApp/views/individual_views.py:74
+#: papukaaniApp/views/individual_views.py:75
 msgid "Laji puuttuu!"
 msgstr "Art saknas!"
 
-#: papukaaniApp/views/individual_views.py:78
+#: papukaaniApp/views/individual_views.py:79
 msgid "Nimi puuttuu!"
 msgstr "Namn saknas!"
 
@@ -420,6 +433,9 @@ msgstr "Uppladdning lyckades!"
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "Du måste välja en fil att ladda upp!"
 
+#~ msgid "Päivitä "
+#~ msgstr "Uppdatera "
+
 #~ msgid "Englanninkielinen Kuvaus"
 #~ msgstr "Beskrivning på engelska"
 
@@ -434,6 +450,3 @@ msgstr "Du måste välja en fil att ladda upp!"
 
 #~ msgid "Suomenkielinen kuvaus"
 #~ msgstr "Beskrivning på finska"
-
-#~ msgid "Sulje"
-#~ msgstr "Stäng"

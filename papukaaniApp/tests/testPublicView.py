@@ -99,6 +99,7 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_marker_has_popup_with_individual_name_and_timestamp_when_clicked(self):
         self.page.change_individual_selection(str(self.I.id))
+        time.sleep(3)
         self.page.get_marker().click()
         self.assert_popup_contents()
 
@@ -161,6 +162,7 @@ class PublicView(StaticLiveServerTestCase):
     def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
         self.page.driver.get(self.page.url + "?zoom=6&loc=[20,40]")
         self.page.change_individual_selection(str(self.I.id))
+        time.sleep(1)
         self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
         lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
         self.page.get_iframe_url())
@@ -168,6 +170,7 @@ class PublicView(StaticLiveServerTestCase):
     def test_iframe_url_is_correct_if_url_parameters_are_invalid(self):
         self.page.driver.get(self.page.url + "?zoom=5&loc=5")
         self.page.change_individual_selection(str(self.I.id))
+        time.sleep(1)
         self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
         lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
         self.page.get_iframe_url())

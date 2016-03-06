@@ -15,7 +15,7 @@ class Page:
     url = None
 
     def __init__(self):
-        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1680, 720))
+        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(2000, 2000))
         self.display.start()
         self.driver = get_configured_firefox()
 

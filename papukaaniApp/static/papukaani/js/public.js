@@ -66,6 +66,7 @@ function showPointsForIndividual(ids) {
 
             var html = [];
             var id = "individual" + ids[i];
+            html.push('<div class="birdrow">');
             html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
             html.push('<button type="button" class="remove close" style="float: left" aria-hidden="true"><span>&times;</span></button>' + " <span>" + individualname + "</span> ");
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
@@ -74,6 +75,7 @@ function showPointsForIndividual(ids) {
             html.push('</div>');
             html.push('<div class="secondCol" style="background: ' + color + ';">');
             html.push('&nbsp;');
+            html.push('</div>');
             html.push('</div>');
 
 

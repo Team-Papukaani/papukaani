@@ -26,7 +26,7 @@
 
                     <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}" minlength="3" maxlength="20" required/>
 
-                    <select class="form-control combobox" name="taxon" id="new_individual_taxon">
+                    <select class="form-control combobox" name="taxon" id="new_individual_taxon" required>
                         <option value="">{% trans "Laji" %}</option>
                         {% for s in species %}
                             <option value="{{ s.id }}">{{ s.name }}</option>
@@ -54,7 +54,7 @@
                                         selected{% endif %}>{{ s.name }}</option>
                             {% endfor %}
                         </select>
-                        <input class="form-control" type="number" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
+                        <input class="form-control" type="text" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
                         value="{{ individual.ringID }}" />
                         <button type="button" name="modifyDescription" class="btn btn-info btn-cons" data-toggle="modal"
                                 data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
@@ -88,7 +88,7 @@
                                                     <textarea
                                                             name="descriptionEN">{{ individual.description.en }}</textarea>
                                                     <p>{% trans "URL englanninkieliseen kuvaukseen" %}</p>
-                                                    <input class="form-control" name="descriptionUrlEN" type="url"
+                                                    <input class="form-control" name="descriptionUrlEN" type="text"
                                                            style="width:100%"
                                                            value="{{ individual.descriptionURL.en }}"/>
                                                 </div>
@@ -96,7 +96,7 @@
                                                     <textarea
                                                             name="descriptionFI">{{ individual.description.fi }}</textarea>
                                                     <p>{% trans "URL suomenkieliseen kuvaukseen" %}</p>
-                                                    <input class="form-control" name="descriptionUrlFI" type="url"
+                                                    <input class="form-control" name="descriptionUrlFI" type="text"
                                                            style="width:100%"
                                                            value="{{ individual.descriptionURL.fi }}"/><br>
                                                 </div>
@@ -104,7 +104,7 @@
                                                     <textarea
                                                             name="descriptionSV">{{ individual.description.sv }}</textarea>
                                                     <p>{% trans "URL ruotsinkieliseen kuvaukseen" %}</p>
-                                                    <input class="form-control" name="descriptionUrlSV" type="url"
+                                                    <input class="form-control" name="descriptionUrlSV" type="text"
                                                            style="width:100%"
                                                            value="{{ individual.descriptionURL.sv }}"/><br>
                                                 </div>
@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" name="close">Close
                                         </button>
                                         <!-- <button type="button" class="btn btn-primary">TALLENNA</button>  -->
                                     </div>

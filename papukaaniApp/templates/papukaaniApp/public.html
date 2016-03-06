@@ -21,7 +21,7 @@
 {% block content %}
 
     <div class="modal" tabindex="-1" role="dialog" id="descriptionModal">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
@@ -29,10 +29,13 @@
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"></h4>
                 </div>
-                <div class="modal-body"></div>
-                    <p id="desc" class="modal-body"></p>
-                    <a id="url" class="modal-body" href="#"></a>
+                <div class="modal-body">
+                    <div id="desc"></div>
+                </div>
                 <div class="modal-footer">
+                    <div>
+                        <a id="url" class="btn btn-primary" style="float: left" href="#" target="_blank"></a>
+                    </div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         {% trans "Sulje" %}
                     </button>
@@ -78,7 +81,8 @@
                             <tr>
                                 <td>
                                     <button id="play" onclick="player.play()" class="btn btn-default">
-                                        &#9658;</button>
+                                        <span class="glyphicon glyphicon-play"></span>
+                                    </button>
                                 </td>
                                 <td>
                                     <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}"
@@ -98,8 +102,8 @@
                                     <label id="playLabel_end">N/A</label>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#iframedialog">Link
+                                    <button id="ifarmeOpen" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#iframedialog"">
+                                        <span class="glyphicon glyphicon-share"></span> {% trans "Jaa" %}
                                     </button>
                                 </td>
                             </tr>
@@ -112,7 +116,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
+                                        <button id="iframeClose" type="button" class="close" data-dismiss="modal"
                                                 aria-label="Close"><span
                                                 aria-hidden="true">&times;</span></button>
                                         <h4 class="modal-title">{% trans "Linkki" %}</h4>
@@ -122,7 +126,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">
-                                            Sulje
+                                            {% trans "Sulje" %}
                                         </button>
                                     </div>
                                 </div><!-- /.modal-content -->
@@ -226,12 +230,18 @@
 
            modal.find('.modal-title').text(bird.name);
 
-           if (bird.description != undefined) {
+           if (bird.description) {
                $('#desc').html(bird.description);
+               $('#desc').show();
+           } else {
+               $('#desc').hide();
            }
-           if (bird.url != undefined) {
+           if (bird.url) {
                $('#url').attr('href', bird.url);
                $('#url').text("{% trans "Lisää tietoa" %}");
+               $('#url').show();
+           } else {
+               $('#url').hide();
            }
 
         });

@@ -66,14 +66,21 @@ function showPointsForIndividual(ids) {
 
             var html = [];
             var id = "individual" + ids[i];
+            html.push('<div class="birdrow">');
             html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
-            html.push('<button type="button" class="remove close" style="float: left" aria-hidden="true"><span>&times;</span></button>' + " <span>" + individualname + "</span> ");
+            html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
+                      '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
+                      ' <span>' + individualname + '</span> ');
+
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
-                html.push('<button type="button" class="showDescription btn btn-info btn-xs" data-toggle="modal" data-target="#descriptionModal" data-id="' + ids[i] + '">Lisätietoja</button>');
+                html.push('<button type="button" class="showDescription btn btn-info btn-xs" ' +
+                          'data-toggle="modal" data-target="#descriptionModal" data-id="' +
+                          ids[i] + '">' + gettext("Lisätietoja") + '</button>');
             }
             html.push('</div>');
             html.push('<div class="secondCol" style="background: ' + color + ';">');
             html.push('&nbsp;');
+            html.push('</div>');
             html.push('</div>');
 
 
@@ -91,9 +98,8 @@ function showPointsForIndividual(ids) {
 
 
 function ColorChart() {
-    this.colors = [{color: "#CC0000"}, {color: "#FFFF00"}, {color: "#00CC00"},
-        {color: "#00FFFF"}, {color: "#0000CC"}, {color: "#CC00CC"},
-        {color: "#808080"}];
+    this.colors = [{color: "#CC0000"}, {color: "#0000CC"}, {color: "#006600"},
+        {color: "#FFFF00"}, {color: "#CC00CC"}, {color: "#666666"}];
 }
 
 
@@ -289,13 +295,12 @@ function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
 
-    var checked = $('#selectIndividual input:checked');
-    var a = [];
-    for (var i = 0; i < checked.length; i++) {
-        a.push(checked[i].value);
+    var ids = [];
+    for (var i = 0; i < sorter.routes.length; i++) {
+        ids.push(sorter.routes[i].individualId);
     }
 
-    var device = 'device=[' + a.join(",") + ']';
+    var device = 'device=[' + ids.join(",") + ']';
     var lang = 'lang=' + $('#language_choose').attr('data-currentlang');
 
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");

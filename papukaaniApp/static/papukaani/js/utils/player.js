@@ -158,10 +158,11 @@ Player.prototype.play = function () {
     }
     if (this.runner) {
         clearInterval(this.runner);
-        $("#play").html("&#9658;");
+
+        $("#play").html('<span class="glyphicon glyphicon-play"></span>');
         this.runner = undefined;
     } else {
-        $("#play").html("&#9646;&#9646;");
+        $("#play").html('<span class="glyphicon glyphicon-pause"></span>');
         var options = this.slider.slider("option");
         this.run();
     }

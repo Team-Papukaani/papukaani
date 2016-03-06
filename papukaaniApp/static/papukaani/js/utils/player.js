@@ -2,6 +2,7 @@ function Player(map) {
     this.map = map;
     this.routes = [];
     this.animating = false;
+    this.routeSplit = 100; // points per polyline. affects line stylechanges and backwardsreversing optimization
     this.fillerDistance = 360; // time in seconds between fake points of data for smoother animation
     this.slider = $("#playSlider");
     this.slider.slider({
@@ -58,9 +59,11 @@ Player.prototype.addRoute = function (route) {
 
             route.points.push(pointA);
 
-            var slice = Math.floor((datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin)) / this.fillerDistance);
+            var slice = parseFloat(datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin)) / this.fillerDistance;
             var directionVector = [pointB.wgs84Geometry.coordinates[0] - pointA.wgs84Geometry.coordinates[0], pointB.wgs84Geometry.coordinates[1] - pointA.wgs84Geometry.coordinates[1]];
             var directionVectorScalar = 1 / slice;
+
+            slice = Math.floor(slice);
 
             for (var j = 0; j < slice - 1; j++) {
 
@@ -202,16 +205,16 @@ Player.prototype.drawRoutes = function (animate) {
         this.animating = true;
 
         while (dateBegin > options.value) {
-            route.pointer -= 10;
-            if (route.pointer <= 0) {
+            if (route.pointer % this.routeSplit === 0) {
+                route.pointer -= this.routeSplit;
+            } else {
+                route.pointer -= route.pointer % this.routeSplit;
+            }
+            newestPolylineIndex--;
+            if (route.pointer <= 0 || newestPolylineIndex < 0) {
                 this.clearRoute(route);
                 newestPolylineIndex = 0;
-                break;
-            }
-
-            newestPolylineIndex--;
-            if (newestPolylineIndex < 0) {
-                newestPolylineIndex = 0;
+                route.pointer = 0;
                 break;
             }
             route.featureGroup.removeLayer(route.lines.pop());
@@ -223,7 +226,7 @@ Player.prototype.drawRoutes = function (animate) {
         while (pointCount > route.pointer && dateBegin <= options.value) {
             var coordinates = point.wgs84Geometry.coordinates;
             if (dateBegin >= options.min && dateBegin <= options.max) {
-                if (route.pointer % 10 === 0) {
+                if (route.pointer % this.routeSplit === 0) {
                     for (var r = newestPolylineIndex; r >= 0; r--) {
                         var opacity = 1 - (newestPolylineIndex - r + 1) * 0.1;
                         if (opacity < 0.3) break;

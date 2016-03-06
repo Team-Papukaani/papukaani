@@ -426,3 +426,9 @@ code {
     float:left;
     width: calc(100% - 200px);
 }
+
+.birdrow{
+    clear:both;
+    width:100%;
+    float:left;
+}

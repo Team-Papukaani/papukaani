@@ -9,6 +9,7 @@ from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from django.conf import settings
 import dateutil.parser
 
+
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
         dev = {
@@ -26,7 +27,8 @@ class PublicView(StaticLiveServerTestCase):
             "dateEdited": "2014-09-29T14:00:00+03:00"
         }
 
-        self.I = individual.create("Birdie", "GAVSTE", description={"fi": "birdiekuvaus"}, descriptionURL={"fi": "http://www.birdie.kek"})
+        self.I = individual.create("Birdie", "GAVSTE", description={"fi": "birdiekuvaus"},
+                                   descriptionURL={"fi": "http://www.birdie.kek"})
         self.I2 = individual.create("Birdie2", "GAVSTE")
 
         self.D = device.create(**dev)
@@ -60,6 +62,8 @@ class PublicView(StaticLiveServerTestCase):
         self.page.close()
         self.A.delete()
         self.D.delete()
+        self.B.delete()
+        self.D2.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
         self.page.play_animation_for_individual(str(self.I.id))
@@ -170,15 +174,14 @@ class PublicView(StaticLiveServerTestCase):
     """
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
-        number_of_polylines = 698
-        self.page.change_individual_selection(str(self.I.id))
+        number_of_polylines = 71
+        self.page.change_device_selection(str(self.I.id))
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), number_of_polylines)
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen_with_two_birds(self):
-        self.page.change_individual_selection(str(self.I2.id))
-        self.page.change_individual_selection(str(self.I.id))
-        time.sleep(3)
-        self.assertGreater(len(self.page.driver.find_elements_by_tag_name("g")), 698)
+        self.page.change_device_selection(str(self.I2.id))
+        self.page.change_device_selection(str(self.I.id))
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 72)
 
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
         hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
@@ -235,9 +238,11 @@ class PublicView(StaticLiveServerTestCase):
         self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription").click()
         time.sleep(1)
         print(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text)
-        self.assertTrue(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
+        self.assertTrue(
+            self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
         self.assertTrue(self.page.driver.find_element_by_id("desc").text.equals("birdiekuvaus"))
-        self.assertTrue(self.page.driver.find_element_by_id("url").get_attribute("href").equals("http://www.birdie.kek"))
+        self.assertTrue(
+            self.page.driver.find_element_by_id("url").get_attribute("href").equals("http://www.birdie.kek"))
 
     def test_description_button_missing_when_no_desc_or_url_available(self):
         self.page.change_individual_selection(str(self.I2.id))

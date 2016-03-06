@@ -78,9 +78,9 @@ class TestLanguage(StaticLiveServerTestCase):
         public.navigate()
         self.assertTrue(self._public_page_is_in_lang(public, self.other_lang))
         url = public.get_iframe_url()
+
         good_url = BASE_URL + url.split('127.0.0.1')[1]
         public.close()
-
         page = PublicPage()
         page.url = good_url
         page.navigate()
@@ -104,16 +104,14 @@ class TestLanguage(StaticLiveServerTestCase):
             if lang == 'fi':
                 return 'Lisää lintu'
             if lang == 'sv':
-                return 'Uppdatera'
+                return 'Lägg till en fågel'
             if lang == 'en':
-                return 'Refresh'
+                return 'Add bird'
 
         with translation.override(lang):
-            is_in_lang = self._similarStrings(page.REFRESH.text,
-                    refresh_in(lang))
+            is_in_lang = self._similarStrings(page.INDIVIDUAL_SELECTOR.text, refresh_in(lang))
         with translation.override(self._get_other_lang(lang)):
-            is_in_other_lang = self._similarStrings(page.REFRESH.text,
-                    refresh_in(self._get_other_lang(lang)))
+            is_in_other_lang = self._similarStrings(page.INDIVIDUAL_SELECTOR.text,refresh_in(self._get_other_lang(lang)))
         return (is_in_lang and not is_in_other_lang)
 
     def _get_other_lang(self, lang):

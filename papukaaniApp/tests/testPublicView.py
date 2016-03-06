@@ -243,13 +243,3 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_device_selection(str(self.I2.id))
         with self.assertRaises(NoSuchElementException):
             self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription")
-
-    def test_description_button_opens_modal_with_correct_info(self):
-        self.page.change_device_selection(str(self.I.id))
-        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription").click()
-        time.sleep(1)
-        print(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text)
-        self.assertTrue(self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
-        self.assertTrue(self.page.driver.find_element_by_id("desc").text.equals("birdiekuvaus"))
-        self.assertTrue(self.page.driver.find_element_by_id("url").get_attribute("href").equals("http://www.birdie.kek"))
-

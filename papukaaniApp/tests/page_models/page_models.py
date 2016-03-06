@@ -91,7 +91,8 @@ class PublicPage(PageWithDeviceSelector):
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')
     IFRAME_SRC = Element(By.ID, 'iframeSrc')
-    IFRAME_BUTTON = Element(By.ID, 'iframedialog')
+    IFRAME_BUTTON_OPEN = Element(By.ID, 'iframeOpen')
+    IFRAME_BUTTON_CLOSE = Element(By.ID, 'iframeClose')
     TIME_START = Element(By.ID, 'start_time')
     TIME_END = Element(By.ID, 'end_time')
     INDIVIDUAL_SELECTOR = Element(By.ID, "selectIndividual")
@@ -148,8 +149,11 @@ class PublicPage(PageWithDeviceSelector):
 
 
     def get_iframe_url(self):
-        #self.IFRAME_BUTTON.click()
-        return self.IFRAME_SRC.get_attribute('value')
+        self.IFRAME_BUTTON_OPEN.click()
+        time.sleep(1)
+        url = self.IFRAME_SRC.get_attribute('value')
+        self.IFRAME_BUTTON_CLOSE.click()
+        return url
 
 
 class ChoosePage(PageWithDeviceSelector):

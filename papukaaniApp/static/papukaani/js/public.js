@@ -98,9 +98,8 @@ function showPointsForIndividual(ids) {
 
 
 function ColorChart() {
-    this.colors = [{color: "#CC0000"}, {color: "#FFFF00"}, {color: "#00CC00"},
-        {color: "#00FFFF"}, {color: "#0000CC"}, {color: "#CC00CC"},
-        {color: "#808080"}];
+    this.colors = [{color: "#CC0000"}, {color: "#0000CC"}, {color: "#006600"},
+        {color: "#FFFF00"}, {color: "#CC00CC"}, {color: "#666666"}];
 }
 
 
@@ -296,13 +295,12 @@ function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
 
-    var checked = $('#selectIndividual input:checked');
-    var a = [];
-    for (var i = 0; i < checked.length; i++) {
-        a.push(checked[i].value);
+    var ids = [];
+    for (var i = 0; i < sorter.routes.length; i++) {
+        ids.push(sorter.routes[i].individualId);
     }
 
-    var device = 'device=[' + a.join(",") + ']';
+    var device = 'device=[' + ids.join(",") + ']';
     var lang = 'lang=' + $('#language_choose').attr('data-currentlang');
 
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");

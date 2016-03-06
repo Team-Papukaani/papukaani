@@ -21,7 +21,7 @@
 {% block content %}
 
     <div class="modal" tabindex="-1" role="dialog" id="descriptionModal">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
@@ -31,9 +31,11 @@
                 </div>
                 <div class="modal-body">
                     <div id="desc"></div>
-                    <a id="url" href="#"></a>
                 </div>
                 <div class="modal-footer">
+                    <div>
+                        <a id="url" class="btn btn-primary" style="float: left" href="#" target="_blank"></a>
+                    </div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         {% trans "Sulje" %}
                     </button>

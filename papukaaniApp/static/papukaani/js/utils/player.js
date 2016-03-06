@@ -133,6 +133,7 @@ Player.prototype.stop = function () {
 }
 
 Player.prototype.updateMinMax = function () {
+    if(!this.routes.length) return;
     this.start = datetimestringToUnixtime(parseTime($("#start_time").val(), "+00:00"));
     this.end = datetimestringToUnixtime(parseTime($("#end_time").val(), "+00:00"));
     if (isNaN(this.start)) this.start = 0;

@@ -327,6 +327,15 @@ msgstr "Log out"
 msgid "Kirjaudu sisään"
 msgstr "Log in"
 
+#: papukaaniApp/templates/papukaaniApp/public.html:40
+#: papukaaniApp/templates/papukaaniApp/public.html:129
+msgid "Sulje"
+msgstr "Close"
+
+#: papukaaniApp/templates/papukaaniApp/public.html:74
+msgid "Lisää lintu"
+msgstr "Add bird"
+
 #: papukaaniApp/templates/papukaaniApp/public.html:89
 #: papukaaniApp/templates/papukaaniApp/public.html:95
 msgid "Nopeus"

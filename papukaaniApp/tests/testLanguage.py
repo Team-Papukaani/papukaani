@@ -102,17 +102,17 @@ class TestLanguage(StaticLiveServerTestCase):
 
         def refresh_in(lang):
             if lang == 'fi':
-                return 'Päivitä'
+                return 'Lisää lintu'
             if lang == 'sv':
                 return 'Uppdatera'
             if lang == 'en':
                 return 'Refresh'
 
         with translation.override(lang):
-            is_in_lang = self._similarStrings(page.REFRESH.text, 
-                     refresh_in(lang))
+            is_in_lang = self._similarStrings(page.REFRESH.text,
+                    refresh_in(lang))
         with translation.override(self._get_other_lang(lang)):
-            is_in_other_lang = self._similarStrings(page.REFRESH.text, 
+            is_in_other_lang = self._similarStrings(page.REFRESH.text,
                     refresh_in(self._get_other_lang(lang)))
         return (is_in_lang and not is_in_other_lang)
 

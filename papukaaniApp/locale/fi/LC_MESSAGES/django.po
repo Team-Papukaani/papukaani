@@ -320,6 +320,15 @@ msgstr ""
 msgid "Kirjaudu sisään"
 msgstr ""
 
+#: papukaaniApp/templates/papukaaniApp/public.html:40
+#: papukaaniApp/templates/papukaaniApp/public.html:129
+msgid "Sulje"
+msgstr ""
+
+#: papukaaniApp/templates/papukaaniApp/public.html:74
+msgid "Lisää lintu"
+msgstr ""
+
 #: papukaaniApp/templates/papukaaniApp/public.html:89
 #: papukaaniApp/templates/papukaaniApp/public.html:95
 msgid "Nopeus"

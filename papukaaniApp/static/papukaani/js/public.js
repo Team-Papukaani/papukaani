@@ -172,7 +172,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     $("#selectIndividual").change(function () {
         var id = $(this).val();
         if (id === "") return;
-        that.changeIndividual([id]);
+        that.changeIndividualSelection([id]);
         $(this).val("");
         $('#selectIndividual').hideOption(id);
     });

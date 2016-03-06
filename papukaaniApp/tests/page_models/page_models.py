@@ -409,14 +409,22 @@ class IndividualPage(Page):
         f1 = self.FIRST_DESCRIPTION_ENURL_FIELD
         f1.send_keys(en)
         time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("descriptionEN"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format("engtext"))
         self.MODAL_TAB_LINK_FI.click()
         time.sleep(1)
         f2 = self.FIRST_DESCRIPTION_FIURL_FIELD
         f2.send_keys(fi)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("descriptionFI"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format("fitext"))
         self.MODAL_TAB_LINK_SV.click()
         time.sleep(1)
         f3 = self.FIRST_DESCRIPTION_SVURL_FIELD
         f3.send_keys(sv)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("descriptionSV"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format("svtext"))
         time.sleep(1)
         self.CLOSE_MODAL_BUTTON.click()
         time.sleep(1)

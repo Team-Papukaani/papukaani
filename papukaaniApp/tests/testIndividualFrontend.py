@@ -22,6 +22,10 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
         self.assertEquals("http://www.google.com", self.page.get_first_individual_enurl())
         self.assertEquals("http://www.google.fi", self.page.get_first_individual_fiurl())
         self.assertEquals("http://www.google.se", self.page.get_first_individual_svurl())
+        self.assertEquals("http://www.google.se", self.page.get_first_individual_svurl())
+        self.assertEquals("<p>engtext</p>", self.page.get_first_individual_en())
+        self.assertEquals("<p>fitext</p>", self.page.get_first_individual_fi())
+        self.assertEquals("<p>svtext</p>", self.page.get_first_individual_sv())
 
 
     def test_modify_individual(self):

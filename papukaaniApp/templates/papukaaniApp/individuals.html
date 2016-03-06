@@ -24,7 +24,8 @@
                 <form id="new_individual_form" class="form-inline" action='{% url "individuals" %}' method="post">
                     {% csrf_token %}
 
-                    <input class="form-control" type="text" name="nickname" id="new_individual_nickname" placeholder="{% trans "Nimi" %}" minlength="3" maxlength="20" required/>
+                    <input class="form-control" type="text" name="nickname" id="new_individual_nickname"
+                           placeholder="{% trans "Nimi" %}" minlength="3" maxlength="20" required/>
 
                     <select class="form-control combobox" name="taxon" id="new_individual_taxon" required>
                         <option value="">{% trans "Laji" %}</option>
@@ -45,7 +46,7 @@
                         <input type="hidden" name="id" value="{{ individual.id }}"/>
 
                         <input class="form-control" type="text" name="nickname" placeholder="{% trans "Nimi" %}"
-                   value="{{ individual.nickname }}" minlength="3" maxlength="20" required/>
+                               value="{{ individual.nickname }}" minlength="3" maxlength="20" required/>
                         <select class="form-control combobox" name="taxon" required>
 
                             <option value="">{% trans "Laji" %}</option>
@@ -55,12 +56,13 @@
                             {% endfor %}
                         </select>
                         <input class="form-control" type="text" name="ring_id" placeholder="{% trans "Rengastunnus" %}"
-                        value="{{ individual.ringID }}" />
+                               value="{{ individual.ringID }}"/>
                         <button type="button" name="modifyDescription" class="btn btn-info btn-cons" data-toggle="modal"
                                 data-target="#{{ individual.id }}">{% trans "Muokkaa kuvauksia" %}</button>
                         <button type="submit" name="modify" value="1"
                                 class="btn btn-default">{% trans "Tallenna" %}</button>
-                        <button name="delete" type="button" class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
+                        <button name="delete" type="button"
+                                class="btn btn-danger confirmdelete">{% trans "Poista" %}</button>
 
                         <div class="modal fade bd-example-modal-lg" id="{{ individual.id }}" role="dialog">
                             <div class="modal-dialog">
@@ -100,21 +102,21 @@
                                                            style="width:100%"
                                                            value="{{ individual.descriptionURL.fi }}"/><br>
                                                 </div>
-                                                <div class="tab-pane" id="tab{{ individual.id }}-sv">
+                                                <diqv class="tab-pane" id="tab{{ individual.id }}-sv">
                                                     <textarea
                                                             name="descriptionSV">{{ individual.description.sv }}</textarea>
                                                     <p>{% trans "URL ruotsinkieliseen kuvaukseen" %}</p>
                                                     <input class="form-control" name="descriptionUrlSV" type="text"
                                                            style="width:100%"
                                                            value="{{ individual.descriptionURL.sv }}"/><br>
-                                                </div>
+                                                </diqv>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" name="close">Close
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" name="close">
+                                            Close
                                         </button>
-                                        <!-- <button type="button" class="btn btn-primary">TALLENNA</button>  -->
                                     </div>
                                 </div>
                                 <!-- /.modal-content -->
@@ -124,11 +126,11 @@
                     </form>
                 {% endfor %}
 
-    <p id="messages">
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-    </p>
+                <p id="messages">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </p>
 
             </div>
         </div>

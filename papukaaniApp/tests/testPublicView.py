@@ -213,13 +213,14 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_iframe_with_time_selection_is_correct(self):
         self.page.change_individual_selection(str(self.I.id))
-
+        time.sleep(1)
         self.assertEquals(
             'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
                 lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
             self.page.get_iframe_url())
 
         self.page.TIME_START.send_keys("11.12.2010 00:00")
+        time.sleep(1)
         self.assertEquals(
             'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}'.format(
                 lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]',
@@ -227,6 +228,7 @@ class PublicView(StaticLiveServerTestCase):
             self.page.get_iframe_url())
 
         self.page.TIME_END.send_keys("14.12.2010 00:00")
+        time.sleep(1)
         self.assertEquals(
             'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}&end_time={end_time}'.format(
                 lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]',

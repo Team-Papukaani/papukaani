@@ -26,6 +26,7 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
             this.colorChart.freeColor(this.routes[i].individualId);
             player.removeRoute(this.routes[i]);
             this.routes.splice(i, 1);
+            $('#selectIndividual').showOption(individualId);
             return;
         }
     }
@@ -69,13 +70,13 @@ function showPointsForIndividual(ids) {
             html.push('<div class="birdrow">');
             html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
             html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
-                      '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
-                      ' <span>' + individualname + '</span> ');
+                '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
+                ' <span>' + individualname + '</span> ');
 
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
                 html.push('<button type="button" class="showDescription btn btn-info btn-xs" ' +
-                          'data-toggle="modal" data-target="#descriptionModal" data-id="' +
-                          ids[i] + '">' + gettext("Lisätietoja") + '</button>');
+                    'data-toggle="modal" data-target="#descriptionModal" data-id="' +
+                    ids[i] + '">' + gettext("Lisätietoja") + '</button>');
             }
             html.push('</div>');
             html.push('<div class="secondCol" style="background: ' + color + ';">');
@@ -169,9 +170,11 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     })
 
     $("#selectIndividual").change(function () {
-        if ($(this).val() === "") return;
-        that.changeDeviceSelection([$(this).val()]);
-        //that.removePointsForIndividual($(this).val())
+        var id = $(this).val();
+        if (id === "") return;
+        that.changeDeviceSelection([id]);
+        $(this).val("");
+        $('#selectIndividual').hideOption(id);
     });
 };
 
@@ -267,6 +270,7 @@ function lockButtons() {
     $("#selectIndividual").attr("disabled", true);
     $("#play").attr("disabled", true);
     $("#pause").attr("disabled", true);
+    $("button").attr("disabled", true);
 }
 
 //Enables the select, save and reset buttons.
@@ -274,6 +278,7 @@ function unlockButtons() {
     $("#selectIndividual").attr("disabled", false);
     $("#play").attr("disabled", false);
     $("#pause").attr("disabled", false);
+    $("button").attr("disabled", false);
 }
 
 //Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 12:45+0200\n"
+"POT-Creation-Date: 2016-03-06 18:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,27 +37,27 @@ msgstr "Done!"
 msgid "Tapahtui virhe!"
 msgstr "An error occured!"
 
-#: papukaaniApp/static/papukaani/js/devices.js:27
+#: papukaaniApp/static/papukaani/js/devices.js:25
 msgid "Irroita"
 msgstr "Detach"
 
-#: papukaaniApp/static/papukaani/js/devices.js:42
+#: papukaaniApp/static/papukaani/js/devices.js:39
 msgid "Ei lintuja"
 msgstr "No birds"
 
-#: papukaaniApp/static/papukaani/js/devices.js:83
+#: papukaaniApp/static/papukaani/js/devices.js:78
 msgid "Kiinnitysajankohdan lisäys onnistui. "
 msgstr "Succesfully added attach time. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:114
+#: papukaaniApp/static/papukaani/js/devices.js:109
 msgid "Irrotusajankohdan lisäys onnistui. "
 msgstr "Succesfully added detach time. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:124
+#: papukaaniApp/static/papukaani/js/devices.js:119
 msgid "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
 msgstr "Detach date can't be before attach date. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:141
+#: papukaaniApp/static/papukaani/js/devices.js:136
 msgid ""
 "Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite "
 "on jo merkitty kiinnitetyksi. "
@@ -65,15 +65,15 @@ msgstr ""
 "Attach date can't be inside a time interval where the device has already "
 "been marked as attached. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:154
+#: papukaaniApp/static/papukaani/js/devices.js:149
 msgid "Päivämäärä ei saa olla tulevaisuudessa. "
 msgstr "The date can't be in the future. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:165
+#: papukaaniApp/static/papukaani/js/devices.js:160
 msgid "Päivämäärä ei määritelty! "
 msgstr "The date was not defined! "
 
-#: papukaaniApp/static/papukaani/js/devices.js:179
+#: papukaaniApp/static/papukaani/js/devices.js:174
 msgid "Lintua ei määritelty! "
 msgstr "A bird was not defined! "
 
@@ -97,12 +97,16 @@ msgstr "Satellite"
 msgid "Eliömaakunnat"
 msgstr "Biogeographical provinces"
 
-#: papukaaniApp/static/papukaani/js/public.js:20
+#: papukaaniApp/static/papukaani/js/public.js:14
 #: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
 msgid "Tietoja ladataan"
 msgstr "Loading information"
 
-#: papukaaniApp/static/papukaani/js/public.js:137
+#: papukaaniApp/static/papukaani/js/public.js:78
+msgid "Lisätietoja"
+msgstr "Information"
+
+#: papukaaniApp/static/papukaani/js/public.js:138
 msgid "fi"
 msgstr "en"
 

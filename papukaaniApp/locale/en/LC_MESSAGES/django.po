@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 19:23+0200\n"
+"POT-Creation-Date: 2016-03-06 20:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -334,15 +334,15 @@ msgstr "Speed"
 
 #: papukaaniApp/templates/papukaaniApp/public.html:106
 msgid "Jaa"
-msgstr ""
+msgstr "Share"
 
 #: papukaaniApp/templates/papukaaniApp/public.html:122
 msgid "Linkki"
-msgstr ""
+msgstr "Link"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:241
+#: papukaaniApp/templates/papukaaniApp/public.html:242
 msgid "Lisää tietoa"
-msgstr ""
+msgstr "More information"
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:20
 msgid "Tiedosto:"
@@ -432,21 +432,3 @@ msgstr "Upload successful!"
 #: papukaaniApp/views/upload_views.py:44
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"
-
-#~ msgid "Päivitä "
-#~ msgstr "Refresh "
-
-#~ msgid "Englanninkielinen Kuvaus"
-#~ msgstr "English description"
-
-#~ msgid "Suomenkielinen Kuvaus"
-#~ msgstr "Finnish description"
-
-#~ msgid "Ruotsinkielinen kuvaus"
-#~ msgstr "Swedish description"
-
-#~ msgid "Englanninkielinen kuvaus"
-#~ msgstr "English description"
-
-#~ msgid "Suomenkielinen kuvaus"
-#~ msgstr "Finnish description"

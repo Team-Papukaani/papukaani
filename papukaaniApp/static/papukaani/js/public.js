@@ -75,8 +75,8 @@ function showPointsForIndividual(ids) {
 
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
                 html.push('<button type="button" class="showDescription btn btn-info btn-xs" ' +
-                    'data-toggle="modal" data-target="#descriptionModal" data-id="' +
-                    ids[i] + '">' + gettext("Lisätietoja") + '</button>');
+                          'data-toggle="modal" data-target="#descriptionModal" data-id="' +
+                          ids[i] + '">' + gettext('Lisätietoja') + '</button>');
             }
             html.push('</div>');
             html.push('<div class="secondCol" style="background: ' + color + ';">');

@@ -1,50 +1,59 @@
-{% extends 'base.html' %}
+{% extends 'base_with_nav.html' %}
 {% load i18n %}
 
 {% load staticfiles %}
 
 {% block content %}
-    {% include "papukaaniApp/navigation.html" %}
-    {% include "papukaaniApp/popup_box.html"%}
+    <div id="popup" class="overlay" hidden="true">
+        <p id="popup_message"></p>
 
-    <div class="margin-container">
-        <table class="table table-stripped table-nonfluid outlined">
-            <tr>
-              <th>{% trans "Formaatin nimi" %}</th>
-                <th></th>
-                <th>{% trans "Muokkaa" %}</th>
-                <th>{% trans "Poista" %}</th>
-            </tr>
-            {% for f in formats %}
-                <tr>
-                    <td>{{f.formatName}}</td>
-                    <td></td>
-                    <td><a class="glyphicon glyphicon-pencil" href="{% url 'show_format' f.id %}"></a></td>
-                    <script>
-                        delete_url = "{% url 'delete_format' f.id %}";
-                    </script>
-                    <td><a id="delete" class="glyphicon glyphicon-trash" onclick="showPopup('{% trans "Haluatko varmasti poistaa formaatin " %} {{f.formatName}}?',delete_url)"></a></td>
-                </tr>
-            {% endfor %}
-                <tr>
-                    <td><a class="glyphicon glyphicon-plus" href="{% url 'create_format' 0 %}"></a></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-        </table>
-
-        {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-        {% endif %}
-
+        <button id="yes_button" class="btn btn-default"> Kyllä</button>
+        <button id="cancel_button" class="btn btn-default"> Peruuta</button>
     </div>
 
-    {% include "papukaaniApp/include_scripts.html" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-stripped table-nonfluid outlined">
+                    <tr>
+                        <th>{% trans "Formaatin nimi" %}</th>
+                        <th></th>
+                        <th>{% trans "Muokkaa" %}</th>
+                        <th>{% trans "Poista" %}</th>
+                    </tr>
+                    {% for f in formats %}
+                        <tr>
+                            <td>{{ f.formatName }}</td>
+                            <td></td>
+                            <td><a class="glyphicon glyphicon-pencil" href="{% url 'show_format' f.id %}"></a></td>
+                            <script>
+                                delete_url = "{% url 'delete_format' f.id %}";
+                            </script>
+                            <td><a id="delete" class="glyphicon glyphicon-trash"
+                                   onclick="showPopup('{% trans "Haluatko varmasti poistaa formaatin " %} {{ f.formatName }}?',delete_url)"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td><a class="glyphicon glyphicon-plus" href="{% url 'create_format' 0 %}"></a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
 
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block scripts %}
     <script src="{% static 'papukaani/js/utils/confirm.js' %}"></script>
 {% endblock %}

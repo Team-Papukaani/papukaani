@@ -1,4 +1,5 @@
-function Animator(latlngs, individualname, map) {
+function Animator(latlngs, individualname, map, color) {
+    this.color = color;
     this.map = map;
     this.latlngs = latlngs;
     this.individual = individualname;
@@ -6,6 +7,7 @@ function Animator(latlngs, individualname, map) {
     this.initializeMarker();
     this.initializePolyLines();
     this.initializeSlider();
+
 }
 
 //Initializes the PathIterator and its variables.
@@ -37,7 +39,7 @@ Animator.prototype.initializeMarker = function () {
 Animator.prototype.initializePolyLines = function () {
     this.polylines = [];
     //Default options for the main polyline.
-    var polylineOptions = {color: 'blue', opacity: 0.3, smoothFactor: 0};
+    var polylineOptions = {color: this.color, opacity: 0.3, smoothFactor: 0};
     this.polyline = L.polyline([], polylineOptions);
     this.polyline.addTo(this.map);
 };
@@ -136,7 +138,7 @@ Animator.prototype.drawPathEnd = function (animated) {
 //New polyline with default settings.
 Animator.prototype.newPolyline = function () {
     return L.polyline([this.lastPosition.toArray(), this.markerPosition.toArray()], {
-        color: 'blue',
+        color: this.color,
         opacity: 1.0
     });
 };
@@ -148,23 +150,23 @@ Animator.prototype.calculateTimeStep = function () {
 
 //Decreases opacity of polylines as distance to head grows, until the polyline is far enough.
 Animator.prototype.updatePolylines = function () {
-    for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
-        var line = this.polylines[j];
-
-        var oldOpacity = line.options.opacity;
-        var newOpacity = oldOpacity - 0.03;
-        line.setStyle({color: 'blue', opacity: newOpacity});
-    }
+     //for (var j = 0; j < Math.min(this.polylines.length, 20); j++) {
+     //var line = this.polylines[j];
+     //
+     //var oldOpacity = line.options.opacity;
+     //var newOpacity = oldOpacity - 0.03;
+     //line.setStyle({color: this.color, opacity: newOpacity});
+     //}
 };
 
 //Adds a new polyline to the map, and if numerous enough merges one from the tail to the master polyline to maintain performance.
 Animator.prototype.addNewPolyline = function (polyline) {
     this.polylines.push(polyline);
-    if (this.polylines.length >= 20) {
-        this.polyline.addLatLng(this.polylines[0].getLatLngs()[1]);
-        this.map.removeLayer(this.polylines[0]);
-        this.polylines.shift();
-    }
+     //if (this.polylines.length >= 20) {
+     //this.polyline.addLatLng(this.polylines[0].getLatLngs()[1]);
+     //this.map.removeLayer(this.polylines[0]);
+     //this.polylines.shift();
+     //}
     polyline.addTo(this.map);
 };
 
@@ -211,7 +213,10 @@ Animator.prototype.clear = function () {
     this.stop();
     this.map.removeLayer(this.marker);
     this.map.clearLayers();
-    $("#playSlider").slider("destroy");
+    if (sorter.getRoutes().length == 1) {
+        $("#playSlider").slider("destroy");
+        //createDummySlider();
+    }
 };
 
 // Iterates efficiently over objects that have coordinates as a Victor
@@ -291,6 +296,15 @@ var PathIterator = function (points) {
 
 //Initializes a slider with an attached label showing current value.
 Animator.prototype.createSlider = function (min, max, step) {
+    if (sorter.getRoutes().length > 1) {
+        //min = Math.min($("#playSlider").slider("option", "min"), min);
+        //$("#playSlider").slider("option", "min", min);
+        //max = Math.max($("#playSlider").slider("option", "max"), max);
+        //$("#playSlider").slider("option", "max", max);
+        //$("#playLabel_end").text(new Date(max).toLocaleString());
+        //this.setSliderValue(min);
+        //return;
+    }
     $("#playSlider").slider({
         range: "min",
         min: min,

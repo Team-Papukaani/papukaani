@@ -22,16 +22,16 @@ function create_map(container, latlong, zoom) {
         })
     };
 
-    var baseMaps = {
-        "Maailmankartta": layers.osm,
-        "Topografia": layers.otm,
-        "Maanmittauslaitos": layers.mm,
-        "Satelliitti": layers.satellite
-    };
+    var baseMaps = {};
 
-    var overlays = {
-        "Eliömaakunnat": layers.geobiologicalProvinces
-    };
+    baseMaps[gettext("Maailmankartta")] = layers.osm;
+    baseMaps[gettext("Topografia")] = layers.otm;
+    baseMaps[gettext("Maanmittauslaitos")] = layers.mm;
+    baseMaps[gettext("Satelliitti")] = layers.satellite;
+
+    var overlays = {};
+
+    overlays[gettext("Eliömaakunnat")] = layers.geobiologicalProvinces;
 
     layers.osm.addTo(map);
     L.control.layers(baseMaps, overlays).addTo(map);

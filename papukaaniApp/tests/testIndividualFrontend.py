@@ -17,6 +17,17 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
     def test_individual_info_visible(self):
         self.assertEquals("ERIEUR", self.page.get_first_individual_taxon())
 
+    def test_individual_description_info_visible(self):
+        self.page.modify_descriptionurl("http://www.google.com", "http://www.google.fi", "http://www.google.se")
+        self.assertEquals("http://www.google.com", self.page.get_first_individual_enurl())
+        self.assertEquals("http://www.google.fi", self.page.get_first_individual_fiurl())
+        self.assertEquals("http://www.google.se", self.page.get_first_individual_svurl())
+        self.assertEquals("http://www.google.se", self.page.get_first_individual_svurl())
+        self.assertEquals("<p>engtext</p>", self.page.get_first_individual_en())
+        self.assertEquals("<p>fitext</p>", self.page.get_first_individual_fi())
+        self.assertEquals("<p>svtext</p>", self.page.get_first_individual_sv())
+
+
     def test_modify_individual(self):
         self.page.modify_individual("GAVARC", "DEM123456")
         self.assertEquals("GAVARC", self.page.get_first_individual_nickname())
@@ -30,22 +41,21 @@ class TestIndividualFrontend(StaticLiveServerTestCase):
 
     def test_correct_message_if_no_name_and_no_taxon(self):
         self.page.create_new_individual("", "")
-        self.assertEquals("Laji puuttuu!", self.page.get_message().strip())
+        self.assertNotEquals("Lintu luotu onnistuneesti!", self.page.get_message().strip())
 
     def test_correct_message_if_no_name(self):
         self.page.create_new_individual("Kuikka", "")
-        self.assertEquals("Nimi puuttuu!", self.page.get_message().strip())
+        self.assertNotEquals("Lintu luotu onnistuneesti!", self.page.get_message().strip())
 
     def test_correct_message_if_no_taxon(self):
         self.page.create_new_individual("", "Seppo")
-        self.assertEquals("Laji puuttuu!", self.page.get_message().strip())
+        self.assertNotEquals("Lintu luotu onnistuneesti!", self.page.get_message().strip())
 
     def test_correct_message_if_name_and_taxon_ok(self):
         self.page.create_new_individual("Kuikka", "Seppo")
         self.assertEquals("Lintu luotu onnistuneesti!", self.page.get_message().strip())
 
     def test_correct_message_after_delete_button(self):
-        self.page.create_new_individual("Kuikka", "Seppo")
         self.page.delete_individual()
         self.assertEquals("Lintu poistettu onnistuneesti!", self.page.get_message().strip())
 

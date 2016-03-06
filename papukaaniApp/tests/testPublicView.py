@@ -2,11 +2,13 @@ import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from django.conf import settings
 import dateutil.parser
+
 
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
@@ -25,7 +27,8 @@ class PublicView(StaticLiveServerTestCase):
             "dateEdited": "2014-09-29T14:00:00+03:00"
         }
 
-        self.I = individual.create("Birdie", "GAVSTE")
+        self.I = individual.create("Birdie", "GAVSTE", description={"fi": "birdiekuvaus"},
+                                   descriptionURL={"fi": "http://www.birdie.kek"})
         self.I2 = individual.create("Birdie2", "GAVSTE")
 
         self.D = device.create(**dev)
@@ -59,9 +62,11 @@ class PublicView(StaticLiveServerTestCase):
         self.page.close()
         self.A.delete()
         self.D.delete()
+        self.B.delete()
+        self.D2.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
-        self.page.play_animation_for_device(str(self.I.id))
+        self.page.play_animation_for_individual(str(self.I.id))
         start_location = self.page.SINGLE_MARKER.location
 
         def marker_is_moving(driver):
@@ -74,27 +79,33 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(self.page.get_number_of_points(), 0)
 
     def test_can_choose_points_by_individual(self):
-        self.select_device_and_play()
+        self.select_individual_and_play()
         self.assertNotEquals(self.page.POLYLINE, None)
 
-    def test_polylines_are_cleared_on_selection_change(self):
-        self.select_device_and_play()
-        self.page.play()
-        self.page.change_device_selection("None")
+    def test_polylines_are_cleared_on_select_and_delete(self):
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.remove").click()
+        self.page.driver.find_element_by_css_selector("#individual" + str(self.I2.id) + " button.remove").click()
+        time.sleep(1)
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 0)
 
     def test_pause_stops_polyline_drawing(self):
-        self.select_device_and_play()
+        self.select_individual_and_play()
         self.page.play()
         start = self.page.get_map_polyline_elements()
         time.sleep(1)
         self.assertEquals(start, self.page.get_map_polyline_elements())
 
-    def test_marker_has_popup_with_individual_name_and_timestamp_when_loaded(self):
-        self.page.change_device_selection(str(self.I.id))
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_clicked(self):
+        self.page.change_individual_selection(str(self.I.id))
+        time.sleep(3)
+        self.page.get_marker().click()
         self.assert_popup_contents()
 
-    def test_marker_has_popup_with_individual_name_and_timestamp_when_playing(self):
-        self.select_device_and_play()
+    def test_marker_has_popup_with_individual_name_and_timestamp_when_clicked_and_playing(self):
+        self.select_individual_and_play()
+        self.page.get_marker().click()
         self.assert_popup_contents()
 
     def assert_popup_contents(self):
@@ -102,18 +113,18 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals("Birdie" in popuptext, True)
         self.assertEquals("2010" in popuptext, True)
 
-    def select_device_and_play(self):
-        self.page.change_device_selection(str(self.I.id))
+    def select_individual_and_play(self):
+        self.page.change_individual_selection(str(self.I.id))
         self.page.play()
 
     def test_slider_label_value_changes_when_playing(self):
-        self.select_device_and_play()
+        self.select_individual_and_play()
         time.sleep(1)
         label = self.page.driver.find_element_by_id("playLabel")
         self.assertNotEquals(label.get_attribute("innerHTML"), "1234/12/12 12:12:12")
 
     def test_polyline_is_drawn_when_playing(self):
-        self.select_device_and_play()
+        self.select_individual_and_play()
         startcount = len(self.page.driver.find_elements_by_tag_name("g"))
         time.sleep(1)
         self.assertGreater(len(self.page.driver.find_elements_by_tag_name("g")), startcount)
@@ -142,28 +153,37 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals('75', self.page.get_speed_set_as_param(75))
 
     def test_iframe_url_is_correct(self):
-        self.page.change_device_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&device={device}&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, device=str(self.I.id), speed=50, zoom=5, loc='[61,20]'), 
-        self.page.get_iframe_url())
+        self.page.change_individual_selection(str(self.I.id))
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
+            self.page.get_iframe_url())
 
     def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
         self.page.driver.get(self.page.url + "?zoom=6&loc=[20,40]")
-        self.page.change_device_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&device={device}&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, device=str(self.I.id), speed=50, zoom=6, loc='[20,40]'), 
+        self.page.change_individual_selection(str(self.I.id))
+        time.sleep(1)
+        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
         self.page.get_iframe_url())
 
     def test_iframe_url_is_correct_if_url_parameters_are_invalid(self):
         self.page.driver.get(self.page.url + "?zoom=5&loc=5")
-        self.page.change_device_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&device={device}&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, device=str(self.I.id), speed=50, zoom=5, loc='[60,20]'), 
+        self.page.change_individual_selection(str(self.I.id))
+        time.sleep(1)
+        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
         self.page.get_iframe_url())
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
-        self.page.change_device_selection(str(self.I.id))
-        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 20)
+        number_of_polylines = 71
+        self.page.change_individual_selection(str(self.I.id))
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), number_of_polylines)
+
+    def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen_with_two_birds(self):
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.change_individual_selection(str(self.I.id))
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 72)
 
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
         hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
@@ -175,42 +195,66 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_END.send_keys("14.12.2010 00:00")
 
         time.sleep(5)
-        self.page.change_device_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I.id))
 
-        self.assertTrue("11" in self.page.driver.find_element_by_id("playLabel").text)
-        self.assertTrue("13" in self.page.driver.find_element_by_id("playLabel_end").text)
+        self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
+        self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
-    def test_time_selection_refresh_button_works(self):
-        self.page.change_device_selection(str(self.I.id))
+    def test_time_selection_refresh_works(self):
+        self.page.change_individual_selection(str(self.I.id))
 
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
+        # just to defocus (blur) previous field
+        self.page.driver.find_element_by_id("playLabel").click()
 
-        self.page.REFRESH.click()
         time.sleep(3)
-
-        self.assertTrue("11" in self.page.driver.find_element_by_id("playLabel").text)
-        self.assertTrue("13" in self.page.driver.find_element_by_id("playLabel_end").text)
+        print(self.page.driver.find_element_by_id("playLabel_end").text)
+        self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
+        self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
     def test_iframe_with_time_selection_is_correct(self):
-        self.page.change_device_selection(str(self.I.id))
-
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&device={device}&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, device=str(self.I.id), speed=50, zoom=5, loc='[61,20]'), 
-        self.page.get_iframe_url())
+        self.page.change_individual_selection(str(self.I.id))
+        time.sleep(1)
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
+            self.page.get_iframe_url())
 
         self.page.TIME_START.send_keys("11.12.2010 00:00")
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&device={device}&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}'.format(
-          lang=self.lang, device=str(self.I.id), speed=50, zoom=5, loc='[61,20]', start_time='11.12.2010 00:00'), 
-        self.page.get_iframe_url())
+        time.sleep(1)
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]',
+                start_time='11.12.2010 00:00'),
+            self.page.get_iframe_url())
 
         self.page.TIME_END.send_keys("14.12.2010 00:00")
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&device={device}&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}&end_time={end_time}'.format(
-          lang=self.lang, device=str(self.I.id), speed=50, zoom=5, loc='[61,20]', start_time='11.12.2010 00:00', end_time='14.12.2010 00:00'), 
-        self.page.get_iframe_url())
+        time.sleep(1)
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}&start_time={start_time}&end_time={end_time}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]',
+                start_time='11.12.2010 00:00', end_time='14.12.2010 00:00'),
+            self.page.get_iframe_url())
 
     def test_time_selection_in_get_parameters_show_correct_time_selection(self):
         self.page.driver.get(self.page.url + "?start_time=11.12.2010 00:00&end_time=14.12.2010 00:00")
 
         self.assertEquals(self.page.TIME_START.get_attribute("value"), "11.12.2010 00:00")
         self.assertEquals(self.page.TIME_END.get_attribute("value"), "14.12.2010 00:00")
+
+    def test_description_button_opens_modal_with_correct_info(self):
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.driver.find_element_by_css_selector(
+            "#individual" + str(self.I.id) + " button.showDescription").click()
+        time.sleep(1)
+        self.assertTrue(
+            self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
+        self.assertEquals(self.page.driver.find_element_by_id("desc").text,"birdiekuvaus")
+        self.assertTrue(
+            self.page.driver.find_element_by_id("url").get_attribute("href")==("http://www.birdie.kek/"))
+
+    def test_description_button_missing_when_no_desc_or_url_available(self):
+        self.page.change_individual_selection(str(self.I2.id))
+        with self.assertRaises(NoSuchElementException):
+            self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription")

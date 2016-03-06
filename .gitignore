@@ -15,3 +15,4 @@
 /papukaani.log.*
 /.coverage
 /coverage/*
+/nbproject/*

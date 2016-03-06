@@ -14,7 +14,7 @@ function displayIndividuals(device) {
     $('#table').show()
     $("#attacher").show()
     var rows = '';
-    $.each(attachments_of_devices[device], function(index, attachment) {
+    $.each(attachments_of_devices[device], function (index, attachment) {
         var row = '<tr>';
         row += '<td><span id="name' + attachment.individualID + '">' + individual_names[attachment.individualID] + '</span></td>'
         row += '<td>' + $.format.date(attachment.attached, "dd.MM.yyyy HH:mm") + '</td>'
@@ -60,7 +60,7 @@ function attachDevice() {
             headers: headers,
         });
 
-        $.each(attachments_of_devices[deviceId], function(index, attachment) {
+        $.each(attachments_of_devices[deviceId], function (index, attachment) {
             if (!attachment.removed) {
                 attachment.removed = timestamp
             }

@@ -1,10 +1,9 @@
-{% extends 'base.html' %}
+{% extends extended %}
 {% load i18n %}
 
 {% load staticfiles %}
 
 {% block header %}
-    <link rel="stylesheet" href="{% static 'papukaani/css/upload.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/leaflet.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
@@ -13,96 +12,245 @@
 {% endblock %}
 
 {% autoescape off %}
-    {% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, "{{ device }}", "{{ speed }}", {{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
+{% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ individualIds }}, "{{ speed }}", {{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
 {% endautoescape %}
 
+{% block footer %}{% endblock %}
+
 {% block content %}
-    {% if display_navigation %}
-        {% include "papukaaniApp/navigation.html" %}
-    {% endif %}
 
-    <div class="choose_actions form-inline padded2">
-        <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">{% trans "Lintu:" %}</span>
-            <select id="selectDevice" class="form-control"></select>
-        </div>
+    <div class="modal" tabindex="-1" role="dialog" id="loading">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="{% static 'papukaaniApp/loading.gif' %}" alt="Ladataan" class="loadinggif">
+                    <h4 class="loadingtext">{% trans "Reittiä ladataan" %}...</h4>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-        <span id="loading" class="help-block" style="display:inline"></span>
+    <div class="modal" tabindex="-1" role="dialog" id="descriptionModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="desc"></div>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <a id="url" class="btn btn-primary" style="float: left" href="#" target="_blank"></a>
+                    </div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        {% trans "Sulje" %}
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-        <form id="time_range">
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon1">{% trans "Alku:" %}</span>
-                <input type="text" id="start_time" name="start_time" class="dateinput datepicker form-control"
-                       onblur="validateDateFormat(this)"
-                       placeholder="dd-mm-yyyy HH:mm" maxlength="16">
+
+    <div class="container-fluid" id="mapContainer">
+        <div class="row no-gutters" style="height:100%;">
+            <div class="col-sm-12 col-md-9 col-lg-10" style="height:100%;">
+                <div id="map" tabindex="1"></div>
+
+                <div id="timeline">
+                    <style>
+                        table td {
+                            border: 1px solid;
+                        }
+
+                        table {
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+
+                        #birdies {
+                            height: 100px;
+                            overflow-y: scroll; /* Trigger vertical scroll    */
+                            overflow-x: hidden; /* Hide the horizontal scroll */
+                        }
+                    </style>
+                    <div class="firstCol">
+                        <div class="choose_actions form-inline padded2">
+                            <div id="birds">
+                                <select id="selectIndividual">
+                                    <option value="">{% trans "Lisää lintu" %}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="secondCol">
+                        <table>
+                            <tr>
+                                <td>
+                                    <button id="play" onclick="player.play()" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-play"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}"
+                                         alt="{% trans "Nopeus" %}"
+                                         width="30"
+                                         height="30"/>
+                                </td>
+                                <td>
+                                    <div id="speedSlider" class="small-slider" data-toggle="tooltip"
+                                         title="{% trans "Nopeus" %}"
+                                         data-placement="top"></div>
+                                </td>
+                                <td>
+                                    <label id="playLabel">N/A</label>
+                                </td>
+                                <td>
+                                    <label id="playLabel_end">N/A</label>
+                                </td>
+                                <td>
+                                    <button id="iframeOpen" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#iframedialog">
+                                        <span class="glyphicon glyphicon-share"></span> {% trans "Jaa" %}
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="modal fade" tabindex="-1" role="dialog" id="iframedialog">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button id="iframeClose" type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">{% trans "Linkki" %}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input class="form-control" type="text" readonly id="iframeSrc"/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                            {% trans "Sulje" %}
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </div>
+                    <div class="firstCol">
+                        &nbsp;
+
+                    </div>
+                    <div class="secondCol">
+                        <div class="input-group" id="time_range">
+                                                <span class="input-group-addon"
+                                                      id="basic-addon1">{% trans "Alku:" %}</span>
+                            <input type="text" id="start_time" name="start_time"
+                                   class="dateinput datepicker form-control"
+                                   placeholder="dd-mm-yyyy HH:mm" maxlength="16">
+                                            <span class="input-group-addon"
+                                                  id="basic-addon1">{% trans "Loppu:" %}</span>
+                            <input type="text" id="end_time" name="end_time"
+                                   class="dateinput datepicker form-control"
+                                   placeholder="dd-mm-yyyy HH:mm" maxlength="16">
+                        </div>
+                    </div>
+                    <div class="firstCol">
+                        &nbsp;
+                    </div>
+                    <div class="secondCol">
+                        <div id="playSlider"></div>
+                    </div>
+
+                    <div id="birdies"></div>
+                </div>
             </div>
-
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon1">{% trans "Loppu:" %}</span>
-                <input type="text" id="end_time" name="end_time" class="dateinput datepicker form-control"
-                       onblur="validateDateFormat(this)"
-                       placeholder="dd-mm-yyyy HH:mm" maxlength="16">
-            </div>
-
-            <span id="formatError" style="margin:0"></span>
-
-            <button type="button" class="btn btn-default"
-                    onclick="sorter.changeDeviceSelection(sorter.currentDevice)"
-                    id="show_time_range">{% trans "Päivitä " %}
-                  </button>
-        </form>
-    </div>
-
-    <div id="map" class="largeMap" tabindex="1">
-        <div id="in-map">
-            <div id="in-map-slider" class="img-rounded">
-                <div id="playSlider"></div>
-            </div>
-
-            <div id="in-map-control" class="img-rounded">
-                <div class="form-inline">
-                    <button id="play" onclick="map.play()" class="btn btn-default">&#9658;</button>
-
-                    <label id="playLabel">N/A</label>
-
-                    <div id="speedSlider" class="small-slider" data-toggle="tooltip" title="Nopeus" data-placement="top"></div>
-
-                    <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}" alt="Nopeus" width="30" height="30"/>
-
-                    <label id="playLabel_end"></label>
+            <div class="hidden-sm col-md-3 col-lg-2">
+                <div id="nyheter">
+                    <h1>Nyhe
+                        34534
+                        543534
+                        543
+                        5345
+                        43534
+                        5435345345
+                        435435
+                        435
+                        435
+                        435
+                        435
+                        435435ter</h1>a sdfasf
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
+{% endblock %}
+{% block scripts %}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/sliderPadding.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/leaflet.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/markercluster/leaflet.markercluster.js' %}"></script>
-    <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-addon.js' %}"></script>
     {% trans "fi" as lang %}
-    <script src="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
-    <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
-    <script src="{% static 'papukaani/js/public.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/polylineAnimate.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/player.js' %}"></script>
     <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
-    <script src="{% url 'javascript-catalog' %}"></script>
+    <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script>
+    <script src="{% static 'papukaani/js/public.js' %}"></script>
+    <script>
+        $(function () {
+            $('.datepicker').change(function () {
+                if (validateDateFormat(this) || this.value === "") {
+                    sorter.refresh();
+                }
+            });
+            $('#iframedialog').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var modal = $(this)
+                generateIframeUrl();
+                $("#iframeSrc").select();
+            });
+            $('#iframedialog').on('shown.bs.modal', function (event) {
+                $("#iframeSrc").select();
+            });
+        });
+        $("#birdies").on('click', 'button.remove', function (e) {
+            e.preventDefault();
+            sorter.removePointsForIndividual($(this).closest('div.firstCol').data('id'));
+            $(this).closest('div.firstCol').next().remove();
+            $(this).closest('div.firstCol').remove();
+        });
 
-    {% if display_navigation %}
-    <div class="choose_actions form-inline padded2">
-        <div class="input-group">
-          <span class="input-group-addon">{% trans "iFrame:" %}</span>
-            <input class="form-control" type="text" size="100" id="iframeSrc"/>
-        </div>
+       $('#descriptionModal').on('show.bs.modal', function (event) {
+           var button = $(event.relatedTarget);
+           var modal = $(this);
+           var id = button.data('id');
+           var bird = sorter.getBird(id);
 
-         <div class="input-group">
-           <button type="button" class="btn btn-primary" onclick="generateIframeUrl()" id="generateIframeButton">{% trans "Luo" %}</button>
-        </div>
-     </div>
-    {% endif %}
+           modal.find('.modal-title').text(bird.name);
+
+           if (bird.description) {
+               $('#desc').html(bird.description);
+               $('#desc').show();
+           } else {
+               $('#desc').hide();
+           }
+           if (bird.url) {
+               $('#url').attr('href', bird.url);
+               $('#url').text("{% trans 'Lisää tietoa' %}");
+               $('#url').show();
+           } else {
+               $('#url').hide();
+           }
+
+        });
+    </script>
 {% endblock %}

@@ -23,7 +23,7 @@ ChooseMap.prototype.showMarkersWithinTimeRange = function (start, end) {
         a = (start != "" ? new Date(parseTime(start, "+00:00")) : "");
         b = (end != "" ? new Date(parseTime(end, "+00:00")) : "");
     } catch (error) {
-        document.getElementById("formatError").innerHTML = "Invalid Date format!";
+        document.getElementById("formatError").innerHTML = gettext("Virheellinen aikaformaatti!");
         return;
     }
     var pointsWithinRange = this.points.filter(function (point) {
@@ -125,7 +125,7 @@ var getPopupContentsForMarker = function (marker) {
     content += new Date(marker.pnt.dateBegin).toLocaleString();
     if ("temperature" in marker.pnt) {
         if (marker.pnt.temperature > -273.15) {
-            content += "<br>" + "Temperature: " + marker.pnt.temperature + "&deg;C";
+            content += "<br>" + gettext("Lämpötila") + ": " + marker.pnt.temperature + "&deg;C";
         }
     }
     return content;
@@ -157,7 +157,7 @@ ChooseMap.prototype.spiderfyAnyZoom = function (a) {
 ChooseMap.prototype.send = function () {
     data = JSON.stringify({deviceId: this.sorter.currentDevice, gatherings: this.sorter.points});
     var messagebox = $("#loading");
-    messagebox.text("Tallennetaan...");
+    messagebox.text(gettext("Tallennetaan" + "..."));
 
     lockButtons();
 
@@ -227,9 +227,9 @@ function setLoadingMessage(request, messagebox) {
     if (request.readyState == 4) {
         unlockButtons();
         if (request.status == 200) {
-            messagebox.text("Valmis!");
+            messagebox.text(gettext("Valmis!"));
         } else {
-            messagebox.text("Tapahtui virhe!");
+            messagebox.text(gettext("Tapahtui virhe!"));
         }
     }
 }

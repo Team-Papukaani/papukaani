@@ -1,16 +1,43 @@
 {% load staticfiles %}
 {% load i18n %}
-
 <!DOCTYPE html>
-
 <html lang="{% trans "fi" %}">
 <head>
     <title>{% block title %}Pelikaija{% endblock %}</title>
-    {% include "papukaaniApp/include_headers.html" %}
-    {% block header %}{% endblock %}
-</head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {#    <link rel="shortcut icon" href="{% static 'papukaaniApp/favicon.ico' %}">#}
+    <link rel="icon" href="http://front.laji-test.luomus.fi/favicon.ico">
 
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'papukaani/libraries/bootstrap/bootstrap-select/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href='//fonts.googleapis.com/css?family=Roboto:400,300,500,700'>
+    <link rel="stylesheet" href="{% static 'papukaani/css/general.css' %}">
+
+    {% block header %}{% endblock %}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
 <body{% block body_attr %}{% endblock %}>
-    {% block content %}{% endblock %}
+{% block baseContent %}{% block content %}{% endblock %}{% endblock %}
+{% block footer %}
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Place sticky footer content here.</p>
+        </div>
+    </footer>
+{% endblock %}
+<script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
+<script src='{% static "papukaani/js/language.js" %}'></script>
+<script src="{% static 'papukaani/libraries/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'papukaani/libraries/bootstrap/bootstrap-select/bootstrap-select.min.js' %}"></script>
+<script src="{% url 'javascript-catalog' %}"></script>
+<script src="{% static 'papukaani/js/utils/onclickdisable.js' %}"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

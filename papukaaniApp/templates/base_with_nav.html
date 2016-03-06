@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block baseContent %}
+    {% include "papukaaniApp/navigation.html" %}
+    <div id="contentWrapper">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

@@ -1,48 +1,59 @@
 {% load i18n %}
 {% load staticfiles %}
-<div id='cssmenu'>
-  <ul>
-    <li><a href='{% url "index" %}'><span>{% trans "Kotisivu" %}</span></a></li>
-    <li><a id="upload_link" href='{% url "upload" %}'><span>{% trans "Lataa tiedosto" %}</span></a></li>
-    <li><a href='{% url "choose" %}' id="choose_link"><span>{% trans "Valitse julkiset pisteet" %}</span></a></li>
-    <li><a href='{% url "devices" %}'><span>{% trans "Valitse linnun lähetin" %}</span></a></li>
-    <li><a href='{% url "individuals" %}'><span>{% trans "Hallinnoi lintuja" %}</span></a></li>
-    <li><a href='{% url "public" %}' id='last_left'><span>{% trans "Julkinen" %}</span></a></li>
-
-    <div class='nav-right'> 
-      {% get_current_language as LANGUAGE_CODE %}
-      <li ><a id='language_choose' data-currentlang='{{ LANGUAGE_CODE }}'>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://laji.fi/">LAJI.FI</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href='{% url "index" %}'><span>{% trans "Kotisivu" %}</span></a></li>
+                <li><a id="upload_link" href='{% url "upload" %}'><span>{% trans "Lataa tiedosto" %}</span></a></li>
+                <li><a href='{% url "choose" %}'
+                       id="choose_link"><span>{% trans "Valitse julkiset pisteet" %}</span></a></li>
+                <li><a href='{% url "devices" %}'><span>{% trans "Valitse linnun lähetin" %}</span></a></li>
+                <li><a href='{% url "individuals" %}'><span>{% trans "Hallinnoi lintuja" %}</span></a></li>
+                <li><a href='{% url "public" %}' id='last_left'><span>{% trans "Julkinen" %}</span></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% get_current_language as LANGUAGE_CODE %}
+                <li><a id='language_choose' data-currentlang='{{ LANGUAGE_CODE }}'>
         <span class='language_option'
-        id='language_fi' data-langcode='fi'>fi</span>|<span class='language_option'
-        id='language_sv' data-langcode='sv'>sv</span>|<span class='language_option'
-        id='language_en' data-langcode='en'>en</span></a>
-      </li>
-      {%if authenticated %}
-      <li ><a href='{% url "logout" %}' id="logout_link">{% trans "Kirjaudu ulos" %}</a></li>
-      {% else %}
-      <li ><a href='{% url "login" %}'id="login_link">{% trans "Kirjaudu sisään" %}</a></li>
-      {% endif %}
+              id='language_fi' data-langcode='fi'>fi</span>|<span class='language_option'
+                                                                  id='language_sv' data-langcode='sv'>sv</span>|<span
+                        class='language_option'
+                        id='language_en' data-langcode='en'>en</span></a>
+                </li>
+                {% if authenticated %}
+                    <li><a href='{% url "logout" %}' id="logout_link">{% trans "Kirjaudu ulos" %}</a></li>
+                {% else %}
+                    <li><a href='{% url "login" %}' id="login_link">{% trans "Kirjaudu sisään" %}</a></li>
+                {% endif %}
+            </ul>
+            <!-- Invisible, used by script -->
+            <form id='language_form' action="{% url 'set_language' %}" method="post"
+                  data-currenturl='{{ request.path }}'
+                  data-currentfullurl='{{ request.get_full_path }}'>
+                {% csrf_token %}
+                <input id='language_form_next' name="next" type="hidden" value="/"/>
+                <select name="language" id='language_form_select'>
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}">
+                            {{ language.code }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="Submit" id='language_form_submit'/>
+            </form>
+        </div><!--/.nav-collapse -->
     </div>
-  </ul>
-</div>
-
-<!-- Invisible, used by script -->
-<form id='language_form' action="{% url 'set_language' %}" method="post" 
-  data-currenturl='{{ request.path }}' 
-  data-currentfullurl='{{ request.get_full_path }}'> 
-  {% csrf_token %}
-  <input id='language_form_next' name="next" type="hidden" value="/" />
-  <select name="language" id='language_form_select'>
-    {% get_available_languages as LANGUAGES %}
-    {% get_language_info_list for LANGUAGES as languages %}
-    {% for language in languages %}
-    <option value="{{ language.code }}">
-    {{ language.code }}
-    </option>
-    {% endfor %}
-  </select>
-  <input type="Submit" id='language_form_submit'/>
-</form>
-
-<script>window.jQuery || document.write('<script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}">\x3C/script>')</script>
-<script src='{% static "papukaani/js/language.js" %}'> </script>
+</nav>

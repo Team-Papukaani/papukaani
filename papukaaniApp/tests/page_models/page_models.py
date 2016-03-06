@@ -7,6 +7,7 @@ import time
 from selenium.webdriver.support.wait import WebDriverWait
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
+
 BASE_URL = "http://127.0.0.1:8081"
 
 
@@ -90,10 +91,11 @@ class PublicPage(PageWithDeviceSelector):
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')
     IFRAME_SRC = Element(By.ID, 'iframeSrc')
-    IFRAME_BUTTON = Element(By.ID, 'generateIframeButton')
+    IFRAME_BUTTON_OPEN = Element(By.ID, 'iframeOpen')
+    IFRAME_BUTTON_CLOSE = Element(By.ID, 'iframeClose')
     TIME_START = Element(By.ID, 'start_time')
     TIME_END = Element(By.ID, 'end_time')
-    REFRESH = Element(By.ID, "show_time_range")
+    INDIVIDUAL_SELECTOR = Element(By.ID, "selectIndividual")
 
     def __init__(self):
         super().__init__()
@@ -113,8 +115,8 @@ class PublicPage(PageWithDeviceSelector):
 
         return no_of_pts
 
-    def play_animation_for_device(self, key):
-        self.change_device_selection(key)
+    def play_animation_for_individual(self, key):
+        self.change_individual_selection(key)
         self.play()
 
     def play(self):
@@ -128,24 +130,30 @@ class PublicPage(PageWithDeviceSelector):
         return self.driver.find_element_by_class_name("leaflet-popup-content-wrapper")
 
     def get_navigation(self):
-        return self.driver.find_element_by_id("cssmenu")
+        return self.driver.find_element_by_id("navbar")
 
-    def change_device_selection(self, key):
-        super(PublicPage, self).change_device_selection(key)
-        time.sleep(1)
+    def change_individual_selection(self, key):
+        sel = Select(self.INDIVIDUAL_SELECTOR)
+        sel.select_by_value(key)
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
 
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
         return self.driver.execute_script('return $("#speedSlider").slider("option", "value")')
 
+
     def set_slider_value_to_min(self):
         minval = self.driver.execute_script('return $("#playSlider").slider("option", "min")')
         self.driver.execute_script('$("#playSlider").slider("option", "value", ' + str(minval) + ')')
 
-    def get_iframe_url(self):
-        self.IFRAME_BUTTON.click()
-        return self.IFRAME_SRC.get_attribute('value')
 
+    def get_iframe_url(self):
+        self.IFRAME_BUTTON_OPEN.click()
+        time.sleep(1)
+        url = self.IFRAME_SRC.get_attribute('value')
+        self.IFRAME_BUTTON_CLOSE.click()
+        return url
 
 
 class ChoosePage(PageWithDeviceSelector):
@@ -287,12 +295,11 @@ class DevicePage(PageWithDeviceSelector):
     """
     Page Object for the device page.
     """
-    START_TIME = Element(By.ID,"start_time")
+    START_TIME = Element(By.ID, "start_time")
     REMOVE_TIME = Element(By.ID, "remove_time")
-    ATTACH = Element(By.ID,"attach")
-    REMOVE = Element(By.CLASS_NAME,"btn-danger")
-    ATTACHER = Element(By.ID,"attacher")
-
+    ATTACH = Element(By.ID, "attach")
+    REMOVE = Element(By.CLASS_NAME, "btn-danger")
+    ATTACHER = Element(By.ID, "attacher")
 
     url = BASE_URL + '/papukaani/devices/'
 
@@ -325,9 +332,20 @@ class IndividualPage(Page):
     FIRST_NICKNAME_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="nickname"]')
     FIRST_RING_ID_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]/input[@name="ring_id"]')
     MODIFY_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="modify"]')
+    CONFIRM_MODIFY_BUTTON = Element(By.ID, 'confirm_modify')
+    FIRST_DESCRIPTION_EN_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//textarea[@name="descriptionEN"]')
+    FIRST_DESCRIPTION_FI_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//textarea[@name="descriptionFI"]')
+    FIRST_DESCRIPTION_SV_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//textarea[@name="descriptionSV"]')
+    FIRST_DESCRIPTION_ENURL_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="descriptionUrlEN"]')
+    FIRST_DESCRIPTION_FIURL_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="descriptionUrlFI"]')
+    FIRST_DESCRIPTION_SVURL_FIELD = Element(By.XPATH, '//form[@name="modify_individuals"][1]//input[@name="descriptionUrlSV"]')
+    MODIFY_DESCRIPTION_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]//button[@name="modifyDescription"]')
+    CLOSE_MODAL_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]//button[@name="close"]')
     DELETE_BUTTON = Element(By.XPATH, '//form[@name="modify_individuals"][1]/button[@name="delete"]')
     DELETE_CONFIRM_BUTTON = Element(By.ID, 'yes_button')
     MESSAGE = Element(By.ID, 'messages')
+    MODAL_TAB_LINK_FI = Element(By.XPATH, '//form[@name="modify_individuals"][1]//li[2]//a')
+    MODAL_TAB_LINK_SV = Element(By.XPATH, '//form[@name="modify_individuals"][1]//li[3]//a')
 
     def get_message(self):
         """
@@ -339,6 +357,7 @@ class IndividualPage(Page):
         """
         Inputs the name of the new individual and submits the form.
         """
+        self.driver.execute_script('return $(".combobox").removeAttr("required");')
         self.set_taxon_field_visible_for_input()
         namefield2 = self.NEW_TAXON_FIELD
         namefield2.send_keys(taxon)
@@ -352,13 +371,31 @@ class IndividualPage(Page):
         for attempt in range(10):
             try:
                 self.driver.execute_script(
-                'return $("[name=\'taxon\']").attr("type", "text");')  # set taxon field visible for input
+                    'return $("[name=\'taxon\']").attr("type", "text");')  # set taxon field visible for input
                 break
             except:
                 time.sleep(1)
 
+    def get_first_individual_en(self):
+        return self.FIRST_DESCRIPTION_EN_FIELD.get_attribute("value")
+
+    def get_first_individual_fi(self):
+        return self.FIRST_DESCRIPTION_FI_FIELD.get_attribute("value")
+
+    def get_first_individual_sv(self):
+        return self.FIRST_DESCRIPTION_SV_FIELD.get_attribute("value")
+
+    def get_first_individual_enurl(self):
+        return self.FIRST_DESCRIPTION_ENURL_FIELD.get_attribute("value")
+
+    def get_first_individual_fiurl(self):
+        return self.FIRST_DESCRIPTION_FIURL_FIELD.get_attribute("value")
+
+    def get_first_individual_svurl(self):
+        return self.FIRST_DESCRIPTION_SVURL_FIELD.get_attribute("value")
+
     def get_first_individual_taxon(self):
-        self.driver.execute_script('return $(".combobox").show;') # set taxon select visible
+        self.driver.execute_script('return $(".combobox").show;')  # set taxon select visible
         return self.FIRST_TAXON_FIELD.get_attribute("value")
 
     def get_first_individual_nickname(self):
@@ -366,6 +403,37 @@ class IndividualPage(Page):
 
     def get_first_individual_ring_id(self):
         return self.FIRST_RING_ID_FIELD.get_attribute("value")
+
+    def modify_descriptionurl(self, en, fi, sv):
+        """
+        Inputs the name and ring_id of an existing individual and submits the form.
+        """
+        self.MODIFY_DESCRIPTION_BUTTON.click()
+        time.sleep(1)
+        f1 = self.FIRST_DESCRIPTION_ENURL_FIELD
+        f1.send_keys(en)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("descriptionEN"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format("engtext"))
+        self.MODAL_TAB_LINK_FI.click()
+        time.sleep(1)
+        f2 = self.FIRST_DESCRIPTION_FIURL_FIELD
+        f2.send_keys(fi)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("descriptionFI"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format("fitext"))
+        self.MODAL_TAB_LINK_SV.click()
+        time.sleep(1)
+        f3 = self.FIRST_DESCRIPTION_SVURL_FIELD
+        f3.send_keys(sv)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("descriptionSV"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format("svtext"))
+        time.sleep(1)
+        self.CLOSE_MODAL_BUTTON.click()
+        time.sleep(1)
+        self.MODIFY_BUTTON.click()
+
 
     def modify_individual(self, nickname, ring_id):
         """
@@ -389,8 +457,8 @@ class IndividualPage(Page):
         confirm_button = self.DELETE_CONFIRM_BUTTON
         confirm_button.click()
 
-class FormatPage(Page):
 
+class FormatPage(Page):
     url = BASE_URL + '/papukaani/formats/create/0'
 
     SUBMIT = Element(By.ID, "submit")
@@ -406,7 +474,8 @@ class FormatPage(Page):
     TEMPERATURE = Element(By.ID, "temperature")
     ALTITUDE = Element(By.ID, "altitude")
 
-    def input_values_and_submit(self, format_name, timestamp, date, time, longitude, latitude, gps_number, temperature, altitude):
+    def input_values_and_submit(self, format_name, timestamp, date, time, longitude, latitude, gps_number, temperature,
+                                altitude):
         format_name_field = self.FORMAT_NAME
         format_name_field.send_keys(format_name)
         timestamp_field = self.TIMESTAMP
@@ -430,7 +499,6 @@ class FormatPage(Page):
 
 
 class FormatListPage(Page):
-
     url = BASE_URL + '/papukaani/formats'
 
     FIRST_MODIFY_BUTTON = Element(By.XPATH, '//a[contains(@class, "glyphicon-pencil")][1]')

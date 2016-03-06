@@ -25,13 +25,18 @@ def getGatheringsForIndividual(request):
     :param request:
     :return: A List of gatherings related to the bird, with the bird's nickname appended to the end.
     """
-    indiv = individual.get(request.GET.get('individualId'))
-    gatherings = [g.to_lajistore_json() for g in indiv.get_gatherings()]
-    for g in gatherings:
-        _remove_unwanted_info_from_gathering(g)
-        _move_altitude(g)
-    gatherings.append(indiv.nickname)
-    return Response(gatherings)
+
+    ids = request.GET.get('individualId').split(",")
+    data = {}
+    for id in ids:
+        indiv = individual.get(id)
+        gatherings = [g.to_lajistore_json() for g in indiv.get_gatherings()]
+        for g in gatherings:
+            _remove_unwanted_info_from_gathering(g)
+            _move_altitude(g)
+        gatherings.append(indiv.nickname)
+        data[id] = gatherings
+    return Response(data)
 
 
 def _remove_unwanted_info_from_gathering(gathering):

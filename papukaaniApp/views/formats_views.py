@@ -25,8 +25,7 @@ def show_format(request, id):
             data.pop("csrfmiddlewaretoken")
 
         try:
-            if not _parser_is_valid(data):
-                messages.add_message(request, messages.ERROR, _("Pakollista tietoa puuttuu!"))
+            if not _parser_is_valid(data, request):
                 return render(request, "papukaaniApp/formats.html")
 
             if int(id) > 0:
@@ -39,7 +38,7 @@ def show_format(request, id):
                 GeneralParser.objects.create(**data)
                 messages.add_message(request, messages.SUCCESS, _("Formaatti tallennettu!"))
         except:
-            messages.add_message(request, messages.ERROR, _("Jokin meni pieleen!"))
+            messages.add_message(request, messages.ERROR, _("Jokin meni pieleen."))
             return redirect(list_formats)
 
         return redirect(list_formats)
@@ -55,18 +54,21 @@ def delete_format(request, id):
     return redirect(list_formats)
 
 
-def _parser_is_valid(parser):
+def _parser_is_valid(parser, request):
+    success = True
     if not parser["formatName"]:
-        return False
+        messages.add_message(request, messages.ERROR, _("Formaatin nimi puuttuu."))
+        success = False
     if not parser["longitude"]:
-        return False
+        messages.add_message(request, messages.ERROR, _("Longitudi puuttuu."))
+        success = False
     if not parser["latitude"]:
-        return False
+        success = False
+        messages.add_message(request, messages.ERROR, _("Latitudi puuttuu."))
     if not parser["timestamp"]:
-        if not parser["time"]:
-            return False
-        if not parser["date"]:
-            return False
-    return True
+        messages.add_message(request, messages.ERROR, _("Täytä joko aikaleima-kenttä tai kellonaika- ja päivämäärä-kentät."))
+        if not parser["time"] or not parser["date"]:
+            success = False
+    return success
 
 

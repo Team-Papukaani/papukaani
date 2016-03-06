@@ -158,21 +158,19 @@ class PublicView(StaticLiveServerTestCase):
                 lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
             self.page.get_iframe_url())
 
-    """
     def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
         self.page.driver.get(self.page.url + "?zoom=6&loc=[20,40]")
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals={individual}&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, individual=str(self.I.id), speed=50, zoom=6, loc='[20,40]'),
+        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
         self.page.get_iframe_url())
 
     def test_iframe_url_is_correct_if_url_parameters_are_invalid(self):
         self.page.driver.get(self.page.url + "?zoom=5&loc=5")
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals={individual}&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, individual=str(self.I.id), speed=50, zoom=5, loc='[60,20]'),
+        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
         self.page.get_iframe_url())
-    """
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
         number_of_polylines = 71
@@ -199,8 +197,7 @@ class PublicView(StaticLiveServerTestCase):
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
-    """
-    def test_time_selection_refresh_button_works(self):
+    def test_time_selection_refresh_works(self):
         self.page.change_individual_selection(str(self.I.id))
 
         self.page.TIME_START.send_keys("10.12.2010 00:00")
@@ -209,7 +206,6 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(3)
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
-    """
 
     def test_iframe_with_time_selection_is_correct(self):
         self.page.change_individual_selection(str(self.I.id))

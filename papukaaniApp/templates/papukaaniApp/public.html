@@ -29,9 +29,10 @@
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"></h4>
                 </div>
-                <div class="modal-body"></div>
-                    <p id="desc" class="modal-body"></p>
-                    <a id="url" class="modal-body" href="#"></a>
+                <div class="modal-body">
+                    <div id="desc"></div>
+                    <a id="url" href="#"></a>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         {% trans "Sulje" %}
@@ -122,7 +123,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">
-                                            Sulje
+                                            {% trans "Sulje" %}
                                         </button>
                                     </div>
                                 </div><!-- /.modal-content -->
@@ -226,12 +227,18 @@
 
            modal.find('.modal-title').text(bird.name);
 
-           if (bird.description != undefined) {
+           if (bird.description) {
                $('#desc').html(bird.description);
+               $('#desc').show();
+           } else {
+               $('#desc').hide();
            }
-           if (bird.url != undefined) {
+           if (bird.url) {
                $('#url').attr('href', bird.url);
                $('#url').text("{% trans "Lisää tietoa" %}");
+               $('#url').show();
+           } else {
+               $('#url').hide();
            }
 
         });

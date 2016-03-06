@@ -67,9 +67,14 @@ function showPointsForIndividual(ids) {
             var html = [];
             var id = "individual" + ids[i];
             html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
-            html.push('<button type="button" class="remove close" style="float: left" aria-hidden="true"><span>&times;</span></button>' + " <span>" + individualname + "</span> ");
+            html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
+                      '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
+                      ' <span>' + individualname + '</span> ');
+
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
-                html.push('<button type="button" class="showDescription btn btn-info btn-xs" data-toggle="modal" data-target="#descriptionModal" data-id="' + ids[i] + '">Lisätietoja</button>');
+                html.push('<button type="button" class="showDescription btn btn-info btn-xs" ' +
+                          'data-toggle="modal" data-target="#descriptionModal" data-id="' +
+                          ids[i] + '">Lisätietoja</button>');
             }
             html.push('</div>');
             html.push('<div class="secondCol" style="background: ' + color + ';">');

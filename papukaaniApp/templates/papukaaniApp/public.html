@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% autoescape off %}
-{% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ device }}, "{{ speed }}", {{ loc }},
+{% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ individualIds }}, "{{ speed }}", {{ loc }},
     {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
 {% endautoescape %}
 

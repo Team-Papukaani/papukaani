@@ -110,7 +110,7 @@ class TestLanguage(StaticLiveServerTestCase):
 
         with translation.override(lang):
             is_in_lang = self._similarStrings(page.REFRESH.text, 
-                    refresh_in(lang))
+                     refresh_in(lang))
         with translation.override(self._get_other_lang(lang)):
             is_in_other_lang = self._similarStrings(page.REFRESH.text, 
                     refresh_in(self._get_other_lang(lang)))

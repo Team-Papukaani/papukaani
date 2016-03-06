@@ -46,7 +46,7 @@ def public(request):
     context = {'individuals': json.dumps(individuals),
                'species': json.dumps(ordered_species),
                'display_navigation': display_navigation,
-               'device': request.GET.get('device', []),
+               'individualIds': request.GET.get('individuals', []),
                'speed': request.GET.get('speed', ''),
                'loc': request.GET.get('loc', [61.0, 20.0]),
                'zoom': request.GET.get('zoom', 5),

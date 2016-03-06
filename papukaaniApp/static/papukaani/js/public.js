@@ -9,7 +9,7 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.colorChart = new ColorChart();
 }
 //Sends a request to the rest-controller for documents matching the deviceId.
-IndividualSorter.prototype.changeDeviceSelection = function (individualId) {
+IndividualSorter.prototype.changeIndividualSelection = function (individualId) {
     var messagebox = $("#loading");
     messagebox.text(gettext('Tietoja ladataan') + "...");
     lockButtons();
@@ -172,7 +172,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     $("#selectIndividual").change(function () {
         var id = $(this).val();
         if (id === "") return;
-        that.changeDeviceSelection([id]);
+        that.changeIndividual([id]);
         $(this).val("");
         $('#selectIndividual').hideOption(id);
     });
@@ -187,7 +187,7 @@ function PublicMap(loc, zoom) {
     return this.map;
 }
 
-function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, start_time, end_time) {
+function init(individuals, species, individualIds, defaultSpeed, loc, zoom, start_time, end_time) {
 
     zoom = typeof zoom == 'number' ? zoom : 5;
 
@@ -205,19 +205,19 @@ function init(individuals, species, defaultDevice, defaultSpeed, loc, zoom, star
     if (end_time !== "") $("#end_time").val(end_time);
 
 
-    if (defaultDevice != '') {
-        if (defaultDevice instanceof Array && defaultDevice.length > 0) {
+    if (individualIds != '') {
+        if (individualIds instanceof Array && individualIds.length > 0) {
             var ids = [];
-            for (var i = 0; i < defaultDevice.length; i++) {
-                if (typeof defaultDevice[i] == "number") {
+            for (var i = 0; i < individualIds.length; i++) {
+                if (typeof individualIds[i] == "number") {
                     try {
-                        $("#individual" + defaultDevice[i]).find('input').prop('checked', true);
-                        ids.push(defaultDevice[i]);
+                        $("#individual" + individualIds[i]).find('input').prop('checked', true);
+                        ids.push(individualIds[i]);
                     } catch (err) {
                     }
                 }
             }
-            sorter.changeDeviceSelection(ids);
+            sorter.changeIndividualSelection(ids);
         }
     }
 
@@ -305,7 +305,7 @@ function generateIframeUrl() {
         ids.push(sorter.routes[i].individualId);
     }
 
-    var device = 'device=[' + ids.join(",") + ']';
+    var individuals = 'individuals=[' + ids.join(",") + ']';
     var lang = 'lang=' + $('#language_choose').attr('data-currentlang');
 
     var speed = 'speed=' + $('#speedSlider').slider("option", "value");
@@ -324,7 +324,7 @@ function generateIframeUrl() {
         time += end_time !== "" ? "&end_time=" + end_time : "";
     }
 
-    inputBox.val(url + '?' + lang + '&' + device + '&' + speed + '&' + zoom + '&' + loc + time);
+    inputBox.val(url + '?' + lang + '&' + individuals + '&' + speed + '&' + zoom + '&' + loc + time);
     inputBox.select()
 }
 

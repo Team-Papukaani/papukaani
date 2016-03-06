@@ -115,8 +115,8 @@ class PublicPage(PageWithDeviceSelector):
 
         return no_of_pts
 
-    def play_animation_for_device(self, key):
-        self.change_device_selection(key)
+    def play_animation_for_individual(self, key):
+        self.change_individual_selection(key)
         self.play()
 
     def play(self):
@@ -132,7 +132,7 @@ class PublicPage(PageWithDeviceSelector):
     def get_navigation(self):
         return self.driver.find_element_by_id("navbar")
 
-    def change_device_selection(self, key):
+    def change_individual_selection(self, key):
         sel = Select(self.INDIVIDUAL_SELECTOR)
         sel.select_by_value(key)
         while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):

@@ -4,11 +4,31 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
+
+
+#"Please fix this field."),
+#        email: "Please enter a valid email address.",
+#        url: "Please enter a valid URL.",
+#        date: "Please enter a valid date.",
+#        dateISO: "Please enter a valid date (ISO).",
+#        number: "Please enter a valid number.",
+#        digits: "Please enter only digits.",
+#        creditcard: "Please enter a valid credit card number.",
+#        equalTo: "Please enter the same value again.",
+#        accept: "Please enter a value with a valid extension.",
+#        maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
+#        minlength: jQuery.validator.format("Please enter at least {0} characters."),
+#        rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+#        range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+#        max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+#        min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+
+
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 20:41+0200\n"
+"POT-Creation-Date: 2016-03-06 23:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +56,7 @@ msgstr "The page you are looking for does not exist."
 #: papukaaniApp/templates/base.html:4
 #: papukaaniApp/templates/papukaaniApp/choose.html:84
 #: papukaaniApp/templates/papukaaniApp/devices.html:76
-#: papukaaniApp/templates/papukaaniApp/public.html:191
+#: papukaaniApp/templates/papukaaniApp/public.html:197
 msgid "fi"
 msgstr "en"
 
@@ -59,12 +79,12 @@ msgid "Peruuta"
 msgstr "Cancel"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:36
-#: papukaaniApp/templates/papukaaniApp/public.html:143
+#: papukaaniApp/templates/papukaaniApp/public.html:149
 msgid "Alku:"
 msgstr "Start:"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:44
-#: papukaaniApp/templates/papukaaniApp/public.html:148
+#: papukaaniApp/templates/papukaaniApp/public.html:154
 msgid "Loppu:"
 msgstr "End:"
 
@@ -272,8 +292,8 @@ msgid "URL ruotsinkieliseen kuvaukseen"
 msgstr "URL to Swedish description"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:118
-#: papukaaniApp/templates/papukaaniApp/public.html:40
-#: papukaaniApp/templates/papukaaniApp/public.html:129
+#: papukaaniApp/templates/papukaaniApp/public.html:50
+#: papukaaniApp/templates/papukaaniApp/public.html:135
 msgid "Sulje"
 msgstr "Close"
 
@@ -327,24 +347,28 @@ msgstr "Log out"
 msgid "Kirjaudu sisään"
 msgstr "Log in"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:74
+#: papukaaniApp/templates/papukaaniApp/public.html:27
+msgid "Reittiä ladataan"
+msgstr "Loading route"
+
+#: papukaaniApp/templates/papukaaniApp/public.html:84
 msgid "Lisää lintu"
 msgstr "Add bird"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:89
-#: papukaaniApp/templates/papukaaniApp/public.html:95
+#: papukaaniApp/templates/papukaaniApp/public.html:99
+#: papukaaniApp/templates/papukaaniApp/public.html:105
 msgid "Nopeus"
 msgstr "Speed"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:106
+#: papukaaniApp/templates/papukaaniApp/public.html:116
 msgid "Jaa"
 msgstr "Share"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:122
+#: papukaaniApp/templates/papukaaniApp/public.html:128
 msgid "Linkki"
 msgstr "Link"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:242
+#: papukaaniApp/templates/papukaaniApp/public.html:248
 msgid "Lisää tietoa"
 msgstr "More information"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 20:42+0200\n"
+"POT-Creation-Date: 2016-03-07 00:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,6 +78,16 @@ msgstr "Päivämäärä ei määritelty! "
 msgid "Lintua ei määritelty! "
 msgstr "Lintua ei määritelty! "
 
+#: papukaaniApp/static/papukaani/js/individuals.js:85
+msgid "Tämä kenttä on pakollinen."
+msgstr "Tämä kenttä on pakollinen."
+
+#: papukaaniApp/static/papukaani/js/individuals.js:86
+#, fuzzy
+#| msgid "Nimen pitää olla vähintään {0} kirjainta."
+msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
+msgstr "Nimen pitää olla vähintään {0} kirjaimen pituinen."
+
 #: papukaaniApp/static/papukaani/js/map.js:27
 msgid "Maailmankartta"
 msgstr "Maailmankartta"
@@ -98,18 +108,17 @@ msgstr "Satelliitti"
 msgid "Eliömaakunnat"
 msgstr "Eliömaakunnat"
 
-#: papukaaniApp/static/papukaani/js/public.js:14
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
-msgid "Tietoja ladataan"
-msgstr "Tietoja ladataan"
-
-#: papukaaniApp/static/papukaani/js/public.js:79
+#: papukaaniApp/static/papukaani/js/public.js:78
 msgid "Lisätietoja"
 msgstr "Lisätietoja"
 
-#: papukaaniApp/static/papukaani/js/public.js:139
+#: papukaaniApp/static/papukaani/js/public.js:137
 msgid "fi"
 msgstr "fi"
+
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
+msgid "Tietoja ladataan"
+msgstr "Tietoja ladataan"
 
 #: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
 msgid "Valitse lähetin"
@@ -122,3 +131,6 @@ msgstr "Valitse"
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr "'"
+
+#~ msgid "Nimi ei saa olla yli {0} kirjainta."
+#~ msgstr "Nimi ei saa olla yli {0} kirjainta."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 20:42+0200\n"
+"POT-Creation-Date: 2016-03-07 00:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: papukaaniApp/static/papukaani/js/choose.js:26
 msgid "Virheellinen aikaformaatti!"
-msgstr ""
+msgstr "Invalid time format!"
 
 #: papukaaniApp/static/papukaani/js/choose.js:128
 msgid "Lämpötila"
@@ -77,6 +77,14 @@ msgstr "The date was not defined! "
 msgid "Lintua ei määritelty! "
 msgstr "A bird was not defined! "
 
+#: papukaaniApp/static/papukaani/js/individuals.js:85
+msgid "Tämä kenttä on pakollinen."
+msgstr "This field is required."
+
+#: papukaaniApp/static/papukaani/js/individuals.js:86
+msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
+msgstr "Please enter a name that is at least {0} letters in length."
+
 #: papukaaniApp/static/papukaani/js/map.js:27
 msgid "Maailmankartta"
 msgstr "World map"
@@ -97,18 +105,17 @@ msgstr "Satellite"
 msgid "Eliömaakunnat"
 msgstr "Biogeographical provinces"
 
-#: papukaaniApp/static/papukaani/js/public.js:14
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
-msgid "Tietoja ladataan"
-msgstr "Loading information"
-
-#: papukaaniApp/static/papukaani/js/public.js:79
+#: papukaaniApp/static/papukaani/js/public.js:78
 msgid "Lisätietoja"
 msgstr "Information"
 
-#: papukaaniApp/static/papukaani/js/public.js:139
+#: papukaaniApp/static/papukaani/js/public.js:137
 msgid "fi"
 msgstr "en"
+
+#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
+msgid "Tietoja ladataan"
+msgstr "Loading information"
 
 #: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
 msgid "Valitse lähetin"

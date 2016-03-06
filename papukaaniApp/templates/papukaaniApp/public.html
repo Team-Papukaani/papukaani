@@ -24,7 +24,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <img src="{% static 'papukaaniApp/loading.gif' %}" alt="Ladataan" class="loadinggif">
-                    <h4 class="loadingtext">{% trans "Reittiä ladataan..." %}</h4>
+                    <h4 class="loadingtext">{% trans "Reittiä ladataan" %}...</h4>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -245,7 +245,7 @@
            }
            if (bird.url) {
                $('#url').attr('href', bird.url);
-               $('#url').text("{% trans "Lisää tietoa" %}");
+               $('#url').text("{% trans 'Lisää tietoa' %}");
                $('#url').show();
            } else {
                $('#url').hide();

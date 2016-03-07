@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from pyvirtualdisplay import Display
-from papukaaniApp.tests.test_utils import * 
+from papukaaniApp.tests.test_utils import *
 from selenium import webdriver
 
 from django.conf import settings
@@ -11,7 +11,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
 
     def setUp(self):
         settings.MOCK_AUTHENTICATION = "On"
-        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1280, 720))
+        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1920,1200))
         self.display.start()
         self.driver = get_configured_firefox()
 
@@ -35,14 +35,14 @@ class TestLoginFrontend(StaticLiveServerTestCase):
         except:
             pass
 
-#    def test_choose_does_not_redirect_if_logged_in(self):
-#        self.driver.get(self.login_page)
-#        self.driver.find_element_by_id("choose_link").click()
-#
-#        try:
-#            self.driver.find_element_by_id("map")
-#        except:
-#            self.fail()
+    def test_choose_does_not_redirect_if_logged_in(self):
+        self.driver.get(self.login_page)
+        self.driver.find_element_by_id("choose_link").click()
+
+        try:
+            self.driver.find_element_by_id("map")
+        except:
+            self.fail()
 
     def test_login_link_is_shown_if_not_logged_int(self):
         self.driver.get(self.index_page)

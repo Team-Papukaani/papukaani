@@ -13,7 +13,7 @@ function Player(map) {
         paddingMin: 8,
         paddingMax: 8,
         slide: function (event, ui) {
-            $('#playLabel').html(new Date(ui.value * 1000).toLocaleString());
+            $('#playLabel').html(new Date(ui.value * 1000).toLocaleString('fi'));
             if (this.sliding) return;
             this.slider.slider("option", {
                 value: ui.value
@@ -23,7 +23,7 @@ function Player(map) {
             this.sliding = false;
         }.bind(this),
         change: function (event, ui) {
-            $('#playLabel').html(new Date(ui.value * 1000).toLocaleString());
+            $('#playLabel').html(new Date(ui.value * 1000).toLocaleString('fi'));
         }
     });
 
@@ -99,10 +99,10 @@ Player.prototype.addRoute = function (route) {
 
     route.marker.addTo(route.featureGroup);
     route.marker.bindPopup(route.individualname + "<br>" +
-        new Date(route.points[route.pointer].dateBegin).toLocaleString(), {autoPan: false}).openPopup();
+        new Date(route.points[route.pointer].dateBegin).toLocaleString('fi'), {autoPan: false}).openPopup();
     route.marker.on("move", function (event) {
         route.marker.getPopup().setContent(route.individualname + "<br>" +
-            new Date(route.points[route.pointer].dateBegin).toLocaleString());
+            new Date(route.points[route.pointer].dateBegin).toLocaleString('fi'));
     });
 
 
@@ -152,8 +152,8 @@ Player.prototype.updateMinMax = function () {
         options.value = min;
     }
     this.slider.slider("option", options);
-    $('#playLabel_end').html(new Date(options.max * 1000).toLocaleString());
-    $('#playLabel').html(new Date(options.value * 1000).toLocaleString());
+    $('#playLabel_end').html(new Date(options.max * 1000).toLocaleString('fi'));
+    $('#playLabel').html(new Date(options.value * 1000).toLocaleString('fi'));
 }
 
 Player.prototype.play = function () {

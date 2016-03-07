@@ -122,7 +122,7 @@ ChooseMap.prototype.createMarkersFromPoints = function (points, markers) {
 //Generates content for marker's popup. Info includes time and all applicable facts.
 var getPopupContentsForMarker = function (marker) {
     var content = "";
-    content += new Date(marker.pnt.dateBegin).toLocaleString();
+    content += new Date(marker.pnt.dateBegin).toLocaleString('fi');
     if ("temperature" in marker.pnt) {
         if (marker.pnt.temperature > -273.15) {
             content += "<br>" + gettext("Lämpötila") + ": " + marker.pnt.temperature + "&deg;C";

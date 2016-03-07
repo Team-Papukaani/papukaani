@@ -13,6 +13,6 @@ class TestNavigation(StaticLiveServerTestCase):
         take_screenshot_of_test_case(self, self.nav.driver)
         self.nav.close()
 
-#    def test(self):
-#        self.nav.open_upload_page()
-#        self.assertEquals(str(self.nav.driver.current_url), str(self.nav.url) + 'upload/')
+    def test(self):
+        self.nav.open_upload_page()
+        self.assertEquals(str(self.nav.driver.current_url), str(self.nav.url) + 'upload/')

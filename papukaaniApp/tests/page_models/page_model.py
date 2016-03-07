@@ -15,9 +15,10 @@ class Page:
     url = None
 
     def __init__(self):
-        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(2000, 2000))
+        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1920, 1200))
         self.display.start()
         self.driver = get_configured_firefox()
+        self.driver.maximize_window()
 
     def navigate(self):
         """
@@ -38,7 +39,6 @@ class Element:
     def __init__(self, location_strategy, locator):
         self.location_strategy = location_strategy
         self.locator = locator
-
 
     def __get__(self, instance, owner):
         driver = instance.driver

@@ -208,6 +208,7 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_END.send_keys("14.12.2010 00:00")
         # just to defocus (blur) previous field
         self.page.driver.find_element_by_id("playLabel").click()
+        time.sleep(3)
         print(self.page.driver.find_element_by_id("playLabel").text)
         print(self.page.driver.find_element_by_id("playLabel_end").text)
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)

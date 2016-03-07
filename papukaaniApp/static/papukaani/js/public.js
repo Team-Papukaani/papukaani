@@ -248,9 +248,9 @@ function init(individuals, species, individualIds, defaultSpeed, loc, zoom, star
  };
  };
 
- */
 
-/*
+
+
  //Creates latLng objects from points
  PublicMap.prototype.createLatlngsFromPoints = function (points) {
  return points.map(function (point) {
@@ -261,7 +261,7 @@ function init(individuals, species, individualIds, defaultSpeed, loc, zoom, star
  };
  });
  };
-
+ */
 
 //Disables the select, save and reset buttons.
 function lockButtons() {
@@ -293,7 +293,7 @@ function unlockButtons() {
 //        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
 //    }
 //});
-
+*/
 function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;
@@ -346,4 +346,4 @@ function points_in_timerange(points, start, end) {
 
     return pts
 }
-*/
+

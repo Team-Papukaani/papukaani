@@ -189,6 +189,7 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEquals(self.page.SPEED_SLIDER.get_attribute("aria-describedby"), "ui-id-1")
 
     def test_time_selection_shows_correct_points(self):
+        time.sleep(3)
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         time.sleep(3)
         self.page.TIME_END.send_keys("14.12.2010 00:00")
@@ -202,6 +203,7 @@ class PublicView(StaticLiveServerTestCase):
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
     def test_time_selection_refresh_works(self):
+        time.sleep(3)
         self.page.change_individual_selection(str(self.I.id))
         time.sleep(3)
         self.page.TIME_START.send_keys("10.12.2010 00:00")

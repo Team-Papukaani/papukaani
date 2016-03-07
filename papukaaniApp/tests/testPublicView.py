@@ -203,16 +203,11 @@ class PublicView(StaticLiveServerTestCase):
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
     def test_time_selection_refresh_works(self):
-        time.sleep(5)
         self.page.change_individual_selection(str(self.I.id))
-        time.sleep(5)
         self.page.TIME_START.send_keys("10.12.2010 00:00")
-        time.sleep(5)
         self.page.TIME_END.send_keys("14.12.2010 00:00")
-        time.sleep(5)
         # just to defocus (blur) previous field
         self.page.driver.find_element_by_id("playLabel").click()
-        time.sleep(10)
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 

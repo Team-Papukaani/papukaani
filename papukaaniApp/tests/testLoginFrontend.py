@@ -1,3 +1,4 @@
+import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from pyvirtualdisplay import Display
 from papukaaniApp.tests.test_utils import *
@@ -38,7 +39,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
     def test_choose_does_not_redirect_if_logged_in(self):
         self.driver.get(self.login_page)
         self.driver.find_element_by_id("choose_link").click()
-
+        time.sleep(2)
         try:
             self.driver.find_element_by_id("map")
         except:

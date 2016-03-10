@@ -116,6 +116,8 @@ class PublicView(StaticLiveServerTestCase):
 
     def select_individual_and_play(self):
         self.page.change_individual_selection(str(self.I.id))
+        while self.page.driver.find_element_by_id("loading").is_displayed():
+            time.sleep(1)
         self.page.play()
 
     def test_slider_label_value_changes_when_playing(self):

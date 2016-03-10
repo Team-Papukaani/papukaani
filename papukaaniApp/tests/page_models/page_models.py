@@ -117,7 +117,6 @@ class PublicPage(PageWithDeviceSelector):
 
     def play_animation_for_individual(self, key):
         self.change_individual_selection(key)
-        time.sleep(1)
         self.play()
 
     def play(self):
@@ -137,7 +136,7 @@ class PublicPage(PageWithDeviceSelector):
         sel = Select(self.INDIVIDUAL_SELECTOR)
         sel.select_by_value(key)
         while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
-            time.sleep(0.1)
+            time.sleep(2)
         time.sleep(1)
 
     def get_speed_set_as_param(self, speed):

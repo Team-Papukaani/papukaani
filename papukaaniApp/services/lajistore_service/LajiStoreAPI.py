@@ -12,12 +12,40 @@ _DEVICE_PATH = "devices"
 _DOCUMENT_PATH = "documents"
 _INDIVIDUAL_PATH = "individuals"
 _DEVICEINDIVIDUAL_PATH = "deviceIndividuals"
+_NEWS_PATH = "news"
 
 _ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 
 
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 # as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
+
+# News lajistore/news/
+
+def get_all_news(**kwargs):
+    list = _get_all_pages(_NEWS_PATH, **kwargs)
+    return list
+
+
+def get_news(id):
+    item = _get(_NEWS_PATH + "/" + str(id))
+    return item
+
+
+def delete_news(id):
+    return _delete(_NEWS_PATH + "/" + str(id))
+
+
+def post_news(**data):
+    return _post(data, _NEWS_PATH)
+
+
+def update_news(**data):
+    return _put(_NEWS_PATH + "/" + str(data["id"]), data)
+
+
+def delete_all_news():
+    return _delete(_NEWS_PATH)
 
 
 # DeviceIndividuals lajistore/deviceIndividual/

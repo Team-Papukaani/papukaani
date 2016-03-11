@@ -1,1 +1,1 @@
-from . import device, document, gathering, individual
+from . import device, document, gathering, individual, news

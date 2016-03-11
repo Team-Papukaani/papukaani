@@ -34,8 +34,8 @@
                     <input class="form-control" type="text" name="formatName" id="formatName"
                            value="{{ format.formatName }}">
 
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_formatName')" id="formatName_helpbutton"></span>
+                    <span class="input-group-addon glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_formatName')" id="formatName_helpbutton" style="position: static"></span>
                 </div>
 
                 <div id="help_formatName" class="panel panel-default help-box help">
@@ -48,8 +48,8 @@
                     <input class="form-control" type="text" name="timestamp" id="timestamp"
                            value="{{ format.timestamp }}">
 
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_gpsTime')"></span>
+                    <span class="input-group-addon glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_gpsTime')" style="position: static"></span>
                 </div>
 
                 <div id="help_gpsTime" class="panel panel-default help-box help">
@@ -58,9 +58,11 @@
 
                 <div class="input-group">
                     <span class="input-group-addon wide">{% trans "Päivämäärä**" %}</span>
+
                     <input class="form-control" type="text" name="date" id="date" value="{{ format.date }}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_date')"></span>
+
+                    <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_date')" style="position: static"></span>
                 </div>
 
                 <div id="help_date" class="panel panel-default help-box help">
@@ -72,8 +74,8 @@
 
                     <input class="form-control" type="text" name="time" id="time" value="{{ format.time }}">
 
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_time')"></span>
+                    <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_time')" style="position: static"></span>
                 </div>
 
                 <div id="help_time" class="panel panel-default help-box help">
@@ -82,10 +84,12 @@
 
                 <div class="input-group">
                     <span class="input-group-addon wide">{% trans "Longitudi*" %}</span>
+
                     <input class="form-control" type="text" name="longitude" id="longitude"
                            value="{{ format.longitude }}">
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_longitude')"></span>
+
+                    <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_longitude')" style="position: static"></span>
                 </div>
 
                 <div id="help_longitude" class="panel panel-default help-box help">
@@ -97,8 +101,8 @@
 
                     <input class="form-control" type="text" name="latitude" id="latitude" value="{{ format.latitude }}">
 
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_latitude')"></span>
+                    <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_latitude')" style="position: static"></span>
                 </div>
 
                 <div id="help_latitude" class="panel panel-default help-box help">
@@ -110,8 +114,8 @@
 
                     <input class="form-control" type="text" name="altitude" id="altitude" value="{{ format.altitude }}">
 
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_altitude')"></span>
+                    <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_altitude')" style="position: static"></span>
                 </div>
 
                 <div id="help_altitude" class="panel panel-default help-box help">
@@ -124,8 +128,8 @@
                     <input class="form-control" type="text" name="manufacturerID" id="manufacturerID"
                            value="{{ format.manufacturerID }}">
 
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_manufacturerID')"></span>
+                    <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
+                          onclick="toggleElement('help_manufacturerID')" style="position: static"></span>
                 </div>
 
                 <div id="help_manufacturerID" class="panel panel-default help-box help">
@@ -138,8 +142,8 @@
                     <input class="form-control" type="text" name="temperature" id="temperature"
                            value="{{ format.temperature }}">
 
-            <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
-                  onclick="toggleElement('help_temperature')"></span>
+                     <span class="input-group-addon  glyphicon glyphicon-question-sign small button"
+                           onclick="toggleElement('help_temperature')" style="position: static"></span>
                 </div>
 
                 <div id="help_temperature" class="panel panel-default help-box help">

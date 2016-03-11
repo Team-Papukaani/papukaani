@@ -43,7 +43,6 @@ class News:
         Return currently attached individuals ids
         :return: List
         '''
-        raise NotImplementedError
         return []
 
     def is_attached(self):

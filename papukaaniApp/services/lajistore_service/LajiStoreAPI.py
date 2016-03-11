@@ -203,7 +203,7 @@ def _create_response(data, uri, post):
         raw = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
     else:
         raw = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
-
+        
     response = raw.json()
 
     if "@id" not in response:

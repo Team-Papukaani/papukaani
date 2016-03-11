@@ -63,6 +63,10 @@ body {
     padding: 20px;
 }
 
+#formatForm span.glyphicon {
+    top:0px;
+}
+
 .row.no-gutters {
     margin-right: 0;
     margin-left: 0;

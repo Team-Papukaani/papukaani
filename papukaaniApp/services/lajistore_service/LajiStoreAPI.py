@@ -153,6 +153,7 @@ def _get(uri, **kwargs):
     response = requests.get(url, auth=_AUTH).json()
     if '@id' in response:
         response['id'] = response['@id'].rsplit('/', 1)[-1]
+    if '@context' in response: del response['@context']
     return response
 
 
@@ -168,15 +169,17 @@ def _create_response(data, uri, post):
     url = _URL + uri
     if 'id' in data: del data['id']
     if '@id' in data: del data['@id']
+    if '@context' in data: del data['@context']
 
     if (post):
-        response = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+        res = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
+        response = res.json()
     else:
-        response = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH).json()
+        res = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
+        response = res.json()
 
     if "@id" not in response:
         raise ValueError(_ERROR_MSG)
-
     response['id'] = response['@id'].rsplit('/', 1)[-1]
     return response
 
@@ -214,6 +217,7 @@ def _get_all_pages(url, list=None, **kwargs):
     for member in members:
         if '@id' in member:
             member['id'] = member['@id'].rsplit('/', 1)[-1]
+        if '@context' in member: del member['@context']
 
     list = list + members if list else members
 

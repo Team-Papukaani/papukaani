@@ -14,7 +14,7 @@ _INDIVIDUAL_PATH = "individuals"
 _DEVICEINDIVIDUAL_PATH = "deviceIndividuals"
 _NEWS_PATH = "news"
 
-_ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
+_ERROR_MSG = "Error while saving to LajiStore. Check arguments!\ŋ"
 
 
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
@@ -200,14 +200,19 @@ def _create_response(data, uri, post):
     if '@context' in data: del data['@context']
 
     if (post):
-        res = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
-        response = res.json()
+        raw = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
     else:
-        res = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
-        response = res.json()
+        raw = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
+
+    response = raw.json()
 
     if "@id" not in response:
-        raise ValueError(_ERROR_MSG)
+        error = _ERROR_MSG
+        if "validation_messages" in response:
+            for e in response["validation_messages"]:
+                error += e + " : " + str(response["validation_messages"][e]) + "\ŋ"
+        raise ValueError(error)
+
     response['id'] = response['@id'].rsplit('/', 1)[-1]
     return response
 

@@ -137,7 +137,7 @@ class PublicPage(PageWithDeviceSelector):
         sel.select_by_value(key)
         while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(2)
-        time.sleep(1)
+        time.sleep(2)
 
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))

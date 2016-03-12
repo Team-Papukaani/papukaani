@@ -11,7 +11,7 @@ class Individual:
     Represents the Individual table of LajiStore
     '''
 
-    def __init__(self, nickname, taxon, description=None, descriptionURL=None, ringID="", id=None, deleted="", **kwargs):
+    def __init__(self, nickname, taxon, description=None, descriptionURL=None, ringID="", id=None, deleted=False, **kwargs):
         self.id = id
         self.nickname = nickname
         self.taxon = taxon
@@ -25,6 +25,14 @@ class Individual:
         Deletes the individual from LajiStore. Note that the object is not destroyed!
         '''
         LajiStoreAPI.delete_individual(self.id)
+
+
+    def softdelete(self):
+        '''
+        Changes individual status to deleted
+        '''
+        self.deleted = True
+        self.update()
 
     def update(self):
         '''
@@ -80,11 +88,7 @@ def find_exclude_deleted():
     Returns all individuals not marked as deleted
     :return: A list of Individual objects
     '''
-    individuals = find()
-    for individual in individuals:
-        if individual.deleted or individual.deleted!="":
-            individuals.remove(individual)
-    return individuals
+    return find(deleted="false")
 
 
 def get(id):

@@ -20,12 +20,24 @@ class TestIndividual(TestCase):
         self.ind.delete()
         self.ind2.delete()
 
+    def test_find_deleted(self):
+        self.assertEquals(individual.find(deleted="true").__len__(), 0)
+
+    def test_softdelete(self):
+        self.ind.softdelete()
+        self.assertEquals(individual.find(deleted="true").__len__(), 1)
+
+    def test_find_deleted2(self):
+        self.ind.deleted = True
+        self.ind.update()
+        self.assertEquals(individual.find(deleted="true").__len__(), 1)
+
     def test_find(self):
-        self.assertGreater(individual.find(deleted=self.ind.deleted).__len__(), 0)
+        self.assertEquals(individual.find(deleted="false").__len__(), 2)
 
     def test_get_all(self):
         individuals = individual.find()
-        self.assertGreater(individuals.__len__(), 0)
+        self.assertEquals(individuals.__len__(), 2)
 
     def test_get(self):
         self.assertEquals(self.ind.id, individual.get(self.ind.id).id)

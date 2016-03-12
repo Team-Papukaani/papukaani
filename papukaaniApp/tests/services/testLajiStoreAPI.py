@@ -28,6 +28,32 @@ class testLajiStoreAPI(TestCase):
             "taxon": "test test"
         }
 
+        self.news = {
+            "title": "test",
+            "content": "testtest",
+            "language": "fi"
+        }
+
+        self.news = {
+            "title": "test",
+            "content": "testtest",
+            "language": "fi"
+        }
+
+    def testLajiStoreNews(self):
+        response = LajiStoreAPI.post_news(**self.news)
+        self.assertEquals(True, "id" in response)
+
+        response = LajiStoreAPI.get_news(response["id"])
+        self.assertEquals(True, "id" in response)
+
+        self.news["id"] = response["id"]
+        response = LajiStoreAPI.update_news(**self.news)
+        self.assertEquals(True, "id" in response)
+
+        response = LajiStoreAPI.delete_news(response["id"])
+        self.assertEquals(204, response.status_code)
+
     def testLajiStoreDevice(self):
         response = LajiStoreAPI.post_device(**self.device)
         self.assertEquals(True, "id" in response)

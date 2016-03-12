@@ -24,12 +24,14 @@ _ERROR_MSG = "Error while saving to LajiStore. Check arguments!\ŋ"
 
 def get_all_news(**kwargs):
     list = _get_all_pages(_NEWS_PATH, **kwargs)
+    for item in list:
+        item = _strip_news_target_ids(item)
     return list
 
 
 def get_news(id):
     item = _get(_NEWS_PATH + "/" + str(id))
-    return item
+    return _strip_news_target_ids(item)
 
 
 def delete_news(id):
@@ -37,10 +39,12 @@ def delete_news(id):
 
 
 def post_news(**data):
+    data = _rebuild_news_target_ids(data)
     return _post(data, _NEWS_PATH)
 
 
 def update_news(**data):
+    data = _rebuild_news_target_ids(data)
     return _put(_NEWS_PATH + "/" + str(data["id"]), data)
 
 
@@ -48,21 +52,46 @@ def delete_all_news():
     return _delete(_NEWS_PATH)
 
 
+def _rebuild_news_target_ids(item):
+    '''
+    Replaces partial ids with full ones
+    :param item:
+    :return: item
+    '''
+    targets = set()
+    if "targets" in item:
+        for t in item["targets"]:
+            targets.add(_URL + _INDIVIDUAL_PATH + "/" + t)
+    item["targets"] = list(targets)
+    return item
+
+
+def _strip_news_target_ids(item):
+    '''
+    Replaces full ids with only partial identifier
+    :param item:
+    :return: item
+    '''
+    if "targets" in item:
+        targets = set()
+        for t in item["targets"]:
+            targets.add(t.rsplit('/', 1)[-1])
+        item["targets"] = targets
+    return item
+
+
 # DeviceIndividuals lajistore/deviceIndividual/
 
 def get_all_deviceindividual(**kwargs):
     list = _get_all_pages(_DEVICEINDIVIDUAL_PATH, **kwargs)
     for item in list:
-        item['deviceID'] = item['deviceID'].rsplit('/', 1)[-1]
-        item['individualID'] = item['individualID'].rsplit('/', 1)[-1]
+        item = _strip_deviceindividual_attachment_ids(item)
     return list
 
 
 def get_deviceindividual(id):
     item = _get(_DEVICEINDIVIDUAL_PATH + "/" + str(id))
-    item['deviceID'] = item['deviceID'].rsplit('/', 1)[-1]
-    item['individualID'] = item['individualID'].rsplit('/', 1)[-1]
-    return item
+    return _strip_deviceindividual_attachment_ids(item)
 
 
 def delete_deviceindividual(id):
@@ -70,19 +99,29 @@ def delete_deviceindividual(id):
 
 
 def post_deviceindividual(**data):
-    data['deviceID'] = _URL + _DEVICE_PATH + "/" + data['deviceID']
-    data['individualID'] = _URL + _INDIVIDUAL_PATH + "/" + data['individualID']
+    data = _rebuild_deviceindividual_attachment_ids(data)
     return _post(data, _DEVICEINDIVIDUAL_PATH)
 
 
 def update_deviceindividual(**data):
-    data['deviceID'] = _URL + _DEVICE_PATH + "/" + data['deviceID']
-    data['individualID'] = _URL + _INDIVIDUAL_PATH + "/" + data['individualID']
+    data = _rebuild_deviceindividual_attachment_ids(data)
     return _put(_DEVICEINDIVIDUAL_PATH + "/" + str(data["id"]), data)
 
 
 def delete_all_deviceindividual():
     return _delete(_DEVICEINDIVIDUAL_PATH)
+
+
+def _rebuild_deviceindividual_attachment_ids(item):
+    item['deviceID'] = _URL + _DEVICE_PATH + "/" + item['deviceID']
+    item['individualID'] = _URL + _INDIVIDUAL_PATH + "/" + item['individualID']
+    return item
+
+
+def _strip_deviceindividual_attachment_ids(item):
+    item['deviceID'] = item['deviceID'].rsplit('/', 1)[-1]
+    item['individualID'] = item['individualID'].rsplit('/', 1)[-1]
+    return item
 
 
 # Devices lajistore/devices.
@@ -203,7 +242,7 @@ def _create_response(data, uri, post):
         raw = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
     else:
         raw = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
-        
+
     response = raw.json()
 
     if "@id" not in response:

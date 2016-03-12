@@ -1,4 +1,5 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
+from papukaaniApp.models_LajiStore import individual
 
 
 class News:
@@ -6,12 +7,12 @@ class News:
     Represents the News table of LajiStore
     '''
 
-    def __init__(self, title, content, language, publishDate=None, targets=[], id=None, **kwargs):
+    def __init__(self, title, content, language, publishDate=None, targets=None, id=None, **kwargs):
         self.title = title
         self.content = content
         self.language = language
         self.publishDate = publishDate
-        self.targets = targets
+        self.targets = set() if targets is None else targets
         self.id = id
 
     def delete(self):
@@ -28,25 +29,47 @@ class News:
 
     def attach_to(self, individualid):
         '''
-        Attaches this piece of news to an individual
+        Attaches this piece of news to an individual. Note always cleans up existing individuals that have been deleted
+        :returns True if attached or previously attached. False if attachment failed because individual didn't exist
         '''
-        raise NotImplementedError
+        self.targets.add(individualid)
+        self._cleanup_deleted_individuals()
+        self.update()
+        return individualid in self.targets
 
     def detach_from(self, individualid):
         '''
-        Removes this piece of news from an individual
+        Removes this piece of news from an individual. Always does cleanup
+        :returns True if was previously attached and was removed. False if was not attached previously
         '''
-        raise NotImplementedError
+        remove = False
+        if individualid in self.targets:
+            remove = True
+            self.targets.remove(individualid)
+        self._cleanup_deleted_individuals()
+        self.update()
+        return remove
 
     def get_attached_individuals(self):
         '''
         Return currently attached individuals ids
-        :return: List
+        :return: Set
         '''
-        return []
+        return self.targets
 
     def is_attached(self):
-        return True if self.get_attached_individualid() else False
+        return True if self.get_attached_individuals() else False
+
+    def _cleanup_deleted_individuals(self):
+        '''
+        Removes softdeleted and deleted individuals from local targets
+        '''
+        birds = individual.find_exclude_deleted()
+        valid = set()
+        for bird in birds:
+            if bird.id in self.targets:
+                valid.add(bird.id)
+        self.targets = valid
 
 
 def find(**kwargs):
@@ -76,7 +99,7 @@ def get(id):
         return None
 
 
-def create(title, content, language, publishDate=None, targets=[]):
+def create(title, content, language, publishDate=None, targets=None):
     '''
     Creates a news instance in LajiStore and a corresponding News object
     :return: A News object
@@ -84,7 +107,6 @@ def create(title, content, language, publishDate=None, targets=[]):
 
     news = News(title, content, language, publishDate, targets)
     data = LajiStoreAPI.post_news(**news.__dict__)
-
     news.id = data['id']
 
     return news

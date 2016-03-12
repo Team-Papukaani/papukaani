@@ -1,0 +1,35 @@
+{% extends 'base_with_nav.html' %}
+{% load i18n %}
+
+{% load staticfiles %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/news.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>{% trans "Uutiset" %}</h1>
+
+
+                <h2>{{ test }}</h2>
+
+
+                <p id="messages">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="{% static 'papukaani/js/news.js' %}"></script>
+{% endblock %}

@@ -1,5 +1,4 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
-from papukaaniApp.models_LajiStore import *
 from django.conf import settings
 
 _URL = settings.LAJISTORE_URL
@@ -71,11 +70,13 @@ def get_attachments_of_device(deviceID):
 
 def find(**kwargs):
     attachments = LajiStoreAPI.get_all_deviceindividual(**kwargs)
-
-    devices = device.find()
-    deviceIDs = set({d.id for d in devices})
-    individuals = individual.find_exclude_deleted()
-    individualIDs = set({i.id for i in individuals})
+    devices = LajiStoreAPI.get_all_devices()
+    deviceIDs = set([d["id"] for d in devices])
+    individuals = LajiStoreAPI.get_all_individuals()
+    individualIDs = set()
+    for i in individuals:
+        if not i["deleted"]:
+            individualIDs.add(i["id"])
 
     valid = []
 

@@ -1,4 +1,5 @@
 function Player(map) {
+    this.cslider = CanvasSlider("ui-layer", "lines-layer", "background-layer");
     this.map = map;
     this.routes = [];
     this.animating = false;
@@ -104,9 +105,13 @@ Player.prototype.addRoute = function (route) {
         route.marker.getPopup().setContent(route.individualname + "<br>" +
             new Date(route.points[route.pointer].dateBegin).toLocaleString('fi'));
     });
-
-
     this.routes.push(route);
+    this.cslider.add({
+        id: route.individualId,
+        color: route.color,
+        start: route.points[0].dateBegin,
+        end: route.points[route.points.length - 1].dateBegin
+    });
 }
 
 Player.prototype.removeRoute = function (route) {
@@ -114,6 +119,7 @@ Player.prototype.removeRoute = function (route) {
     if (index >= 0) {
         this.routes.splice(index, 1);
         this.map.removeLayer(route.featureGroup);
+        this.cslider.remove(route.individualId);
         route.lines = [];
         this.refreshRoutes();
     }
@@ -133,7 +139,7 @@ Player.prototype.stop = function () {
 }
 
 Player.prototype.updateMinMax = function () {
-    if(!this.routes.length) return;
+    if (!this.routes.length) return;
     this.start = datetimestringToUnixtime(parseTime($("#start_time").val(), "+00:00"));
     this.end = datetimestringToUnixtime(parseTime($("#end_time").val(), "+00:00"));
     if (isNaN(this.start)) this.start = 0;
@@ -154,6 +160,8 @@ Player.prototype.updateMinMax = function () {
     this.slider.slider("option", options);
     $('#playLabel_end').html(new Date(options.max * 1000).toLocaleString('fi'));
     $('#playLabel').html(new Date(options.value * 1000).toLocaleString('fi'));
+
+    this.cslider.draw(min, max);
 }
 
 Player.prototype.play = function () {

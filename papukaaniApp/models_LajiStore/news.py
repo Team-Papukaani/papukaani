@@ -72,6 +72,17 @@ class News:
         self.targets = valid
 
 
+def find_by_individual_and_language(individualID, language):
+    '''
+    Find all matching news for the individual.
+    :param individualid:
+    :return: list of news
+    '''
+    individualID = '"' + LajiStoreAPI._URL + LajiStoreAPI._INDIVIDUAL_PATH + '/' + individualID + '"'
+
+    return find(targets=individualID, language=language)
+
+
 def find(**kwargs):
     '''
     Find all matching news.

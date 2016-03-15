@@ -4,17 +4,24 @@ from papukaaniApp.models_LajiStore import *
 
 class TestNews(TestCase):
     def setUp(self):
-        new = {
-            "title": "Good News!",
-            "content": "newsnewsnews",
-            "language": "en"
-        }
-
-        self.n = news.create(**new)
+        self.n = self._create_news(title="Good News!", content="newsnewsnews", language="en")
 
     def tearDown(self):
         news.delete_all()
         individual.delete_all()
+
+    def test_find_by_individual_and_language(self):
+        n2 = self._create_news(language="sv")
+        n3 = self._create_news(language="en")
+        A, B = self._create_individuals()
+        self.assertEqual(0, len(news.find_by_individual_and_language(A.id, "en")))
+        self.n.attach_to(A.id)
+        self.n.attach_to(B.id)
+        self.assertEqual(1, len(news.find_by_individual_and_language(A.id, "en")))
+        n2.attach_to(A.id)
+        self.assertEqual(1, len(news.find_by_individual_and_language(A.id, "en")))
+        n3.attach_to(A.id)
+        self.assertEqual(2, len(news.find_by_individual_and_language(A.id, "en")))
 
     def test_create(self):
         self.assertEquals("Good News!", self.n.title)
@@ -40,13 +47,7 @@ class TestNews(TestCase):
         self.assertEquals(len(news.find()), 1)
 
     def test_get_all_with_two(self):
-        new = {
-            "title": "notempty",
-            "content": "notempty",
-            "language": "sv"
-        }
-
-        news.create(**new)
+        self._create_news(language="sv")
         self.assertEquals(len(news.find()), 2)
 
     def test_update_badly(self):
@@ -151,3 +152,10 @@ class TestNews(TestCase):
 
     def _create_individuals(self):
         return individual.create("LintuA", "TaxonA"), individual.create("LintuB", "TaxonB")
+
+    def _create_news(self, title="notempty", content="notempty", language="fi"):
+        return news.create(**{
+            "title": title,
+            "content": content,
+            "language": language
+        })

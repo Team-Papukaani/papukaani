@@ -133,7 +133,7 @@ Player.prototype.stop = function () {
 }
 
 Player.prototype.updateMinMax = function () {
-    if(!this.routes.length) return;
+    if (!this.routes.length) return;
     this.start = datetimestringToUnixtime(parseTime($("#start_time").val(), "+00:00"));
     this.end = datetimestringToUnixtime(parseTime($("#end_time").val(), "+00:00"));
     if (isNaN(this.start)) this.start = 0;
@@ -205,7 +205,7 @@ Player.prototype.drawRoutes = function (animate) {
         if (options.value > options.max) continue;
         this.animating = true;
 
-        while (dateBegin > options.value) {
+        while (dateBegin > options.value && route.pointer > 0) {
             if (route.pointer % this.routeSplit === 0) {
                 route.pointer -= this.routeSplit;
             } else {
@@ -213,10 +213,8 @@ Player.prototype.drawRoutes = function (animate) {
             }
             newestPolylineIndex--;
             if (route.pointer <= 0 || newestPolylineIndex < 0) {
-                this.clearRoute(route);
                 newestPolylineIndex = 0;
                 route.pointer = 0;
-                break;
             }
             route.featureGroup.removeLayer(route.lines.pop());
 

@@ -1,5 +1,6 @@
-function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
+function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
 
+    var container = $("#" + container);
     var uilayer = document.getElementById(uilayer);
     var uilayerCtx = uilayer.getContext('2d');
     var lineslayer = document.getElementById(lineslayer);
@@ -10,11 +11,11 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
     var lineHeight = 10; // line height in pixels
 
     var lines = [];
-    var min, max;
+    var min, max, minLength;
 
     resize();
 
-    $(window).resize(function() {
+    $(window).resize(function () {
         resize();
     });
 
@@ -27,7 +28,7 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
             if (lines[i].id === id) {
                 lines.splice(i, 1);
                 drawLines();
-                break;
+                return;
             }
         }
     }
@@ -50,15 +51,16 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
         }
     }
 
-    function resize () {
-        var width = $("#canvasslider").width();
-        var height = $("#canvasslider").height();
+    function resize() {
+        var width = container.width();
+        var height = container.height();
         uilayer.width = width;
         uilayer.height = height;
         lineslayer.width = width;
         lineslayer.height = height;
         backgroundlayer.width = width;
         backgroundlayer.height = height;
+        minLength = Math.ceil(width / 100.0);
         drawLines();
     }
 
@@ -81,18 +83,20 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
         var b = timeB - min;
 
         var length = parseFloat(max - min);
-        if (length <= 0) return [0, canvas.width];
-        if (b - a <= 0) return [0, 10];
+        if (length <= 0) return [0, canvas.width]; // timeline length is zero
 
         a = Math.min(Math.ceil(a / length * canvas.width), canvas.width);
         b = Math.min(Math.ceil(b / length * canvas.width), canvas.width);
+
+        if (b - a < minLength) b = minLength; // only one datapoint. set minimum length for line.
+
         return [a, b];
     }
 
     return {
         add: add,
         remove: remove,
-        draw: draw,
+        draw: draw
     }
 
 }

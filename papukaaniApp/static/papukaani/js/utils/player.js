@@ -1,5 +1,5 @@
 function Player(map) {
-    this.cslider = CanvasSlider("ui-layer", "lines-layer", "background-layer");
+    this.cslider = CanvasSlider("canvasslider", "ui-layer", "lines-layer", "background-layer");
     this.map = map;
     this.routes = [];
     this.animating = false;

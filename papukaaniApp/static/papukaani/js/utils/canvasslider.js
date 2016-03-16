@@ -26,12 +26,9 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
         for (var i = 0; lines.length; i++) {
             if (lines[i].id === id) {
                 lines.splice(i, 1);
+                drawLines();
                 break;
             }
-        }
-        if (lines.length === 0) {
-            // all lines removed. Do cleanup
-            clear(lineslayer);
         }
     }
 
@@ -96,7 +93,6 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
         add: add,
         remove: remove,
         draw: draw,
-        resize: resize
     }
 
 }

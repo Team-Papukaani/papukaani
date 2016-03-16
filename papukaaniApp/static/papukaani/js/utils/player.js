@@ -45,7 +45,12 @@ function Player(map) {
 }
 
 Player.prototype.addRoute = function (route) {
-    if (route.points.length === 0) return;
+    if (route.points.length === 0) {
+        this.cslider.add({
+            id: route.individualId
+        });
+        return;
+    }
     route.points.sort(function (a, b) {
         return new Date(a.dateBegin) - new Date(b.dateBegin);
     });
@@ -115,11 +120,11 @@ Player.prototype.addRoute = function (route) {
 }
 
 Player.prototype.removeRoute = function (route) {
+    this.cslider.remove(route.individualId);
     var index = this.routes.indexOf(route);
     if (index >= 0) {
         this.routes.splice(index, 1);
         this.map.removeLayer(route.featureGroup);
-        this.cslider.remove(route.individualId);
         route.lines = [];
         this.refreshRoutes();
     }

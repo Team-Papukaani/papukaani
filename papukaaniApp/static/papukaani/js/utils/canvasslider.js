@@ -7,10 +7,16 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
     var backgroundlayer = document.getElementById(backgroundlayer);
     var backgroundlayerCtx = backgroundlayer.getContext('2d');
 
-    var lineHeight = 20; // line height in pixels
+    var lineHeight = 10; // line height in pixels
 
     var lines = [];
     var min, max;
+
+    resize();
+
+    $(window).resize(function() {
+        resize();
+    });
 
     function add(line) {
         lines.push(line);
@@ -47,6 +53,18 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
         }
     }
 
+    function resize () {
+        var width = $("#canvasslider").width();
+        var height = $("#canvasslider").height();
+        uilayer.width = width;
+        uilayer.height = height;
+        lineslayer.width = width;
+        lineslayer.height = height;
+        backgroundlayer.width = width;
+        backgroundlayer.height = height;
+        drawLines();
+    }
+
     function clear(canvas) {
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -67,15 +85,19 @@ function CanvasSlider(uilayer, lineslayer, backgroundlayer) {
 
         var length = parseFloat(max - min);
         if (length <= 0) return [0, canvas.width];
-        a = Math.floor(a / length * canvas.width);
-        b = Math.floor(b / length * canvas.width);
+        if (b - a <= 0) return [0, 10];
+
+        a = Math.min(Math.ceil(a / length * canvas.width), canvas.width);
+        b = Math.min(Math.ceil(b / length * canvas.width), canvas.width);
         return [a, b];
     }
 
     return {
         add: add,
         remove: remove,
-        draw: draw
+        draw: draw,
+        resize: resize
     }
 
 }
+

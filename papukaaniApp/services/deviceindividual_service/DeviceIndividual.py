@@ -1,5 +1,4 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
-
 from django.conf import settings
 
 _URL = settings.LAJISTORE_URL
@@ -50,6 +49,7 @@ def get_active_attachment_of_device(deviceID):
             return attachment
     return None
 
+
 def get_active_attachment_of_individual(individualID):
     attachments = get_attachments_of_individual(individualID)
     for attachment in attachments:
@@ -70,29 +70,23 @@ def get_attachments_of_device(deviceID):
 
 def find(**kwargs):
     attachments = LajiStoreAPI.get_all_deviceindividual(**kwargs)
-
     devices = LajiStoreAPI.get_all_devices()
-    deviceIDs = set()
-    for device in devices:
-        deviceIDs.add(device['id'])
-
+    deviceIDs = set([d["id"] for d in devices])
     individuals = LajiStoreAPI.get_all_individuals()
     individualIDs = set()
-    for individual in individuals:
-        if not individual['deleted'] == True:
-            individualIDs.add(individual['id'])
+    for i in individuals:
+        if not i["deleted"]:
+            individualIDs.add(i["id"])
 
-    unsynced = []
+    valid = []
 
     for attachment in attachments:
-        if not attachment['deviceID'] in deviceIDs or not attachment['individualID'] in individualIDs:
-            unsynced.append(attachment)
-
-        elif "removed" not in attachment:
+        if "removed" not in attachment:
             attachment["removed"] = None
+        if attachment['deviceID'] in deviceIDs and attachment['individualID'] in individualIDs:
+            valid.append(attachment)
+    return valid
 
-    attachments = list([attachment for attachment in attachments if attachment not in unsynced])
-    return attachments
 
 def delete_all():
     '''

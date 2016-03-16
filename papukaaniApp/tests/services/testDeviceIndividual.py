@@ -31,6 +31,21 @@ class testDeviceIndividual(TestCase):
         self.I2.delete()
         DeviceIndividual.delete_all()
 
+    def testSoftdeletedBirdsDontMessThingsUp(self):
+        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        self.I.softdelete()
+        self.assertEquals(0, len(DeviceIndividual.find()))
+
+    def testDeletedBirdsDontMessThingsUp(self):
+        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        self.I.delete()
+        self.assertEquals(0, len(DeviceIndividual.find()))
+
+    def testDeletedDevicesDontMessThingsUp(self):
+        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        self.D.delete()
+        self.assertEquals(0, len(DeviceIndividual.find()))
+
     def testNoAttachments(self):
         self.assertEquals(0, len(DeviceIndividual.find()))
 

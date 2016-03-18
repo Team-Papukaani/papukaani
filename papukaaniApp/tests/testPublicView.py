@@ -187,7 +187,7 @@ class PublicView(StaticLiveServerTestCase):
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen_with_two_birds(self):
         self.page.change_individual_selection(str(self.I2.id))
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 72)
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 73)
 
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
         hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)

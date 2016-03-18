@@ -254,3 +254,10 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_individual_selection(str(self.I2.id))
         with self.assertRaises(NoSuchElementException):
             self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription")
+
+    def test_canvas_displays_initially(self):
+        print(self.page.get_linelayercanvas_as_base64())
+
+    # def test_canvas_displays_one_path(self):
+
+    # def test_canvas_displays_two_paths(self):

@@ -96,6 +96,7 @@ class PublicPage(PageWithDeviceSelector):
     TIME_START = Element(By.ID, 'start_time')
     TIME_END = Element(By.ID, 'end_time')
     INDIVIDUAL_SELECTOR = Element(By.ID, "selectIndividual")
+    LINELAYER_CANVAS_SELECTOR = Element(By.ID, "lines-layer")
 
     def __init__(self):
         super().__init__()
@@ -155,6 +156,9 @@ class PublicPage(PageWithDeviceSelector):
         url = self.IFRAME_SRC.get_attribute('value')
         self.IFRAME_BUTTON_CLOSE.click()
         return url
+
+    def get_linelayercanvas_as_base64(self):
+        return self.LINELAYER_CANVAS_SELECTOR.screenshot_as_base64
 
 
 class ChoosePage(PageWithDeviceSelector):

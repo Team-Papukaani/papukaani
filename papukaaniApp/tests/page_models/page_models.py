@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
 import time
+import re
 from selenium.webdriver.support.wait import WebDriverWait
 from papukaaniApp.tests.page_models.page_model import Page, Element
 
@@ -96,7 +97,6 @@ class PublicPage(PageWithDeviceSelector):
     TIME_START = Element(By.ID, 'start_time')
     TIME_END = Element(By.ID, 'end_time')
     INDIVIDUAL_SELECTOR = Element(By.ID, "selectIndividual")
-    LINELAYER_CANVAS_SELECTOR = Element(By.ID, "lines-layer")
 
     def __init__(self):
         super().__init__()
@@ -158,7 +158,8 @@ class PublicPage(PageWithDeviceSelector):
         return url
 
     def get_linelayercanvas_as_base64(self):
-        return self.LINELAYER_CANVAS_SELECTOR.screenshot_as_base64
+        canvas_url = self.driver.execute_script('return document.getElementById("lines-layer").toDataURL("image/png");')
+        return re.search(r'base64,(.*)', canvas_url).group(1)
 
 
 class ChoosePage(PageWithDeviceSelector):

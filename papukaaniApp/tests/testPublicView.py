@@ -1,7 +1,9 @@
 import time
+import json
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
@@ -57,6 +59,9 @@ class PublicView(StaticLiveServerTestCase):
 
         self.lang = settings.LANGUAGE_CODE
 
+        with open('papukaaniApp/tests/test_files/canvas.json', encoding='utf-8') as data:
+            self.canvas = json.loads(data.read())
+
     def tearDown(self):
         take_screenshot_of_test_case(self, self.page.driver)
         self.page.close()
@@ -87,9 +92,9 @@ class PublicView(StaticLiveServerTestCase):
     def test_polylines_are_cleared_on_select_and_delete(self):
         self.page.change_individual_selection(str(self.I.id))
         self.page.change_individual_selection(str(self.I2.id))
-        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.remove").click()
+        self.page.remove_selected_individual(str(self.I.id))
         time.sleep(1)
-        self.page.driver.find_element_by_css_selector("#individual" + str(self.I2.id) + " button.remove").click()
+        self.page.remove_selected_individual(str(self.I.id))
         time.sleep(1)
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 0)
 
@@ -198,8 +203,8 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
         # just to defocus (blur) previous field
-        self.page.driver.find_element_by_id("playLabel").click()
-        time.sleep(5)
+        self.page.TIME_END.send_keys(Keys.ENTER)
+        time.sleep(1)
         self.page.change_individual_selection(str(self.I.id))
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
@@ -209,8 +214,8 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
         # just to defocus (blur) previous field
-        self.page.driver.find_element_by_id("playLabel").click()
-        time.sleep(5)
+        self.page.TIME_END.send_keys(Keys.ENTER)
+        time.sleep(1)
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
@@ -260,33 +265,35 @@ class PublicView(StaticLiveServerTestCase):
             self.page.driver.find_element_by_css_selector("#individual" + str(self.I2.id) + " button.showDescription")
 
     def test_canvas_displays_initially(self):  # empty
-        self.assertEqual(
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0IAAABkCAYAAACrQ4DCAAABWklEQVR4nO3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeBkXzwABj8AZNQAAAABJRU5ErkJggg==",
-            self.page.get_linelayercanvas_as_base64())
+        self.assertEqual(self.canvas['empty'], self.page.get_linelayercanvas_as_base64())
 
     def test_canvas_displays_empty_after_remove_all(self):  # empty
         self.page.change_individual_selection(str(self.I.id))
-        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.remove").click()
-        time.sleep(1)
-        self.assertEqual(
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0IAAABkCAYAAACrQ4DCAAABWklEQVR4nO3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeBkXzwABj8AZNQAAAABJRU5ErkJggg==",
-            self.page.get_linelayercanvas_as_base64())
+        self.page.remove_selected_individual(str(self.I.id))
+        self.assertEqual(self.canvas['empty'], self.page.get_linelayercanvas_as_base64())
 
     def test_canvas_displays_one_path(self):  # one red line
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEqual(
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0IAAABkCAYAAACrQ4DCAAABiElEQVR4nO3XQQ3AMADEsOOPbZxaFHtUsaWAyAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwE++7UiSJElSKSMkSZIkKZcRkiRJkpTLCEmSJEnKZYQkSZIk5TJCkiRJknIZIUmSJEm5jJAkSZKkXEZIkiRJUi4jJEmSJCnXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4GEXUwdsw+usQmcAAAAASUVORK5CYII=",
-            self.page.get_linelayercanvas_as_base64())
+        self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
 
-    def test_canvas_displays_one_paths2(self):  # one red line
+    def test_canvas_displays_one_path2(self):  # one red line
         self.page.change_individual_selection(str(self.I2.id))
-        self.assertEqual(
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0IAAABkCAYAAACrQ4DCAAABiElEQVR4nO3XQQ3AMADEsOOPbZxaFHtUsaWAyAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwE++7UiSJElSKSMkSZIkKZcRkiRJkpTLCEmSJEnKZYQkSZIk5TJCkiRJknIZIUmSJEm5jJAkSZKkXEZIkiRJUi4jJEmSJCnXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4GEXUwdsw+usQmcAAAAASUVORK5CYII=",
-            self.page.get_linelayercanvas_as_base64())
+        self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
 
     def test_canvas_displays_two_paths(self):  # long red, narrow blue
         self.page.change_individual_selection(str(self.I.id))
         self.page.change_individual_selection(str(self.I2.id))
-        self.assertEqual(
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0IAAABkCAYAAACrQ4DCAAABoklEQVR4nO3XQQ3AMBDAsOOPrZxaCN0e+yy2FBCZAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgI2tmS5IkSVIpIyRJkiQplxGSJEmSlMsISZIkScplhCRJkiTlMkKSJEmSchkhSZIkSbmMkCRJkqRcRkiSJElSLiMkSZIkKdcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPDO2vcAAAB+xQgBAAA5RggAAMgxQgAAQI4RAgAAcowQAACQY4QAAIAcIwQAAOQYIQAAIMcIAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8cQAK5Q4wM2kJqwAAAABJRU5ErkJggg==",
-            self.page.get_linelayercanvas_as_base64())
+        self.assertEqual(self.canvas['long-red-narrow-blue'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_one_path_after_two_additions_and_former_removed(self):  # long blue
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.remove_selected_individual(str(self.I.id))
+        self.assertEqual(self.canvas['long-blue'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_one_path_after_two_additions_and_time_change(self):  # one red line
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.TIME_START.send_keys("13.12.2010 00:00")
+        self.page.TIME_START.send_keys(Keys.ENTER)
+        self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())

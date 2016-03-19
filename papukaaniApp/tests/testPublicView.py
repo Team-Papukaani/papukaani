@@ -94,7 +94,7 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_individual_selection(str(self.I2.id))
         self.page.remove_selected_individual(str(self.I.id))
         time.sleep(1)
-        self.page.remove_selected_individual(str(self.I.id))
+        self.page.remove_selected_individual(str(self.I2.id))
         time.sleep(1)
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 0)
 

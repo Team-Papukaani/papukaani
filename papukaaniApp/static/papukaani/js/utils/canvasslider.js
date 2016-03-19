@@ -8,7 +8,8 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
     var backgroundlayer = document.getElementById(backgroundlayer);
     var backgroundlayerCtx = backgroundlayer.getContext('2d');
 
-    var lineHeight = 10; // line height in pixels
+    var lineHeight = 12; // line height in pixels
+    var offset = 5; // offset from top and bottom
 
     var lines = [];
     var min, max, minLength;
@@ -41,13 +42,19 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
 
     function drawLines() {
         clear(lineslayer);
+        /* resize canvas if it cant fit all the lines?
+        if ((2 * offset + lineHeight) * lines.length > lineslayer.height) {
+            lineslayer.height = (2 * offset + lineHeight) * lines.length;
+        }
+        */
         for (var i = 0; i < lines.length; i++) {
 
             var line = calculatePosition(datetimestringToUnixtime(lines[i].start), datetimestringToUnixtime(lines[i].end), lineslayer);
             if (line.length === 0) continue;
 
             lineslayerCtx.fillStyle = lines[i].color;
-            lineslayerCtx.fillRect(line[0], 10 + (10 + lineHeight) * i, line[1], lineHeight);
+            var currentLinePosY = offset + (lineHeight + 2 * offset) * i;
+            lineslayerCtx.fillRect(line[0], currentLinePosY, line[1], lineHeight);
         }
     }
 

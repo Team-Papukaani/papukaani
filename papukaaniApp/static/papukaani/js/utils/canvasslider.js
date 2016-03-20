@@ -14,10 +14,12 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
     var lines = [];
     var min, max, minLength;
 
-    resize();
+    var birdiesDiv = $("#birdies");
+
+    resize(true);
 
     $(window).resize(function () {
-        resize();
+        resize(true);
     });
 
     function add(line) {
@@ -42,11 +44,10 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
 
     function drawLines() {
         clear(lineslayer);
-        /* resize canvas if it cant fit all the lines?
-        if ((2 * offset + lineHeight) * lines.length > lineslayer.height) {
-            lineslayer.height = (2 * offset + lineHeight) * lines.length;
+        if (container.height() >= 100 && birdiesDiv.height() != container.height()) {
+            container.height(birdiesDiv.height());
+            resize(false);
         }
-        */
         for (var i = 0; i < lines.length; i++) {
 
             var line = calculatePosition(datetimestringToUnixtime(lines[i].start), datetimestringToUnixtime(lines[i].end), lineslayer);
@@ -58,7 +59,7 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
         }
     }
 
-    function resize() {
+    function resize(redraw) {
         var width = container.width();
         var height = container.height();
         uilayer.width = width;
@@ -68,7 +69,9 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
         backgroundlayer.width = width;
         backgroundlayer.height = height;
         minLength = Math.ceil(width / 100.0);
-        drawLines();
+        if (redraw) {
+            drawLines();
+        }
     }
 
     function clear(canvas) {

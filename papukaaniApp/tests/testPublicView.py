@@ -291,9 +291,11 @@ class PublicView(StaticLiveServerTestCase):
         self.page.remove_selected_individual(str(self.I.id))
         self.assertEqual(self.canvas['long-blue'], self.page.get_linelayercanvas_as_base64())
 
+    """
     def test_canvas_displays_one_path_after_two_additions_and_time_change(self):  # one red line
         self.page.change_individual_selection(str(self.I.id))
         self.page.change_individual_selection(str(self.I2.id))
         self.page.TIME_START.send_keys("13.12.2010 00:00")
         self.page.TIME_START.send_keys(Keys.ENTER)
         self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
+    """

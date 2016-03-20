@@ -1,75 +1,88 @@
 {% extends 'base_with_nav.html' %} {% load i18n %} {% load staticfiles %} {% block header %}
-<link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/news.css' %}">
-<link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
-<link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}"> {% endblock %} {% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'papukaani/css/news.css' %}">
+    <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}"> {% endblock %}
+{% block content %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1>Luo Uutiset</h1>
-      <button type="button" name="add_news" class="btn btn-info btn-cons" data-toggle="modal" data-target="#add_news_modal">Luo uutinen</button>
-      <!-- modal-dialog -->
-      <div class="modal fade bd-example-modal-lg" id="add_news_modal" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Luo uutinen</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% csrf_token %}
+                <h1>Luo Uutiset</h1>
+                <button type="button" name="add_news" class="btn btn-info btn-cons" data-toggle="modal"
+                        data-target="#add_news_modal">Luo uutinen
+                </button>
+                <!-- modal-dialog -->
+                <div class="modal fade bd-example-modal-lg" id="add_news_modal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Luo uutinen</h4>
+                            </div>
+                            <div class="modal-body">
+                                <input class="form-control" name="title" placeholder="Otsikko" type="text" value=""/>
+                                <textarea name="addnews_content"></textarea>
+                                <div class="input-group">
+                                    <select class="form-control" name="language">
+                                        <option value="">Kieli</option>
+                                        <option>Suomi</option>
+                                        <option>Englanti</option>
+                                        <option>Ruotsi</option>
+                                    </select>
+                                    <span class="input-group-addon" id="basic-addon1">publishDate</span>
+                                    <input type="text" id="publishDate" name="publishDate"
+                                           class="dateinput datepicker form-control" placeholder="dd.mm.yyyy HH:mm"
+                                           maxlength="16">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" name="addnews_tallenna" type="submit">
+                                    {% trans "Tallenna" %}
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" name="close">
+                                    {% trans "Sulje" %}
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <h1>Muokkaa Uutiset</h1>
+                <a class="btn btn-info btn-cons" href="#" id="createnews">Luo (ajax)</a>
+                <table id="newslist">
+                    <thead>
+                    <tr>
+                        <th>{% trans "ID" %}</th>
+                        <th>{% trans "Otsikko" %}</th>
+                        <th>{% trans "Kieli" %}</th>
+                        <th>{% trans "Julkaisupäivä" %}</th>
+                        <th>{% trans "Linnut" %}</th>
+                        <th colspan="3"></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <p id="messages">
+                    {% for message in messages %} {{ message }} {% endfor %}
+                </p>
+
             </div>
-            <div class="modal-body">
-              <input class="form-control" name="title" placeholder="Otsikko" type="text" value="" />
-              <textarea name="addnews_content"></textarea>
-              <div class="input-group">
-                <select class="form-control" name="language">
-                  <option value="">Kieli</option>
-                  <option>Suomi</option>
-                  <option>Englanti</option>
-                  <option>Ruotsi</option>
-                </select>
-                <span class="input-group-addon" id="basic-addon1">publishDate</span>
-                <input type="text" id="publishDate" name="publishDate" class="dateinput datepicker form-control" placeholder="dd.mm.yyyy HH:mm" maxlength="16">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" name="addnews_tallenna" type="submit" >
-                {% trans "Tallenna" %}
-              </button>
-              <button type="button" class="btn btn-default" data-dismiss="modal" name="close">
-                {% trans "Sulje" %}
-              </button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <h1>Muokkaa Uutiset</h1>
-                {% for new in news %}
-
-                    <form name="modify_news" class="form-inline" action='{% url "individuals" %}' method="post">
-                        {% csrf_token %}
-                        <input class="form-control" type="text" name="title" placeholder="Title"
-                               value="{{ new.title }}" minlength="3" maxlength="20" required/>
-                    </form>
-                {% endfor %}
-
-      <p id="messages">
-        {% for message in messages %} {{ message }} {% endfor %}
-      </p>
-
     </div>
-  </div>
-</div>
 
 {% endblock %} {% block scripts %}
-
-<script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
-<script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
-<script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-addon.js' %}"></script>
-{% trans "fi" as lang %}
-<script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
-<script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
-<script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
-<script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
-<script src="{% static 'papukaani/js/news.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-addon.js' %}"></script>
+    {% trans "fi" as lang %}
+    <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="{% static 'papukaani/js/news.js' %}"></script>
 {% endblock %}

@@ -342,7 +342,7 @@ msgid "Linkki"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/public.html:248
-msgid "Lisää tietoa"
+msgid "Lue lisää"
 msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:20

@@ -349,8 +349,8 @@ msgid "Linkki"
 msgstr "Länk"
 
 #: papukaaniApp/templates/papukaaniApp/public.html:248
-msgid "Lisää tietoa"
-msgstr "Mera information"
+msgid "Lue lisää"
+msgstr "Läs mera"
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:20
 msgid "Tiedosto:"

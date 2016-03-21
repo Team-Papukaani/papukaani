@@ -44,7 +44,7 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
 
     function drawLines() {
         clear(lineslayer);
-        if (container.height() >= 100 && birdiesDiv.height() != container.height()) {
+        if (birdiesDiv.height() > 80 && birdiesDiv.height() != container.height()) {
             container.height(birdiesDiv.height());
             resize(false);
         }

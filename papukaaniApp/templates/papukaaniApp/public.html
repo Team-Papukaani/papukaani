@@ -235,9 +235,10 @@
         });
         $("#birdies").on('click', 'button.remove', function (e) {
             e.preventDefault();
-            sorter.removePointsForIndividual($(this).closest('div.firstCol').data('id'));
+            var id = $(this).closest('div.firstCol').data('id');
             $(this).closest('div.firstCol').next().remove();
             $(this).closest('div.firstCol').remove();
+            sorter.removePointsForIndividual(id);
         });
 
         $('#descriptionModal').on('show.bs.modal', function (event) {

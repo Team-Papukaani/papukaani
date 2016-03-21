@@ -3,10 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
-
-
-#"Please fix this field."),
+# "Please fix this field."),
 #        email: "Please enter a valid email address.",
 #        url: "Please enter a valid URL.",
 #        date: "Please enter a valid date.",
@@ -22,13 +19,12 @@
 #        range: jQuery.validator.format("Please enter a value between {0} and {1}."),
 #        max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
 #        min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
-
-
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 23:57+0200\n"
+"POT-Creation-Date: 2016-03-21 19:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,6 +55,40 @@ msgstr "The page you are looking for does not exist."
 #: papukaaniApp/templates/papukaaniApp/public.html:197
 msgid "fi"
 msgstr "en"
+
+#: papukaaniApp/templates/navigation.html:17
+msgid "Kotisivu"
+msgstr "Home"
+
+#: papukaaniApp/templates/navigation.html:18
+#: papukaaniApp/templates/papukaaniApp/upload.html:15
+#: papukaaniApp/tests/testLanguage.py:96 papukaaniApp/tests/testLanguage.py:98
+msgid "Lataa tiedosto"
+msgstr "Upload file"
+
+#: papukaaniApp/templates/navigation.html:20
+msgid "Valitse julkiset pisteet"
+msgstr "Choose public points"
+
+#: papukaaniApp/templates/navigation.html:21
+msgid "Valitse linnun lähetin"
+msgstr "Choose device"
+
+#: papukaaniApp/templates/navigation.html:22
+msgid "Hallinnoi lintuja"
+msgstr "Manage birds"
+
+#: papukaaniApp/templates/navigation.html:23
+msgid "Julkinen"
+msgstr "Public"
+
+#: papukaaniApp/templates/navigation.html:35
+msgid "Kirjaudu ulos"
+msgstr "Log out"
+
+#: papukaaniApp/templates/navigation.html:37
+msgid "Kirjaudu sisään"
+msgstr "Log in"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:23
 msgid "Tallennetaanko muutokset?"
@@ -93,7 +123,7 @@ msgid "Näytä pisteet aikavälillä"
 msgstr "Show points in interval"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:63
-#: papukaaniApp/templates/papukaaniApp/formats.html:149
+#: papukaaniApp/templates/papukaaniApp/formats.html:153
 #: papukaaniApp/templates/papukaaniApp/individuals.html:63
 msgid "Tallenna"
 msgstr "Save"
@@ -158,7 +188,7 @@ msgstr ""
 msgid "Päivämäärä**"
 msgstr "Date**"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:67
+#: papukaaniApp/templates/papukaaniApp/formats.html:69
 msgid ""
 "Päivämääräsarakkeen nimi. Täytä joko tämä ja kellonaika-kenttä tai "
 "pelkästään aikaleima-kenttä."
@@ -166,11 +196,11 @@ msgstr ""
 "The name of the date column. Either fill in this field and the clock time "
 "field or only the timestamp field. "
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:71
+#: papukaaniApp/templates/papukaaniApp/formats.html:73
 msgid "Kellonaika**"
 msgstr "Clock time**"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:80
+#: papukaaniApp/templates/papukaaniApp/formats.html:82
 msgid ""
 "Kellonaikasarakkeen nimi. Täytä joko tämä ja päivämäärä-kenttä tai "
 "pelkästään aikaleima-kenttä."
@@ -178,35 +208,35 @@ msgstr ""
 "The name of the clock time column. Either Fill in this field and the date-"
 "field or only the timestamp-field."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:84
+#: papukaaniApp/templates/papukaaniApp/formats.html:86
 msgid "Longitudi*"
 msgstr "Longitude*"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:92
+#: papukaaniApp/templates/papukaaniApp/formats.html:96
 msgid "Longitudi-sarakkeen nimi. Pakollinen kenttä."
 msgstr "The name of the longitude column. Required field."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:96
+#: papukaaniApp/templates/papukaaniApp/formats.html:100
 msgid "Latitudi*"
 msgstr "Latitude*"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:105
+#: papukaaniApp/templates/papukaaniApp/formats.html:109
 msgid "Latitudi-sarakkeen nimi. Pakollinen kenttä."
 msgstr "The name of the latitude column. Required field."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:109
+#: papukaaniApp/templates/papukaaniApp/formats.html:113
 msgid "Korkeus"
 msgstr "Altitude"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:118
+#: papukaaniApp/templates/papukaaniApp/formats.html:122
 msgid "Korkeus-sarakkeen nimi. Valinnainen kenttä."
 msgstr "The name of the altitude column. Optional field."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:122
+#: papukaaniApp/templates/papukaaniApp/formats.html:126
 msgid "Lähettimen tunnus"
 msgstr "Device ID"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:132
+#: papukaaniApp/templates/papukaaniApp/formats.html:136
 msgid ""
 "Lähettimen tunnuksen sarakkeen nimi. Jos lähettimen tunnusta ei löydy "
 "tiedostosta, kenttä tulee jättää tyhjäksi. Tällöin laitteen tunniste "
@@ -216,11 +246,11 @@ msgstr ""
 "found in the file, you must leave this field empty. In this case the device "
 "identifier is provided when uploading."
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:136
+#: papukaaniApp/templates/papukaaniApp/formats.html:140
 msgid "Lämpötila"
 msgstr "Temperature"
 
-#: papukaaniApp/templates/papukaaniApp/formats.html:146
+#: papukaaniApp/templates/papukaaniApp/formats.html:150
 msgid "Lämpötila-sarakkeen nimi. Valinnainen kenttä."
 msgstr "The name of the temperature column. Optional field."
 
@@ -312,40 +342,6 @@ msgstr "Are you sure you want to delete the format "
 #: papukaaniApp/templates/papukaaniApp/login.html:11
 msgid "Kirjaudu sisään:"
 msgstr "Log in:"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:17
-msgid "Kotisivu"
-msgstr "Home"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:18
-#: papukaaniApp/templates/papukaaniApp/upload.html:15
-#: papukaaniApp/tests/testLanguage.py:96 papukaaniApp/tests/testLanguage.py:98
-msgid "Lataa tiedosto"
-msgstr "Upload file"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:20
-msgid "Valitse julkiset pisteet"
-msgstr "Choose public points"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:21
-msgid "Valitse linnun lähetin"
-msgstr "Choose device"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:22
-msgid "Hallinnoi lintuja"
-msgstr "Manage birds"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:23
-msgid "Julkinen"
-msgstr "Public"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:35
-msgid "Kirjaudu ulos"
-msgstr "Log out"
-
-#: papukaaniApp/templates/papukaaniApp/navigation.html:37
-msgid "Kirjaudu sisään"
-msgstr "Log in"
 
 #: papukaaniApp/templates/papukaaniApp/public.html:27
 msgid "Reittiä ladataan"

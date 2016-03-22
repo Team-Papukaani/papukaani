@@ -211,6 +211,7 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_time_selection_refresh_works(self):
         self.page.change_individual_selection(str(self.I.id))
+        time.sleep(2)
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
         # just to defocus (blur) previous field

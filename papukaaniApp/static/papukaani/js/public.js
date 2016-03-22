@@ -11,8 +11,8 @@ function IndividualSorter(restUrl, individuals, species, map) {
 //Sends a request to the rest-controller for documents matching the deviceId.
 IndividualSorter.prototype.changeIndividualSelection = function (individualId) {
     $('#loading').modal({
-       backdrop: 'static',
-       keyboard: false
+        backdrop: 'static',
+        keyboard: false
     })
     request = new XMLHttpRequest;
     var path = this.restUrl + individualId + "&format=json";
@@ -74,12 +74,9 @@ function showPointsForIndividual(ids) {
 
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
                 html.push('<button type="button" class="showDescription btn btn-info btn-xs" ' +
-                          'data-toggle="modal" data-target="#descriptionModal" data-id="' +
-                          ids[i] + '">' + gettext('Lisätietoja') + '</button>');
+                    'data-toggle="modal" data-target="#descriptionModal" data-id="' +
+                    ids[i] + '">' + gettext('Lisätietoja') + '</button>');
             }
-            html.push('</div>');
-            html.push('<div class="secondCol" style="background: ' + color + ';">');
-            html.push('&nbsp;');
             html.push('</div>');
             html.push('</div>');
 
@@ -279,21 +276,21 @@ function unlockButtons() {
     $("button").attr("disabled", false);
 }
 /*
-//Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.
-//$(function () {
-//    var slider = L.DomUtil.get('in-map-slider');
-//    var play = L.DomUtil.get('in-map-control');
-//    if (!L.Browser.touch) {
-//        L.DomEvent.disableClickPropagation(play);
-//        L.DomEvent.on(play, 'mousewheel', L.DomEvent.stopPropagation);
-//        L.DomEvent.disableClickPropagation(slider);
-//        L.DomEvent.on(slider, 'mousewheel', L.DomEvent.stopPropagation);
-//    } else {
-//        L.DomEvent.on(play, 'click', L.DomEvent.stopPropagation);
-//        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
-//    }
-//});
-*/
+ //Prevents Leaflet onclick and mousewheel events from triggering when playslider elements used.
+ //$(function () {
+ //    var slider = L.DomUtil.get('in-map-slider');
+ //    var play = L.DomUtil.get('in-map-control');
+ //    if (!L.Browser.touch) {
+ //        L.DomEvent.disableClickPropagation(play);
+ //        L.DomEvent.on(play, 'mousewheel', L.DomEvent.stopPropagation);
+ //        L.DomEvent.disableClickPropagation(slider);
+ //        L.DomEvent.on(slider, 'mousewheel', L.DomEvent.stopPropagation);
+ //    } else {
+ //        L.DomEvent.on(play, 'click', L.DomEvent.stopPropagation);
+ //        L.DomEvent.on(slider, 'click', L.DomEvent.stopPropagation);
+ //    }
+ //});
+ */
 function generateIframeUrl() {
     var inputBox = $('#iframeSrc');
     var url = 'http://' + window.location.hostname + window.location.pathname;

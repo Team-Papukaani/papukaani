@@ -64,7 +64,7 @@ body {
 }
 
 #formatForm span.glyphicon {
-    top:0px;
+    top: 0px;
 }
 
 .row.no-gutters {
@@ -416,34 +416,86 @@ code {
     color: #000;
 }
 
-#birdies{
-    float:left;
-    width:100%;
+#birdiesContainer {
+    float: left;
+    height: 100px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow-y: scroll; /* Trigger vertical scroll    */
+    overflow-x: hidden; /* Hide the horizontal scroll */
+}
+
+#birdies {
+    float: left;
+    width: 100%;
+    display: block;
+    padding: 1px 1px 1px 5px;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+#birdies button.remove {
+    margin: 1px 5px 1px 0;
 }
 
 .firstCol {
-    float:left;
+    float: left;
     width: 200px;
 }
 
 .secondCol {
-    float:left;
+    float: left;
     width: calc(100% - 200px);
 }
 
-.birdrow{
-    clear:both;
-    width:100%;
-    float:left;
+.birdrow {
+    clear: both;
+    width: 100%;
+    float: left;
 }
 
-.loadinggif{
-    display:block;
-    margin:0 auto;
+.loadinggif {
+    display: block;
+    margin: 0 auto;
 }
 
-.loadingtext{
-    display:block;
-    margin:0 auto;
+.loadingtext {
+    display: block;
+    margin: 0 auto;
     text-align: center;
+}
+
+#birdiesContainer .secondCol {
+    min-height: 100px;
+}
+
+#canvasslider {
+    float: left;
+    width: 100%;
+    min-height: 100px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+#canvasslider canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+}
+
+#ui-layer {
+    z-index: 3;
+    /*background: blue;*/
+}
+
+#lines-layer {
+    z-index: 2;
+    /*background: yellow;*/
+}
+
+#background-layer {
+    z-index: 1;
+    background: #ccc;
 }

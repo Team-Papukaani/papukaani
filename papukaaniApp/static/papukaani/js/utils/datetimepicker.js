@@ -12,6 +12,14 @@ function validateDateFormat(element) {
     return true;
 }
 
+function displayTime(time) {
+    var d = new Date(time);
+    var month = d.getUTCMonth() + 1;
+    var hours = ('0' + d.getUTCHours()).slice(-2);
+    var minutes = ('0' + d.getUTCMinutes()).slice(-2);
+    return d.getUTCDate() + "." + month + "." + d.getFullYear() + " " + hours + ":" + minutes;
+}
+
 //Parses the given string into an appropriate Date-format.
 function parseTime(timestring, offset) {
     var parts = timestring.split(' ');

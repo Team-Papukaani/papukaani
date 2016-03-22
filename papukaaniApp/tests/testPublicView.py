@@ -1,7 +1,9 @@
 import time
+import json
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
@@ -48,7 +50,7 @@ class PublicView(StaticLiveServerTestCase):
                                  publicityRestrictions="MZ.publicityRestrictionsPublic")
              ], self.D.id)
         self.B = document.create(
-            [gathering.Gathering("1235-12-12T12:12:12+00:00", [23.00, 61.00],
+            [gathering.Gathering("2010-12-12T12:12:12+00:00", [23.00, 61.00],
                                  publicityRestrictions="MZ.publicityRestrictionsPublic")],
             self.D2.id)
 
@@ -57,9 +59,14 @@ class PublicView(StaticLiveServerTestCase):
 
         self.lang = settings.LANGUAGE_CODE
 
+        with open('papukaaniApp/tests/test_files/canvas.json', encoding='utf-8') as data:
+            self.canvas = json.loads(data.read())
+
     def tearDown(self):
         take_screenshot_of_test_case(self, self.page.driver)
         self.page.close()
+        self.I.delete()
+        self.I2.delete()
         self.A.delete()
         self.D.delete()
         self.B.delete()
@@ -85,9 +92,9 @@ class PublicView(StaticLiveServerTestCase):
     def test_polylines_are_cleared_on_select_and_delete(self):
         self.page.change_individual_selection(str(self.I.id))
         self.page.change_individual_selection(str(self.I2.id))
-        self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.remove").click()
+        self.page.remove_selected_individual(str(self.I.id))
         time.sleep(1)
-        self.page.driver.find_element_by_css_selector("#individual" + str(self.I2.id) + " button.remove").click()
+        self.page.remove_selected_individual(str(self.I2.id))
         time.sleep(1)
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 0)
 
@@ -164,16 +171,18 @@ class PublicView(StaticLiveServerTestCase):
     def test_iframe_url_is_correct_if_url_parameters_have_been_given(self):
         self.page.driver.get(self.page.url + "?zoom=6&loc=[20,40]")
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
-        self.page.get_iframe_url())
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
+            self.page.get_iframe_url())
 
     def test_iframe_url_is_correct_if_url_parameters_are_invalid(self):
         self.page.driver.get(self.page.url + "?zoom=5&loc=5")
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEquals('http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
-        lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
-        self.page.get_iframe_url())
+        self.assertEquals(
+            'http://127.0.0.1/papukaani/public/?lang={lang}&individuals=[{individual}]&speed={speed}&zoom={zoom}&loc={loc}'.format(
+                lang=self.lang, individual=str(self.I.id), speed=250, zoom=4, loc='[61.01,68.01]'),
+            self.page.get_iframe_url())
 
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen(self):
         number_of_polylines = 71
@@ -183,7 +192,7 @@ class PublicView(StaticLiveServerTestCase):
     def test_animation_initially_forwards_to_end_so_whole_path_can_be_seen_with_two_birds(self):
         self.page.change_individual_selection(str(self.I2.id))
         self.page.change_individual_selection(str(self.I.id))
-        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 72)
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 73)
 
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
         hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
@@ -194,8 +203,8 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
         # just to defocus (blur) previous field
-        self.page.driver.find_element_by_id("playLabel").click()
-        time.sleep(5)
+        self.page.TIME_END.send_keys(Keys.ENTER)
+        time.sleep(1)
         self.page.change_individual_selection(str(self.I.id))
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
@@ -206,8 +215,8 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_START.send_keys("10.12.2010 00:00")
         self.page.TIME_END.send_keys("14.12.2010 00:00")
         # just to defocus (blur) previous field
-        self.page.driver.find_element_by_id("playLabel").click()
-        time.sleep(5)
+        self.page.TIME_END.send_keys(Keys.ENTER)
+        time.sleep(1)
         self.assertTrue("10.12.2010" in self.page.driver.find_element_by_id("playLabel").text)
         self.assertTrue("14.12.2010" in self.page.driver.find_element_by_id("playLabel_end").text)
 
@@ -247,11 +256,45 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(1)
         self.assertTrue(
             self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
-        self.assertEquals(self.page.driver.find_element_by_id("desc").text,"birdiekuvaus")
+        self.assertEquals(self.page.driver.find_element_by_id("desc").text, "birdiekuvaus")
         self.assertTrue(
-            self.page.driver.find_element_by_id("url").get_attribute("href")==("http://www.birdie.kek/"))
+            self.page.driver.find_element_by_id("url").get_attribute("href") == ("http://www.birdie.kek/"))
 
     def test_description_button_missing_when_no_desc_or_url_available(self):
         self.page.change_individual_selection(str(self.I2.id))
         with self.assertRaises(NoSuchElementException):
-            self.page.driver.find_element_by_css_selector("#individual" + str(self.I.id) + " button.showDescription")
+            self.page.driver.find_element_by_css_selector("#individual" + str(self.I2.id) + " button.showDescription")
+
+    def test_canvas_displays_initially(self):  # empty
+        self.assertEqual(self.canvas['empty'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_empty_after_remove_all(self):  # empty
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.remove_selected_individual(str(self.I.id))
+        self.assertEqual(self.canvas['empty'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_one_path(self):  # one red line
+        self.page.change_individual_selection(str(self.I.id))
+        self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_one_path2(self):  # one red line
+        self.page.change_individual_selection(str(self.I2.id))
+        self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_two_paths(self):  # long red, narrow blue
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.assertEqual(self.canvas['long-red-narrow-blue'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_one_path_after_two_additions_and_former_removed(self):  # long blue
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.remove_selected_individual(str(self.I.id))
+        self.assertEqual(self.canvas['long-blue'], self.page.get_linelayercanvas_as_base64())
+
+    def test_canvas_displays_one_path_after_two_additions_and_time_change(self):  # one red line
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.TIME_START.send_keys("13.12.2010 00:00")
+        self.page.TIME_START.send_keys(Keys.ENTER)
+        self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())

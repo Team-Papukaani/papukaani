@@ -19,6 +19,11 @@ $(function () {
         create_news();
     });
 
+    $("#addnews_tallenna").click(function (e) {
+        e.preventDefault();
+        create_news_test();
+    });
+
 })
 
 tinymce.init({
@@ -46,6 +51,23 @@ function create_news() {
         }
     }, 'json');
 }
+
+function create_news_test() {
+    var postdata = {
+        title: $('[name="addnew_title"]').val(),
+        language: $('[name="addnew_language"]').children(':selected'),
+        content: $('[name="addnew_content"]').val(),
+        publishDate: $('[name="publishDate"]').val()
+    };
+    $.post('/papukaani/news/', postdata, function (data) {
+        if (data.status === 'OK') {
+            load_news();
+        } else {
+            alert(data.errors);
+        }
+    }, 'json');
+}
+
 function update_news(id) {
     var postdata = {
         title: 'updated',

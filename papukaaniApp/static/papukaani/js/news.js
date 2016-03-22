@@ -19,6 +19,17 @@ $(function () {
         create_news();
     });
 
+})
+
+tinymce.init({
+    selector: 'textarea', // change this value according to your HTML
+    elementpath: false,
+    height: 300,
+    resize: false,
+    menubar: false,
+    plugins: "image",
+    image_description: false,
+    toolbar: 'undo redo | bullist numlist | bold italic underline | fontselect fontsizeselect |  image'
 });
 
 function create_news() {

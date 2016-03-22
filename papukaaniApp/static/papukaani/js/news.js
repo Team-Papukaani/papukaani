@@ -54,10 +54,12 @@ function create_news() {
 
 function create_news_test() {
     var postdata = {
-        title: $('[name="addnew_title"]').val(),
-        language: $('[name="addnew_language"]').children(':selected'),
-        content: $('[name="addnew_content"]').val(),
-        publishDate: $('[name="publishDate"]').val()
+        title: $('#addnews_title').val(),
+        language: $('#addnews_language').val(),
+        content: tinyMCE.activeEditor.getContent()
+        //language: $('[name="addnew_language"]').children(':selected'),
+        //content: $('[name="addnew_content"]').val(),
+        //publishDate: $('[name="publishDate"]').val()
     };
     $.post('/papukaani/news/', postdata, function (data) {
         if (data.status === 'OK') {

@@ -56,7 +56,8 @@ function create_news_test() {
     var postdata = {
         title: $('#addnews_title').val(),
         language: $('#addnews_language').val(),
-        content: tinyMCE.activeEditor.getContent()
+        content: tinyMCE.activeEditor.getContent(),
+        publishDate: parseTime($("#publishDate").val(), "+00:00")
         //language: $('[name="addnew_language"]').children(':selected'),
         //content: $('[name="addnew_content"]').val(),
         //publishDate: $('[name="publishDate"]').val()

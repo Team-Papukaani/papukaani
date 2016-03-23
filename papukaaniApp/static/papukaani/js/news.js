@@ -13,6 +13,7 @@ $(function () {
         e.preventDefault();
         read_news($(this).data("id"));
         $('#modify_modal').modal({show: true});
+        $("#modify_tallenna" ).attr( "data-id", $(this).data("id"));
         //update_news($(this).data("id"));
     });
 
@@ -73,10 +74,10 @@ function clear_modifynews_modal() {
 
 function update_news(id) {
     var postdata = {
-        title: 'updated',
-        language: 'sv',
-        content: 'päivitetty uutinen',
-        targets: [1234, 1234]
+        title: $('#modify_title').val(),
+        language: $('#modify_language').val(),
+        content: tinyMCE.activeEditor.getContent(),
+        publishDate: parseTime($("#modify_publishDate").val(), "+00:00")
     };
     $.ajax({
         url: '/papukaani/news/' + id,

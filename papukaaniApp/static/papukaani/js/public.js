@@ -82,6 +82,7 @@ function showPointsForIndividual(ids) {
 
 
             $("#birdies").append(html.join(''));
+            $('#selectIndividual').hideOption(ids[i]);
 
             this.routes.push(route);
             player.addRoute(route);
@@ -199,26 +200,22 @@ function init(individuals, species, individualIds, defaultSpeed, loc, zoom, star
     if (start_time !== "") $("#start_time").val(start_time);
     if (end_time !== "") $("#end_time").val(end_time);
 
-
-    if (individualIds != '') {
-        if (individualIds instanceof Array && individualIds.length > 0) {
-            var ids = [];
-            for (var i = 0; i < individualIds.length; i++) {
-                if (typeof individualIds[i] == "number") {
-                    try {
-                        $("#individual" + individualIds[i]).find('input').prop('checked', true);
-                        ids.push(individualIds[i]);
-                    } catch (err) {
-                    }
-                }
-            }
-            sorter.changeIndividualSelection(ids);
-        }
+    if (defaultSpeed != '' && (defaultSpeed % 1) === 0) {
+        $('#speedSlider').slider("option", "value", defaultSpeed);
     }
 
-    if (defaultSpeed != '' && (defaultSpeed % 1) === 0)
-        $('#speedSlider').slider("option", "value", defaultSpeed);
-
+    if (individualIds === '' || !(individualIds instanceof Array) || individualIds.length === 0) return;
+    var ids = [];
+    for (var i = 0; i < individualIds.length; i++) {
+        if (typeof individualIds[i] == "number" && ids.indexOf(individualIds[i]) === -1) {
+            try {
+                $("#individual" + individualIds[i]).find('input').prop('checked', true);
+                ids.push(individualIds[i]);
+            } catch (err) {
+            }
+        }
+    }
+    sorter.changeIndividualSelection(ids);
 }
 /*
  //Add play-on-spacebar-press to the map div, and prevent propagation of said event when play button is selected.

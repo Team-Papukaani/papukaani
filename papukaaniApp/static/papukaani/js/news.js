@@ -11,20 +11,16 @@ $(function () {
     });
     $("#newslist").on("click", "button.update", function (e) {
         e.preventDefault();
+        $('#modify_modal').modal({show: true});
         update_news($(this).data("id"));
-    });
-
-    $("#createnews").click(function (e) {
-        e.preventDefault();
-        create_news();
     });
 
     $("#addnews_tallenna").click(function (e) {
         e.preventDefault();
-        create_news_test();
+        create_news();
     });
 
-})
+});
 
 tinymce.init({
     selector: 'textarea', // change this value according to your HTML
@@ -39,25 +35,10 @@ tinymce.init({
 
 function create_news() {
     var postdata = {
-        title: 'moi',
-        language: 'fi',
-        content: 'test'
-    };
-    $.post('/papukaani/news/', postdata, function (data) {
-        if (data.status === 'OK') {
-            load_news();
-        } else {
-            alert(data.errors);
-        }
-    }, 'json');
-}
-
-function create_news_test() {
-    var postdata = {
         title: $('#addnews_title').val(),
         language: $('#addnews_language').val(),
         content: tinyMCE.activeEditor.getContent(),
-        publishDate: parseTime($("#publishDate").val(), "+00:00")
+        publishDate: parseTime($("#addnews_publishDate").val(), "+00:00")
         //language: $('[name="addnew_language"]').children(':selected'),
         //content: $('[name="addnew_content"]').val(),
         //publishDate: $('[name="publishDate"]').val()
@@ -65,11 +46,20 @@ function create_news_test() {
     $.post('/papukaani/news/', postdata, function (data) {
         if (data.status === 'OK') {
             load_news();
+            clear_modal();
         } else {
             alert(data.errors);
         }
     }, 'json');
 }
+
+function clear_modal() {
+    $('#addnews_title').val('');
+    $('#addnews_language').val('');
+    tinyMCE.activeEditor.setContent('');
+    $("#addnews_publishDate").val('');
+}
+
 
 function update_news(id) {
     var postdata = {

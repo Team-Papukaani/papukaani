@@ -1,4 +1,4 @@
-#publishDate {
+#addnews_publishDate, #modify_publishDate {
     position: relative;
     z-index: 99999999;
 }

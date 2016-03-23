@@ -11,8 +11,9 @@ $(function () {
     });
     $("#newslist").on("click", "button.update", function (e) {
         e.preventDefault();
+        read_news($(this).data("id"));
         $('#modify_modal').modal({show: true});
-        update_news($(this).data("id"));
+        //update_news($(this).data("id"));
     });
 
     $("#addnews_tallenna").click(function (e) {
@@ -46,18 +47,25 @@ function create_news() {
     $.post('/papukaani/news/', postdata, function (data) {
         if (data.status === 'OK') {
             load_news();
-            clear_modal();
+            clear_addnews_modal();
         } else {
             alert(data.errors);
         }
     }, 'json');
 }
 
-function clear_modal() {
+function clear_addnews_modal() {
     $('#addnews_title').val('');
     $('#addnews_language').val('');
     tinyMCE.activeEditor.setContent('');
     $("#addnews_publishDate").val('');
+}
+
+function clear_modifynews_modal() {
+    $('#modify_title').val('');
+    $('#modify_language').val('');
+    tinyMCE.activeEditor.setContent('');
+    $("#modify_publishDate").val('');
 }
 
 
@@ -82,6 +90,7 @@ function update_news(id) {
         dataType: "json"
     });
 }
+
 function delete_news(id) {
     $.ajax({
         url: '/papukaani/news/' + id,
@@ -100,7 +109,10 @@ function delete_news(id) {
 function read_news(id) {
     $.get('/papukaani/news/' + id, function (data) {
         var n = data.news;
-        alert("otsikko: " + n.title);
+        $('#modify_title').val(n.title);
+        $('#modify_language').val(n.language);
+        tinyMCE.activeEditor.setContent(n.content);
+        $("#modify_publishDate").val(n.publishDate);
     }, "json");
 }
 

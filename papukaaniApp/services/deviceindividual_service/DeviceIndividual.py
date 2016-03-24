@@ -74,7 +74,9 @@ def find(**kwargs):
     deviceIDs = set([d["id"] for d in devices])
     individuals = LajiStoreAPI.get_all_individuals()
     individualIDs = set()
+
     for i in individuals:
+        # soft removed?
         if not i["deleted"]:
             individualIDs.add(i["id"])
 
@@ -83,6 +85,7 @@ def find(**kwargs):
     for attachment in attachments:
         if "removed" not in attachment:
             attachment["removed"] = None
+        # really removed?
         if attachment['deviceID'] in deviceIDs and attachment['individualID'] in individualIDs:
             valid.append(attachment)
     return valid

@@ -8,8 +8,9 @@ urlpatterns = [
     url(r'^upload/$', views.upload, name='upload'),
     # ex: /papukaani/public/1/
     url(r'^public/$', views.public, name='public'),
-    # ex: /papukaani/creature/1/
     url(r'^choose/$', views.choose, name='choose'),
+    url(r'^choose/changeIndividualGatherings/(?P<individual_id>.+)/$', 
+      views.change_individual_gatherings),
     # ex: /papukaani/devices/
     url(r'^devices/$', views.devices, name='devices'),
     url(r'^devices/(?P<device_id>.+)/attach/$', views.attach_to),
@@ -18,7 +19,8 @@ urlpatterns = [
     url(r'^individuals/$', views.individuals, name='individuals'),
 
     url(r'^rest/gatheringsForDevice$', views.getGatheringsForDevice),
-    url(r'^rest/gatheringsForIndividual$', views.getGatheringsForIndividual),
+    url(r'^rest/gatheringsForIndividual$', views.getPublicGatheringsForIndividual),
+    url(r'^rest/allGatheringsForIndividual$', views.getAllGatheringsForIndividual),
 
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),

@@ -1,10 +1,9 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.services.deviceindividual_service import DeviceIndividual
-from . import device, document
+from . import device, document, gathering
 from papukaaniApp.utils.model_utils import current_time_as_lajistore_timestamp
 from datetime import time, datetime
 from django.utils import timezone
-
 
 class Individual:
     '''
@@ -41,11 +40,31 @@ class Individual:
         '''
         LajiStoreAPI.update_individual(**self.__dict__)  # __dict__ puts all arguments here
 
-    def get_gatherings(self):
-        '''
-        Get all public gatherings related to this individual.
-        :return: a list of gatherings
-        '''
+    def change_gatherings(self, new_gatherings):
+        atts = DeviceIndividual.get_attachments_of_individual(self.id)
+
+        totime = _timestamp_to_datetime
+        new_gatherings.sort(key=lambda g: totime(g['dateBegin']))
+        atts.sort(key=lambda a: totime(a['attached']))
+
+        # On each iteration, update one device's document, or update nothing
+        for a in atts:
+            start = totime(a['attached'])
+            end = totime(a['removed']) if ('removed' in a and a['removed']) else timezone.now()
+            assert(start <= totime(new_gatherings[0]['dateBegin']))
+
+            relevant_gatherings = []
+            while new_gatherings and (start <= totime(new_gatherings[0]['dateBegin']) <= end):
+                relevant_gatherings.append(new_gatherings.pop(0))
+
+            if relevant_gatherings:
+                doc = document.find(deviceID=a['deviceID'])[0]
+                if len(doc.gatherings) != len(relevant_gatherings):
+                    logger.warn('number of old gatherings different from number of new gatherings in choose/changeIndividualGatherings!')
+                doc.gatherings = [gathering.from_lajistore_json(**g) for g in relevant_gatherings]
+                doc.update()
+
+    def get_all_gatherings(self):
         attachments = DeviceIndividual.get_attachments_of_individual(self.id)
 
         gatherings = []
@@ -55,14 +74,21 @@ class Individual:
             self._filter_gatherings_by_timerange(dev_docs, timerange, gatherings)
         return gatherings
 
+    def get_public_gatherings(self):
+        '''
+        Get all public gatherings related to this individual.
+        :return: a list of gatherings
+        '''
+        return [g for g in self.get_all_gatherings()
+            if g.publicityRestrictions == "MZ.publicityRestrictionsPublic"]
+
     def _filter_gatherings_by_timerange(self, docs, timerange, gatherings_accumulator):
         for doc in docs:
             for g in doc.gatherings:
                 start = _timestamp_to_datetime(timerange[0])
                 end = _timestamp_to_datetime(timerange[1]) if timerange[1] else timezone.now()
                 gBegin = _timestamp_to_datetime(g.dateBegin)
-                pubOk = g.publicityRestrictions == "MZ.publicityRestrictionsPublic"
-                if (start <= gBegin <= end) and pubOk:
+                if (start <= gBegin <= end):
                     gatherings_accumulator.append(g)
 
 def _timestamp_to_datetime(timestamp):
@@ -103,7 +129,7 @@ def get(id):
 
 def create(nickname, taxon, description=None, descriptionURL=None):
     '''
-    Creates an individual instance in LajiStore and a corresponding Indiviual object
+    Creates an individual instance in LajiStore and a corresponding Individual object
     :param nickname: nickname for the individual
     :param taxon: The LajiStore taxon of the object
     :return: An Individual object

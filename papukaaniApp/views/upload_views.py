@@ -8,7 +8,9 @@ import datetime
 from django.contrib import messages
 from  papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.utils.translation import ugettext_lazy as _
+from papukaaniApp.views.decorators import count_lajistore_requests
 
+@count_lajistore_requests
 @require_auth
 def upload(request):
     """

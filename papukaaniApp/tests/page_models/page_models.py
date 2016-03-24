@@ -157,7 +157,7 @@ class PublicPage(PageWithDeviceSelector):
         return url
 
 
-class ChoosePage(PageWithDeviceSelector):
+class ChoosePage(Page):
     """
     Page Object for the choose page.
     """
@@ -172,7 +172,7 @@ class ChoosePage(PageWithDeviceSelector):
     START_TIME = Element(By.ID, 'start_time')
     END_TIME = Element(By.ID, 'end_time')
     SUBMIT_TIME = Element(By.ID, 'show_time_range')
-    DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
+    INDIVIDUAL_SELECTOR = Element(By.ID, 'selectIndividual')
     ALERT = Element(By.ID, 'popup')
     ALERT_YES = Element(By.ID, 'save_button')
     ALERT_NO = Element(By.ID, 'no_save_button')
@@ -247,7 +247,7 @@ class ChoosePage(PageWithDeviceSelector):
         Resets the page by clicking the reset button.
         """
         self.RESET_BUTTON.click()
-        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(0.1)
 
     def set_start_time(self, string):
@@ -265,9 +265,6 @@ class ChoosePage(PageWithDeviceSelector):
     def get_end_time(self):
         return self.END_TIME.get_attribute('value')
 
-    def get_selected_device(self):
-        self.DEVICE_SELECTOR.get_first_selected_option()
-
     def show_time_range(self):
         """
         Show the points that match the selected time range.
@@ -282,7 +279,7 @@ class ChoosePage(PageWithDeviceSelector):
 
     def popup_click_yes(self):
         self.ALERT_YES.click()
-        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(0.1)
 
     def popup_click_no(self):
@@ -290,6 +287,15 @@ class ChoosePage(PageWithDeviceSelector):
 
     def popup_click_cancel(self):
         self.ALERT_CANCEL.click()
+
+    def change_individual_selection(self, key):
+        sel = Select(self.INDIVIDUAL_SELECTOR)
+        sel.select_by_value(key)
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
+
+    def get_individual_selection(self):
+        return self.INDIVIDUAL_SELECTOR.get_attribute('value')
 
 
 class DevicePage(PageWithDeviceSelector):

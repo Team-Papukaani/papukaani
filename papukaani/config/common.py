@@ -162,17 +162,24 @@ LOGGING = {
             'handlers': ['console', 'logfile'], 
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
+        'papukaaniApp' : {
+            'handlers': ['console', 'logfile'],
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+        },
         'papukaaniApp.lajistore_requests_summary' : {
             'handlers': ['console', 'logfile'],
-            'level': 'DEBUG',
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+            'propagate': False,
         },
         'papukaaniApp.lajistore_requests' : {
             'handlers': ['console', 'logfile'],
-            'level': 'DEBUG',
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+            'propagate': False,
         },
         'papukaaniApp.requests' : {
             'handlers': ['logfile'],
-            'level': 'DEBUG',
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+            'propagate': False,
         },
     },
 }

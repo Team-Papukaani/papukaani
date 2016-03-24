@@ -139,6 +139,10 @@ class PublicPage(PageWithDeviceSelector):
             time.sleep(2)
         time.sleep(2)
 
+    def remove_selected_individual(self, id):
+        self.driver.find_element_by_css_selector("#individual" + str(id) + " button.remove").click()
+        time.sleep(0.5)
+
     def get_speed_set_as_param(self, speed):
         self.driver.get(BASE_URL + '/papukaani/public/?speed=' + str(speed))
         return self.driver.execute_script('return $("#speedSlider").slider("option", "value")')
@@ -155,6 +159,9 @@ class PublicPage(PageWithDeviceSelector):
         url = self.IFRAME_SRC.get_attribute('value')
         self.IFRAME_BUTTON_CLOSE.click()
         return url
+
+    def get_linelayercanvas_as_base64(self):
+        return self.driver.execute_script('return document.getElementById("lines-layer").toDataURL("image/png");')
 
 
 class ChoosePage(Page):

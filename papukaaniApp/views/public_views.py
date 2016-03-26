@@ -52,7 +52,8 @@ def public(request):
                'zoom': request.GET.get('zoom', 5),
                'start_time': request.GET.get('start_time', ''),
                'end_time': request.GET.get('end_time', ''),
-               'extended': extended
+               'extended': extended,
+               'page_id': 'public'
                }
 
     return render(request, 'papukaaniApp/public.html', context)

@@ -3,13 +3,16 @@ $(function () {
 
     $("#newslist").on("click", "button.remove", function (e) {
         e.preventDefault();
-        delete_news($(this).data("id"));
+        if(confirm("Haluatko varmasti poistaa uutisen?")) {
+            delete_news($(this).data("id"));
+        }
     });
+
     $("#newslist").on("click", "button.update", function (e) {
         e.preventDefault();
-        read_news($(this).data("id"));
         $('#modify_modal').modal({show: true});
         $("#modify_tallenna" ).attr( "data-id", $(this).data("id"));
+        read_news($(this).data("id"));
     });
 
     $("#addnews_tallenna").click(function (e) {
@@ -140,17 +143,24 @@ function load_news() {
             ).append(
                 $('<td></td>').text(v.title)
             ).append(
-                $('<td></td>').text(v.language)
+                $('<td></td>').text(language(v.language))
             ).append(
                 $('<td></td>').text(displayTime(v.publishDate))
             ).append(
                 $('<td></td>').text(v.targets)
             ).append(
-                $('<td><button class="update" data-id="' + v.id + '">Muokkaa</button></td>')
+                $('<td><button class="update btn-info btn-cons" data-id="' + v.id + '">Muokkaa</button></td>')
             ).append(
-                $('<td><button class="remove" data-id="' + v.id + '">Poista</button></td>')
+                $('<td><button class="remove btn-danger btn-cons" data-id="' + v.id + '">Poista</button></td>')
             ));
         });
         list.html(html)
     }, "json");
+}
+
+function language(lang) {
+    if(lang=='fi') return 'Suomi';
+    if(lang=='en') return 'Englanti';
+    if(lang=='sv') return 'Ruotsi';
+
 }

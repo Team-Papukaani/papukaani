@@ -161,9 +161,7 @@ function load_news() {
             ).append(
                 $('<td></td>').text(v.targets)
             ).append(
-                $('<td><button class="update btn-info btn-cons" data-id="' + v.id + '">Muokkaa</button></td>')
-            ).append(
-                $('<td><button class="remove btn-danger btn-cons" data-id="' + v.id + '">Poista</button></td>')
+                $('<td><div class="btn-toolbar"><button class="update btn btn-info btn-cons" data-id="' + v.id + '">Muokkaa</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">Poista</button></div></td>')
             ));
         });
         list.html(html)

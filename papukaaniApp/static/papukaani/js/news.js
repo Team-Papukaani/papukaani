@@ -17,11 +17,19 @@ $(function () {
 
     $("#addnews_tallenna").click(function (e) {
         e.preventDefault();
+        $('#messages').text('');
+        if ($('#addnews_title').val()=='') $('#messages').append("Otsikko puuttuu");
+        if (tinyMCE.get('addnews_content').getContent()=="") $('#messages').append("<br>Sisältö puuttuu");
+        if ($('#addnews_language').val()=='') $('#messages').append("<br>Kieli puuttuu");
         create_news();
     });
 
     $("#modify_tallenna").click(function (e) {
         e.preventDefault();
+        $('#messages').text('');
+        if ($('#modify_title').val()=='') $('#messages').append("Otsikko puuttuu");
+        if (tinyMCE.get('modify_content').getContent()=="") $('#messages').append("<br>Sisältö puuttuu");
+        if ($('#modify_language').val()=='') $('#messages').append("<br>Kieli puuttuu");
         update_news($(this).data("id"));
     });
 
@@ -54,8 +62,10 @@ function create_news() {
         title: $('#addnews_title').val(),
         language: $('#addnews_language').val(),
         content: tinyMCE.activeEditor.getContent(),
-        publishDate: parseTime($("#addnews_publishDate").val(), "+00:00")
     };
+    if($("#addnews_publishDate").val()!="") {
+        postdata.publishDate=parseTime($("#addnews_publishDate").val(), "+00:00");
+    }
     $.post('/papukaani/news/', postdata, function (data) {
         if (data.status === 'OK') {
             load_news();
@@ -88,8 +98,10 @@ function update_news(id) {
         title: $('#modify_title').val(),
         language: $('#modify_language').val(),
         content: tinyMCE.activeEditor.getContent(),
-        publishDate: parseTime($("#modify_publishDate").val(), "+00:00")
     };
+    if($("#modify_publishDate").val()!="") {
+        postdata.publishDate=parseTime($("#modify_publishDate").val(), "+00:00");
+    }
     $.ajax({
         url: '/papukaani/news/' + id,
         type: 'PUT',

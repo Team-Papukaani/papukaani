@@ -24,6 +24,14 @@ $(function () {
 
 });
 
+function displayTime(time) {
+    var d = new Date(time);
+    var month = d.getUTCMonth() + 1;
+    var hours = ('0' + d.getUTCHours()).slice(-2);
+    var minutes = ('0' + d.getUTCMinutes()).slice(-2);
+    return d.getUTCDate() + "." + month + "." + d.getFullYear() + " " + hours + ":" + minutes;
+}
+
 tinymce.init({
     selector: 'textarea', // change this value according to your HTML
     elementpath: false,
@@ -115,7 +123,7 @@ function read_news(id) {
         $('#modify_title').val(n.title);
         $('#modify_language').val(n.language);
         tinyMCE.get('modify_content').setContent(n.content);
-        $("#modify_publishDate").val(n.publishDate);
+        $("#modify_publishDate").val(displayTime(n.publishDate));
     }, "json");
 }
 
@@ -131,7 +139,7 @@ function load_news() {
             ).append(
                 $('<td></td>').text(v.language)
             ).append(
-                $('<td></td>').text(v.publishDate)
+                $('<td></td>').text(displayTime(v.publishDate))
             ).append(
                 $('<td></td>').text(v.targets)
             ).append(

@@ -26,10 +26,13 @@ $(function () {
 
 function displayTime(time) {
     var d = new Date(time);
+    var day = d.getUTCDate();
+    if (day < 10) day = '0'+day;
     var month = d.getUTCMonth() + 1;
+    if (month < 10) month = '0'+month;
     var hours = ('0' + d.getUTCHours()).slice(-2);
     var minutes = ('0' + d.getUTCMinutes()).slice(-2);
-    return d.getUTCDate() + "." + month + "." + d.getFullYear() + " " + hours + ":" + minutes;
+    return day + "." + month + "." + d.getFullYear() + " " + hours + ":" + minutes;
 }
 
 tinymce.init({

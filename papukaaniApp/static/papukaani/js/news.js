@@ -5,16 +5,11 @@ $(function () {
         e.preventDefault();
         delete_news($(this).data("id"));
     });
-    $("#newslist").on("click", "button.read", function (e) {
-        e.preventDefault();
-        read_news($(this).data("id"));
-    });
     $("#newslist").on("click", "button.update", function (e) {
         e.preventDefault();
         read_news($(this).data("id"));
         $('#modify_modal').modal({show: true});
         $("#modify_tallenna" ).attr( "data-id", $(this).data("id"));
-        //update_news($(this).data("id"));
     });
 
     $("#addnews_tallenna").click(function (e) {
@@ -50,6 +45,7 @@ function create_news() {
     $.post('/papukaani/news/', postdata, function (data) {
         if (data.status === 'OK') {
             load_news();
+            $('#messages').text("Uutinen luotu onnistuneesti! ");
             clear_addnews_modal();
         } else {
             alert(data.errors);
@@ -65,6 +61,7 @@ function clear_addnews_modal() {
 }
 
 function clear_modifynews_modal() {
+    $("#modify_tallenna" ).attr( "data-id", '');
     $('#modify_title').val('');
     $('#modify_language').val('');
     tinyMCE.activeEditor.setContent('');
@@ -86,6 +83,8 @@ function update_news(id) {
         success: function (data) {
             if (data.status === "OK") {
                 load_news();
+                $('#messages').text("Tiedot tallennettu onnistuneesti!");
+                clear_modifynews_modal();
             } else {
                 alert(data.errors);
             }
@@ -101,6 +100,7 @@ function delete_news(id) {
         success: function (data) {
             if (data.status === "OK") {
                 load_news();
+                $('#messages').text("Tiedot poistettu onnistuneesti!");
             } else {
                 alert(data.errors);
             }
@@ -135,11 +135,9 @@ function load_news() {
             ).append(
                 $('<td></td>').text(v.targets)
             ).append(
-                $('<td><button class="remove" data-id="' + v.id + '">Poista</button></td>')
-            ).append(
-                $('<td><button class="read" data-id="' + v.id + '">Avaa</button></td>')
-            ).append(
                 $('<td><button class="update" data-id="' + v.id + '">Muokkaa</button></td>')
+            ).append(
+                $('<td><button class="remove" data-id="' + v.id + '">Poista</button></td>')
             ));
         });
         list.html(html)

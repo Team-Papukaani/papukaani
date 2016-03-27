@@ -16,6 +16,16 @@ $(function () {
         read_news($(this).data("id"));
     });
 
+    $("#create_news").click(function (e) {
+        e.preventDefault();
+        $('#news_modal').modal({show: true});
+        $('#news_modal h4.modal-title').text("Lisää uutinen")
+        $('#news_title').val('');
+        $('#news_language').val('');
+        tinyMCE.get('news_content').setContent('');
+        $("#news_publishDate").val('');
+        $("#news_tallenna").data("id","");
+    });
     $("#news_tallenna").click(function (e) {
         e.preventDefault();
         $('#messages').text('');
@@ -131,7 +141,7 @@ function read_news(id) {
         $('#news_title').val(n.title);
         $('#news_language').val(n.language);
         tinyMCE.get('news_content').setContent(n.content);
-        $("#news_publishDate").val(v.publishDate ? displayTime(v.publishDate) : '');
+        $("#news_publishDate").val(n.publishDate ? displayTime(n.publishDate) : '');
     }, "json");
 }
 

@@ -151,7 +151,7 @@ function load_news() {
         var html = [];
         $.each(data.news, function (i, v) {
             html.push($('<tr></tr>').append(
-                $('<td></td>').text(v.id)
+                $('<td style="display:none;"></td>').text(v.id)
             ).append(
                 $('<td></td>').text(v.title)
             ).append(

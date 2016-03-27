@@ -267,6 +267,18 @@ body {
     list-style: none;
 }
 
+.col {
+    margin-top: 5px;
+}
+
+
+.modal-body #selectIndividual {
+    list-style: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
 #selectIndividual li label {
     cursor: pointer;
 }

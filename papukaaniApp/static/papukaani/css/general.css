@@ -469,7 +469,9 @@ code {
     width: 100%;
     float: left;
 }
-
+#loading{
+    z-index: 999999;
+}
 .loadinggif {
     display: block;
     margin: 0 auto;

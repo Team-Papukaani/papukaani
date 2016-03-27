@@ -81,9 +81,10 @@ function save_news(id) {
         var callbackfn = function (data) {
             unlockButtons();
             if (data.status === 'OK') {
+                clear_news_modal();
                 load_news();
                 $('#messages').text(gettext("Uutinen luotu onnistuneesti! "));
-                clear_news_modal();
+
             } else {
                 alert(data.errors);
             }
@@ -96,9 +97,10 @@ function save_news(id) {
         var callbackfn = function (data) {
             unlockButtons();
             if (data.status === "OK") {
+                clear_news_modal();
                 load_news();
                 $('#messages').text(gettext("Tiedot tallennettu onnistuneesti!"));
-                clear_news_modal();
+
             } else {
                 alert(data.errors);
             }
@@ -149,7 +151,7 @@ function read_news(id) {
         var n = data.news;
         clear_news_modal();
         $('#news_modal h4.modal-title').text(gettext("Muokkaa uutista"))
-        $("#news_tallenna").data("id", $(this).data("id"));
+        $("#news_tallenna").data("id", id);
         $('#news_title').val(n.title);
         $('#news_language').val(n.language);
         tinyMCE.get('news_content').setContent(n.content);
@@ -162,14 +164,9 @@ function read_news(id) {
 }
 
 function load_news() {
-    $(".loadingtext").text(gettext('Uutisia ladataan') + '...');
-    $('#loading').modal({
-        backdrop: 'static',
-        keyboard: false
-    })
+    showLoadingBar();
 
     $.get('/papukaani/news/list', function (data) {
-        $('#loading').modal('hide');
         var list = $("#newslist tbody");
         var html = [];
         $.each(data.news, function (i, v) {
@@ -194,7 +191,8 @@ function load_news() {
                     '</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">' + gettext("Poista") + '</button></div></td>')
             ));
         });
-        list.html(html)
+        list.html(html);
+        hideLoadingBar();
     }, "json");
 }
 
@@ -278,4 +276,16 @@ function lockButtons() {
 function unlockButtons() {
     $("#selectIndividual").attr("disabled", false);
     $("button").attr("disabled", false);
+}
+
+
+function showLoadingBar() {
+    $(".loadingtext").text(gettext('Uutisia ladataan') + '...');
+    $('#loading').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+}
+function hideLoadingBar() {
+    $('#loading').modal('hide');
 }

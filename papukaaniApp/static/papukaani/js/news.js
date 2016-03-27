@@ -10,6 +10,7 @@ $(function () {
 
     $("#newslist").on("click", "button.update", function (e) {
         e.preventDefault();
+        clear_news_modal();
         $('#news_modal').modal({show: true});
         $('#news_modal h4.modal-title').text("Muokkaa uutista")
         $("#news_tallenna").data("id", $(this).data("id"));
@@ -18,12 +19,9 @@ $(function () {
 
     $("#create_news").click(function (e) {
         e.preventDefault();
+        clear_news_modal();
         $('#news_modal').modal({show: true});
         $('#news_modal h4.modal-title').text("Lisää uutinen")
-        $('#news_title').val('');
-        $('#news_language').val('');
-        tinyMCE.get('news_content').setContent('');
-        $("#news_publishDate").val('');
         $("#news_tallenna").data("id", "");
     });
     $("#news_tallenna").click(function (e) {
@@ -118,11 +116,11 @@ function save_news(id) {
 }
 function clear_news_modal() {
     $('.modal').modal('hide');
+    $("#birdlist").empty();
     $('#news_title').val('');
     $('#news_language').val('');
     tinyMCE.activeEditor.setContent('');
     $("#news_publishDate").val('');
-    $("#birdlist").html('');
     sorter.restoreOptions();
 }
 

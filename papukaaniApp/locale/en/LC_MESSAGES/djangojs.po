@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-27 21:04+0300\n"
+"POT-Creation-Date: 2016-03-27 21:41+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,23 +141,27 @@ msgstr "Information saved successfully!"
 msgid "Tiedot poistettu onnistuneesti!"
 msgstr "Information deleted successfully!"
 
-#: papukaaniApp/static/papukaani/js/news.js:188
+#: papukaaniApp/static/papukaani/js/news.js:165
+msgid "Uutisia ladataan"
+msgstr "Loading news"
+
+#: papukaaniApp/static/papukaani/js/news.js:193
 msgid "Muokkaa"
 msgstr "Edit"
 
-#: papukaaniApp/static/papukaani/js/news.js:189
+#: papukaaniApp/static/papukaani/js/news.js:194
 msgid "Poista"
 msgstr "Delete"
 
-#: papukaaniApp/static/papukaani/js/news.js:197
+#: papukaaniApp/static/papukaani/js/news.js:202
 msgid "Suomi"
 msgstr "Finnish"
 
-#: papukaaniApp/static/papukaani/js/news.js:198
+#: papukaaniApp/static/papukaani/js/news.js:203
 msgid "Englanti"
 msgstr "English"
 
-#: papukaaniApp/static/papukaani/js/news.js:199
+#: papukaaniApp/static/papukaani/js/news.js:204
 msgid "Ruotsi"
 msgstr "Swedish"
 

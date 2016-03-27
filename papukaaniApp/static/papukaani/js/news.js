@@ -162,9 +162,14 @@ function read_news(id) {
 }
 
 function load_news() {
-    lockButtons();
+    $(".loadingtext").text(gettext('Uutisia ladataan') + '...');
+    $('#loading').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+
     $.get('/papukaani/news/list', function (data) {
-        unlockButtons();
+        $('#loading').modal('hide');
         var list = $("#newslist tbody");
         var html = [];
         $.each(data.news, function (i, v) {

@@ -4,6 +4,16 @@
     <link rel="stylesheet"
           href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}"> {% endblock %}
 {% block content %}
+    <div class="modal" tabindex="-1" role="dialog" id="loading">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="{% static 'papukaaniApp/loading.gif' %}" alt="Ladataan" class="loadinggif">
+                    <h4 class="loadingtext"></h4>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <div class="container">
         <div class="row">

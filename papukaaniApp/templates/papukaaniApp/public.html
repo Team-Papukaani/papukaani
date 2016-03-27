@@ -12,8 +12,7 @@
 {% endblock %}
 
 {% autoescape off %}
-{% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ individualIds }}, "{{ speed }}",
-    {{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
+{% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ individualIds }}, "{{ speed }}",{{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
 {% endautoescape %}
 
 {% block footer %}{% endblock %}
@@ -208,7 +207,9 @@
     <script src="{% static 'papukaani/js/utils/canvasslider.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/player.js' %}"></script>
     <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
-    <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script><script>
+    <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script>
+    <script src="{% static 'papukaani/js/public.js' %}"></script>
+    <script>
         $(function () {
             $('.datepicker').change(function () {
                 if (validateDateFormat(this) || this.value === "") {

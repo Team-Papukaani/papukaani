@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-27 20:43+0300\n"
+"POT-Creation-Date: 2016-03-27 21:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -122,13 +122,17 @@ msgstr "Lägg till nyhet"
 msgid "Otsikko puuttuu"
 msgstr "Rubrik saknas"
 
+#: papukaaniApp/static/papukaani/js/news.js:31
+msgid "Sisältö puuttuu"
+msgstr "Innehåll saknas"
+
 #: papukaaniApp/static/papukaani/js/news.js:32
 msgid "Kieli puuttuu"
 msgstr "Språk saknas"
 
 #: papukaaniApp/static/papukaani/js/news.js:89
 msgid "Uutinen luotu onnistuneesti! "
-msgstr "Skapandet av nyhet lyckades"
+msgstr "Skapandet av nyhet lyckades!"
 
 #: papukaaniApp/static/papukaani/js/news.js:104
 msgid "Tiedot tallennettu onnistuneesti!"

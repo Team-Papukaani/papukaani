@@ -28,7 +28,7 @@ $(function () {
         e.preventDefault();
         $('#modalmessages').text('');
         if ($('#news_title').val() == '') $('#modalmessages').append(gettext("Otsikko puuttuu"));
-        if (tinyMCE.get('news_content').getContent() == "") $('#modalmessages').append("<br>gettext('Sisältö puuttuu')");
+        if (tinyMCE.get('news_content').getContent() == "") $('#modalmessages').append("<br>" + gettext('Sisältö puuttuu'));
         if ($('#news_language').val() == '') $('#modalmessages').append("<br> " + gettext('Kieli puuttuu'));
         if ($('#modalmessages').text()) return;
 

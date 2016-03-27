@@ -12,7 +12,8 @@
 {% endblock %}
 
 {% autoescape off %}
-{% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ individualIds }}, "{{ speed }}", {{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
+{% block body_attr %} onload='var map = init({{ individuals }}, {{ species }}, {{ individualIds }}, "{{ speed }}",
+    {{ loc }}, {{ zoom }}, "{{ start_time }}", "{{ end_time }}")'{% endblock %}
 {% endautoescape %}
 
 {% block footer %}{% endblock %}
@@ -70,12 +71,6 @@
                             width: 100%;
                             box-sizing: border-box;
                         }
-
-                        #birdies {
-                            height: 100px;
-                            overflow-y: scroll; /* Trigger vertical scroll    */
-                            overflow-x: hidden; /* Hide the horizontal scroll */
-                        }
                     </style>
                     <div class="firstCol">
                         <div class="choose_actions form-inline padded2">
@@ -112,7 +107,8 @@
                                     <label id="playLabel_end">N/A</label>
                                 </td>
                                 <td>
-                                    <button id="iframeOpen" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#iframedialog">
+                                    <button id="iframeOpen" type="button" class="btn btn-info btn-sm"
+                                            data-toggle="modal" data-target="#iframedialog">
                                         <span class="glyphicon glyphicon-share"></span> {% trans "Jaa" %}
                                     </button>
                                 </td>
@@ -158,7 +154,21 @@
                         </div>
                     </div>
 
-                    <div id="birdies"></div>
+                    <div id="birdiesContainer">
+                        <div class="birdrow">
+                            <div class="firstCol">
+                                <div id="birdies"></div>
+                            </div>
+                            <div class="secondCol">
+                                <div id="canvasslider">
+                                    <canvas id="ui-layer"></canvas>
+                                    <canvas id="lines-layer"></canvas>
+                                    <canvas id="background-layer"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="hidden-sm col-md-3 col-lg-2">
@@ -195,6 +205,7 @@
     <script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/polylineAnimate.js' %}"></script>
     <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
+    <script src="{% static 'papukaani/js/utils/canvasslider.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/player.js' %}"></script>
     <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
     <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script><script>
@@ -216,32 +227,33 @@
         });
         $("#birdies").on('click', 'button.remove', function (e) {
             e.preventDefault();
-            sorter.removePointsForIndividual($(this).closest('div.firstCol').data('id'));
+            var id = $(this).closest('div.firstCol').data('id');
             $(this).closest('div.firstCol').next().remove();
             $(this).closest('div.firstCol').remove();
+            sorter.removePointsForIndividual(id);
         });
 
-       $('#descriptionModal').on('show.bs.modal', function (event) {
-           var button = $(event.relatedTarget);
-           var modal = $(this);
-           var id = button.data('id');
-           var bird = sorter.getBird(id);
+        $('#descriptionModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            var id = button.data('id');
+            var bird = sorter.getBird(id);
 
-           modal.find('.modal-title').text(bird.name);
+            modal.find('.modal-title').text(bird.name);
 
-           if (bird.description) {
-               $('#desc').html(bird.description);
-               $('#desc').show();
-           } else {
-               $('#desc').hide();
-           }
-           if (bird.url) {
-               $('#url').attr('href', bird.url);
-               $('#url').text("{% trans 'Lisää tietoa' %}");
-               $('#url').show();
-           } else {
-               $('#url').hide();
-           }
+            if (bird.description) {
+                $('#desc').html(bird.description);
+                $('#desc').show();
+            } else {
+                $('#desc').hide();
+            }
+            if (bird.url) {
+                $('#url').attr('href', bird.url);
+                $('#url').text("{% trans 'Lue lisää' %}");
+                $('#url').show();
+            } else {
+                $('#url').hide();
+            }
 
         });
     </script>

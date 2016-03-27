@@ -1,4 +1,5 @@
 function Player(map) {
+    this.cslider = CanvasSlider("canvasslider", "ui-layer", "lines-layer", "background-layer");
     this.map = map;
     this.routes = [];
     this.animating = false;
@@ -13,7 +14,7 @@ function Player(map) {
         paddingMin: 8,
         paddingMax: 8,
         slide: function (event, ui) {
-            $('#playLabel').html(new Date(ui.value * 1000).toLocaleString('fi'));
+            $('#playLabel').html(displayTime(ui.value * 1000));
             if (this.sliding) return;
             this.slider.slider("option", {
                 value: ui.value
@@ -23,7 +24,7 @@ function Player(map) {
             this.sliding = false;
         }.bind(this),
         change: function (event, ui) {
-            $('#playLabel').html(new Date(ui.value * 1000).toLocaleString('fi'));
+            $('#playLabel').html(displayTime(ui.value * 1000));
         }
     });
 
@@ -44,7 +45,12 @@ function Player(map) {
 }
 
 Player.prototype.addRoute = function (route) {
-    if (route.points.length === 0) return;
+    if (route.points.length === 0) {
+        this.cslider.add({
+            id: route.individualId
+        });
+        return;
+    }
     route.points.sort(function (a, b) {
         return new Date(a.dateBegin) - new Date(b.dateBegin);
     });
@@ -99,17 +105,22 @@ Player.prototype.addRoute = function (route) {
 
     route.marker.addTo(route.featureGroup);
     route.marker.bindPopup(route.individualname + "<br>" +
-        new Date(route.points[route.pointer].dateBegin).toLocaleString('fi'), {autoPan: false}).openPopup();
+        displayTime(route.points[route.pointer].dateBegin), {autoPan: false}).openPopup();
     route.marker.on("move", function (event) {
         route.marker.getPopup().setContent(route.individualname + "<br>" +
-            new Date(route.points[route.pointer].dateBegin).toLocaleString('fi'));
+            displayTime(route.points[route.pointer].dateBegin));
     });
-
-
     this.routes.push(route);
+    this.cslider.add({
+        id: route.individualId,
+        color: route.color,
+        start: route.points[0].dateBegin,
+        end: route.points[route.points.length - 1].dateBegin
+    });
 }
 
 Player.prototype.removeRoute = function (route) {
+    this.cslider.remove(route.individualId);
     var index = this.routes.indexOf(route);
     if (index >= 0) {
         this.routes.splice(index, 1);
@@ -133,7 +144,7 @@ Player.prototype.stop = function () {
 }
 
 Player.prototype.updateMinMax = function () {
-    if(!this.routes.length) return;
+    if (!this.routes.length) return;
     this.start = datetimestringToUnixtime(parseTime($("#start_time").val(), "+00:00"));
     this.end = datetimestringToUnixtime(parseTime($("#end_time").val(), "+00:00"));
     if (isNaN(this.start)) this.start = 0;
@@ -152,8 +163,10 @@ Player.prototype.updateMinMax = function () {
         options.value = min;
     }
     this.slider.slider("option", options);
-    $('#playLabel_end').html(new Date(options.max * 1000).toLocaleString('fi'));
-    $('#playLabel').html(new Date(options.value * 1000).toLocaleString('fi'));
+    $('#playLabel_end').html(displayTime(options.max * 1000));
+    $('#playLabel').html(displayTime(options.value * 1000));
+
+    this.cslider.draw(min, max);
 }
 
 Player.prototype.play = function () {
@@ -205,7 +218,7 @@ Player.prototype.drawRoutes = function (animate) {
         if (options.value > options.max) continue;
         this.animating = true;
 
-        while (dateBegin > options.value) {
+        while (dateBegin > options.value && route.pointer > 0) {
             if (route.pointer % this.routeSplit === 0) {
                 route.pointer -= this.routeSplit;
             } else {
@@ -213,10 +226,8 @@ Player.prototype.drawRoutes = function (animate) {
             }
             newestPolylineIndex--;
             if (route.pointer <= 0 || newestPolylineIndex < 0) {
-                this.clearRoute(route);
                 newestPolylineIndex = 0;
                 route.pointer = 0;
-                break;
             }
             route.featureGroup.removeLayer(route.lines.pop());
 

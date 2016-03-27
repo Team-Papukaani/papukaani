@@ -40,7 +40,7 @@ $(function () {
     });
 });
 
-function displayTime(time) {
+function displayTimeWithLeadingZeroes(time) {
     var d = new Date(time);
     var day = d.getUTCDate();
     if (day < 10) day = '0' + day;
@@ -146,7 +146,7 @@ function read_news(id) {
         $('#news_title').val(n.title);
         $('#news_language').val(n.language);
         tinyMCE.get('news_content').setContent(n.content);
-        $("#news_publishDate").val(n.publishDate ? displayTime(n.publishDate) : '');
+        $("#news_publishDate").val(n.publishDate ? displayTimeWithLeadingZeroes(n.publishDate) : '');
         for (var i = 0; i < n.targets.length; i++) {
             $("#selectIndividual").val(n.targets[i]).trigger('change');
         }
@@ -158,6 +158,12 @@ function load_news() {
         var list = $("#newslist tbody");
         var html = [];
         $.each(data.news, function (i, v) {
+
+            var targets = "";
+            $.each(v.targets, function (key, value) {
+                targets = targets + (targets ? ', ' : '') + sorter.getName(value);
+            });
+
             html.push($('<tr></tr>').append(
                 $('<td style="display:none;"></td>').text(v.id)
             ).append(
@@ -165,9 +171,9 @@ function load_news() {
             ).append(
                 $('<td></td>').text(language(v.language))
             ).append(
-                $('<td></td>').text(v.publishDate ? displayTime(v.publishDate) : '')
+                $('<td></td>').text(v.publishDate ? displayTimeWithLeadingZeroes(v.publishDate) : '')
             ).append(
-                $('<td></td>').text(v.targets)
+                $('<td></td>').text(targets)
             ).append(
                 $('<td><div class="btn-toolbar"><button class="update btn btn-info btn-cons" data-id="' + v.id + '">Muokkaa</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">Poista</button></div></td>')
             ));
@@ -196,6 +202,11 @@ IndividualSorter.prototype.restoreOptions = function (individualId) {
     $.each(this.birdName, function (id, name) {
         $('#selectIndividual').showOption(id);
     });
+};
+
+IndividualSorter.prototype.getName = function (individualId) {
+    if (!this.birdName.hasOwnProperty(individualId)) return individualId;
+    return this.birdName[individualId];
 }
 
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {

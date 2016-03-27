@@ -61,7 +61,7 @@ def _rebuild_news_target_ids(item):
     targets = set()
     if "targets" in item:
         for t in item["targets"]:
-            targets.add(_URL + _INDIVIDUAL_PATH + "/" + t)
+            targets.add(_URL + _INDIVIDUAL_PATH + "/" + str(t))
     item["targets"] = list(targets)
     return item
 

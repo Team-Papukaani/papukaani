@@ -58,7 +58,6 @@ def _index(request):
             ordered_species.append(s.name)
     ordered_species.sort()
 
-
     context = {'individuals': json.dumps(individuals),
                'species': json.dumps(ordered_species)
                }
@@ -94,7 +93,7 @@ def _create(request):
         return Response(response)
 
     publishDate = None if "publishDate" not in request.POST else request.POST["publishDate"]
-    targets = None if "targets" not in request.POST else request.POST["targets"]
+    targets = None if "targets" not in request.POST else json.loads(request.POST["targets"])
 
     try:
         n = news.create(request.POST["title"], request.POST["content"], request.POST["language"], publishDate, targets)
@@ -158,7 +157,7 @@ def _update(request, id):
     n.language = PUT["language"]
     n.content = PUT["content"]
     n.publishDate = None if "publishDate" not in PUT else PUT["publishDate"]
-    n.targets = [] if "targets" not in PUT else PUT["targets"]
+    n.targets = [] if "targets" not in PUT else json.loads(PUT["targets"])
     n.update()
 
     response["news"] = {

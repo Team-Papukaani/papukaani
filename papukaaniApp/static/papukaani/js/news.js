@@ -24,7 +24,7 @@ $(function () {
         $('#news_language').val('');
         tinyMCE.get('news_content').setContent('');
         $("#news_publishDate").val('');
-        $("#news_tallenna").data("id","");
+        $("#news_tallenna").data("id", "");
     });
     $("#news_tallenna").click(function (e) {
         e.preventDefault();
@@ -34,11 +34,10 @@ $(function () {
         if ($('#news_language').val() == '') $('#messages').append("<br>Kieli puuttuu");
         if ($('#messages').text()) return;
 
-
         if ($(this).data("id")) {
-            update_news($(this).data("id"))
+            save_news($(this).data("id"))
         } else {
-            create_news();
+            save_news();
         }
     });
 });
@@ -65,7 +64,7 @@ tinymce.init({
     toolbar: 'undo redo | bullist numlist | bold italic underline | fontselect fontsizeselect |  image'
 });
 
-function create_news() {
+function save_news(id) {
     var postdata = {
         title: $('#news_title').val(),
         language: $('#news_language').val(),
@@ -74,31 +73,32 @@ function create_news() {
     if ($("#news_publishDate").val() != "") {
         postdata.publishDate = parseTime($("#news_publishDate").val(), "+00:00");
     }
-    $.post('/papukaani/news/', postdata, function (data) {
-        if (data.status === 'OK') {
-            load_news();
-            $('#messages').text("Uutinen luotu onnistuneesti! ");
-            clear_news_modal();
-        } else {
-            alert(data.errors);
-        }
-    }, 'json');
-}
 
-function update_news(id) {
-    var postdata = {
-        title: $('#news_title').val(),
-        language: $('#news_language').val(),
-        content: tinyMCE.activeEditor.getContent(),
-    };
-    if ($("#news_publishDate").val() != "") {
-        postdata.publishDate = parseTime($("#news_publishDate").val(), "+00:00");
-    }
-    $.ajax({
-        url: '/papukaani/news/' + id,
-        type: 'PUT',
-        data: postdata,
-        success: function (data) {
+    var targets = [];
+    $("#birdlist .col").each(function (i, e) {
+        targets.push($(e).data("id"));
+    });
+    postdata.targets = JSON.stringify(targets);
+
+    if (id === undefined) {
+        //create
+        var method = "POST";
+        var url = '/papukaani/news/';
+        var callbackfn = function (data) {
+            if (data.status === 'OK') {
+                load_news();
+                $('#messages').text("Uutinen luotu onnistuneesti! ");
+                clear_news_modal();
+            } else {
+                alert(data.errors);
+            }
+
+        };
+    } else {
+        //update
+        var method = "PUT";
+        var url = '/papukaani/news/' + id;
+        var callbackfn = function (data) {
             if (data.status === "OK") {
                 load_news();
                 $('#messages').text("Tiedot tallennettu onnistuneesti!");
@@ -106,17 +106,24 @@ function update_news(id) {
             } else {
                 alert(data.errors);
             }
-        },
+        };
+    }
+    $.ajax({
+        url: url,
+        type: method,
+        data: postdata,
+        success: callbackfn,
         dataType: "json"
     });
 }
-
 function clear_news_modal() {
     $('.modal').modal('hide');
     $('#news_title').val('');
     $('#news_language').val('');
     tinyMCE.activeEditor.setContent('');
     $("#news_publishDate").val('');
+    $("#birdlist").html('');
+    sorter.restoreOptions();
 }
 
 function delete_news(id) {
@@ -142,6 +149,9 @@ function read_news(id) {
         $('#news_language').val(n.language);
         tinyMCE.get('news_content').setContent(n.content);
         $("#news_publishDate").val(n.publishDate ? displayTime(n.publishDate) : '');
+        for (var i = 0; i < n.targets.length; i++) {
+            $("#selectIndividual").val(n.targets[i]).trigger('change');
+        }
     }, "json");
 }
 
@@ -177,53 +187,35 @@ function language(lang) {
 
 var request = null;
 
-function IndividualSorter(restUrl, individuals, species) {
-    this.restUrl = restUrl;
+function IndividualSorter(individuals, species) {
     this.birdName = {};
-    this.createIndividualSelector(individuals, species);
+    this.individuals = individuals;
+    this.species = species;
+    this.createIndividualSelector();
 }
-//Sends a request to the rest-controller for documents matching the deviceId.
-IndividualSorter.prototype.changeIndividualSelection = function (individualId) {
-    request = new XMLHttpRequest;
-    var path = this.restUrl + individualId + "&format=json";
-    request.open("GET", path, true);
-    request.onreadystatechange = addBird.bind(this, individualId);
-    request.send(null);
-};
+
+IndividualSorter.prototype.restoreOptions = function (individualId) {
+    $.each(this.birdName, function (id, name) {
+        $('#selectIndividual').showOption(id);
+    });
+}
 
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
     $('#selectIndividual').showOption(individualId);
 };
 
-function addBird(ids) {
-
-    if (request.readyState === 4) {
-
-        var data = JSON.parse(request.response);
-
-        for (var i = 0; i < ids.length; i++) {
-
-            if (typeof data[ids[i]] === 'undefined') {
-                continue;
-            }
-            var individualname = data[ids[i]].pop();
-
-            var html = [];
-            var id = "individual" + ids[i];
-            html.push('<div class="col" data-id="' + ids[i] + '" id="' + id + '">');
-            html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
-                '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
-                ' <span>' + individualname + '</span> ');
-
-            html.push('</div>');
-            $("#birdlist").append(html.join(''));
-
-
-        }
-        request = null;
-    }
+function addBird(individualid, name) {
+    var html = [];
+    var id = "individual" + individualid;
+    html.push('<div class="col" data-id="' + individualid + '" id="' + id + '">');
+    html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
+        '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
+        ' <span>' + name + '</span> ');
+    html.push('</div>');
+    $("#birdlist").append(html.join(''));
 }
-IndividualSorter.prototype.createIndividualSelector = function (individuals, species) {
+
+IndividualSorter.prototype.createIndividualSelector = function () {
     var selector = $("#selectIndividual");
     var that = this;
 
@@ -235,19 +227,19 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         that.birdName[individualId] = taxon;
     };
 
-    $.each(species, function (key, s) {
+    $.each(that.species, function (key, s) {
         selector.append('<option value="" disabled>' + s + '</option>');
-        $.each(individuals[s], function (key, individual) {
+        $.each(that.individuals[s], function (key, individual) {
             $.each(individual, function (individualId, taxon) {
                 selector.addOption(individualId, taxon)
-            })
-        })
-    })
+            });
+        });
+    });
 
     $("#selectIndividual").change(function () {
         var id = $(this).val();
         if (id === "") return;
-        that.changeIndividualSelection([id]);
+        addBird(id, that.birdName[id]);
         $(this).val("");
         $('#selectIndividual').hideOption(id);
     });

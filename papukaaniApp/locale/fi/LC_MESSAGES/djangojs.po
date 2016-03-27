@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-21 19:12+0200\n"
+"POT-Creation-Date: 2016-03-27 20:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,8 +83,6 @@ msgid "Tämä kenttä on pakollinen."
 msgstr "Tämä kenttä on pakollinen."
 
 #: papukaaniApp/static/papukaani/js/individuals.js:86
-#, fuzzy
-#| msgid "Nimen pitää olla vähintään {0} kirjainta."
 msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 msgstr "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 
@@ -108,11 +106,63 @@ msgstr "Satelliitti"
 msgid "Eliömaakunnat"
 msgstr "Eliömaakunnat"
 
+#: papukaaniApp/static/papukaani/js/news.js:6
+msgid "Haluatko varmasti poistaa uutisen?"
+msgstr "Haluatko varmasti poistaa uutisen?"
+
+#: papukaaniApp/static/papukaani/js/news.js:15
+msgid "Muokkaa uutista"
+msgstr "Muokkaa uutista"
+
+#: papukaaniApp/static/papukaani/js/news.js:24
+msgid "Lisää uutinen"
+msgstr "Lisää uutinen"
+
+#: papukaaniApp/static/papukaani/js/news.js:30
+msgid "Otsikko puuttuu"
+msgstr "Otsikko puuttuu"
+
+#: papukaaniApp/static/papukaani/js/news.js:32
+msgid "Kieli puuttuu"
+msgstr "Kieli puuttuu"
+
+#: papukaaniApp/static/papukaani/js/news.js:89
+msgid "Uutinen luotu onnistuneesti! "
+msgstr "Uutinen luotu onnistuneesti! "
+
+#: papukaaniApp/static/papukaani/js/news.js:104
+msgid "Tiedot tallennettu onnistuneesti!"
+msgstr "Tiedot tallennettu onnistuneesti!"
+
+#: papukaaniApp/static/papukaani/js/news.js:140
+msgid "Tiedot poistettu onnistuneesti!"
+msgstr "Tiedot poistettu onnistuneesti!"
+
+#: papukaaniApp/static/papukaani/js/news.js:188
+msgid "Muokkaa"
+msgstr "Muokkaa"
+
+#: papukaaniApp/static/papukaani/js/news.js:189
+msgid "Poista"
+msgstr "Poista"
+
+#: papukaaniApp/static/papukaani/js/news.js:197
+msgid "Suomi"
+msgstr "Suomi"
+
+#: papukaaniApp/static/papukaani/js/news.js:198
+msgid "Englanti"
+msgstr "Englanti"
+
+#: papukaaniApp/static/papukaani/js/news.js:199
+msgid "Ruotsi"
+msgstr "Ruotsi"
+
 #: papukaaniApp/static/papukaani/js/public.js:78
 msgid "Lisätietoja"
 msgstr "Lisätietoja"
 
-#: papukaaniApp/static/papukaani/js/public.js:137
+#: papukaaniApp/static/papukaani/js/public.js:135
 msgid "fi"
 msgstr "fi"
 
@@ -131,6 +181,3 @@ msgstr "Valitse"
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr "'"
-
-#~ msgid "Nimi ei saa olla yli {0} kirjainta."
-#~ msgstr "Nimi ei saa olla yli {0} kirjainta."

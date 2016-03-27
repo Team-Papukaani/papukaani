@@ -3,7 +3,7 @@ $(function () {
 
     $("#newslist").on("click", "button.remove", function (e) {
         e.preventDefault();
-        if (confirm("Haluatko varmasti poistaa uutisen?")) {
+        if (confirm(gettext("Haluatko varmasti poistaa uutisen?"))) {
             delete_news($(this).data("id"));
         }
     });
@@ -12,7 +12,7 @@ $(function () {
         e.preventDefault();
         clear_news_modal();
         $('#news_modal').modal({show: true});
-        $('#news_modal h4.modal-title').text("Muokkaa uutista")
+        $('#news_modal h4.modal-title').text(gettext("Muokkaa uutista"))
         $("#news_tallenna").data("id", $(this).data("id"));
         read_news($(this).data("id"));
     });
@@ -21,15 +21,15 @@ $(function () {
         e.preventDefault();
         clear_news_modal();
         $('#news_modal').modal({show: true});
-        $('#news_modal h4.modal-title').text("Lisää uutinen")
+        $('#news_modal h4.modal-title').text(gettext("Lisää uutinen"))
         $("#news_tallenna").data("id", "");
     });
     $("#news_tallenna").click(function (e) {
         e.preventDefault();
         $('#modalmessages').text('');
-        if ($('#news_title').val() == '') $('#modalmessages').append("Otsikko puuttuu");
-        if (tinyMCE.get('news_content').getContent() == "") $('#modalmessages').append("<br>Sisältö puuttuu");
-        if ($('#news_language').val() == '') $('#modalmessages').append("<br>Kieli puuttuu");
+        if ($('#news_title').val() == '') $('#modalmessages').append(gettext("Otsikko puuttuu"));
+        if (tinyMCE.get('news_content').getContent() == "") $('#modalmessages').append("<br>gettext('Sisältö puuttuu')");
+        if ($('#news_language').val() == '') $('#modalmessages').append("<br> " + gettext('Kieli puuttuu'));
         if ($('#modalmessages').text()) return;
 
         if ($(this).data("id")) {
@@ -86,7 +86,7 @@ function save_news(id) {
             unlockButtons();
             if (data.status === 'OK') {
                 load_news();
-                $('#messages').text("Uutinen luotu onnistuneesti! ");
+                $('#messages').text(gettext("Uutinen luotu onnistuneesti! "));
                 clear_news_modal();
             } else {
                 alert(data.errors);
@@ -101,7 +101,7 @@ function save_news(id) {
             unlockButtons();
             if (data.status === "OK") {
                 load_news();
-                $('#messages').text("Tiedot tallennettu onnistuneesti!");
+                $('#messages').text(gettext("Tiedot tallennettu onnistuneesti!"));
                 clear_news_modal();
             } else {
                 alert(data.errors);
@@ -137,7 +137,7 @@ function delete_news(id) {
             unlockButtons();
             if (data.status === "OK") {
                 load_news();
-                $('#messages').text("Tiedot poistettu onnistuneesti!");
+                $('#messages').text(gettext("Tiedot poistettu onnistuneesti!"));
             } else {
                 alert(data.errors);
             }
@@ -185,7 +185,8 @@ function load_news() {
             ).append(
                 $('<td></td>').text(targets)
             ).append(
-                $('<td><div class="btn-toolbar"><button class="update btn btn-info btn-cons" data-id="' + v.id + '">Muokkaa</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">Poista</button></div></td>')
+                $('<td><div class="btn-toolbar"><button class="update btn btn-info btn-cons" data-id="' + v.id + '"> ' + gettext("Muokkaa") +
+                    '</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">' + gettext("Poista") + '</button></div></td>')
             ));
         });
         list.html(html)
@@ -193,9 +194,9 @@ function load_news() {
 }
 
 function language(lang) {
-    if (lang == 'fi') return 'Suomi';
-    if (lang == 'en') return 'Englanti';
-    if (lang == 'sv') return 'Ruotsi';
+    if (lang == 'fi') return gettext('Suomi');
+    if (lang == 'en') return gettext('Englanti');
+    if (lang == 'sv') return gettext('Ruotsi');
 
 }
 

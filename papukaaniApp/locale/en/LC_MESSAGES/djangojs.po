@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-21 19:12+0200\n"
+"POT-Creation-Date: 2016-03-27 20:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -105,11 +105,63 @@ msgstr "Satellite"
 msgid "Eliömaakunnat"
 msgstr "Biogeographical provinces"
 
+#: papukaaniApp/static/papukaani/js/news.js:6
+msgid "Haluatko varmasti poistaa uutisen?"
+msgstr "Are you sure you want to remove this news?"
+
+#: papukaaniApp/static/papukaani/js/news.js:15
+msgid "Muokkaa uutista"
+msgstr "Edit news"
+
+#: papukaaniApp/static/papukaani/js/news.js:24
+msgid "Lisää uutinen"
+msgstr "Add news"
+
+#: papukaaniApp/static/papukaani/js/news.js:30
+msgid "Otsikko puuttuu"
+msgstr "Please give a headline"
+
+#: papukaaniApp/static/papukaani/js/news.js:32
+msgid "Kieli puuttuu"
+msgstr "Please specify a language"
+
+#: papukaaniApp/static/papukaani/js/news.js:89
+msgid "Uutinen luotu onnistuneesti! "
+msgstr "News created successfully!"
+
+#: papukaaniApp/static/papukaani/js/news.js:104
+msgid "Tiedot tallennettu onnistuneesti!"
+msgstr "Information saved successfully!"
+
+#: papukaaniApp/static/papukaani/js/news.js:140
+msgid "Tiedot poistettu onnistuneesti!"
+msgstr "Information deleted successfully!"
+
+#: papukaaniApp/static/papukaani/js/news.js:188
+msgid "Muokkaa"
+msgstr "Edit"
+
+#: papukaaniApp/static/papukaani/js/news.js:189
+msgid "Poista"
+msgstr "Delete"
+
+#: papukaaniApp/static/papukaani/js/news.js:197
+msgid "Suomi"
+msgstr "Finnish"
+
+#: papukaaniApp/static/papukaani/js/news.js:198
+msgid "Englanti"
+msgstr "English"
+
+#: papukaaniApp/static/papukaani/js/news.js:199
+msgid "Ruotsi"
+msgstr "Swedish"
+
 #: papukaaniApp/static/papukaani/js/public.js:78
 msgid "Lisätietoja"
 msgstr "Information"
 
-#: papukaaniApp/static/papukaani/js/public.js:137
+#: papukaaniApp/static/papukaani/js/public.js:135
 msgid "fi"
 msgstr "en"
 

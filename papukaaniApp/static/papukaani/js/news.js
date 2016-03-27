@@ -10,31 +10,27 @@ $(function () {
 
     $("#newslist").on("click", "button.update", function (e) {
         e.preventDefault();
-        $('#modify_modal').modal({show: true});
-        $("#modify_tallenna").data("id", $(this).data("id"));
+        $('#news_modal').modal({show: true});
+        $('#news_modal h4.modal-title').text("Muokkaa uutista")
+        $("#news_tallenna").data("id", $(this).data("id"));
         read_news($(this).data("id"));
     });
 
-    $("#addnews_tallenna").click(function (e) {
+    $("#news_tallenna").click(function (e) {
         e.preventDefault();
         $('#messages').text('');
-        if ($('#addnews_title').val() == '') $('#messages').append("Otsikko puuttuu");
-        if (tinyMCE.get('addnews_content').getContent() == "") $('#messages').append("<br>Sisältö puuttuu");
-        if ($('#addnews_language').val() == '') $('#messages').append("<br>Kieli puuttuu");
+        if ($('#news_title').val() == '') $('#messages').append("Otsikko puuttuu");
+        if (tinyMCE.get('news_content').getContent() == "") $('#messages').append("<br>Sisältö puuttuu");
+        if ($('#news_language').val() == '') $('#messages').append("<br>Kieli puuttuu");
         if ($('#messages').text()) return;
-        create_news();
-    });
 
-    $("#modify_tallenna").click(function (e) {
-        e.preventDefault();
-        $('#messages').text('');
-        if ($('#modify_title').val() == '') $('#messages').append("Otsikko puuttuu");
-        if (tinyMCE.get('modify_content').getContent() == "") $('#messages').append("<br>Sisältö puuttuu");
-        if ($('#modify_language').val() == '') $('#messages').append("<br>Kieli puuttuu");
-        if ($('#messages').text()) return;
-        update_news($(this).data("id"));
-    });
 
+        if ($(this).data("id")) {
+            update_news($(this).data("id"))
+        } else {
+            create_news();
+        }
+    });
 });
 
 function displayTime(time) {
@@ -61,50 +57,32 @@ tinymce.init({
 
 function create_news() {
     var postdata = {
-        title: $('#addnews_title').val(),
-        language: $('#addnews_language').val(),
+        title: $('#news_title').val(),
+        language: $('#news_language').val(),
         content: tinyMCE.activeEditor.getContent(),
     };
-    if ($("#addnews_publishDate").val() != "") {
-        postdata.publishDate = parseTime($("#addnews_publishDate").val(), "+00:00");
+    if ($("#news_publishDate").val() != "") {
+        postdata.publishDate = parseTime($("#news_publishDate").val(), "+00:00");
     }
     $.post('/papukaani/news/', postdata, function (data) {
         if (data.status === 'OK') {
             load_news();
             $('#messages').text("Uutinen luotu onnistuneesti! ");
-            clear_addnews_modal();
+            clear_news_modal();
         } else {
             alert(data.errors);
         }
     }, 'json');
 }
 
-function clear_addnews_modal() {
-    $('.modal').modal('hide');
-    $('#addnews_title').val('');
-    $('#addnews_language').val('');
-    tinyMCE.activeEditor.setContent('');
-    $("#addnews_publishDate").val('');
-}
-
-function clear_modifynews_modal() {
-    $('.modal').modal('hide');
-    $("#modify_tallenna").data("id", "");
-    $('#modify_title').val('');
-    $('#modify_language').val('');
-    tinyMCE.activeEditor.setContent('');
-    $("#modify_publishDate").val('');
-}
-
-
 function update_news(id) {
     var postdata = {
-        title: $('#modify_title').val(),
-        language: $('#modify_language').val(),
+        title: $('#news_title').val(),
+        language: $('#news_language').val(),
         content: tinyMCE.activeEditor.getContent(),
     };
-    if ($("#modify_publishDate").val() != "") {
-        postdata.publishDate = parseTime($("#modify_publishDate").val(), "+00:00");
+    if ($("#news_publishDate").val() != "") {
+        postdata.publishDate = parseTime($("#news_publishDate").val(), "+00:00");
     }
     $.ajax({
         url: '/papukaani/news/' + id,
@@ -114,13 +92,21 @@ function update_news(id) {
             if (data.status === "OK") {
                 load_news();
                 $('#messages').text("Tiedot tallennettu onnistuneesti!");
-                clear_modifynews_modal();
+                clear_news_modal();
             } else {
                 alert(data.errors);
             }
         },
         dataType: "json"
     });
+}
+
+function clear_news_modal() {
+    $('.modal').modal('hide');
+    $('#news_title').val('');
+    $('#news_language').val('');
+    tinyMCE.activeEditor.setContent('');
+    $("#news_publishDate").val('');
 }
 
 function delete_news(id) {
@@ -142,10 +128,10 @@ function delete_news(id) {
 function read_news(id) {
     $.get('/papukaani/news/' + id, function (data) {
         var n = data.news;
-        $('#modify_title').val(n.title);
-        $('#modify_language').val(n.language);
-        tinyMCE.get('modify_content').setContent(n.content);
-        $("#modify_publishDate").val(v.publishDate ? displayTime(v.publishDate) : '');
+        $('#news_title').val(n.title);
+        $('#news_language').val(n.language);
+        tinyMCE.get('news_content').setContent(n.content);
+        $("#news_publishDate").val(v.publishDate ? displayTime(v.publishDate) : '');
     }, "json");
 }
 

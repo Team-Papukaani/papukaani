@@ -271,6 +271,9 @@ body {
     margin-top: 5px;
 }
 
+#birdlist span {
+    margin-left: 3px;
+}
 
 .modal-body #selectIndividual {
     list-style: none;

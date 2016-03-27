@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-27 20:37+0300\n"
+"POT-Creation-Date: 2016-03-27 21:25+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: papukaani/config/common.py:104
-#: papukaaniApp/templates/papukaaniApp/news.html:34
+#: papukaaniApp/templates/papukaaniApp/news.html:31
 msgid "Suomi"
 msgstr "Finnish"
 
 #: papukaani/config/common.py:105
-#: papukaaniApp/templates/papukaaniApp/news.html:35
+#: papukaaniApp/templates/papukaaniApp/news.html:32
 msgid "Englanti"
 msgstr "English"
 
 #: papukaani/config/common.py:106
-#: papukaaniApp/templates/papukaaniApp/news.html:36
+#: papukaaniApp/templates/papukaaniApp/news.html:33
 msgid "Ruotsi"
 msgstr "Swedish"
 
@@ -39,8 +39,8 @@ msgstr "The page you are looking for does not exist."
 #: papukaaniApp/templates/base.html:4
 #: papukaaniApp/templates/papukaaniApp/choose.html:84
 #: papukaaniApp/templates/papukaaniApp/devices.html:76
-#: papukaaniApp/templates/papukaaniApp/news.html:90
-#: papukaaniApp/templates/papukaaniApp/public.html:201
+#: papukaaniApp/templates/papukaaniApp/news.html:85
+#: papukaaniApp/templates/papukaaniApp/public.html:200
 msgid "fi"
 msgstr "en"
 
@@ -67,6 +67,7 @@ msgid "Hallinnoi lintuja"
 msgstr "Manage birds"
 
 #: papukaaniApp/templates/navigation.html:23
+#: papukaaniApp/templates/papukaaniApp/news.html:12
 msgid "Uutiset"
 msgstr "News"
 
@@ -101,12 +102,12 @@ msgid "Peruuta"
 msgstr "Cancel"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:36
-#: papukaaniApp/templates/papukaaniApp/public.html:145
+#: papukaaniApp/templates/papukaaniApp/public.html:144
 msgid "Alku:"
 msgstr "Start:"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:44
-#: papukaaniApp/templates/papukaaniApp/public.html:150
+#: papukaaniApp/templates/papukaaniApp/public.html:149
 msgid "Loppu:"
 msgstr "End:"
 
@@ -117,7 +118,7 @@ msgstr "Show points in interval"
 #: papukaaniApp/templates/papukaaniApp/choose.html:63
 #: papukaaniApp/templates/papukaaniApp/formats.html:153
 #: papukaaniApp/templates/papukaaniApp/individuals.html:63
-#: papukaaniApp/templates/papukaaniApp/news.html:52
+#: papukaaniApp/templates/papukaaniApp/news.html:49
 msgid "Tallenna"
 msgstr "Save"
 
@@ -315,9 +316,9 @@ msgid "URL ruotsinkieliseen kuvaukseen"
 msgstr "URL to Swedish description"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:118
-#: papukaaniApp/templates/papukaaniApp/news.html:55
-#: papukaaniApp/templates/papukaaniApp/public.html:51
-#: papukaaniApp/templates/papukaaniApp/public.html:131
+#: papukaaniApp/templates/papukaaniApp/news.html:52
+#: papukaaniApp/templates/papukaaniApp/public.html:50
+#: papukaaniApp/templates/papukaaniApp/public.html:130
 msgid "Sulje"
 msgstr "Close"
 
@@ -337,70 +338,66 @@ msgstr "Are you sure you want to delete the format "
 msgid "Kirjaudu sisään:"
 msgstr "Log in:"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:16
-#: papukaaniApp/templates/papukaaniApp/news.html:25
+#: papukaaniApp/templates/papukaaniApp/news.html:13
+#: papukaaniApp/templates/papukaaniApp/news.html:22
 msgid "Luo uutinen"
 msgstr "Create news"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:28
+#: papukaaniApp/templates/papukaaniApp/news.html:25
 msgid "Otsikko"
 msgstr "Headline"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:33
+#: papukaaniApp/templates/papukaaniApp/news.html:30
 msgid "Valitse kieli"
 msgstr "Select language"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:38
-#: papukaaniApp/templates/papukaaniApp/news.html:73
+#: papukaaniApp/templates/papukaaniApp/news.html:35
+#: papukaaniApp/templates/papukaaniApp/news.html:68
 msgid "Julkaisupäivämäärä"
 msgstr "Publishing date"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:44
+#: papukaaniApp/templates/papukaaniApp/news.html:41
 msgid "Lisää uutiseen liitettävä lintu"
 msgstr "Add bird that news regards"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:64
-msgid "Muokkaa uutisia"
-msgstr "Edit news"
-
-#: papukaaniApp/templates/papukaaniApp/news.html:70
+#: papukaaniApp/templates/papukaaniApp/news.html:65
 msgid "ID"
 msgstr "ID"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:71
+#: papukaaniApp/templates/papukaaniApp/news.html:66
 msgid "Julkaisun otsikko"
 msgstr "Publication headline"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:72
+#: papukaaniApp/templates/papukaaniApp/news.html:67
 msgid "Julkaisun kieli"
 msgstr "Publication language"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:74
+#: papukaaniApp/templates/papukaaniApp/news.html:69
 msgid "Julkaisuun liittyvät linnut"
 msgstr "Birds that publication concerns"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:28
+#: papukaaniApp/templates/papukaaniApp/public.html:27
 msgid "Reittiä ladataan"
 msgstr "Loading route"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:79
+#: papukaaniApp/templates/papukaaniApp/public.html:78
 msgid "Lisää lintu"
 msgstr "Add bird"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:94
-#: papukaaniApp/templates/papukaaniApp/public.html:100
+#: papukaaniApp/templates/papukaaniApp/public.html:93
+#: papukaaniApp/templates/papukaaniApp/public.html:99
 msgid "Nopeus"
 msgstr "Speed"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:112
+#: papukaaniApp/templates/papukaaniApp/public.html:111
 msgid "Jaa"
 msgstr "Share"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:124
+#: papukaaniApp/templates/papukaaniApp/public.html:123
 msgid "Linkki"
 msgstr "Link"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:252
+#: papukaaniApp/templates/papukaaniApp/public.html:253
 msgid "Lue lisää"
 msgstr "Read more"
 

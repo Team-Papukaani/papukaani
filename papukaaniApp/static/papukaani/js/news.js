@@ -174,3 +174,81 @@ function language(lang) {
     if(lang=='sv') return 'Ruotsi';
 
 }
+
+var request = null;
+
+function IndividualSorter(restUrl, individuals, species) {
+    this.restUrl = restUrl;
+    this.birdName = {};
+    this.createIndividualSelector(individuals, species);
+}
+//Sends a request to the rest-controller for documents matching the deviceId.
+IndividualSorter.prototype.changeIndividualSelection = function (individualId) {
+    request = new XMLHttpRequest;
+    var path = this.restUrl + individualId + "&format=json";
+    request.open("GET", path, true);
+    request.onreadystatechange = addBird.bind(this, individualId);
+    request.send(null);
+};
+
+IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
+    $('#selectIndividual').showOption(individualId);
+};
+
+function addBird(ids) {
+
+    if (request.readyState === 4) {
+
+        var data = JSON.parse(request.response);
+
+        for (var i = 0; i < ids.length; i++) {
+
+            if (typeof data[ids[i]] === 'undefined') {
+                continue;
+            }
+            var individualname = data[ids[i]].pop();
+
+            var html = [];
+            var id = "individual" + ids[i];
+            html.push('<div class="col" data-id="' + ids[i] + '" id="' + id + '">');
+            html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
+                '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
+                ' <span>' + individualname + '</span> ');
+
+            html.push('</div>');
+            $("#birdlist").append(html.join(''));
+
+
+        }
+        request = null;
+    }
+}
+IndividualSorter.prototype.createIndividualSelector = function (individuals, species) {
+    var selector = $("#selectIndividual");
+    var that = this;
+
+    selector.addOption = function (individualId, taxon) {
+        var e = '<option value="' + individualId + '">';
+        e = e + taxon;
+        e = e + '</option>';
+        selector.append(e);
+        that.birdName[individualId] = taxon;
+    };
+
+    $.each(species, function (key, s) {
+        selector.append('<option value="" disabled>' + s + '</option>');
+        $.each(individuals[s], function (key, individual) {
+            $.each(individual, function (individualId, taxon) {
+                selector.addOption(individualId, taxon)
+            })
+        })
+    })
+
+    $("#selectIndividual").change(function () {
+        var id = $(this).val();
+        if (id === "") return;
+        that.changeIndividualSelection([id]);
+        $(this).val("");
+        $('#selectIndividual').hideOption(id);
+    });
+};

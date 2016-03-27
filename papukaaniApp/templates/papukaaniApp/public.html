@@ -157,12 +157,6 @@
                                    placeholder="dd.mm.yyyy HH:mm" maxlength="16">
                         </div>
                     </div>
-                    <div class="firstCol">
-                        &nbsp;
-                    </div>
-                    <div class="secondCol">
-                        <div id="playSlider"></div>
-                    </div>
 
                     <div id="birdies"></div>
                 </div>
@@ -203,9 +197,7 @@
     <script src="{% static 'papukaani/libraries/leaflet/polylinedecorator/leaflet.polylineDecorator.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/player.js' %}"></script>
     <script src="{% static 'papukaani/libraries/victor.min.js' %}"></script>
-    <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script>
-    <script src="{% static 'papukaani/js/public.js' %}"></script>
-    <script>
+    <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script><script>
         $(function () {
             $('.datepicker').change(function () {
                 if (validateDateFormat(this) || this.value === "") {

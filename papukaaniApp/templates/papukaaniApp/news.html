@@ -37,6 +37,12 @@
                                            class="dateinput datepicker form-control" placeholder="dd.mm.yyyy HH:mm"
                                            maxlength="16">
                                 </div>
+                                <select id="selectIndividual">
+                                    <option value="">{% trans "Lisää uutiseen liitettävä lintu" %}</option>
+                                </select>
+                                <br />
+
+                                <div id="birdlist"></div>
                             </div>
                             <div class="modal-footer">
                                 <a class="btn btn-info btn-cons" href="#" id="addnews_tallenna" data-dismiss="modal">Tallenna</a>
@@ -88,6 +94,12 @@
                                            maxlength="16">
                                 </div>
                             </div>
+                            <select id="selectIndividual">
+                                <option value="">{% trans "Lisää uutiseen liitettävä lintu" %}</option>
+                            </select>
+                            <br />
+
+                            <div id="birdlist"></div>
                             <div class="modal-footer">
                                 <a class="btn btn-info btn-cons" href="#"id="modify_tallenna" data-dismiss="modal">Tallenna</a>
                                 <button type="button" class="btn btn-default" data-dismiss="modal" name="close" id="modify_sulje" >
@@ -119,4 +131,14 @@
     <script src="{% static 'papukaani/js/news.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
+    <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script> <script>
+    {% autoescape off %}
+    sorter = new IndividualSorter("../rest/gatheringsForIndividual?individualId=", {{ individuals }}, {{ species }});
+    {% endautoescape %}
+    $("#birdlist").on('click', 'button.remove', function (e) {
+        e.preventDefault();
+        sorter.removePointsForIndividual($(this).closest('div.col').data('id'));
+        $(this).closest('div.col').remove();
+    });
+    </script>
 {% endblock %}

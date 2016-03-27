@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from django.shortcuts import render
 from papukaaniApp.models_LajiStore import news
 from papukaaniApp.models_LajiStore import individual
+from papukaaniApp.models_TipuApi import species
+import json
 
 _RESPONSE_BASE = {"errors": None, "status": "OK"}
 
@@ -41,7 +43,25 @@ def _index(request):
     """
     Controller for '/news/'. GET renders view with template
     """
-    context = {}
+    individuals = dict()
+    inds_objects = individual.find_exclude_deleted()
+    for individuale in inds_objects:
+        key = individuale.taxon
+        individuals.setdefault(key, [])
+        individuals[key].append({individuale.id: individuale.nickname})
+
+    all_species = species.get_all_in_user_language(request.LANGUAGE_CODE)
+    ordered_species = []
+    for s in all_species:
+        if s.id in individuals:
+            individuals[s.name] = individuals.pop(s.id)  # Renames the species
+            ordered_species.append(s.name)
+    ordered_species.sort()
+
+
+    context = {'individuals': json.dumps(individuals),
+               'species': json.dumps(ordered_species)
+               }
     return render(request, 'papukaaniApp/news.html', context)
 
 

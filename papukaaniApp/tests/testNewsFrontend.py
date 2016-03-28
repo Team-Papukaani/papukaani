@@ -3,7 +3,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import NewsPage
 
-class TestIndividualFrontend(StaticLiveServerTestCase):
+class TestNewsFrontend(StaticLiveServerTestCase):
     def setUp(self):
         self.I = news.create("Title", "<p>content</p>", "sv")
         self.page = NewsPage()

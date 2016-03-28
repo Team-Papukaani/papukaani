@@ -269,10 +269,10 @@
         $("#speedSlider").hide();
         $("#speed").hover(
                 function () {
-                    $("#speedSlider").show('fast');
+                    $("#speedSlider").stop(true).delay(100).show('fast');
 
                 }, function () {
-                    $("#speedSlider").hide('slow');
+                    $("#speedSlider").stop(true).delay(100).hide('slow');
 
                 }
         );

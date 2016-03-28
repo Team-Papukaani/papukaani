@@ -522,3 +522,32 @@ class FormatListPage(Page):
 
     def modify_first_format(self):
         self.FIRST_MODIFY_BUTTON.click()
+
+class NewsPage(Page):
+    """
+    Page Object for the news page.
+    """
+    url = BASE_URL + '/papukaani/news/'
+    CREATE_NEWS_BUTTON = Element(By.ID, 'create_news')
+    FIRST_NEWS_TITLE = Element(By.ID, 'title')
+    """
+    CREATE_NEWS_SAVE_BUTTON
+    FIRST_NEWS_CONTENT
+    FIRST_NEWS_PUBLISHDATE
+    FIRST_NEWS_LANGUAGE
+    MODIFY_NEWS_BUTTON
+    DELETE_NEWS_BUTTON
+    DELETE_NEWS_CONFIRM_BUTTON
+    NEW_TITLE
+    NEW_CONTENT
+    NEW_PUBLISHDATE
+    NEW_LANGUAGE
+    MODAL_MESSAGE
+    MESSAGE
+    """
+
+    """
+    Inputs the title, content and language, and birds and then press the submit button.
+    """
+    def create_news(self, title, content, language, publishdate, birds):
+        self.CREATE_NEWS_BUTTON.click()

@@ -23,7 +23,7 @@ $(function () {
     $("#news_tallenna").click(function (e) {
         e.preventDefault();
         $('#modalmessages').text('');
-        if ($('#news_title').val() == '') $('#modalmessages').append(gettext("Otsikko puuttuu"));
+        if ($('#news_title').val() == '') $('#modalmessages').append("<br>" +  gettext('Otsikko puuttuu'));
         if (tinyMCE.get('news_content').getContent() == "") $('#modalmessages').append("<br>" + gettext('Sisältö puuttuu'));
         if ($('#news_language').val() == '') $('#modalmessages').append("<br> " + gettext('Kieli puuttuu'));
         if ($('#modalmessages').text()) return;
@@ -179,13 +179,13 @@ function load_news() {
             html.push($('<tr></tr>').append(
                 $('<td style="display:none;"></td>').text(v.id)
             ).append(
-                $('<td></td>').text(v.title)
+                $('<td id="title"></td>').text(v.title)
             ).append(
-                $('<td></td>').text(language(v.language))
+                $('<td id="language"></td>').text(language(v.language))
             ).append(
-                $('<td></td>').text(v.publishDate ? displayTimeWithLeadingZeroes(v.publishDate) : '')
+                $('<td id="publishdate"></td>').text(v.publishDate ? displayTimeWithLeadingZeroes(v.publishDate) : '')
             ).append(
-                $('<td></td>').text(targets)
+                $('<td id="targets"></td>').text(targets)
             ).append(
                 $('<td><div class="btn-toolbar"><button class="update btn btn-info btn-cons" data-id="' + v.id + '"> ' + gettext("Muokkaa") +
                     '</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">' + gettext("Poista") + '</button></div></td>')

@@ -13,6 +13,8 @@ class Gathering:
         self.higherGeography = higherGeography
         self.country = country
 
+        self.extras = {}
+
     def to_lajistore_json(self):
         '''
         Returns the fields in a LajiStore-saveable format.

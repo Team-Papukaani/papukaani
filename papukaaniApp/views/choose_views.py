@@ -3,13 +3,11 @@ from django.shortcuts import render
 from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import logging
 from papukaaniApp.utils.view_utils import *
 from papukaaniApp.models_LajiStore import device, document, gathering, individual
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from papukaaniApp.views.decorators import count_lajistore_requests
 
-logger = logging.getLogger(__name__)
 
 @require_auth
 @count_lajistore_requests
@@ -26,9 +24,10 @@ def choose(request):
 @api_view(['POST'])
 @require_auth
 @count_lajistore_requests
-def change_individual_gatherings(request, individual_id):
+def set_individual_gatherings(request):
     gatherings = json.loads(request.POST['points'])
-    indiv = individual.get(individual_id)
-    indiv.change_gatherings(gatherings)
+    indiv_id = request.GET['individual_id']
+    indiv = individual.get(indiv_id)
+    indiv.set_gatherings(gatherings)
     return Response({'success': True})
 

@@ -172,7 +172,7 @@ class ChoosePage(Page):
 
     SAVE_BUTTON = Element(By.ID, 'save')
     MESSAGE_BOX = Element(By.ID, 'loading')
-    MARKER = Element(By.CLASS_NAME, 'marker-cluster-large')
+    MARKER = Element(By.CLASS_NAME, 'marker-cluster')
     ZOOM_IN = Element(By.CLASS_NAME, 'leaflet-control-zoom-in')
     ZOOM_OUT = Element(By.CLASS_NAME, 'leaflet-control-zoom-out')
     RESET_BUTTON = Element(By.ID, 'reset')
@@ -230,6 +230,29 @@ class ChoosePage(Page):
         :return: The number of private (grey) clusters.
         """
         return len(self.driver.find_elements_by_class_name("marker-cluster-large"))
+
+    def _double_click_by_class(self, cls):
+        actionChains = ActionChains(self.driver)
+        elem = self.driver.find_element_by_class_name(cls)
+        actionChains.double_click(elem).perform()
+
+    def click_public_cluster(self):
+        self._double_click_by_class('marker-cluster-small')
+
+    def click_private_cluster(self):
+        self._double_click_by_class('marker-cluster-large')
+
+    def click_partially_public_cluster(self):
+        self._double_click_by_class('marker-cluster-medium')
+
+    def save_and_change(self, id):
+        self.save()
+        self.change_individual_selection(id)
+
+    def save(self):
+        self.click_save_button()
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.2)
 
     def get_cluster_size(self):
         cluster = self.driver.find_element_by_class_name("marker-cluster")

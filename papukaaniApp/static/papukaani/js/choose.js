@@ -53,6 +53,7 @@ var savePoints = function(chooseMap, callback) {
             callback(err);
         }
         assert(data.hasOwnProperty('success'));
+        unlockButtons();
         if (data.success) {
             setMessage(gettext('Valmis!'));
             chooseMap.hasChanges = false;
@@ -61,7 +62,6 @@ var savePoints = function(chooseMap, callback) {
             setMessage(gettext('Tapahtui virhe!'));
             callback(new Error());
         }
-        unlockButtons();
     });
 };
 
@@ -98,7 +98,6 @@ var changeIndividual = function(indId, callback) {
 
     loadIndividualPoints(indId, function(err, points) {
         if (err) {
-            reset();
             setMessage(gettext('Virhe ladattaessa tietoja'));
             return callback(null);
         }
@@ -139,7 +138,7 @@ var saveIndividualPoints = function(indId, points, callback) {
 
     $.ajax({
         type: 'POST',
-        url: 'changeIndividualGatherings/' + indId + '/',
+        url: 'setIndividualGatherings?individual_id=' + indId, 
         data: {
             points: JSON.stringify(points)
         },

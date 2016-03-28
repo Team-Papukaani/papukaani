@@ -17,13 +17,14 @@ class TestChooseFrontend(StaticLiveServerTestCase):
             "dateEdited": "2015-09-29T14:00:00+03:00"
         }
         self.D = device.create(**dev)
-        self.A = document.create([gathering.Gathering("2000-12-12T12:12:12+00:00", [23.00, 61.00]),
-                                  gathering.Gathering("2000-12-12T12:13:14+00:00", [23.01, 61.01])],
-                                 self.D.id)
+        self.A = document.create(
+            [gathering.Gathering("2000-12-12T12:00:00+00:00", [23.00, 61.00]),
+             gathering.Gathering("2000-12-12T12:05:00+00:00", [23.01, 61.01])],
+            self.D.id)
         self.page = ChoosePage()
 
         self.I = individual.create('Tipuliini', 'dummytaxon')
-        DeviceIndividual.attach(self.D.id, self.I.id, '2000-12-12T12:12:10+00:00')
+        DeviceIndividual.attach(self.D.id, self.I.id, '2000-12-12T11:55:00+00:00')
 
         self.page.navigate()
         self.page.change_individual_selection(self.I.id)  
@@ -85,8 +86,8 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.assertEquals(0, self.page.number_of_private_clusters_on_map())
 
     def test_filtering_points_with_time_range(self):
-        self.page.set_start_time("12.12.2000 12:12")
-        self.page.set_end_time("12.12.2000 12:13")
+        self.page.set_start_time("12.12.2000 12:04")
+        self.page.set_end_time("12.12.2000 12:06")
         self.page.show_time_range()
         self.assertEquals(self.page.get_cluster_size(), "0/1")
 
@@ -149,8 +150,67 @@ class TestChooseFrontend(StaticLiveServerTestCase):
         self.page.reset()
         self.assertEquals(self.page.number_of_private_clusters_on_map(), 1)
 
+    def test_individual_with_multiple_documents(self):
+        self.page.double_click_marker()
+        self.page.save()
+
+        DeviceIndividual.detach(self.D.id, self.I.id, '2000-12-12T12:10:00+00:00')
+
+        dev_2 = {
+            "deviceManufacturerID": "DummyDevId2",
+            "deviceType": "Type2",
+            "deviceManufacturer": "Manufacturer2",
+            "dateCreated": "2000-09-29T14:00:00+03:00",
+            "dateEdited": "2000-09-29T14:00:00+03:00"
+        }
+        self.D_2 = device.create(**dev_2)
+
+        DeviceIndividual.attach(self.D_2.id, self.I.id, '2000-12-12T12:15:00+00:00')
+
+        self.A_2 = document.create(
+            [gathering.Gathering("2000-12-12T12:20:00+00:00", [25.00, 63.00]),
+             gathering.Gathering("2000-12-12T12:25:00+00:00", [25.01, 63.01])],
+            self.D_2.id)
+
+        self.page.navigate()
+        self.page.change_individual_selection(self.I.id)
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
+        
+        self.page.click_private_cluster()
+        self.page.save_and_change('None')
+        self.page.change_individual_selection(self.I.id)
+
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(2, self.page.number_of_completely_public_clusters_on_map())
+
+    def test_2birds1doc(self):
+        self.add_individual()
+        DeviceIndividual.detach(self.D.id, self.I.id,   "2000-12-12T12:15:00+00:00")
+        DeviceIndividual.attach(self.D.id, self.I_2.id, "2000-12-12T12:20:00+00:00")
+        self.A.gatherings += [
+            gathering.Gathering("2000-12-12T12:25:00+00:00", [24.00, 62.00]),
+            gathering.Gathering("2000-12-12T12:30:00+00:00", [24.01, 62.01])]
+        self.A.update()
+        self.page.navigate()
+        self.page.change_individual_selection(self.I.id)
+
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
+        self.page.change_individual_selection(self.I_2.id)
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(0, self.page.number_of_completely_public_clusters_on_map())
+        self.page.double_click_marker()
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
+        self.page.save_and_change(self.I.id)
+
+        self.assertEquals(1, self.page.number_of_private_clusters_on_map())
+        self.page.change_individual_selection(self.I_2.id)
+        self.assertEquals(0, self.page.number_of_private_clusters_on_map())
+        self.assertEquals(1, self.page.number_of_completely_public_clusters_on_map())
+
     def add_public_point(self): 
-        self.A.gatherings.append(gathering.Gathering("2000-12-12T12:12:12+00:00", [23.01, 61.01],
+        self.A.gatherings.append(gathering.Gathering("2000-12-12T12:10:00+00:00", [23.01, 61.01],
                                                      publicityRestrictions="MZ.publicityRestrictionsPublic"))
         self.A.update()
 
@@ -160,3 +220,4 @@ class TestChooseFrontend(StaticLiveServerTestCase):
     def change_publicity_and_selection_without_saving(self, test):
         test.page.double_click_marker()
         test.page.change_individual_selection("None")
+

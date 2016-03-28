@@ -9,8 +9,7 @@ urlpatterns = [
     # ex: /papukaani/public/1/
     url(r'^public/$', views.public, name='public'),
     url(r'^choose/$', views.choose, name='choose'),
-    url(r'^choose/changeIndividualGatherings/(?P<individual_id>.+)/$', 
-      views.change_individual_gatherings),
+    url(r'^choose/setIndividualGatherings$', views.set_individual_gatherings),
     # ex: /papukaani/devices/
     url(r'^devices/$', views.devices, name='devices'),
     url(r'^devices/(?P<device_id>.+)/attach/$', views.attach_to),

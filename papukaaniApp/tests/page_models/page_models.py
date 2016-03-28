@@ -530,24 +530,29 @@ class NewsPage(Page):
     url = BASE_URL + '/papukaani/news/'
     CREATE_NEWS_BUTTON = Element(By.ID, 'create_news')
     FIRST_NEWS_TITLE = Element(By.ID, 'title')
-    """
-    CREATE_NEWS_SAVE_BUTTON
-    FIRST_NEWS_CONTENT
-    FIRST_NEWS_PUBLISHDATE
-    FIRST_NEWS_LANGUAGE
-    MODIFY_NEWS_BUTTON
-    DELETE_NEWS_BUTTON
-    DELETE_NEWS_CONFIRM_BUTTON
-    NEW_TITLE
-    NEW_CONTENT
-    NEW_PUBLISHDATE
-    NEW_LANGUAGE
-    MODAL_MESSAGE
-    MESSAGE
-    """
+    FIRST_NEWS_PUBLISHDATE = Element(By.ID, 'publishdate')
+    FIRST_NEWS_LANGUAGE = Element(By.ID, 'language')
+    FIRST_NEWS_TARGETS = Element(By.ID, 'targets')
+    NEWS_TITLE = Element(By.ID, 'news_title')
+    NEWS_CONTENT = Element(By.ID, 'news_content')
+    NEWS_LANGUAGE = Element(By.ID, 'news_language')
+    NEWS_PUBLISHDATE = Element(By.ID, 'news_publishDate')
+    NEWS_TARGETS = Element(By.ID, 'selectIndividual')
+    MESSAGE = Element(By.ID, 'messages')
+    MODAL_MESSAGE = Element(By.ID, 'modalmessages')
+    NEWS_SAVE_BUTTON = Element(By.ID, 'news_tallenna')
 
-    """
-    Inputs the title, content and language, and birds and then press the submit button.
-    """
-    def create_news(self, title, content, language, publishdate, birds):
+    def create_news(self, title, content, language, publishdate):
+        print(self.NEWS_SAVE_BUTTON.text)
+        time.sleep(3)
         self.CREATE_NEWS_BUTTON.click()
+        time.sleep(3)
+        self.NEWS_TITLE.send_keys(title)
+        self.NEWS_LANGUAGE.send_keys(language)
+        self.NEWS_PUBLISHDATE.send_keys(publishdate)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("news_content"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(content))
+        self.NEWS_TITLE.click()
+        self.NEWS_SAVE_BUTTON.click()
+        time.sleep(10)
+

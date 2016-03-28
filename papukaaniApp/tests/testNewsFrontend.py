@@ -5,7 +5,7 @@ from papukaaniApp.tests.page_models.page_models import NewsPage
 
 class TestIndividualFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.I = news.create("Title","<p>content</p>","sv")
+        self.I = news.create("Title", "<p>content</p>", "sv")
         self.page = NewsPage()
         self.page.navigate()
 

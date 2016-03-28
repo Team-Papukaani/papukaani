@@ -115,10 +115,12 @@ def create(title, content, language, publishDate=None, targets=None):
     Creates a news instance in LajiStore and a corresponding News object
     :return: A News object
     '''
-
-    news = News(title, content, language, publishDate, targets)
-    data = LajiStoreAPI.post_news(**news.__dict__)
-    news.id = data['id']
+    try:
+        news = News(title, content, language, publishDate, targets)
+        data = LajiStoreAPI.post_news(**news.__dict__)
+        news.id = data['id']
+    except Exception as e:
+        raise Exception("Error saving data")
 
     return news
 

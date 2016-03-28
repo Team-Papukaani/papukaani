@@ -1,4 +1,6 @@
-from django.http import QueryDict
+from django.http import QueryDict, JsonResponse
+import datetime
+import dateutil.parser
 from papukaaniApp.views.decorators import count_lajistore_requests
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from rest_framework.decorators import api_view
@@ -77,9 +79,9 @@ def _list(request):
             "content": n.content,
             "language": n.language,
             "publishDate": n.publishDate,
-            "targets": n.targets
+            "targets": list(n.targets)
         }
-    return Response(response)
+    return JsonResponse(response)
 
 
 def _create(request):
@@ -90,16 +92,23 @@ def _create(request):
     missing = _check_missing_params(request.POST, 'title', 'language', 'content')
     _add_error(response, missing)
     if _has_errors(response):
-        return Response(response)
+        return JsonResponse(response)
 
     publishDate = None if "publishDate" not in request.POST else request.POST["publishDate"]
-    targets = None if "targets" not in request.POST else json.loads(request.POST["targets"])
+    publishDate = _check_date(response, publishDate)
+    if _has_errors(response):
+        return JsonResponse(response)
+
+    targets = None if "targets" not in request.POST else request.POST["targets"]
+    targets = _check_targets(response, targets)
+    if _has_errors(response):
+        return JsonResponse(response)
 
     try:
         n = news.create(request.POST["title"], request.POST["content"], request.POST["language"], publishDate, targets)
     except Exception as e:
-        _add_error(response, e)
-        return Response(response)
+        _add_error(response, str(e))
+        return JsonResponse(response)
 
     response["news"] = {}
     response["news"][n.id] = {
@@ -108,10 +117,10 @@ def _create(request):
         "content": n.content,
         "language": n.language,
         "publishDate": n.publishDate,
-        "targets": n.targets
+        "targets": list(n.targets)
     }
 
-    return Response(response)
+    return JsonResponse(response)
 
 
 def _read(request, id):
@@ -128,11 +137,11 @@ def _read(request, id):
             "content": n.content,
             "language": n.language,
             "publishDate": n.publishDate,
-            "targets": n.targets
+            "targets": list(n.targets)
         }
     else:
         _add_error(response, "Not found")
-    return Response(response)
+    return JsonResponse(response)
 
 
 def _update(request, id):
@@ -144,20 +153,28 @@ def _update(request, id):
     response["news"] = {}
     if n is None:
         _add_error(response, "Not found")
-        return Response(response)
+        return JsonResponse(response)
 
+    print(vars(request))
     PUT = QueryDict(request.body)
-
+    print(PUT)
     missing = _check_missing_params(PUT, 'title', 'language', 'content')
     _add_error(response, missing)
     if _has_errors(response):
-        return Response(response)
+        return JsonResponse(response)
 
     n.title = PUT["title"]
     n.language = PUT["language"]
     n.content = PUT["content"]
     n.publishDate = None if "publishDate" not in PUT else PUT["publishDate"]
-    n.targets = [] if "targets" not in PUT else json.loads(PUT["targets"])
+    n.publishDate = _check_date(response, n.publishDate)
+    if _has_errors(response):
+        return JsonResponse(response)
+    n.targets = [] if "targets" not in PUT else PUT["targets"]
+    n.targets = _check_targets(response, n.targets)
+    if _has_errors(response):
+        return JsonResponse(response)
+
     n.update()
 
     response["news"] = {
@@ -168,7 +185,7 @@ def _update(request, id):
         "publishDate": n.publishDate,
         "targets": n.targets
     }
-    return Response(response)
+    return JsonResponse(response)
 
 
 def _delete(request, id):
@@ -181,7 +198,7 @@ def _delete(request, id):
         n.delete()
     else:
         _add_error(response, "Not found" + id)
-    return Response(response)
+    return JsonResponse(response)
 
 
 def _check_missing_params(collection, *args):
@@ -205,3 +222,26 @@ def _has_errors(response):
     if response["errors"] is None:
         return False
     return len(response["errors"]) > 0
+
+
+def _check_date(response, publishDate):
+    if publishDate is None:
+        return publishDate
+    try:
+        d = dateutil.parser.parse(publishDate)
+        publishDate = d.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+    except ValueError:
+        _add_error(response, "Päivämäärä formaatti on väärin")
+    return publishDate
+
+
+def _check_targets(response, targets):
+    if targets is None:
+        return targets
+    try:
+        targets = json.loads(targets)
+        if type(targets) is not list and targets is not None:
+            raise ValueError
+    except ValueError:
+        _add_error(response, "Targets are not valid")
+    return targets

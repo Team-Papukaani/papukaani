@@ -83,7 +83,7 @@ function save_news(id) {
             if (data.status === 'OK') {
                 clear_news_modal();
                 load_news();
-                $('#messages').text(gettext("Uutinen luotu onnistuneesti! "));
+                $('#messages').text(gettext("Uutinen luotu onnistuneesti!"));
 
             } else {
                 alert(data.errors);

@@ -25,3 +25,13 @@ class TestNewsFrontend(StaticLiveServerTestCase):
 
     def test_show_correct_message_after_create(self):
         self.page.create_news("Title", "Content", "Ruotsi", "01.03.2016 00:00")
+        self.assertEquals("Uutinen luotu onnistuneesti!", self.page.MESSAGE.text)
+
+    def test_show_correct_message_after_delete(self):
+        self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
+
+    def test_show_correct_message_after_modify(self):
+        self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
+
+    def test_show_correct_message_if_no_title_content_language(self):
+        self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)

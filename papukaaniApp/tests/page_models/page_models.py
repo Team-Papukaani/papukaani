@@ -540,19 +540,20 @@ class NewsPage(Page):
     NEWS_TARGETS = Element(By.ID, 'selectIndividual')
     MESSAGE = Element(By.ID, 'messages')
     MODAL_MESSAGE = Element(By.ID, 'modalmessages')
-    NEWS_SAVE_BUTTON = Element(By.ID, 'news_tallenna')
+    NEWS_SAVE_BUTTON = Element(By.XPATH, '//a[@id="news_tallenna"][1]')
 
-    def create_news(self, title, content, language, publishdate):
-        print(self.NEWS_SAVE_BUTTON.text)
-        time.sleep(3)
+    def create_news(self, title, content, language, publishdate, targets="none"):
+        time.sleep(1)
         self.CREATE_NEWS_BUTTON.click()
-        time.sleep(3)
+        time.sleep(1)
         self.NEWS_TITLE.send_keys(title)
         self.NEWS_LANGUAGE.send_keys(language)
         self.NEWS_PUBLISHDATE.send_keys(publishdate)
+        time.sleep(1)
         self.driver.execute_script("tinyMCE.get('{0}').focus()".format("news_content"))
         self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(content))
         self.NEWS_TITLE.click()
+        time.sleep(1)
         self.NEWS_SAVE_BUTTON.click()
-        time.sleep(10)
+        time.sleep(1)
 

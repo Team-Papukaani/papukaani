@@ -5,7 +5,8 @@ from papukaaniApp.tests.page_models.page_models import NewsPage
 
 class TestNewsFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        self.I2 = individual.create("test", "test")
+        self.I2 = individual.create("test", "ERIEUR")
+        self.I3 = individual.create("test2", "ERIEUR")
         self.targets = []
         self.targets.append(self.I2.id)
         self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', self.targets)
@@ -15,6 +16,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
     def tearDown(self):
         self.I.delete()
         self.I2.delete()
+        self.I3.delete()
         self.page.close()
         news.delete_all()
 
@@ -22,7 +24,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
         self.assertEquals("Ruotsi", self.page.FIRST_NEWS_LANGUAGE.text)
         self.assertEquals("01.03.2016 00:00", self.page.FIRST_NEWS_PUBLISHDATE.text)
-        self.assertEquals(self.I2.id, self.page.FIRST_NEWS_TARGETS.text)
+        self.assertEquals("test", self.page.FIRST_NEWS_TARGETS.text)
 
     def test_show_correct_message_after_create(self):
         self.page.delete_first_news()
@@ -45,4 +47,5 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.assertEquals("Otsikko puuttuu\nSisältö puuttuu\nKieli puuttuu", self.page.MODAL_MESSAGE.text)
 
     def test_add_targets(self):
-        self.page.add_targets(str(self.I2.id))
+        self.page.add_targets(str(self.I3.id))
+        self.assertEquals("test2", self.page.FIRST_NEWS_TARGETS.text)

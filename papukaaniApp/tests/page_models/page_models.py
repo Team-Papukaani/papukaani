@@ -565,7 +565,7 @@ class NewsPage(Page):
         time.sleep(1)
 
     def modify_news(self, title, content, language, publishdate):
-        time.sleep(10)
+        time.sleep(1)
         self.NEWS_MODIFY_BUTTON.click()
         time.sleep(1)
         self.NEWS_TITLE.clear()
@@ -584,8 +584,12 @@ class NewsPage(Page):
         time.sleep(1)
         self.NEWS_MODIFY_BUTTON.click()
         time.sleep(1)
+        self.driver.find_element_by_css_selector("button.remove").click()
+        time.sleep(0.5)
         sel = Select(self.INDIVIDUAL_SELECTOR)
         sel.select_by_value(key)
         while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(2)
         time.sleep(2)
+        self.NEWS_SAVE_BUTTON.click()
+        time.sleep(1)

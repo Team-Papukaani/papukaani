@@ -16,3 +16,4 @@ class TestRunner(DiscoverRunner):
         device.delete_all()
         individual.delete_all()
         DeviceIndividual.delete_all()
+        news.delete_all()

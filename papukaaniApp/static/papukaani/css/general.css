@@ -276,6 +276,21 @@ body {
     list-style: none;
 }
 
+.col {
+    margin-top: 5px;
+}
+
+#birdlist span {
+    margin-left: 3px;
+}
+
+.modal-body #selectIndividual {
+    list-style: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
 #selectIndividual li label {
     cursor: pointer;
 }
@@ -468,7 +483,9 @@ code {
     width: 100%;
     float: left;
 }
-
+#loading{
+    z-index: 999999;
+}
 .loadinggif {
     display: block;
     margin: 0 auto;

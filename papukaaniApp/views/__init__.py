@@ -9,3 +9,4 @@ from .individual_views import *
 from .login_view import login, logout
 
 from .formats_views import *
+from .news_views import *

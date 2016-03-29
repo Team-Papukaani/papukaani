@@ -66,7 +66,7 @@ function showPointsForIndividual(ids) {
 
             var html = [];
             var id = "individual" + ids[i];
-            html.push('<div class="birdrow">');
+            html.push('<div class="birds">');
             html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
             html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
                 '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +

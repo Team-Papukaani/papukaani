@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-29 19:50+0300\n"
+"POT-Creation-Date: 2016-03-29 20:35+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,25 +18,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papukaaniApp/static/papukaani/js/choose.js:26
-msgid "Virheellinen aikaformaatti!"
-msgstr ""
-
-#: papukaaniApp/static/papukaani/js/choose.js:128
-msgid "Lämpötila"
-msgstr "Temperatur"
-
-#: papukaaniApp/static/papukaani/js/choose.js:160
-msgid "Tallennetaan..."
+#: papukaaniApp/static/papukaani/js/choose.js:47
+msgid "Tallennetaan"
 msgstr "Sparar..."
 
-#: papukaaniApp/static/papukaani/js/choose.js:230
+#: papukaaniApp/static/papukaani/js/choose.js:52
+#: papukaaniApp/static/papukaani/js/choose.js:62
+msgid "Tapahtui virhe!"
+msgstr "Något gick fel!"
+
+#: papukaaniApp/static/papukaani/js/choose.js:58
 msgid "Valmis!"
 msgstr "Färdig!"
 
-#: papukaaniApp/static/papukaani/js/choose.js:232
-msgid "Tapahtui virhe!"
-msgstr "Något gick fel!"
+#: papukaaniApp/static/papukaani/js/choose.js:96
+msgid "Tietoja ladataaan"
+msgstr "Information laddas"
+
+# FIXME: Used google translate
+#: papukaaniApp/static/papukaani/js/choose.js:101
+msgid "Virhe ladattaessa tietoja"
+msgstr "Fel vid laddning information"
+
+#: papukaaniApp/static/papukaani/js/choose.js:165
+msgid "Valitse lintu"
+msgstr "Välj fågel"
+
+# FIXME: Used google translate
+#: papukaaniApp/static/papukaani/js/chooseMap.js:24
+msgid "Virheellinen aikaformaatti!"
+msgstr "Ogiltigt tidsformat"
+
+#: papukaaniApp/static/papukaani/js/chooseMap.js:131
+msgid "Lämpötila"
+msgstr "Temperatur"
 
 #: papukaaniApp/static/papukaani/js/devices.js:25
 msgid "Irroita"
@@ -127,8 +142,6 @@ msgid "Kieli puuttuu"
 msgstr "Språk saknas"
 
 #: papukaaniApp/static/papukaani/js/news.js:86
-#, fuzzy
-#| msgid "Uutinen luotu onnistuneesti! "
 msgid "Uutinen luotu onnistuneesti!"
 msgstr "Skapandet av nyhet lyckades!"
 
@@ -175,18 +188,6 @@ msgstr "Information"
 #: papukaaniApp/static/papukaani/js/public.js:135
 msgid "fi"
 msgstr "sv"
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
-msgid "Tietoja ladataan"
-msgstr "Information laddas"
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
-msgid "Valitse lähetin"
-msgstr "Välj sändare"
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:140
-msgid "Valitse"
-msgstr "Välj"
 
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"

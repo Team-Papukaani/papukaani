@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-29 19:50+0300\n"
+"POT-Creation-Date: 2016-03-29 20:35+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgid "Etsimääsi sivua ei ole olemassa."
 msgstr "Sidan finns inte."
 
 #: papukaaniApp/templates/base.html:4
-#: papukaaniApp/templates/papukaaniApp/choose.html:84
+#: papukaaniApp/templates/papukaaniApp/choose.html:81
 #: papukaaniApp/templates/papukaaniApp/devices.html:76
 #: papukaaniApp/templates/papukaaniApp/news.html:95
 #: papukaaniApp/templates/papukaaniApp/public.html:206
@@ -84,46 +84,46 @@ msgstr "Logga ut"
 msgid "Kirjaudu sisään"
 msgstr "Logga in"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:23
+#: papukaaniApp/templates/papukaaniApp/choose.html:21
 msgid "Tallennetaanko muutokset?"
 msgstr "Spara ändringar?"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:24
+#: papukaaniApp/templates/papukaaniApp/choose.html:22
 #: papukaaniApp/templates/papukaaniApp/individuals.html:16
 msgid "Kyllä"
 msgstr "Ja"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:25
+#: papukaaniApp/templates/papukaaniApp/choose.html:23
 msgid "Ei"
 msgstr "Nej"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:26
+#: papukaaniApp/templates/papukaaniApp/choose.html:24
 #: papukaaniApp/templates/papukaaniApp/individuals.html:17
 msgid "Peruuta"
 msgstr "Avbryt"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:36
+#: papukaaniApp/templates/papukaaniApp/choose.html:34
 #: papukaaniApp/templates/papukaaniApp/public.html:107
 msgid "Aloita seuranta:"
 msgstr "Börja spåra:"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:44
+#: papukaaniApp/templates/papukaaniApp/choose.html:42
 #: papukaaniApp/templates/papukaaniApp/public.html:112
 msgid "Lopeta seuranta:"
 msgstr "Sluta spåra:"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:54
+#: papukaaniApp/templates/papukaaniApp/choose.html:52
 msgid "Näytä pisteet aikavälillä"
 msgstr "Visa punkter under tidsintervall"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:63
+#: papukaaniApp/templates/papukaaniApp/choose.html:61
 #: papukaaniApp/templates/papukaaniApp/formats.html:153
 #: papukaaniApp/templates/papukaaniApp/individuals.html:63
 #: papukaaniApp/templates/papukaaniApp/news.html:59
 msgid "Tallenna"
 msgstr "Spara"
 
-#: papukaaniApp/templates/papukaaniApp/choose.html:64
+#: papukaaniApp/templates/papukaaniApp/choose.html:62
 msgid "Resetoi"
 msgstr "Återställ"
 
@@ -320,23 +320,23 @@ msgstr "URL till beskrivning på svenska"
 #: papukaaniApp/templates/papukaaniApp/public.html:50
 #: papukaaniApp/templates/papukaaniApp/public.html:140
 msgid "Sulje"
-msgstr "Stäng"
+msgstr ""
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:19
 msgid "Formaatin nimi"
-msgstr "Formatets namn"
+msgstr "Formatets namn*"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:21
 msgid "Muokkaa"
-msgstr "Redigera"
+msgstr "Redigera fågel"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:33
 msgid "Haluatko varmasti poistaa formaatin "
-msgstr "Är du säker att du vill radera formaten "
+msgstr "Är du säker att du vill radera fågeln?"
 
 #: papukaaniApp/templates/papukaaniApp/login.html:11
 msgid "Kirjaudu sisään:"
-msgstr "Logga in:"
+msgstr "Logga in"
 
 #: papukaaniApp/templates/papukaaniApp/news.html:23
 #: papukaaniApp/templates/papukaaniApp/news.html:32
@@ -451,7 +451,8 @@ msgstr "Latitud saknas."
 
 #: papukaaniApp/views/formats_views.py:69
 msgid "Täytä joko aikaleima-kenttä tai kellonaika- ja päivämäärä-kentät."
-msgstr "Fylla i antigen denna fält eller både datumn-fältet och klockslag-fältet."
+msgstr ""
+"Fylla i antigen denna fält eller både datumn-fältet och klockslag-fältet."
 
 #: papukaaniApp/views/individual_views.py:42
 msgid "Tiedot tallennettu onnistuneesti!"
@@ -477,14 +478,14 @@ msgstr "Namn saknas!"
 msgid "Autentikaatio ei onnistunut!"
 msgstr "Autentisering misslyckades!"
 
-#: papukaaniApp/views/upload_views.py:37
+#: papukaaniApp/views/upload_views.py:39
 msgid "Tiedostosi formaatti ei ole kelvollinen!"
 msgstr "Filens format är ogiltlig!"
 
-#: papukaaniApp/views/upload_views.py:41
+#: papukaaniApp/views/upload_views.py:43
 msgid "Tiedoston lataus onnistui!"
 msgstr "Uppladdning lyckades!"
 
-#: papukaaniApp/views/upload_views.py:44
+#: papukaaniApp/views/upload_views.py:46
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "Du måste välja en fil att ladda upp!"

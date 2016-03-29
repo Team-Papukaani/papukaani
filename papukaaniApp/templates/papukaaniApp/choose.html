@@ -9,12 +9,10 @@
     <link rel="stylesheet" href="{% static 'papukaani/libraries/leaflet/markercluster/MarkerCluster.Default.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}"/>
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
-
-    <script src="{% static 'papukaani/libraries/jquery/jquery.min.js' %}"></script>
 {% endblock %}
 
 {% autoescape off %}
-{% block body_attr %} onload='var map = init({{ devices }}, "{{ csrf_token }}")'{% endblock %}
+{% block body_attr %} onload='var map = init({{ individuals_data }}, "{{ csrf_token }}")'{% endblock %}
 {% endautoescape %}
 
 {% block content %}
@@ -55,15 +53,15 @@
                         </button>
                     </form>
 
-                    <select id="selectDevice" class="form-control form-field" style="display:inline"></select>
+                    <select id="selectIndividual" class="form-control form-field" style="display:inline"></select>
 
                     {% csrf_token %}
 
-                    <button id="save" onclick="map.send()" class="btn btn-default"
+                    <button id="save" onclick="savePoints(map)" class="btn btn-default"
                             disabled="true">{% trans "Tallenna" %}</button>
-                    <button id="reset" onclick="resetMap(map)" class="btn btn-default">{% trans "Resetoi" %}</button>
+                    <button id="reset" onclick="reset()" class="btn btn-default">{% trans "Resetoi" %}</button>
 
-                    <span id="loading" class="help-block" style="display:inline"></span>
+                    <span id="message_area" class="help-block" style="display:inline"></span>
                 </div>
             </div>
         </div>
@@ -79,11 +77,11 @@
     <script src="{% static 'papukaani/libraries/leaflet/markercluster/MarkerClusterGroup.Refresh.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'papukaani/js/map.js' %}"></script>
-    <script src="{% static 'papukaani/js/utils/deviceSorter.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-addon.js' %}"></script>
     {% trans "fi" as lang %}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
     <script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
+    <script src="{% static 'papukaani/js/chooseMap.js' %}"></script>
     <script src="{% static 'papukaani/js/choose.js' %}"></script>
 {% endblock %}

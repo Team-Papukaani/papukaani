@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-21 19:12+0200\n"
+"POT-Creation-Date: 2016-03-24 14:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,25 +18,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papukaaniApp/static/papukaani/js/choose.js:26
-msgid "Virheellinen aikaformaatti!"
-msgstr "Virheellinen aikaformaatti!"
-
-#: papukaaniApp/static/papukaani/js/choose.js:128
-msgid "Lämpötila"
-msgstr "Lämpötila"
-
-#: papukaaniApp/static/papukaani/js/choose.js:160
-msgid "Tallennetaan..."
+#: papukaaniApp/static/papukaani/js/choose.js:47
+#, fuzzy
+#| msgid "Tallennetaan..."
+msgid "Tallennetaan"
 msgstr "Tallennetaan..."
 
-#: papukaaniApp/static/papukaani/js/choose.js:230
+#: papukaaniApp/static/papukaani/js/choose.js:52
+#: papukaaniApp/static/papukaani/js/choose.js:61
+msgid "Tapahtui virhe!"
+msgstr "Tapahtui virhe!"
+
+#: papukaaniApp/static/papukaani/js/choose.js:57
 msgid "Valmis!"
 msgstr "Valmis!"
 
-#: papukaaniApp/static/papukaani/js/choose.js:232
-msgid "Tapahtui virhe!"
-msgstr "Tapahtui virhe!"
+#: papukaaniApp/static/papukaani/js/choose.js:96
+#, fuzzy
+#| msgid "Tietoja ladataan"
+msgid "Tietoja ladataaan"
+msgstr "Tietoja ladataan"
+
+#: papukaaniApp/static/papukaani/js/choose.js:102
+msgid "Virhe ladattaessa tietoja"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/choose.js:166
+#, fuzzy
+#| msgid "Valitse lähetin"
+msgid "Valitse lintu"
+msgstr "Valitse lähetin"
+
+#: papukaaniApp/static/papukaani/js/chooseMap.js:24
+msgid "Virheellinen aikaformaatti!"
+msgstr "Virheellinen aikaformaatti!"
+
+#: papukaaniApp/static/papukaani/js/chooseMap.js:131
+msgid "Lämpötila"
+msgstr "Lämpötila"
 
 #: papukaaniApp/static/papukaani/js/devices.js:25
 msgid "Irroita"
@@ -116,21 +135,12 @@ msgstr "Lisätietoja"
 msgid "fi"
 msgstr "fi"
 
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:29
-msgid "Tietoja ladataan"
-msgstr "Tietoja ladataan"
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:91
-msgid "Valitse lähetin"
-msgstr "Valitse lähetin"
-
-#: papukaaniApp/static/papukaani/js/utils/deviceSorter.js:140
-msgid "Valitse"
-msgstr "Valitse"
-
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr "'"
+
+#~ msgid "Valitse"
+#~ msgstr "Valitse"
 
 #~ msgid "Nimi ei saa olla yli {0} kirjainta."
 #~ msgstr "Nimi ei saa olla yli {0} kirjainta."

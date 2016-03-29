@@ -165,7 +165,7 @@ class PublicPage(PageWithDeviceSelector):
         return self.driver.execute_script('return document.getElementById("lines-layer").toDataURL("image/png");')
 
 
-class ChoosePage(PageWithDeviceSelector):
+class ChoosePage(Page):
     """
     Page Object for the choose page.
     """
@@ -173,14 +173,14 @@ class ChoosePage(PageWithDeviceSelector):
 
     SAVE_BUTTON = Element(By.ID, 'save')
     MESSAGE_BOX = Element(By.ID, 'loading')
-    MARKER = Element(By.CLASS_NAME, 'marker-cluster-large')
+    MARKER = Element(By.CLASS_NAME, 'marker-cluster')
     ZOOM_IN = Element(By.CLASS_NAME, 'leaflet-control-zoom-in')
     ZOOM_OUT = Element(By.CLASS_NAME, 'leaflet-control-zoom-out')
     RESET_BUTTON = Element(By.ID, 'reset')
     START_TIME = Element(By.ID, 'start_time')
     END_TIME = Element(By.ID, 'end_time')
     SUBMIT_TIME = Element(By.ID, 'show_time_range')
-    DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
+    INDIVIDUAL_SELECTOR = Element(By.ID, 'selectIndividual')
     ALERT = Element(By.ID, 'popup')
     ALERT_YES = Element(By.ID, 'save_button')
     ALERT_NO = Element(By.ID, 'no_save_button')
@@ -232,6 +232,29 @@ class ChoosePage(PageWithDeviceSelector):
         """
         return len(self.driver.find_elements_by_class_name("marker-cluster-large"))
 
+    def _double_click_by_class(self, cls):
+        actionChains = ActionChains(self.driver)
+        elem = self.driver.find_element_by_class_name(cls)
+        actionChains.double_click(elem).perform()
+
+    def click_public_cluster(self):
+        self._double_click_by_class('marker-cluster-small')
+
+    def click_private_cluster(self):
+        self._double_click_by_class('marker-cluster-large')
+
+    def click_partially_public_cluster(self):
+        self._double_click_by_class('marker-cluster-medium')
+
+    def save_and_change(self, id):
+        self.save()
+        self.change_individual_selection(id)
+
+    def save(self):
+        self.click_save_button()
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.2)
+
     def get_cluster_size(self):
         cluster = self.driver.find_element_by_class_name("marker-cluster")
         size = cluster.find_element_by_tag_name("div").find_element_by_tag_name("span").get_attribute("innerHTML")
@@ -255,7 +278,7 @@ class ChoosePage(PageWithDeviceSelector):
         Resets the page by clicking the reset button.
         """
         self.RESET_BUTTON.click()
-        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(0.1)
 
     def set_start_time(self, string):
@@ -273,9 +296,6 @@ class ChoosePage(PageWithDeviceSelector):
     def get_end_time(self):
         return self.END_TIME.get_attribute('value')
 
-    def get_selected_device(self):
-        self.DEVICE_SELECTOR.get_first_selected_option()
-
     def show_time_range(self):
         """
         Show the points that match the selected time range.
@@ -290,7 +310,7 @@ class ChoosePage(PageWithDeviceSelector):
 
     def popup_click_yes(self):
         self.ALERT_YES.click()
-        while self.DEVICE_SELECTOR.get_attribute('disabled'):
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(0.1)
 
     def popup_click_no(self):
@@ -298,6 +318,15 @@ class ChoosePage(PageWithDeviceSelector):
 
     def popup_click_cancel(self):
         self.ALERT_CANCEL.click()
+
+    def change_individual_selection(self, key):
+        sel = Select(self.INDIVIDUAL_SELECTOR)
+        sel.select_by_value(key)
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
+            time.sleep(0.1)
+
+    def get_individual_selection(self):
+        return self.INDIVIDUAL_SELECTOR.get_attribute('value')
 
 
 class DevicePage(PageWithDeviceSelector):

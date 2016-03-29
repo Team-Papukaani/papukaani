@@ -46,7 +46,7 @@ class TestIndividual(TestCase):
         self.assertEquals("Lintuli", self.ind.nickname)
         self.assertEquals("test test", self.ind.taxon)
 
-    def test_get_gatherings(self):
+    def test_get_public_gatherings(self):
         dev = device.create("Type", "Manu", "DeviceId", "2000-02-02T20:20:20+00:00", "2000-02-02T20:20:20+00:00")
         document.create(
             [gathering.Gathering("2012-01-01T00:00:00+00:00", [10.0, 10.0], publicityRestrictions="MZ.publicityRestrictionsPublic"),
@@ -56,7 +56,7 @@ class TestIndividual(TestCase):
 
         dev.attach_to(self.ind.id, "2013-01-01T00:00:00+00:00")
 
-        gatherings = self.ind.get_gatherings()
+        gatherings = self.ind.get_public_gatherings()
 
         self.assertEquals(1, len(gatherings))
 

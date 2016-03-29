@@ -29,8 +29,6 @@ class SessionBasedLocaleMiddleware(object):
 
 
 request_logger = logging.getLogger('papukaaniApp.requests')
-request_logger.setLevel('DEBUG')
-
 
 class RequestLoggingMiddleware(object):
     def process_request(self, request):

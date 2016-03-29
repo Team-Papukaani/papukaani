@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-24 14:15+0200\n"
+"POT-Creation-Date: 2016-03-29 20:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,36 +19,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: papukaaniApp/static/papukaani/js/choose.js:47
-#, fuzzy
-#| msgid "Tallennetaan..."
 msgid "Tallennetaan"
 msgstr "Sparar..."
 
 #: papukaaniApp/static/papukaani/js/choose.js:52
-#: papukaaniApp/static/papukaani/js/choose.js:61
+#: papukaaniApp/static/papukaani/js/choose.js:62
 msgid "Tapahtui virhe!"
 msgstr "Något gick fel!"
 
-#: papukaaniApp/static/papukaani/js/choose.js:57
+#: papukaaniApp/static/papukaani/js/choose.js:58
 msgid "Valmis!"
 msgstr "Färdig!"
 
 #: papukaaniApp/static/papukaani/js/choose.js:96
-#, fuzzy
-#| msgid "Tietoja ladataan"
 msgid "Tietoja ladataaan"
 msgstr "Information laddas"
 
 # FIXME: Used google translate
-#: papukaaniApp/static/papukaani/js/choose.js:102
+#: papukaaniApp/static/papukaani/js/choose.js:101
 msgid "Virhe ladattaessa tietoja"
 msgstr "Fel vid laddning information"
 
-#: papukaaniApp/static/papukaani/js/choose.js:166
-#, fuzzy
-#| msgid "Valitse lähetin"
+#: papukaaniApp/static/papukaani/js/choose.js:165
 msgid "Valitse lintu"
-msgstr "Välj sändare"
+msgstr "Välj fågel"
 
 # FIXME: Used google translate
 #: papukaaniApp/static/papukaani/js/chooseMap.js:24
@@ -131,7 +125,7 @@ msgstr "Biogeografiska provinser"
 msgid "Lisätietoja"
 msgstr "Information"
 
-#: papukaaniApp/static/papukaani/js/public.js:137
+#: papukaaniApp/static/papukaani/js/public.js:135
 msgid "fi"
 msgstr "sv"
 

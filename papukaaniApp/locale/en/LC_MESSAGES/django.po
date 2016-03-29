@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-21 19:12+0200\n"
+"POT-Creation-Date: 2016-03-29 20:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,9 +50,9 @@ msgid "Etsimääsi sivua ei ole olemassa."
 msgstr "The page you are looking for does not exist."
 
 #: papukaaniApp/templates/base.html:4
-#: papukaaniApp/templates/papukaaniApp/choose.html:84
+#: papukaaniApp/templates/papukaaniApp/choose.html:83
 #: papukaaniApp/templates/papukaaniApp/devices.html:76
-#: papukaaniApp/templates/papukaaniApp/public.html:197
+#: papukaaniApp/templates/papukaaniApp/public.html:207
 msgid "fi"
 msgstr "en"
 
@@ -109,12 +109,12 @@ msgid "Peruuta"
 msgstr "Cancel"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:36
-#: papukaaniApp/templates/papukaaniApp/public.html:149
+#: papukaaniApp/templates/papukaaniApp/public.html:145
 msgid "Alku:"
 msgstr "Start:"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:44
-#: papukaaniApp/templates/papukaaniApp/public.html:154
+#: papukaaniApp/templates/papukaaniApp/public.html:150
 msgid "Loppu:"
 msgstr "End:"
 
@@ -322,8 +322,8 @@ msgid "URL ruotsinkieliseen kuvaukseen"
 msgstr "URL to Swedish description"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:118
-#: papukaaniApp/templates/papukaaniApp/public.html:50
-#: papukaaniApp/templates/papukaaniApp/public.html:135
+#: papukaaniApp/templates/papukaaniApp/public.html:51
+#: papukaaniApp/templates/papukaaniApp/public.html:131
 msgid "Sulje"
 msgstr "Close"
 
@@ -343,28 +343,28 @@ msgstr "Are you sure you want to delete the format "
 msgid "Kirjaudu sisään:"
 msgstr "Log in:"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:27
+#: papukaaniApp/templates/papukaaniApp/public.html:28
 msgid "Reittiä ladataan"
 msgstr "Loading route"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:84
+#: papukaaniApp/templates/papukaaniApp/public.html:79
 msgid "Lisää lintu"
 msgstr "Add bird"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:99
-#: papukaaniApp/templates/papukaaniApp/public.html:105
+#: papukaaniApp/templates/papukaaniApp/public.html:94
+#: papukaaniApp/templates/papukaaniApp/public.html:100
 msgid "Nopeus"
 msgstr "Speed"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:116
+#: papukaaniApp/templates/papukaaniApp/public.html:112
 msgid "Jaa"
 msgstr "Share"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:128
+#: papukaaniApp/templates/papukaaniApp/public.html:124
 msgid "Linkki"
 msgstr "Link"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:248
+#: papukaaniApp/templates/papukaaniApp/public.html:260
 msgid "Lue lisää"
 msgstr "Read more"
 
@@ -445,14 +445,14 @@ msgstr "Name is missing!"
 msgid "Autentikaatio ei onnistunut!"
 msgstr "Authentication failed!"
 
-#: papukaaniApp/views/upload_views.py:37
+#: papukaaniApp/views/upload_views.py:39
 msgid "Tiedostosi formaatti ei ole kelvollinen!"
 msgstr "Invalid file format!"
 
-#: papukaaniApp/views/upload_views.py:41
+#: papukaaniApp/views/upload_views.py:43
 msgid "Tiedoston lataus onnistui!"
 msgstr "Upload successful!"
 
-#: papukaaniApp/views/upload_views.py:44
+#: papukaaniApp/views/upload_views.py:46
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"

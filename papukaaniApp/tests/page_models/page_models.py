@@ -537,7 +537,7 @@ class NewsPage(Page):
     NEWS_CONTENT = Element(By.ID, 'news_content')
     NEWS_LANGUAGE = Element(By.ID, 'news_language')
     NEWS_PUBLISHDATE = Element(By.ID, 'news_publishDate')
-    NEWS_TARGETS = Element(By.ID, 'selectIndividual')
+    INDIVIDUAL_SELECTOR = Element(By.ID, 'selectIndividual')
     MESSAGE = Element(By.ID, 'messages')
     MODAL_MESSAGE = Element(By.ID, 'modalmessages')
     NEWS_SAVE_BUTTON = Element(By.XPATH, '//a[@id="news_tallenna"][1]')
@@ -564,8 +564,8 @@ class NewsPage(Page):
         self.driver.switch_to.alert.accept()
         time.sleep(1)
 
-    def modify_news(self, title, content, language, publishdate, targets="none"):
-        time.sleep(1)
+    def modify_news(self, title, content, language, publishdate):
+        time.sleep(10)
         self.NEWS_MODIFY_BUTTON.click()
         time.sleep(1)
         self.NEWS_TITLE.clear()
@@ -579,3 +579,13 @@ class NewsPage(Page):
         time.sleep(1)
         self.NEWS_SAVE_BUTTON.click()
         time.sleep(1)
+
+    def add_targets(self, key):
+        time.sleep(1)
+        self.NEWS_MODIFY_BUTTON.click()
+        time.sleep(1)
+        sel = Select(self.INDIVIDUAL_SELECTOR)
+        sel.select_by_value(key)
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
+            time.sleep(2)
+        time.sleep(2)

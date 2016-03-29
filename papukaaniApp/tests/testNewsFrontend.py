@@ -5,15 +5,16 @@ from papukaaniApp.tests.page_models.page_models import NewsPage
 
 class TestNewsFrontend(StaticLiveServerTestCase):
     def setUp(self):
-        I2 = individual.create("test", "test")
-        targets = []
-        targets.append(I2.nickname)
-        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', targets)
+        self.I2 = individual.create("test", "test")
+        self.targets = []
+        self.targets.append(self.I2.id)
+        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', self.targets)
         self.page = NewsPage()
         self.page.navigate()
 
     def tearDown(self):
         self.I.delete()
+        self.I2.delete()
         self.page.close()
         news.delete_all()
 
@@ -21,7 +22,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
         self.assertEquals("Ruotsi", self.page.FIRST_NEWS_LANGUAGE.text)
         self.assertEquals("01.03.2016 00:00", self.page.FIRST_NEWS_PUBLISHDATE.text)
-        self.assertEquals("test", self.page.FIRST_NEWS_TARGETS.text)
+        self.assertEquals(self.I2.id, self.page.FIRST_NEWS_TARGETS.text)
 
     def test_show_correct_message_after_create(self):
         self.page.delete_first_news()
@@ -42,3 +43,6 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.page.delete_first_news()
         self.page.create_news("", "", "", "")
         self.assertEquals("Otsikko puuttuu\nSisältö puuttuu\nKieli puuttuu", self.page.MODAL_MESSAGE.text)
+
+    def test_add_targets(self):
+        self.page.add_targets(str(self.I2.id))

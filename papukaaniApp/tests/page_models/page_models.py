@@ -156,7 +156,7 @@ class PublicPage(PageWithDeviceSelector):
 
     def get_iframe_url(self):
         self.IFRAME_BUTTON_OPEN.click()
-        time.sleep(1)
+        time.sleep(2)
         url = self.IFRAME_SRC.get_attribute('value')
         self.IFRAME_BUTTON_CLOSE.click()
         return url

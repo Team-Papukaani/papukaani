@@ -42,6 +42,26 @@ class TestNews(TestCase):
 
         self.assertEquals(len(news.find()), 2)
 
+    def test_post_with_bad_title(self):
+        postdata = {
+            "content": "p>test</p>",
+            "language": "en",
+            "title": ""
+        }
+        response = self.c.post(_URL, postdata)
+
+        self.assertEquals(len(news.find()), 2)
+
+    def test_post_with_bad_content(self):
+        postdata = {
+            "content": "",
+            "language": "en",
+            "title": "test"
+        }
+        response = self.c.post(_URL, postdata)
+
+        self.assertEquals(len(news.find()), 2)
+
     def test_post_with_targets(self):
         I = individual.create("test", "test")
         I2 = individual.create("test", "test")
@@ -66,6 +86,12 @@ class TestNews(TestCase):
     def test_list(self):
         response = self.c.get(_URL + "list")
         self.assertTrue("title2" in str(response.content))
+
+    def test_read(self):
+        response = self.c.get(_URL + self.A.id)
+        self.assertTrue("title" in str(response.content))
+        self.assertTrue("test" in str(response.content))
+        self.assertTrue("fi" in str(response.content))
 
     def test_post_with_targets(self):
         I = individual.create("test", "test")

@@ -194,9 +194,19 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_individual_selection(str(self.I.id))
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 73)
 
+    def test_speedslider_is_hidden_initially(self):
+        self.assertEquals(self.page.SPEED_SLIDER.is_displayed(), False)
+
+    def test_speedslider_is_shown_on_mouse_hover(self):
+        ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER_LABEL).perform()
+        time.sleep(1)
+        self.assertEquals(self.page.SPEED_SLIDER.is_displayed(), True)
+
     def test_speedslider_tooltip_can_be_seen_on_mouse_hover(self):
-        hover = ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER)
-        hover.perform()
+        ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER_LABEL).perform()
+        time.sleep(1)
+        ActionChains(self.page.driver).move_to_element(self.page.SPEED_SLIDER).perform()
+        time.sleep(1)
         self.assertEquals(self.page.SPEED_SLIDER.get_attribute("aria-describedby"), "ui-id-1")
 
     def test_time_selection_shows_correct_points(self):

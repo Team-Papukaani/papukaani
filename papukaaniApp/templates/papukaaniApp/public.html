@@ -62,10 +62,6 @@
 
                 <div id="timeline">
                     <style>
-                        table td {
-                            border: 1px solid;
-                        }
-
                         table {
                             width: 100%;
                             box-sizing: border-box;
@@ -88,22 +84,36 @@
                                         <span class="glyphicon glyphicon-play"></span>
                                     </button>
                                 </td>
-                                <td>
-                                    <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}"
-                                         alt="{% trans "Nopeus" %}"
-                                         width="30"
-                                         height="30"/>
+                                <td id="speed">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <img id="speedLabel" src="{% static 'papukaaniApp/speed.svg' %}"
+                                                     alt="{% trans "Nopeus" %}"
+                                                     width="40"
+                                                     height="40"/>
+                                            </td>
+                                            <td>
+                                                <div id="speedSlider" class="small-slider" data-toggle="tooltip"
+                                                     title="{% trans "Nopeus" %}"
+                                                     data-placement="top" style="top:-5px;"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                                 <td>
-                                    <div id="speedSlider" class="small-slider" data-toggle="tooltip"
-                                         title="{% trans "Nopeus" %}"
-                                         data-placement="top"></div>
-                                </td>
-                                <td>
-                                    <label id="playLabel">N/A</label>
-                                </td>
-                                <td>
-                                    <label id="playLabel_end">N/A</label>
+                                    <div class="input-group" id="time_range">
+                                                <span class="input-group-addon"
+                                                      id="basic-addon1">{% trans "Aloita seuranta:" %}</span>
+                                        <input type="text" id="start_time" name="start_time"
+                                               class="dateinput datepicker form-control"
+                                               placeholder="dd.mm.yyyy HH:mm" maxlength="16">
+                                                        <span class="input-group-addon"
+                                                              id="basic-addon1">{% trans "Lopeta seuranta:" %}</span>
+                                        <input type="text" id="end_time" name="end_time"
+                                               class="dateinput datepicker form-control"
+                                               placeholder="dd.mm.yyyy HH:mm" maxlength="16">
+                                    </div>
                                 </td>
                                 <td>
                                     <button id="iframeOpen" type="button" class="btn btn-info btn-sm"
@@ -139,18 +149,8 @@
 
                     </div>
                     <div class="secondCol">
-                        <div class="input-group" id="time_range">
-                                                <span class="input-group-addon"
-                                                      id="basic-addon1">{% trans "Alku:" %}</span>
-                            <input type="text" id="start_time" name="start_time"
-                                   class="dateinput datepicker form-control"
-                                   placeholder="dd.mm.yyyy HH:mm" maxlength="16">
-                                            <span class="input-group-addon"
-                                                  id="basic-addon1">{% trans "Loppu:" %}</span>
-                            <input type="text" id="end_time" name="end_time"
-                                   class="dateinput datepicker form-control"
-                                   placeholder="dd.mm.yyyy HH:mm" maxlength="16">
-                        </div>
+                        <label id="playLabel">N/A</label>
+                        <label id="playLabel_end">N/A</label>
                     </div>
                     <div class="firstCol">
                         &nbsp;
@@ -263,5 +263,17 @@
             }
 
         });
+
+
+        $("#speedSlider").hide();
+        $("#speed").hover(
+                function () {
+                    $("#speedSlider").stop(true).delay(100).show('fast');
+
+                }, function () {
+                    $("#speedSlider").stop(true).delay(100).hide('slow');
+
+                }
+        );
     </script>
 {% endblock %}

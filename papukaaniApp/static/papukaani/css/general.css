@@ -172,11 +172,16 @@ body {
 }
 
 #playLabel {
-    padding-top: 7px;
+    float: left;
 }
 
 #playLabel_end {
-    padding-top: 7px;
+    float: right;
+}
+
+.secondCol label {
+    font-weight: normal;
+    margin: 5px 0 0 0;
 }
 
 #speedLabel {
@@ -189,6 +194,10 @@ body {
     margin: 8px 10px 0 10px;
     padding: 0;
     float: left;
+}
+
+#speed{
+    padding-right: 5px;
 }
 
 .input-group-addon.wide {
@@ -462,6 +471,11 @@ code {
 .secondCol {
     float: left;
     width: calc(100% - 200px);
+}
+
+#public .ui-datepicker {
+    position: relative !important;
+    top: -570px !important;
 }
 
 .birdrow {

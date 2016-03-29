@@ -23,7 +23,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body{% block body_attr %}{% endblock %}>
+<body id="{{page_id|default:"page"}}" {% block body_attr %}{% endblock %}>
 {% block baseContent %}{% block content %}{% endblock %}{% endblock %}
 {% block footer %}
     <footer class="footer">

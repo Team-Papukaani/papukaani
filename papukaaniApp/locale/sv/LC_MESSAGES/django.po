@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-27 21:25+0300\n"
+"POT-Creation-Date: 2016-03-29 19:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,17 +19,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: papukaani/config/common.py:104
-#: papukaaniApp/templates/papukaaniApp/news.html:31
+#: papukaaniApp/templates/papukaaniApp/news.html:41
 msgid "Suomi"
 msgstr "Finska"
 
 #: papukaani/config/common.py:105
-#: papukaaniApp/templates/papukaaniApp/news.html:32
+#: papukaaniApp/templates/papukaaniApp/news.html:42
 msgid "Englanti"
 msgstr "Engelska"
 
 #: papukaani/config/common.py:106
-#: papukaaniApp/templates/papukaaniApp/news.html:33
+#: papukaaniApp/templates/papukaaniApp/news.html:43
 msgid "Ruotsi"
 msgstr "Svenska"
 
@@ -40,8 +40,8 @@ msgstr "Sidan finns inte."
 #: papukaaniApp/templates/base.html:4
 #: papukaaniApp/templates/papukaaniApp/choose.html:84
 #: papukaaniApp/templates/papukaaniApp/devices.html:76
-#: papukaaniApp/templates/papukaaniApp/news.html:85
-#: papukaaniApp/templates/papukaaniApp/public.html:200
+#: papukaaniApp/templates/papukaaniApp/news.html:95
+#: papukaaniApp/templates/papukaaniApp/public.html:206
 msgid "fi"
 msgstr "sv"
 
@@ -68,7 +68,7 @@ msgid "Hallinnoi lintuja"
 msgstr "Administrera fåglar"
 
 #: papukaaniApp/templates/navigation.html:23
-#: papukaaniApp/templates/papukaaniApp/news.html:12
+#: papukaaniApp/templates/papukaaniApp/news.html:22
 msgid "Uutiset"
 msgstr "Nyheter"
 
@@ -103,14 +103,14 @@ msgid "Peruuta"
 msgstr "Avbryt"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:36
-#: papukaaniApp/templates/papukaaniApp/public.html:144
-msgid "Alku:"
-msgstr "Start:"
+#: papukaaniApp/templates/papukaaniApp/public.html:107
+msgid "Aloita seuranta:"
+msgstr "Börja spåra:"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:44
-#: papukaaniApp/templates/papukaaniApp/public.html:149
-msgid "Loppu:"
-msgstr "Slut:"
+#: papukaaniApp/templates/papukaaniApp/public.html:112
+msgid "Lopeta seuranta:"
+msgstr "Sluta spåra:"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:54
 msgid "Näytä pisteet aikavälillä"
@@ -119,7 +119,7 @@ msgstr "Visa punkter under tidsintervall"
 #: papukaaniApp/templates/papukaaniApp/choose.html:63
 #: papukaaniApp/templates/papukaaniApp/formats.html:153
 #: papukaaniApp/templates/papukaaniApp/individuals.html:63
-#: papukaaniApp/templates/papukaaniApp/news.html:49
+#: papukaaniApp/templates/papukaaniApp/news.html:59
 msgid "Tallenna"
 msgstr "Spara"
 
@@ -316,9 +316,9 @@ msgid "URL ruotsinkieliseen kuvaukseen"
 msgstr "URL till beskrivning på svenska"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:118
-#: papukaaniApp/templates/papukaaniApp/news.html:52
+#: papukaaniApp/templates/papukaaniApp/news.html:62
 #: papukaaniApp/templates/papukaaniApp/public.html:50
-#: papukaaniApp/templates/papukaaniApp/public.html:130
+#: papukaaniApp/templates/papukaaniApp/public.html:140
 msgid "Sulje"
 msgstr "Stäng"
 
@@ -338,41 +338,41 @@ msgstr "Är du säker att du vill radera formaten "
 msgid "Kirjaudu sisään:"
 msgstr "Logga in:"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:13
-#: papukaaniApp/templates/papukaaniApp/news.html:22
+#: papukaaniApp/templates/papukaaniApp/news.html:23
+#: papukaaniApp/templates/papukaaniApp/news.html:32
 msgid "Luo uutinen"
 msgstr "Skapa nyhet"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:25
+#: papukaaniApp/templates/papukaaniApp/news.html:35
 msgid "Otsikko"
 msgstr "Rubrik"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:30
+#: papukaaniApp/templates/papukaaniApp/news.html:40
 msgid "Valitse kieli"
 msgstr "Välj språk"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:35
-#: papukaaniApp/templates/papukaaniApp/news.html:68
+#: papukaaniApp/templates/papukaaniApp/news.html:45
+#: papukaaniApp/templates/papukaaniApp/news.html:78
 msgid "Julkaisupäivämäärä"
 msgstr "Publikationsdatum"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:41
+#: papukaaniApp/templates/papukaaniApp/news.html:51
 msgid "Lisää uutiseen liitettävä lintu"
 msgstr "Lägg till fågel som nyhet gäller"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:65
+#: papukaaniApp/templates/papukaaniApp/news.html:75
 msgid "ID"
 msgstr "ID"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:66
+#: papukaaniApp/templates/papukaaniApp/news.html:76
 msgid "Julkaisun otsikko"
 msgstr "Publikationens rubrik"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:67
+#: papukaaniApp/templates/papukaaniApp/news.html:77
 msgid "Julkaisun kieli"
 msgstr "Publikationens språk"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:69
+#: papukaaniApp/templates/papukaaniApp/news.html:79
 msgid "Julkaisuun liittyvät linnut"
 msgstr "Fåglar som publikation gäller"
 
@@ -380,24 +380,24 @@ msgstr "Fåglar som publikation gäller"
 msgid "Reittiä ladataan"
 msgstr "Rutten laddas"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:78
+#: papukaaniApp/templates/papukaaniApp/public.html:74
 msgid "Lisää lintu"
 msgstr "Lägg till en fågel"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:93
-#: papukaaniApp/templates/papukaaniApp/public.html:99
+#: papukaaniApp/templates/papukaaniApp/public.html:92
+#: papukaaniApp/templates/papukaaniApp/public.html:98
 msgid "Nopeus"
 msgstr "Hastighet"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:111
+#: papukaaniApp/templates/papukaaniApp/public.html:121
 msgid "Jaa"
 msgstr "Dela"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:123
+#: papukaaniApp/templates/papukaaniApp/public.html:133
 msgid "Linkki"
 msgstr "Länk"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:253
+#: papukaaniApp/templates/papukaaniApp/public.html:259
 msgid "Lue lisää"
 msgstr "Läs mera"
 
@@ -451,8 +451,7 @@ msgstr "Latitud saknas."
 
 #: papukaaniApp/views/formats_views.py:69
 msgid "Täytä joko aikaleima-kenttä tai kellonaika- ja päivämäärä-kentät."
-msgstr ""
-"Fylla i antigen denna fält eller både datumn-fältet och klockslag-fältet."
+msgstr "Fylla i antigen denna fält eller både datumn-fältet och klockslag-fältet."
 
 #: papukaaniApp/views/individual_views.py:42
 msgid "Tiedot tallennettu onnistuneesti!"

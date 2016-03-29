@@ -90,6 +90,7 @@ class PublicPage(PageWithDeviceSelector):
     SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')
+    SPEED_SLIDER_LABEL = Element(By.ID, 'speedLabel')
     IFRAME_SRC = Element(By.ID, 'iframeSrc')
     IFRAME_BUTTON_OPEN = Element(By.ID, 'iframeOpen')
     IFRAME_BUTTON_CLOSE = Element(By.ID, 'iframeClose')
@@ -551,3 +552,74 @@ class FormatListPage(Page):
 
     def modify_first_format(self):
         self.FIRST_MODIFY_BUTTON.click()
+
+class NewsPage(Page):
+    """
+    Page Object for the news page.
+    """
+    url = BASE_URL + '/papukaani/news/'
+    CREATE_NEWS_BUTTON = Element(By.ID, 'create_news')
+    FIRST_NEWS_TITLE = Element(By.ID, 'title')
+    FIRST_NEWS_PUBLISHDATE = Element(By.ID, 'publishdate')
+    FIRST_NEWS_LANGUAGE = Element(By.ID, 'language')
+    FIRST_NEWS_TARGETS = Element(By.ID, 'targets')
+    NEWS_TITLE = Element(By.ID, 'news_title')
+    NEWS_CONTENT = Element(By.ID, 'news_content')
+    NEWS_LANGUAGE = Element(By.ID, 'news_language')
+    NEWS_PUBLISHDATE = Element(By.ID, 'news_publishDate')
+    INDIVIDUAL_SELECTOR = Element(By.ID, 'selectIndividual')
+    MESSAGE = Element(By.ID, 'messages')
+    MODAL_MESSAGE = Element(By.ID, 'modalmessages')
+    NEWS_SAVE_BUTTON = Element(By.XPATH, '//a[@id="news_tallenna"][1]')
+    NEWS_DELETE_BUTTON = Element(By.CLASS_NAME, 'remove')
+    NEWS_MODIFY_BUTTON = Element(By.CLASS_NAME, 'update')
+
+    def create_news(self, title, content, language, publishdate, targets="none"):
+        time.sleep(1)
+        self.CREATE_NEWS_BUTTON.click()
+        time.sleep(1)
+        self.NEWS_TITLE.send_keys(title)
+        self.NEWS_LANGUAGE.send_keys(language)
+        self.NEWS_PUBLISHDATE.send_keys(publishdate)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("news_content"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(content))
+        self.NEWS_TITLE.click()
+        time.sleep(1)
+        self.NEWS_SAVE_BUTTON.click()
+        time.sleep(1)
+
+    def delete_first_news(self):
+        self.NEWS_DELETE_BUTTON.click()
+        self.driver.switch_to.alert.accept()
+        time.sleep(1)
+
+    def modify_news(self, title, content, language, publishdate):
+        time.sleep(1)
+        self.NEWS_MODIFY_BUTTON.click()
+        time.sleep(1)
+        self.NEWS_TITLE.clear()
+        self.NEWS_TITLE.send_keys(title)
+        self.NEWS_LANGUAGE.send_keys(language)
+        self.NEWS_PUBLISHDATE.send_keys(publishdate)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("news_content"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(content))
+        self.NEWS_TITLE.click()
+        time.sleep(1)
+        self.NEWS_SAVE_BUTTON.click()
+        time.sleep(1)
+
+    def add_targets(self, key):
+        time.sleep(1)
+        self.NEWS_MODIFY_BUTTON.click()
+        time.sleep(1)
+        self.driver.find_element_by_css_selector("button.remove").click()
+        time.sleep(0.5)
+        sel = Select(self.INDIVIDUAL_SELECTOR)
+        sel.select_by_value(key)
+        while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
+            time.sleep(2)
+        time.sleep(2)
+        self.NEWS_SAVE_BUTTON.click()
+        time.sleep(1)

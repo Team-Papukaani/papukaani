@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-29 20:22+0300\n"
+"POT-Creation-Date: 2016-03-29 20:35+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,6 +120,66 @@ msgstr "Satellit"
 #: papukaaniApp/static/papukaani/js/map.js:34
 msgid "Eliömaakunnat"
 msgstr "Biogeografiska provinser"
+
+#: papukaaniApp/static/papukaani/js/news.js:6
+msgid "Haluatko varmasti poistaa uutisen?"
+msgstr "Är du säker att du vill radera denna nyhet?"
+
+#: papukaaniApp/static/papukaani/js/news.js:19
+msgid "Lisää uutinen"
+msgstr "Lägg till nyhet"
+
+#: papukaaniApp/static/papukaani/js/news.js:26
+msgid "Otsikko puuttuu"
+msgstr "Rubrik saknas"
+
+#: papukaaniApp/static/papukaani/js/news.js:27
+msgid "Sisältö puuttuu"
+msgstr "Innehåll saknas"
+
+#: papukaaniApp/static/papukaani/js/news.js:28
+msgid "Kieli puuttuu"
+msgstr "Språk saknas"
+
+#: papukaaniApp/static/papukaani/js/news.js:86
+msgid "Uutinen luotu onnistuneesti!"
+msgstr "Skapandet av nyhet lyckades!"
+
+#: papukaaniApp/static/papukaani/js/news.js:102
+msgid "Tiedot tallennettu onnistuneesti!"
+msgstr "Information sparats!"
+
+#: papukaaniApp/static/papukaani/js/news.js:138
+msgid "Tiedot poistettu onnistuneesti!"
+msgstr "Radering av informationen lyckades!"
+
+#: papukaaniApp/static/papukaani/js/news.js:153
+msgid "Muokkaa uutista"
+msgstr "Redigera nyheter"
+
+#: papukaaniApp/static/papukaani/js/news.js:190
+msgid "Muokkaa"
+msgstr "Redigera"
+
+#: papukaaniApp/static/papukaani/js/news.js:191
+msgid "Poista"
+msgstr "Radera"
+
+#: papukaaniApp/static/papukaani/js/news.js:200
+msgid "Suomi"
+msgstr "Finska"
+
+#: papukaaniApp/static/papukaani/js/news.js:201
+msgid "Englanti"
+msgstr "Engelska"
+
+#: papukaaniApp/static/papukaani/js/news.js:202
+msgid "Ruotsi"
+msgstr "Svenska"
+
+#: papukaaniApp/static/papukaani/js/news.js:283
+msgid "Uutisia ladataan"
+msgstr "Nyheter laddas"
 
 #: papukaaniApp/static/papukaani/js/public.js:78
 msgid "Lisätietoja"

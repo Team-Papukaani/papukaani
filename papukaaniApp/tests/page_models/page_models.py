@@ -90,6 +90,7 @@ class PublicPage(PageWithDeviceSelector):
     SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')
+    SPEED_SLIDER_LABEL = Element(By.ID, 'speedLabel')
     IFRAME_SRC = Element(By.ID, 'iframeSrc')
     IFRAME_BUTTON_OPEN = Element(By.ID, 'iframeOpen')
     IFRAME_BUTTON_CLOSE = Element(By.ID, 'iframeClose')

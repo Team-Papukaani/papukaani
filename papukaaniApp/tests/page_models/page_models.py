@@ -541,6 +541,8 @@ class NewsPage(Page):
     MESSAGE = Element(By.ID, 'messages')
     MODAL_MESSAGE = Element(By.ID, 'modalmessages')
     NEWS_SAVE_BUTTON = Element(By.XPATH, '//a[@id="news_tallenna"][1]')
+    NEWS_DELETE_BUTTON = Element(By.CLASS_NAME, 'remove')
+    NEWS_MODIFY_BUTTON = Element(By.CLASS_NAME, 'update')
 
     def create_news(self, title, content, language, publishdate, targets="none"):
         time.sleep(1)
@@ -557,3 +559,23 @@ class NewsPage(Page):
         self.NEWS_SAVE_BUTTON.click()
         time.sleep(1)
 
+    def delete_first_news(self):
+        self.NEWS_DELETE_BUTTON.click()
+        self.driver.switch_to.alert.accept()
+        time.sleep(1)
+
+    def modify_news(self, title, content, language, publishdate, targets="none"):
+        time.sleep(1)
+        self.NEWS_MODIFY_BUTTON.click()
+        time.sleep(1)
+        self.NEWS_TITLE.clear()
+        self.NEWS_TITLE.send_keys(title)
+        self.NEWS_LANGUAGE.send_keys(language)
+        self.NEWS_PUBLISHDATE.send_keys(publishdate)
+        time.sleep(1)
+        self.driver.execute_script("tinyMCE.get('{0}').focus()".format("news_content"))
+        self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(content))
+        self.NEWS_TITLE.click()
+        time.sleep(1)
+        self.NEWS_SAVE_BUTTON.click()
+        time.sleep(1)

@@ -24,14 +24,21 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.assertEquals("test", self.page.FIRST_NEWS_TARGETS.text)
 
     def test_show_correct_message_after_create(self):
+        self.page.delete_first_news()
         self.page.create_news("Title", "Content", "Ruotsi", "01.03.2016 00:00")
+        self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
         self.assertEquals("Uutinen luotu onnistuneesti!", self.page.MESSAGE.text)
 
     def test_show_correct_message_after_delete(self):
-        self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
+        self.page.delete_first_news()
+        self.assertEquals("Tiedot poistettu onnistuneesti!", self.page.MESSAGE.text)
 
     def test_show_correct_message_after_modify(self):
-        self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
+        self.page.modify_news("Title2", "Content2", "Suomi", "01.03.2015 00:00")
+        self.assertEquals("Title2", self.page.FIRST_NEWS_TITLE.text)
+        self.assertEquals("Tiedot tallennettu onnistuneesti!", self.page.MESSAGE.text)
 
     def test_show_correct_message_if_no_title_content_language(self):
-        self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
+        self.page.delete_first_news()
+        self.page.create_news("", "", "", "")
+        self.assertEquals("Otsikko puuttuu\nSisältö puuttuu\nKieli puuttuu", self.page.MODAL_MESSAGE.text)

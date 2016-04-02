@@ -246,7 +246,7 @@
             var id = button.data('id');
             var bird = sorter.getBird(id);
 
-            modal.find('.modal-title').text(bird.name);
+            modal.find('.modal-title').html(bird.name + '<h6><i>' +  bird.species + '</i></h6>');
 
             if (bird.description) {
                 $('#desc').html(bird.description);

@@ -8,7 +8,6 @@ from papukaaniApp.models_LajiStore import device, document, gathering, individua
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from papukaaniApp.views.decorators import count_lajistore_requests
 
-
 @require_auth
 @count_lajistore_requests
 def choose(request):

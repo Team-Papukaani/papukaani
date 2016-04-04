@@ -44,6 +44,8 @@ class Individual:
         LajiStoreAPI.update_individual(**self.__dict__)  # __dict__ puts all arguments here
 
     def set_gatherings(self, new_gatherings):
+        # new_gatherings is parsed json (a list of dicts), not a list of Gathering objects
+
         totime = _timestamp_to_datetime
         atts = DeviceIndividual.get_attachments_of_individual(self.id)
 
@@ -53,29 +55,33 @@ class Individual:
 
             doc = document.find(deviceID=a['deviceID'])[0]
 
-            relevant_new_gatherings = [g for g in new_gatherings if 
+            # list of dicts
+            relevant_new = [g for g in new_gatherings if 
                     (start <= totime(g['dateBegin']) <= end) and
                     g['extras']['originatingDevice'] == a['deviceID']]
 
-            relevant_old_gatherings = [g for g in doc.gatherings if
+            # list of Gathering objects
+            relevant_old = [g for g in doc.gatherings if
                     (start <= totime(g.dateBegin) <= end)]
 
             # nothing to update?
-            if (not relevant_new_gatherings) and (not relevant_old_gatherings):
+            if (not relevant_new) and (not relevant_old):
                 continue
 
-            if len(relevant_new_gatherings) != len(relevant_old_gatherings):
+            if len(relevant_new) != len(relevant_old):
                 logger.warn('number of old gatherings different from number of new gatherings in choose/setIndividualGatherings. old: %d, new: %d' % 
-                    (len(relevant_new_gatherings), len(relevant_old_gatherings)))
+                    (len(relevant_new), len(relevant_old)))
 
             # remove old gatherings
-            for g in reversed(doc.gatherings):
-                if g in relevant_old_gatherings:
+            for g in relevant_old:
+                try:
                     doc.gatherings.remove(g)
+                except ValueError:
+                    pass
 
             # insert new gatherings
             doc.gatherings += [
-                gathering.from_lajistore_json(**g) for g in relevant_new_gatherings]
+                gathering.from_lajistore_json(**g) for g in relevant_new]
 
             doc.update()
 

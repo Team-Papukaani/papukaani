@@ -104,12 +104,22 @@ ChooseMap.prototype.createMarkersFromPoints = function(points, markers) {
         var marker = L.marker(new L.LatLng(ltlgs[1], ltlgs[0]));
         marker.pnt = points[i];
         marker.on('dblclick', this.changePublicity.bind(this, marker));
-        marker.bindPopup(getPopupContentsForMarker(marker), {
+
+        /* Optimization: only call getPopupContentsForMarker when the result is needed
+           (it's slow). "..." is a placeholder which is replaced before popup is shown.
+        */
+        marker.bindPopup("...", {
             offset: L.point(0, -12)
         });
+
         marker.on('mouseover', function() {
+            if (!this.my_alreadySet) {
+                this.setPopupContent(getPopupContentsForMarker(marker));
+                this.my_alreadySet = true;
+            }
             this.openPopup();
         });
+
         marker.on('mouseout', function() {
             this.closePopup();
         });

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from papukaaniApp.models_LajiStore import document, individual, gathering
 from datetime import datetime
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
+from django.views.decorators.gzip import gzip_page
 
 @api_view(['GET'])
 def getGatheringsForDevice(request):
@@ -31,12 +32,13 @@ def getPublicGatheringsForIndividual(request):
         data[id] = gatherings
     return Response(data)
 
+@gzip_page
 @api_view(['GET'])
 @require_auth
 def getAllGatheringsForIndividual(request):
     id = request.GET.get('individualId')
     gatherings = _get_gatherings_data(id, public_only=False,
-        extras_originatingDevice=True)
+        extras_originatingDevice=True)   
     return Response(gatherings)
 
 def _get_gatherings_data(individual_id, public_only=True, extras_originatingDevice=False):

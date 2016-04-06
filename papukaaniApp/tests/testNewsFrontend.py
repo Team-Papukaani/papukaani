@@ -24,7 +24,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.assertEquals("Title", self.page.FIRST_NEWS_TITLE.text)
         self.assertEquals("Ruotsi", self.page.FIRST_NEWS_LANGUAGE.text)
         self.assertEquals("01.03.2016 00:00", self.page.FIRST_NEWS_PUBLISHDATE.text)
-        self.assertEquals("test", self.page.FIRST_NEWS_TARGETS.text)
+        self.assertEquals("test (Siili)", self.page.FIRST_NEWS_TARGETS.text)
 
     def test_show_correct_message_after_create(self):
         self.page.delete_first_news()
@@ -48,4 +48,4 @@ class TestNewsFrontend(StaticLiveServerTestCase):
 
     def test_add_targets(self):
         self.page.add_targets(str(self.I3.id))
-        self.assertEquals("test2", self.page.FIRST_NEWS_TARGETS.text)
+        self.assertEquals("test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)

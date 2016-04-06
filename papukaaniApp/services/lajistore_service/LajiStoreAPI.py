@@ -293,7 +293,7 @@ def _get_all_pages(url, list=None, **kwargs):
 
     list = list + members if list else members
 
-    if response['view']['@id'] == response['view']['lastPage']:
+    if response['view']['id'] == response['view']['lastPage']:
         return list
 
     else:

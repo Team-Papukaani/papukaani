@@ -80,7 +80,7 @@ def get(id):
     '''
 
     device = LajiStoreAPI.get_device(id)
-    if '@id' in device:
+    if 'id' in device:
         return Device(**device)
 
     else:

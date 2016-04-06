@@ -208,8 +208,8 @@ def delete_all_individuals():
 def _delete(uri):
     url = _URL + uri
     response = requests.delete(url, auth=_AUTH)
-    if '@id' in response:
-        response['id'] = response['@id'].rsplit('/', 1)[-1]
+    if 'id' in response:
+        response['id'] = response['id'].rsplit('/', 1)[-1]
     return response
 
 
@@ -218,8 +218,8 @@ def _get(uri, **kwargs):
     if kwargs:
         url += _add_query(**kwargs)
     response = requests.get(url, auth=_AUTH).json()
-    if '@id' in response:
-        response['id'] = response['@id'].rsplit('/', 1)[-1]
+    if 'id' in response:
+        response['id'] = response['id'].rsplit('/', 1)[-1]
     if '@context' in response: del response['@context']
     return response
 
@@ -235,7 +235,7 @@ def _put(uri, data):
 def _create_response(data, uri, post):
     url = _URL + uri
     if 'id' in data: del data['id']
-    if '@id' in data: del data['@id']
+    if 'id' in data: del data['id']
     if '@context' in data: del data['@context']
 
     if (post):
@@ -245,14 +245,14 @@ def _create_response(data, uri, post):
 
     response = raw.json()
 
-    if "@id" not in response:
+    if "id" not in response:
         error = _ERROR_MSG
         if "validation_messages" in response:
             for e in response["validation_messages"]:
                 error += e + " : " + str(response["validation_messages"][e]) + "\ŋ"
         raise ValueError(error)
 
-    response['id'] = response['@id'].rsplit('/', 1)[-1]
+    response['id'] = response['id'].rsplit('/', 1)[-1]
     return response
 
 
@@ -287,13 +287,13 @@ def _get_all_pages(url, list=None, **kwargs):
     members = response['member']
 
     for member in members:
-        if '@id' in member:
-            member['id'] = member['@id'].rsplit('/', 1)[-1]
+        if 'id' in member:
+            member['id'] = member['id'].rsplit('/', 1)[-1]
         if '@context' in member: del member['@context']
 
     list = list + members if list else members
 
-    if response['view']['@id'] == response['view']['lastPage']:
+    if response['view']['id'] == response['view']['lastPage']:
         return list
 
     else:

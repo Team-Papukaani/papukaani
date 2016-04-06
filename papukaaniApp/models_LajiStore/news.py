@@ -104,7 +104,7 @@ def get(id):
     '''
 
     news = LajiStoreAPI.get_news(id)
-    if '@id' in news:
+    if 'id' in news:
         return News(**news)
     else:
         return None

@@ -266,6 +266,9 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(1)
         self.assertTrue(
             self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
+
+        self.assertTrue(
+            self.page.driver.find_element_by_css_selector("#descriptionModal h6.modal-species").text == ("Kaakkuri"))
         self.assertEquals(self.page.driver.find_element_by_id("desc").text, "birdiekuvaus")
         self.assertTrue(
             self.page.driver.find_element_by_id("url").get_attribute("href") == ("http://www.birdie.kek/"))

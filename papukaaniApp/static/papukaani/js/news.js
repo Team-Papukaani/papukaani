@@ -173,7 +173,7 @@ function load_news() {
 
             var targets = "";
             $.each(v.targets, function (key, value) {
-                targets = targets + (targets ? ', ' : '') + sorter.getName(value);
+                targets = targets + (targets ? ', ' : '') + '<b>' + sorter.getName(value) + '</b> ' + sorter.getSpecies(value);
             });
 
             html.push($('<tr></tr>').append(
@@ -185,7 +185,7 @@ function load_news() {
             ).append(
                 $('<td id="publishdate"></td>').text(v.publishDate ? displayTimeWithLeadingZeroes(v.publishDate) : '')
             ).append(
-                $('<td id="targets"></td>').text(targets)
+                $('<td id="targets"></td>').html(targets)
             ).append(
                 $('<td><div class="btn-toolbar"><button class="update btn btn-info btn-cons" data-id="' + v.id + '"> ' + gettext("Muokkaa") +
                     '</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">' + gettext("Poista") + '</button></div></td>')
@@ -207,8 +207,10 @@ var request = null;
 
 function IndividualSorter(individuals, species) {
     this.birdName = {};
+    this.birdSpecies = {};
     this.individuals = individuals;
     this.species = species;
+
     this.createIndividualSelector();
 }
 
@@ -221,6 +223,11 @@ IndividualSorter.prototype.restoreOptions = function (individualId) {
 IndividualSorter.prototype.getName = function (individualId) {
     if (!this.birdName.hasOwnProperty(individualId)) return individualId;
     return this.birdName[individualId];
+}
+
+IndividualSorter.prototype.getSpecies = function (individualId) {
+    if (!this.birdSpecies.hasOwnProperty(individualId)) return "";
+    return '(' + this.birdSpecies[individualId] + ')';
 }
 
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
@@ -242,19 +249,20 @@ IndividualSorter.prototype.createIndividualSelector = function () {
     var selector = $("#selectIndividual");
     var that = this;
 
-    selector.addOption = function (individualId, taxon) {
+    selector.addOption = function (individualId, taxon, species) {
         var e = '<option value="' + individualId + '">';
         e = e + taxon;
         e = e + '</option>';
         selector.append(e);
         that.birdName[individualId] = taxon;
+        that.birdSpecies[individualId] = species;
     };
 
     $.each(that.species, function (key, s) {
         selector.append('<option value="" disabled>' + s + '</option>');
         $.each(that.individuals[s], function (key, individual) {
             $.each(individual, function (individualId, taxon) {
-                selector.addOption(individualId, taxon)
+                selector.addOption(individualId, taxon, s)
             });
         });
     });

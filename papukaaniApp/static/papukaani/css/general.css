@@ -274,6 +274,7 @@ body {
 
 #selectIndividual {
     list-style: none;
+    max-width: 190px;
 }
 
 .col {

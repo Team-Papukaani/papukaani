@@ -116,7 +116,7 @@ def create(title, content, language, publishDate=None, targets=None):
     :return: A News object
     '''
     try:
-        news = News(title, content, language, publishDate, targets)
+        news = News(title, str(content).strip(), language, publishDate, targets)
         data = LajiStoreAPI.post_news(**news.__dict__)
         news.id = data['id']
     except Exception as e:

@@ -40,6 +40,8 @@ IndividualSorter.prototype.refresh = function () {
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForIndividual(ids) {
 
+
+
     if (request.readyState === 4) {
         $('#loading').modal('hide');
 
@@ -86,6 +88,7 @@ function showPointsForIndividual(ids) {
 
             this.routes.push(route);
             player.addRoute(route);
+             $('#news').append('Hi')
 
         }
         player.refreshRoutes();
@@ -132,6 +135,10 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     var that = this;
 
     selector.addOption = function (individualId, taxon, species) {
+
+        console.log(taxon.news)
+
+
         var lang = gettext('fi');
         if (lang != 'fi' && taxon.description != null && (taxon.description[lang] == null || taxon.description[lang] == "")) {
             lang = 'fi';
@@ -143,7 +150,8 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
             name: taxon.nickname,
             url: "",
             description: "",
-            species: species
+            species: species,
+            news: taxon.news
         };
         if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
             taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
@@ -153,6 +161,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
             taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
             bird.description = taxon.description[lang];
         }
+
         selector.append(e);
         that.birdInfo[individualId] = bird;
     };

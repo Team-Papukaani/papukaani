@@ -84,6 +84,6 @@ $(document).ready(function () {
     jQuery.extend(jQuery.validator.messages, { //käännettävä teksti
         required: gettext("Tämä kenttä on pakollinen."),
         minlength: jQuery.validator.format(gettext("Nimen pitää olla vähintään {0} kirjaimen pituinen.")),
-        url: jQuery.validator.format(gettext("Anna oikea http(s) osoite"))
+        url: jQuery.validator.format(gettext("Anna oikea http(s):lla alkava osoite"))
     });
 });

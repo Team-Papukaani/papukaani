@@ -14,7 +14,7 @@ $(function () {
         var modal_new_data = $( "input, textarea, select" ).serialize();
         var new_content = tinyMCE.get('news_content').getContent();
         if( (modal_original_data != modal_new_data)|| (orginal_content!= new_content) ) {
-            if (confirm("Do you want to leave without saving?")) {
+            if (!confirm("Do you want to leave without saving?")) {
                 e.preventDefault();
             }
             else $('#news_modal').modal('hide');

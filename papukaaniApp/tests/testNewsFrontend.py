@@ -49,3 +49,21 @@ class TestNewsFrontend(StaticLiveServerTestCase):
     def test_add_targets(self):
         self.page.add_targets(str(self.I3.id))
         self.assertEquals("test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)
+
+    def test_close_without_saving_confirmed(self):
+        self.page.create_news_and_close_without_saving_accept("Title", "Content", "Ruotsi", "01.03.2016 00:00")
+        self.assertEquals("display: none;", self.page.NEWS_MODAL.get_attribute("style"))
+
+    def test_close_without_saving_not_confirmed(self):
+        self.page.create_news_and_close_without_saving_dismiss("Title", "Content", "Ruotsi", "01.03.2016 00:00")
+        self.assertEquals("display: block;", self.page.NEWS_MODAL.get_attribute("style"))
+
+    def test_show_confirm_dialog_with_change(self):
+        self.page.create_news_with_inputs("Title", "Content", "Ruotsi", "01.03.2016 00:00")
+        self.page.is_alert_present()
+        self.assertTrue(self.page.CONFRIM_TEXT)
+
+    def test_show_confirm_dialog_without_change(self):
+        self.page.create_news_without_inputs("Title", "Content", "Ruotsi", "01.03.2016 00:00")
+        self.page.is_alert_present()
+        self.assertFalse(self.page.CONFRIM_TEXT)

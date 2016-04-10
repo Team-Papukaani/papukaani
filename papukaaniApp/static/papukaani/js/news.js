@@ -1,6 +1,27 @@
 $(function () {
     load_news();
 
+    var modal_original_data;
+    var orginal_content;
+    $('#news_modal').on('shown.bs.modal', function(e) {
+        modal_original_data = $( "input, textarea, select" ).serialize();
+        orginal_content = tinyMCE.get('news_content').getContent();
+    });
+
+
+    $("#news_sulje, #news_close_button").click(function (e) {
+        // check if the data was changed since the modal was openened
+        var modal_new_data = $( "input, textarea, select" ).serialize();
+        var new_content = tinyMCE.get('news_content').getContent();
+        if( (modal_original_data != modal_new_data)|| (orginal_content!= new_content) ) {
+            if (confirm("Do you want to leave without saving?")) {
+                e.preventDefault();
+            }
+            else $('#news_modal').modal('hide');
+        }
+        else $('#news_modal').modal('hide');
+    });
+
     $("#newslist").on("click", "button.remove", function (e) {
         e.preventDefault();
         if (confirm(gettext("Haluatko varmasti poistaa uutisen?"))) {

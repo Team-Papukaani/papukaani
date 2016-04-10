@@ -5,6 +5,7 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.routes = [];
     this.map = map;
     this.birdInfo = {};
+    this.news = {}
     this.createIndividualSelector(individuals, species);
     this.colorChart = new ColorChart();
 }
@@ -88,7 +89,29 @@ function showPointsForIndividual(ids) {
 
             this.routes.push(route);
             player.addRoute(route);
-             $('#news').append('Hi')
+
+            html = [];
+
+            for (ne in sorter.getBird(ids[i]).news) {
+                n = sorter.getBird(ids[i]).news[ne];
+
+                html.push('<h3>' + n.title + '</h3>');
+                if (n.publishDate) {
+                    html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
+                }
+                cont = $(n.content).text();
+                if (cont.length > 100) {
+                    cont = cont.substring(0, 97);
+                }
+
+                html.push('<p style="display: inline">' + cont + '... </p>');
+                html.push('<button type="button" style="display: inline;" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id +'>');
+                html.push(gettext('Lisää uutisesta'));
+                html.push('</button>');
+                html.push('<hr>')
+            }
+
+            $("#news").append(html.join(''))
 
         }
         player.refreshRoutes();
@@ -136,8 +159,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
 
     selector.addOption = function (individualId, taxon, species) {
 
-        console.log(taxon.news)
-
+        var news = JSON.parse(taxon.news);
 
         var lang = gettext('fi');
         if (lang != 'fi' && taxon.description != null && (taxon.description[lang] == null || taxon.description[lang] == "")) {
@@ -151,7 +173,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
             url: "",
             description: "",
             species: species,
-            news: taxon.news
+            news: news
         };
         if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
             taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
@@ -163,6 +185,9 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         }
 
         selector.append(e);
+        for (n in news) {
+            that.news[news[n].id] = news[n];
+        }
         that.birdInfo[individualId] = bird;
     };
 
@@ -186,6 +211,10 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
 
 IndividualSorter.prototype.getBird = function (individualId) {
     return this.birdInfo[individualId];
+};
+
+IndividualSorter.prototype.getNews = function (newsId) {
+    return this.news[newsId];
 };
 
 function PublicMap(loc, zoom) {

@@ -38,6 +38,29 @@
                             aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <a id="url" class="btn btn-primary" style="float: left" href="#" target="_blank"></a>
+                    </div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        {% trans "Sulje" %}
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+        <div class="modal" tabindex="-1" role="dialog" id="newsModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
                     <h6 class="modal-species"></h6>
                 </div>
                 <div class="modal-body">
@@ -54,6 +77,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
 
 
     <div class="container-fluid" id="mapContainer">
@@ -179,7 +203,7 @@
             </div>
             <div class="hidden-sm col-md-3 col-lg-2">
                 <div id="news">
-
+                    <h1>{% trans "Uutiset" %}</h1>
                 </div>
             </div>
         </div>
@@ -254,6 +278,17 @@
 
         });
 
+
+        $('#newsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            var id = button.data('id');
+            var news = sorter.getNews(id);
+            console.log(news)
+
+            modal.find('.modal-title').html(news.title);
+
+        });
 
         $("#speedSlider").hide();
         $("#speed").hover(

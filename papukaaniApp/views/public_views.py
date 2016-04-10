@@ -9,12 +9,10 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.views.login_view import *
 from papukaaniApp.views.decorators import count_lajistore_requests
-from rest_framework.decorators import api_view
 
 
 
 @count_lajistore_requests
-@api_view(['GET'])
 @xframe_options_exempt  # Allows the view to be loaded in an iFrame
 def public(request):
     """

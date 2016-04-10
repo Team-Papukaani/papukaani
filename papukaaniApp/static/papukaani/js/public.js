@@ -42,8 +42,8 @@ IndividualSorter.prototype.refresh = function () {
 function showPointsForIndividual(ids) {
 
 
-
-    if (request.readyState === 4) {
+    if (request.readyState !== 4) {
+    } else {
         $('#loading').modal('hide');
 
         var data = JSON.parse(request.response);
@@ -92,20 +92,42 @@ function showPointsForIndividual(ids) {
 
             html = [];
 
-            for (ne in sorter.getBird(ids[i]).news) {
-                n = sorter.getBird(ids[i]).news[ne];
+            for (var ne in sorter.getBird(ids[i]).news) {
+                var n = sorter.getBird(ids[i]).news[ne];
 
                 html.push('<h3>' + n.title + '</h3>');
+
+                var t = "";
+
+                if (n.targets.length == 1) {
+                    t = "Lintu: " + sorter.getBird(n.targets[0]).name;
+                } else {
+                    t = "Linnut: ";
+                    for (var j = 0; j < n.targets.length; j++) {
+                        t += sorter.getBird(n.targets[j]).name;
+
+                        if (j == 4 && n.targets.length > 5) {
+                            t = t + gettext(' ja ' + String(n.targets.length - j) + ' muuta');
+                            break;
+                        }
+                        if (j != n.targets.length - 1) {
+                            t = t + ", "
+                        }
+                    }
+                }
+                html.push('<b style="display: block">' + t + '</b>');
+
                 if (n.publishDate) {
                     html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
                 }
+
                 cont = $(n.content).text();
                 if (cont.length > 100) {
                     cont = cont.substring(0, 97);
                 }
 
                 html.push('<p style="display: inline">' + cont + '... </p>');
-                html.push('<button type="button" style="display: inline;" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id +'>');
+                html.push('<button type="button" style="display: inline;" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
                 html.push(gettext('Lisää uutisesta'));
                 html.push('</button>');
                 html.push('<hr>')

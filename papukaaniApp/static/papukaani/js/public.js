@@ -5,7 +5,8 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.routes = [];
     this.map = map;
     this.birdInfo = {};
-    this.news = {}
+    this.news = {};
+    this.visibleNews = {}
     this.createIndividualSelector(individuals, species);
     this.colorChart = new ColorChart();
 }
@@ -25,6 +26,13 @@ IndividualSorter.prototype.changeIndividualSelection = function (individualId) {
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
     for (var i = 0; i < this.routes.length; i++) {
         if (this.routes[i].individualId == individualId) {
+
+            for (var ne in sorter.getBird(individualId).news) {
+                var n = sorter.getBird(individualId).news[ne];
+                sorter.visibleNews[n.id] = sorter.visibleNews[n.id] - 1;
+            }
+            rewriteNews();
+
             this.colorChart.freeColor(this.routes[i].individualId);
             player.removeRoute(this.routes[i]);
             this.routes.splice(i, 1);
@@ -90,48 +98,16 @@ function showPointsForIndividual(ids) {
             this.routes.push(route);
             player.addRoute(route);
 
-            html = [];
-
             for (var ne in sorter.getBird(ids[i]).news) {
                 var n = sorter.getBird(ids[i]).news[ne];
-                html.push('<h6>' + n.title + '</h6>');
-
-                cont = $(n.content).text();
-                if (cont.length > 100) {
-                    cont = cont.substring(0, 97) + '...';
-                }
-                html.push('<p>' + cont +  ' </p>');
-
-                var t = "";
-
-                if (n.targets.length == 1) {
-                    t = gettext('Lintu') + ': ' + sorter.getBird(n.targets[0]).name;
+                if (!(n.id in sorter.visibleNews) || sorter.visibleNews[n.id] == 0) {
+                    sorter.visibleNews[n.id] = 1;
                 } else {
-                    t = gettext('Linnut') + ': ';
-                    for (var j = 0; j < n.targets.length; j++) {
-                        t += sorter.getBird(n.targets[j]).name;
-
-                        if (j == 4 && n.targets.length > 5) {
-                            t = t + gettext(' ja ' + String(n.targets.length - j) + ' muuta');
-                            break;
-                        }
-                        if (j != n.targets.length - 1) {
-                            t = t + ", "
-                        }
-                    }
+                    sorter.visibleNews[n.id] = sorter.visibleNews[n.id] + 1;
                 }
-                html.push('<p">' + t + '</p>');
-
-                if (n.publishDate) {
-                    html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
-                }
-                html.push('<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
-                html.push(gettext('Avaa'));
-                html.push('</button>');
-                html.push('<hr>')
             }
 
-            $("#news").append(html.join(''))
+            rewriteNews();
 
         }
         player.refreshRoutes();
@@ -139,6 +115,56 @@ function showPointsForIndividual(ids) {
     }
 }
 
+
+function rewriteNews() {
+    $("#newslist").empty();
+    html = [];
+    for (var newsId in sorter.visibleNews) {
+        if (sorter.visibleNews[newsId] > 0) {
+
+            var n = sorter.getNews(newsId);
+
+            html.push('<hr>')
+
+            html.push('<h6>' + n.title + '</h6>');
+
+            cont = $(n.content).text();
+            if (cont.length > 100) {
+                cont = cont.substring(0, 97) + '...';
+            }
+            html.push('<p>' + cont + ' </p>');
+
+            var t = "";
+
+            if (n.targets.length == 1) {
+                t = gettext('Lintu') + ': ' + sorter.getBird(n.targets[0]).name;
+            } else {
+                t = gettext('Linnut') + ': ';
+                for (var j = 0; j < n.targets.length; j++) {
+                    t += sorter.getBird(n.targets[j]).name;
+
+                    if (j == 4 && n.targets.length > 5) {
+                        t = t + gettext(' ja ' + String(n.targets.length - j) + ' muuta');
+                        break;
+                    }
+                    if (j != n.targets.length - 1) {
+                        t = t + ", "
+                    }
+                }
+            }
+            html.push('<p">' + t + '</p>');
+
+            if (n.publishDate) {
+                html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
+            }
+            html.push('<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
+            html.push(gettext('Avaa'));
+            html.push('</button>');
+        }
+    }
+    $("#newslist").append(html.join(''));
+
+}
 
 function ColorChart() {
     this.colors = [{color: "#CC0000"}, {color: "#0000CC"}, {color: "#006600"},

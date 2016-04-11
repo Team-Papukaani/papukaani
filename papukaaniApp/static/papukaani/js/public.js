@@ -117,53 +117,62 @@ function showPointsForIndividual(ids) {
 
 
 function rewriteNews() {
-    $("#newslist").empty();
-    html = [];
+
+    news = [];
     for (var newsId in sorter.visibleNews) {
         if (sorter.visibleNews[newsId] > 0) {
-
-            var n = sorter.getNews(newsId);
-
-            html.push('<hr>')
-
-            html.push('<h6>' + n.title + '</h6>');
-
-            cont = $(n.content).text();
-            if (cont.length > 100) {
-                cont = cont.substring(0, 97) + '...';
-            }
-            html.push('<p>' + cont + ' </p>');
-
-            var t = "";
-
-            if (n.targets.length == 1) {
-                t = gettext('Lintu') + ': ' + sorter.getBird(n.targets[0]).name;
-            } else {
-                t = gettext('Linnut') + ': ';
-                for (var j = 0; j < n.targets.length; j++) {
-                    t += sorter.getBird(n.targets[j]).name;
-
-                    if (j == 4 && n.targets.length > 5) {
-                        t = t + gettext(' ja ' + String(n.targets.length - j) + ' muuta');
-                        break;
-                    }
-                    if (j != n.targets.length - 1) {
-                        t = t + ", "
-                    }
-                }
-            }
-            html.push('<p">' + t + '</p>');
-
-            if (n.publishDate) {
-                html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
-            }
-            html.push('<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
-            html.push(gettext('Avaa'));
-            html.push('</button>');
+            news.push(sorter.getNews(newsId));
         }
     }
-    $("#newslist").append(html.join(''));
+    news.sort(function(a,b) {
+        return new Date(b.publishDate) - new Date(a.publishDate);
+    });
 
+    html = [];
+
+
+    for (var ne in news) {
+        var n = news[ne]
+
+
+        html.push('<hr>')
+        html.push('<h6>' + n.title + '</h6>');
+
+        cont = $(n.content).text();
+        if (cont.length > 100) {
+            cont = cont.substring(0, 97) + '...';
+        }
+        html.push('<p>' + cont + ' </p>');
+
+        var t = "";
+
+        if (n.targets.length == 1) {
+            t = gettext('Lintu') + ': ' + sorter.getBird(n.targets[0]).name;
+        } else {
+            t = gettext('Linnut') + ': ';
+            for (var j = 0; j < n.targets.length; j++) {
+                t += sorter.getBird(n.targets[j]).name;
+
+                if (j == 4 && n.targets.length > 5) {
+                    t = t + gettext(' ja ' + String(n.targets.length - j) + ' muuta');
+                    break;
+                }
+                if (j != n.targets.length - 1) {
+                    t = t + ", "
+                }
+            }
+        }
+        html.push('<p">' + t + '</p>');
+
+        if (n.publishDate) {
+            html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
+        }
+        html.push('<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
+        html.push(gettext('Avaa'));
+        html.push('</button>');
+    }
+    $("#newslist").empty();
+    $("#newslist").append(html.join(''));
 }
 
 function ColorChart() {

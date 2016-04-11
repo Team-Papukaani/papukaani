@@ -94,15 +94,20 @@ function showPointsForIndividual(ids) {
 
             for (var ne in sorter.getBird(ids[i]).news) {
                 var n = sorter.getBird(ids[i]).news[ne];
+                html.push('<h6>' + n.title + '</h6>');
 
-                html.push('<h3>' + n.title + '</h3>');
+                cont = $(n.content).text();
+                if (cont.length > 100) {
+                    cont = cont.substring(0, 97) + '...';
+                }
+                html.push('<p>' + cont +  ' </p>');
 
                 var t = "";
 
                 if (n.targets.length == 1) {
-                    t = "Lintu: " + sorter.getBird(n.targets[0]).name;
+                    t = gettext('Lintu') + ': ' + sorter.getBird(n.targets[0]).name;
                 } else {
-                    t = "Linnut: ";
+                    t = gettext('Linnut') + ': ';
                     for (var j = 0; j < n.targets.length; j++) {
                         t += sorter.getBird(n.targets[j]).name;
 
@@ -115,20 +120,13 @@ function showPointsForIndividual(ids) {
                         }
                     }
                 }
-                html.push('<b style="display: block">' + t + '</b>');
+                html.push('<p">' + t + '</p>');
 
                 if (n.publishDate) {
                     html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
                 }
-
-                cont = $(n.content).text();
-                if (cont.length > 100) {
-                    cont = cont.substring(0, 97);
-                }
-
-                html.push('<p style="display: inline">' + cont + '... </p>');
-                html.push('<button type="button" style="display: inline;" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
-                html.push(gettext('Lisää uutisesta'));
+                html.push('<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
+                html.push(gettext('Avaa'));
                 html.push('</button>');
                 html.push('<hr>')
             }

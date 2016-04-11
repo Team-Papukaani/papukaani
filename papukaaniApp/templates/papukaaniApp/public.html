@@ -61,15 +61,14 @@
                             aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"></h4>
-                    <h6 class="modal-species"></h6>
                 </div>
                 <div class="modal-body">
-                    <div id="desc"></div>
+                    <div class="newsContent"></div>
                 </div>
                 <div class="modal-footer">
-                    <div>
-                        <a id="url" class="btn btn-primary" style="float: left" href="#" target="_blank"></a>
-                    </div>
+                    <div class="publishDate" style="text-align: left;"></div>
+                    <div class="relatedBirds" style="display: inline; float: left; text-align: left;"></div>
+
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         {% trans "Sulje" %}
                     </button>
@@ -160,7 +159,7 @@
                                     <div class="modal-body">
                                         <input class="form-control" type="text" readonly id="iframeSrc"/>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="modal-footer" style="float: left;">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">
                                             {% trans "Sulje" %}
                                         </button>
@@ -202,7 +201,7 @@
                 </div>
             </div>
             <div class="hidden-sm col-md-3 col-lg-2">
-                <div id="news">
+                <div id="news" style="font-size: small; padding-left: 15px;">
                     <h1>{% trans "Uutiset" %}</h1>
                 </div>
             </div>
@@ -287,6 +286,31 @@
             console.log(news)
 
             modal.find('.modal-title').html(news.title);
+            modal.find('.newsContent').html(news.content);
+
+            var publishedString = (news.publishDate != undefined) ? news.publishDate : '{% trans "Ei tiedossa" %}';
+            modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + publishedString);
+
+
+            if (news.targets.length == 1) {
+                modal.find('.relatedBirds').html('{% trans "Liittyy lintuun" %}: ' + news.publishDate);
+            } else {
+                var t;
+                if (news.targets.length == 1) {
+                    t = gettext('Liittyy lintuun') + ':' + sorter.getBird(news.targets[0]).name;
+                } else {
+                    t = gettext('Liittyy lintuihin') + ': '
+                    for (var j = 0; j < news.targets.length; j++) {
+                        t += sorter.getBird(news.targets[j]).name;
+                        if (j != news.targets.length - 1) {
+                            t = t + ", "
+                        }
+                    }
+                }
+                modal.find('.relatedBirds').html(t);
+            }
+
+
 
         });
 

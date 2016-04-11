@@ -16,7 +16,7 @@ $(function () {
         var new_content = tinyMCE.get('news_content').getContent();
         var new_bird = $("#birdlist").html();
         if( (modal_original_data != modal_new_data) || (orginal_content != new_content) || (orginal_bird != new_bird)) {
-            if (!confirm("Do you want to leave without saving?")) {
+            if (!confirm(gettext("Haluatko poistua tallentamatta?"))) {
                 e.preventDefault();
             }
             else $('#news_modal').modal('hide');

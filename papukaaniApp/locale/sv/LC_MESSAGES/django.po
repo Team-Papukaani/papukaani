@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-04 19:35+0300\n"
+"POT-Creation-Date: 2016-04-11 10:45+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgstr "Sidan finns inte."
 #: papukaaniApp/templates/papukaaniApp/choose.html:81
 #: papukaaniApp/templates/papukaaniApp/devices.html:76
 #: papukaaniApp/templates/papukaaniApp/news.html:95
-#: papukaaniApp/templates/papukaaniApp/public.html:206
+#: papukaaniApp/templates/papukaaniApp/public.html:207
 msgid "fi"
 msgstr "sv"
 
@@ -103,12 +103,12 @@ msgid "Peruuta"
 msgstr "Avbryt"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:34
-#: papukaaniApp/templates/papukaaniApp/public.html:107
+#: papukaaniApp/templates/papukaaniApp/public.html:108
 msgid "Aloita seuranta:"
 msgstr "Börja spåra:"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:42
-#: papukaaniApp/templates/papukaaniApp/public.html:112
+#: papukaaniApp/templates/papukaaniApp/public.html:113
 msgid "Lopeta seuranta:"
 msgstr "Sluta spåra:"
 
@@ -317,8 +317,8 @@ msgstr "URL till beskrivning på svenska"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:118
 #: papukaaniApp/templates/papukaaniApp/news.html:62
-#: papukaaniApp/templates/papukaaniApp/public.html:50
-#: papukaaniApp/templates/papukaaniApp/public.html:140
+#: papukaaniApp/templates/papukaaniApp/public.html:51
+#: papukaaniApp/templates/papukaaniApp/public.html:141
 msgid "Sulje"
 msgstr "Stäng"
 
@@ -328,7 +328,7 @@ msgstr "Formatets namn*"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:21
 msgid "Muokkaa"
-msgstr "Redigera fågel"
+msgstr "Redigera"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:33
 msgid "Haluatko varmasti poistaa formaatin "
@@ -380,24 +380,24 @@ msgstr "Fåglar som publikation gäller"
 msgid "Reittiä ladataan"
 msgstr "Rutten laddas"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:74
+#: papukaaniApp/templates/papukaaniApp/public.html:75
 msgid "Lisää lintu"
 msgstr "Lägg till en fågel"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:92
-#: papukaaniApp/templates/papukaaniApp/public.html:98
+#: papukaaniApp/templates/papukaaniApp/public.html:93
+#: papukaaniApp/templates/papukaaniApp/public.html:99
 msgid "Nopeus"
 msgstr "Hastighet"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:121
+#: papukaaniApp/templates/papukaaniApp/public.html:122
 msgid "Jaa"
 msgstr "Dela"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:133
+#: papukaaniApp/templates/papukaaniApp/public.html:134
 msgid "Linkki"
 msgstr "Länk"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:259
+#: papukaaniApp/templates/papukaaniApp/public.html:261
 msgid "Lue lisää"
 msgstr "Läs mera"
 

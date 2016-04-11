@@ -155,10 +155,12 @@ class PublicPage(PageWithDeviceSelector):
 
 
     def get_iframe_url(self):
+        time.sleep(1)
         self.IFRAME_BUTTON_OPEN.click()
         time.sleep(2)
         url = self.IFRAME_SRC.get_attribute('value')
         self.IFRAME_BUTTON_CLOSE.click()
+        time.sleep(1)
         return url
 
     def get_linelayercanvas_as_base64(self):

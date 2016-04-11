@@ -27,7 +27,7 @@ def getPublicGatheringsForIndividual(request):
     data = {}
     for id in ids:
         indiv = individual.get(id)
-        gatherings = _get_gatherings_data(id, public_only=True)
+        gatherings = _get_gatherings_data(id, public_only=True, extras_onlymapdata=True)
         gatherings.append(indiv.nickname)
         data[id] = gatherings
     return Response(data)
@@ -41,18 +41,36 @@ def getAllGatheringsForIndividual(request):
         extras_originatingDevice=True)   
     return Response(gatherings)
 
-def _get_gatherings_data(individual_id, public_only=True, extras_originatingDevice=False):
+def _get_gatherings_data(individual_id, public_only=True, extras_originatingDevice=False, extras_onlymapdata=False):
     indiv = individual.get(individual_id)
-    gatherings_obj = indiv.get_public_gatherings() if public_only else indiv.get_all_gatherings(
-        extras_originatingDevice=extras_originatingDevice)
+    gatherings_obj = indiv.get_public_gatherings() if public_only else indiv.get_all_gatherings(extras_originatingDevice=extras_originatingDevice)
     gatherings_json = []
 
     for go in gatherings_obj:
-        gj = go.to_lajistore_json() 
+        gj = go.to_lajistore_json()
 
         _move_altitude(gj)
+
         if public_only:
             _remove_publicity(gj)
+
+        if extras_onlymapdata:
+            gj['x'] = gj['wgs84Geometry']['coordinates'][1]
+            gj['y'] = gj['wgs84Geometry']['coordinates'][0]
+            del gj['wgs84Geometry']
+
+            gj['d'] = gj['dateBegin']
+            del gj['dateBegin']
+
+            gj['t'] = gj['temperature']
+            del gj['temperature']
+
+            if 'altitude' in gj:
+                gj['a'] = gj['altitude']
+                del gj['altitude']
+
+            del gj['higherGeography']
+            del gj['country']
 
         if extras_originatingDevice:
             if not 'extras' in gj:

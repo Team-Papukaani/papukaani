@@ -76,9 +76,9 @@ tinymce.init({
     height: 300,
     resize: false,
     menubar: false,
-    plugins: "image",
+    plugins: "image code",
     image_description: false,
-    toolbar: 'undo redo | bullist numlist | bold italic underline | fontselect fontsizeselect |  image'
+    toolbar: 'undo redo | bullist numlist | bold italic underline | fontselect fontsizeselect |  image code'
 });
 
 function save_news(id) {

@@ -51,11 +51,9 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
         for (var i = 0; i < lines.length; i++) {
 
             var line = calculatePosition(datetimestringToUnixtime(lines[i].start), datetimestringToUnixtime(lines[i].end), lineslayer);
-            if (line.length === 0) continue;
-
             lineslayerCtx.fillStyle = lines[i].color;
             var currentLinePosY = offset + (lineHeight + 2 * offset) * i;
-            lineslayerCtx.fillRect(line[0], currentLinePosY, line[1], lineHeight);
+            lineslayerCtx.fillRect(line[0], currentLinePosY, line[1] - line[0], lineHeight);
         }
     }
 
@@ -79,26 +77,24 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
     }
 
     function calculatePosition(timeA, timeB, canvas) {
-        if (timeA < min && timeB >= min) {
-            timeA = min;
-        }
-        if (timeB > max && timeA <= max) {
-            timeB = max;
-        }
-        if (timeB < min || timeA > max) {
-            return [];
-        }
-
-        var a = timeA - min;
-        var b = timeB - min;
 
         var length = parseFloat(max - min);
+
         if (length <= 0) return [0, canvas.width]; // timeline length is zero
 
-        a = Math.min(Math.ceil(a / length * canvas.width), canvas.width);
-        b = Math.min(Math.ceil(b / length * canvas.width), canvas.width);
+        timeA -= min;
+        timeB -= min;
 
-        if (b - a < minLength) b = minLength; // only one datapoint. set minimum length for line.
+        var a = Math.min(Math.ceil(timeA / length * canvas.width), canvas.width);
+        var b = Math.min(Math.ceil(timeB / length * canvas.width), canvas.width);
+
+        if (b - a < minLength) { // only one datapoint. set minimum length for line.
+            b = a + minLength;
+        }
+        if (a == canvas.width) { // left edge is at the right end of the canvas
+            a -= minLength;
+            b -= minLength;
+        }
 
         return [a, b];
     }
@@ -110,4 +106,3 @@ function CanvasSlider(container, uilayer, lineslayer, backgroundlayer) {
     }
 
 }
-

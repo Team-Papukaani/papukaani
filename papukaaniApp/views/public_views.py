@@ -11,6 +11,7 @@ from papukaaniApp.views.login_view import *
 from papukaaniApp.views.decorators import count_lajistore_requests
 
 
+
 @count_lajistore_requests
 @xframe_options_exempt  # Allows the view to be loaded in an iFrame
 def public(request):
@@ -19,12 +20,16 @@ def public(request):
     """
     individuals = dict()
     inds_objects = individual.find_exclude_deleted()
+
+
     for individuale in inds_objects:
+
         key = individuale.taxon
         individuals.setdefault(key, [])
         individualInfo = {'nickname': individuale.nickname,
                           'description': individuale.description,
-                          'descriptionURL': individuale.descriptionURL
+                          'descriptionURL': individuale.descriptionURL,
+                          'news' : json.dumps(news.find_by_individual_and_language(individualID=individuale.id, language=request.LANGUAGE_CODE), default=set_default)
                           }
 
         individuals[key].append({individuale.id: individualInfo})
@@ -57,3 +62,8 @@ def public(request):
                }
 
     return render(request, 'papukaaniApp/public.html', context)
+
+def set_default(obj):
+    if isinstance(obj, set):
+        return list(obj)
+    return obj.__dict__

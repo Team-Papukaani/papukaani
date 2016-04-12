@@ -5,6 +5,8 @@ function IndividualSorter(restUrl, individuals, species, map) {
     this.routes = [];
     this.map = map;
     this.birdInfo = {};
+    this.news = {};
+    this.visibleNews = {}
     this.createIndividualSelector(individuals, species);
     this.colorChart = new ColorChart();
 }
@@ -24,6 +26,13 @@ IndividualSorter.prototype.changeIndividualSelection = function (individualId) {
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
     for (var i = 0; i < this.routes.length; i++) {
         if (this.routes[i].individualId == individualId) {
+
+            for (var ne in sorter.getBird(individualId).news) {
+                var n = sorter.getBird(individualId).news[ne];
+                sorter.visibleNews[n.id]--;
+            }
+            rewriteNews();
+
             this.colorChart.freeColor(this.routes[i].individualId);
             player.removeRoute(this.routes[i]);
             this.routes.splice(i, 1);
@@ -41,6 +50,7 @@ IndividualSorter.prototype.refresh = function () {
 function showPointsForIndividual(ids) {
 
     if (request.readyState === 4) {
+
         $('#loading').modal('hide');
 
         var data = JSON.parse(request.response);
@@ -87,12 +97,80 @@ function showPointsForIndividual(ids) {
             this.routes.push(route);
             player.addRoute(route);
 
+            for (var ne in sorter.getBird(ids[i]).news) {
+                var n = sorter.getBird(ids[i]).news[ne];
+                if (!(n.id in sorter.visibleNews) || sorter.visibleNews[n.id] == 0) {
+                    sorter.visibleNews[n.id] = 1;
+                } else {
+                    sorter.visibleNews[n.id]++;
+                }
+            }
+
+            rewriteNews();
         }
         player.refreshRoutes(true);
         request = null;
     }
 }
 
+
+function rewriteNews() {
+
+    news = [];
+    for (var newsId in sorter.visibleNews) {
+        if (sorter.visibleNews[newsId] > 0) {
+            news.push(sorter.getNews(newsId));
+        }
+    }
+    news.sort(function(a,b) {
+        return new Date(b.publishDate) - new Date(a.publishDate);
+    });
+
+    html = [];
+
+
+    for (var ne in news) {
+        var n = news[ne]
+
+
+        html.push('<hr>')
+        html.push('<h6>' + n.title + '</h6>');
+
+        cont = $(n.content).text();
+        if (cont.length > 100) {
+            cont = cont.substring(0, 97) + '...';
+        }
+        html.push('<p>' + cont + ' </p>');
+
+        var t = "";
+
+        if (n.targets.length == 1) {
+            t = gettext('Lintu') + ': ' + sorter.getBird(n.targets[0]).name;
+        } else {
+            t = gettext('Linnut') + ': ';
+            for (var j = 0; j < n.targets.length; j++) {
+                t += sorter.getBird(n.targets[j]).name;
+
+                if (j == 4 && n.targets.length > 5) {
+                    t = t + gettext(' ja ' + String(n.targets.length - j) + ' muuta');
+                    break;
+                }
+                if (j != n.targets.length - 1) {
+                    t = t + ", "
+                }
+            }
+        }
+        html.push('<p">' + t + '</p>');
+
+
+        html.push('<span style="font-style: italic; display: block;">' + displayTime(n.publishDate) + '</span>')
+        html.push('<button type="button" class="btn btn-primary btn-xs openNews" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
+        html.push(gettext('Avaa'));
+        html.push('</button>');
+    }
+    $("#newslist").empty();
+    $("#newslist").append(html.join(''));
+}
 
 function ColorChart() {
     this.colors = [{color: "#CC0000"}, {color: "#0000CC"}, {color: "#006600"},
@@ -132,6 +210,9 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     var that = this;
 
     selector.addOption = function (individualId, taxon, species) {
+
+        var news = JSON.parse(taxon.news);
+
         var lang = gettext('fi');
         if (lang != 'fi' && taxon.description != null && (taxon.description[lang] == null || taxon.description[lang] == "")) {
             lang = 'fi';
@@ -143,7 +224,8 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
             name: taxon.nickname,
             url: "",
             description: "",
-            species: species
+            species: species,
+            news: news
         };
         if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
             taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
@@ -153,7 +235,11 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
             taxon.description[lang] !== undefined && taxon.description[lang] !== "") {
             bird.description = taxon.description[lang];
         }
+
         selector.append(e);
+        for (n in news) {
+            that.news[news[n].id] = news[n];
+        }
         that.birdInfo[individualId] = bird;
     };
 
@@ -177,6 +263,10 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
 
 IndividualSorter.prototype.getBird = function (individualId) {
     return this.birdInfo[individualId];
+};
+
+IndividualSorter.prototype.getNews = function (newsId) {
+    return this.news[newsId];
 };
 
 function PublicMap(loc, zoom) {

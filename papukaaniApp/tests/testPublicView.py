@@ -49,8 +49,23 @@ class PublicView(StaticLiveServerTestCase):
             "title": "Uutinen2",
             "content": "Uutisen sisältö2",
             "language": "fi",
-            "targets": { self.I2.id }
+            "targets": { self.I.id, self.I2.id },
+            "publishDate": "2010-12-16T00:00:00+00:00"
         }
+        self.oldnews = news.create("Uutinen3","Uutisen sisältö3", "fi",
+                              publishDate="2009-12-15T00:00:00+00:00",
+                              targets={ self.I.id })
+
+        self.newnews = news.create("Uutinen4","Uutisen sisältö4", "fi",
+                              publishDate="2011-12-15T00:00:00+00:00",
+                              targets={ self.I.id })
+
+        self.swenews = news.create("Svensk nyhet","Svenska bra", "sv",
+                              publishDate="2011-12-15T00:00:00+00:00",
+                              targets={ self.I.id })
+
+        self.nodatenews = news.create("Dateless","Dateless", "fi",
+                              targets={ self.I.id })
 
         self.N = news.create(**new)
         self.N2 = news.create(**new2)
@@ -92,6 +107,10 @@ class PublicView(StaticLiveServerTestCase):
         self.D2.delete()
         self.N.delete()
         self.N2.delete()
+        self.swenews.delete()
+        self.oldnews.delete()
+        self.newnews.delete()
+        self.nodatenews.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
         self.page.play_animation_for_individual(str(self.I.id))
@@ -343,23 +362,48 @@ class PublicView(StaticLiveServerTestCase):
         self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
 
     def selecting_bird_displays_its_news(self):
+        self.page.change_individual_selection(str(self.I2.id))
+        self.assertTrue(
+            "Uutinen2" in self.page.driver.find_element_by_css_selector("#newslist").text)
+        self.assertTrue(
+            "Uutinen1" not in self.page.driver.find_element_by_css_selector("#newslist").text)
+
+    def news_of_language_not_selected_not_shown(self):
         self.page.change_individual_selection(str(self.I.id))
         self.assertTrue(
-            "Uutinen1" in self.page.driver.find_element_by_css_selector("#newslist").text)
+            "Svensk nyhet" not in self.page.driver.find_element_by_css_selector("#newslist").text)
+
+    def news_without_dates_not_shown(self):
+        self.page.change_individual_selection(str(self.I.id))
         self.assertTrue(
-            "Uutinen2" not in self.page.driver.find_element_by_css_selector("#newslist").text)
+            "Dateless" not in self.page.driver.find_element_by_css_selector("#newslist").text)
 
     def news_are_ordered_by_date(self):
         self.page.change_individual_selection(str(self.I.id))
-        self.oldnews = news.create("Uutinen3","Uutisen sisältö3", "fi",
-                              publishDate="2009-12-15T00:00:00+00:00",
-                              targets={ self.I.id })
+        self.assertTrue(
+            "2011" in str(self.page.driver.find_element_by_css_selector("#newslist").text).rsplit('\n')[2])
+        self.assertTrue(
+            "2009" in str(self.page.driver.find_element_by_css_selector("#newslist").text).rsplit('\n')[10])
 
-        self.newnews = news.create("Uutinen4","Uutisen sisältö4", "fi",
-                              publishDate="2011-12-15T00:00:00+00:00",
-                              targets={ self.I.id })
 
-        print(self.page.driver.find_element_by_css_selector("#newslist").text)
+    def removing_bird_removes_news_regarding_only_that_bird(self):
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.remove_selected_individual(str(self.I.id))
+        self.assertTrue(not self.page.driver.find_element_by_css_selector("#newslist").text)
 
-        self.oldnews.delete()
-        self.newnews.delete()
+
+    def removing_bird_doesnt_remove_news_regarding_other_bird_as_well(self):
+        self.page.change_individual_selection(str(self.I.id))
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.remove_selected_individual(str(self.I.id))
+        self.assertTrue("Uutinen2" in self.page.driver.find_element_by_css_selector("#newslist").text)
+
+    def modal_displays_news_correctly(self):
+        self.page.change_individual_selection(str(self.I2.id))
+        self.page.driver.find_element_by_css_selector("button.openNews").click()
+        self.assertTrue("Uutinen2" in self.page.driver.find_element_by_css_selector("#newsModal h4.modal-title").text)
+        self.assertTrue("Uutisen sisältö2" in self.page.driver.find_element_by_css_selector(".newsContent").text)
+        self.assertTrue("Julkaistu: 16.12.2010 00:00" in self.page.driver.find_element_by_css_selector(".publishDate").text)
+        self.assertTrue("Liittyy lintuihin: Birdie, Birdie2" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
+
+

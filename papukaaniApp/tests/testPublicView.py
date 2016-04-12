@@ -194,6 +194,15 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_individual_selection(str(self.I.id))
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 73)
 
+    def test_animation_starts_replaying_correctly(self):
+        self.page.change_individual_selection(str(self.I.id))
+        elem = self.page.PLAY_SLIDER
+        ActionChains(self.page.driver).drag_and_drop_by_offset(elem, elem.size['width'], 0).perform()
+        time.sleep(1)
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 71)
+        self.page.play()
+        self.assertLess(len(self.page.driver.find_elements_by_tag_name("g")), 71)
+
     def test_speedslider_is_hidden_initially(self):
         self.assertEquals(self.page.SPEED_SLIDER.is_displayed(), False)
 

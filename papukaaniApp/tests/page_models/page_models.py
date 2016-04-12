@@ -87,6 +87,7 @@ class PublicPage(PageWithDeviceSelector):
 
     POLYLINE = Element(By.TAG_NAME, 'g')
     PLAY = Element(By.ID, 'play')
+    PLAY_SLIDER  = Element(By.ID, 'playSlider')
     SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')

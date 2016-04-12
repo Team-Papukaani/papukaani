@@ -126,7 +126,7 @@ Player.prototype.removeRoute = function (route) {
         this.routes.splice(index, 1);
         this.map.removeLayer(route.featureGroup);
         route.lines = [];
-        this.refreshRoutes();
+        this.refreshRoutes(true);
     }
     if (this.routes.length === 0) {
         this.stop();
@@ -175,12 +175,13 @@ Player.prototype.play = function () {
     }
     if (this.runner) {
         clearInterval(this.runner);
-
         $("#play").html('<span class="glyphicon glyphicon-play"></span>');
         this.runner = undefined;
     } else {
+        if ($('#playLabel').text() === $('#playLabel_end').text()) { // replay
+            this.refreshRoutes(false);
+        }
         $("#play").html('<span class="glyphicon glyphicon-pause"></span>');
-        var options = this.slider.slider("option");
         this.run();
     }
 };
@@ -277,10 +278,12 @@ Player.prototype.clearRoute = function (route) {
     route.marker.addTo(route.featureGroup);
 }
 
-Player.prototype.refreshRoutes = function (animate) {
+Player.prototype.refreshRoutes = function (draw) {
     this.updateMinMax();
     for (var i = 0, len = this.routes.length; i < len; i++) {
         this.clearRoute(this.routes[i]);
     }
-    this.drawRoutes(animate);
+    if (draw) {
+        this.drawRoutes();
+    }
 }

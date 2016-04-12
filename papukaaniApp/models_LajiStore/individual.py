@@ -13,7 +13,7 @@ class Individual:
     Represents the Individual table of LajiStore
     '''
 
-    def __init__(self, nickname, taxon, description=None, descriptionURL=None, ringID="", id=None, deleted=False, **kwargs):
+    def __init__(self, nickname, taxon, description=None, descriptionURL=None, ringID="", id=None, deleted=False):
         self.id = id
         self.nickname = nickname
         self.taxon = taxon

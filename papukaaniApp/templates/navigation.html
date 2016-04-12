@@ -20,8 +20,8 @@
                        id="choose_link"><span>{% trans "Valitse julkiset pisteet" %}</span></a></li>
                 <li><a href='{% url "devices" %}'><span>{% trans "Valitse linnun lähetin" %}</span></a></li>
                 <li><a href='{% url "individuals" %}'><span>{% trans "Hallinnoi lintuja" %}</span></a></li>
-                <li><a href='{% url "news" %}' id='last_left'><span>{% trans "Uutiset" %}</span></a></li>
-                <li><a href='{% url "public" %}' id='last_left'><span>{% trans "Julkinen" %}</span></a></li>
+                <li><a href='{% url "news" %}'><span>{% trans "Uutiset" %}</span></a></li>
+                <li><a href='{% url "public" %}'><span>{% trans "Julkinen" %}</span></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% get_current_language as LANGUAGE_CODE %}

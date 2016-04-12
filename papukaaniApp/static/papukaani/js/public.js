@@ -29,7 +29,7 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
 
             for (var ne in sorter.getBird(individualId).news) {
                 var n = sorter.getBird(individualId).news[ne];
-                sorter.visibleNews[n.id] = sorter.visibleNews[n.id] - 1;
+                sorter.visibleNews[n.id]--;
             }
             rewriteNews();
 
@@ -102,7 +102,7 @@ function showPointsForIndividual(ids) {
                 if (!(n.id in sorter.visibleNews) || sorter.visibleNews[n.id] == 0) {
                     sorter.visibleNews[n.id] = 1;
                 } else {
-                    sorter.visibleNews[n.id] = sorter.visibleNews[n.id] + 1;
+                    sorter.visibleNews[n.id]++;
                 }
             }
 

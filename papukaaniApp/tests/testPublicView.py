@@ -38,11 +38,11 @@ class PublicView(StaticLiveServerTestCase):
         self.D2 = device.create(**dev2)
 
         new = {
-            "title": "Uutinen",
+            "title": "Uutinen1",
             "content": "Uutisen sisältö",
             "language": "fi",
             "targets": { self.I.id },
-            "publishDate": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")+"+00:00"
+            "publishDate": "2010-12-15T00:00:00+00:00"
         }
 
         new2 = {
@@ -51,14 +51,6 @@ class PublicView(StaticLiveServerTestCase):
             "language": "fi",
             "targets": { self.I2.id }
         }
-
-        self.oldnews = news.create("Uutinen3","Uutisen sisältö3", "fi",
-                              publishDate=(datetime.datetime.now() - datetime.timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
-                              targets={ self.I.id })
-
-        self.newnews = news.create("Uutinen4","Uutisen sisältö4", "fi",
-                              publishDate=(datetime.datetime.now() + datetime.timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
-                              targets={ self.I.id })
 
         self.N = news.create(**new)
         self.N2 = news.create(**new2)
@@ -98,6 +90,8 @@ class PublicView(StaticLiveServerTestCase):
         self.D.delete()
         self.B.delete()
         self.D2.delete()
+        self.N.delete()
+        self.N2.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
         self.page.play_animation_for_individual(str(self.I.id))
@@ -351,14 +345,21 @@ class PublicView(StaticLiveServerTestCase):
     def selecting_bird_displays_its_news(self):
         self.page.change_individual_selection(str(self.I.id))
         self.assertTrue(
-            "Uutinen" in self.page.driver.find_element_by_css_selector("#newslist").text)
+            "Uutinen1" in self.page.driver.find_element_by_css_selector("#newslist").text)
         self.assertTrue(
             "Uutinen2" not in self.page.driver.find_element_by_css_selector("#newslist").text)
 
     def news_are_ordered_by_date(self):
-
-
-
         self.page.change_individual_selection(str(self.I.id))
+        self.oldnews = news.create("Uutinen3","Uutisen sisältö3", "fi",
+                              publishDate="2009-12-15T00:00:00+00:00",
+                              targets={ self.I.id })
+
+        self.newnews = news.create("Uutinen4","Uutisen sisältö4", "fi",
+                              publishDate="2011-12-15T00:00:00+00:00",
+                              targets={ self.I.id })
 
         print(self.page.driver.find_element_by_css_selector("#newslist").text)
+
+        self.oldnews.delete()
+        self.newnews.delete()

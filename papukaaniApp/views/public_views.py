@@ -29,7 +29,7 @@ def public(request):
         individualInfo = {'nickname': individuale.nickname,
                           'description': individuale.description,
                           'descriptionURL': individuale.descriptionURL,
-                          'news' : json.dumps(news.find_by_individual_and_language(individualID=individuale.id, language=""), default=set_default)
+                          'news' : json.dumps(news.find_by_individual_and_language(individualID=individuale.id, language=request.LANGUAGE_CODE), default=set_default)
                           }
 
         individuals[key].append({individuale.id: individualInfo})

@@ -11,7 +11,7 @@ class Document:
     Represents the LajiStore table Document
     '''
 
-    def __init__(self, gatherings, deviceID, dateCreated, dateEdited, collectionID=None, id=None, **kwargs):
+    def __init__(self, gatherings, deviceID, dateCreated, dateEdited, collectionID=None, id=None):
 
         if len(gatherings) > 0 and isinstance(gatherings[0], gathering.Gathering):
             self.gatherings = gatherings

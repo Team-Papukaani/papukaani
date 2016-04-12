@@ -1,6 +1,29 @@
 $(function () {
     load_news();
 
+    var modal_original_data;
+    var orginal_content;
+    var orginal_bird;
+    $('#news_modal').on('shown.bs.modal', function(e) {
+        modal_original_data = $( "input, textarea, select" ).serialize();
+        orginal_content = tinyMCE.get('news_content').getContent();
+        orginal_bird = $("#birdlist").html();
+    });
+
+    $("#news_sulje, #news_close_button").click(function (e) {
+        // check if the data was changed since the modal was openened
+        var modal_new_data = $( "input, textarea, select" ).serialize();
+        var new_content = tinyMCE.get('news_content').getContent();
+        var new_bird = $("#birdlist").html();
+        if( (modal_original_data != modal_new_data) || (orginal_content != new_content) || (orginal_bird != new_bird)) {
+            if (!confirm(gettext("Haluatko poistua tallentamatta?"))) {
+                e.preventDefault();
+            }
+            else $('#news_modal').modal('hide');
+        }
+        else $('#news_modal').modal('hide');
+    });
+
     $("#newslist").on("click", "button.remove", function (e) {
         e.preventDefault();
         if (confirm(gettext("Haluatko varmasti poistaa uutisen?"))) {
@@ -173,7 +196,7 @@ function load_news() {
 
             var targets = "";
             $.each(v.targets, function (key, value) {
-                targets = targets + (targets ? ', ' : '') + sorter.getName(value);
+                targets = targets + (targets ? ', ' : '') + '<b>' + sorter.getName(value) + '</b> ' + sorter.getSpecies(value);
             });
 
             html.push($('<tr></tr>').append(
@@ -185,7 +208,7 @@ function load_news() {
             ).append(
                 $('<td id="publishdate"></td>').text(v.publishDate ? displayTimeWithLeadingZeroes(v.publishDate) : '')
             ).append(
-                $('<td id="targets"></td>').text(targets)
+                $('<td id="targets"></td>').html(targets)
             ).append(
                 $('<td><div class="btn-toolbar"><button class="update btn btn-info btn-cons" data-id="' + v.id + '"> ' + gettext("Muokkaa") +
                     '</button><button class="remove btn btn-danger btn-cons" data-id="' + v.id + '">' + gettext("Poista") + '</button></div></td>')
@@ -207,8 +230,10 @@ var request = null;
 
 function IndividualSorter(individuals, species) {
     this.birdName = {};
+    this.birdSpecies = {};
     this.individuals = individuals;
     this.species = species;
+
     this.createIndividualSelector();
 }
 
@@ -221,6 +246,11 @@ IndividualSorter.prototype.restoreOptions = function (individualId) {
 IndividualSorter.prototype.getName = function (individualId) {
     if (!this.birdName.hasOwnProperty(individualId)) return individualId;
     return this.birdName[individualId];
+}
+
+IndividualSorter.prototype.getSpecies = function (individualId) {
+    if (!this.birdSpecies.hasOwnProperty(individualId)) return "";
+    return '(' + this.birdSpecies[individualId] + ')';
 }
 
 IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
@@ -242,19 +272,20 @@ IndividualSorter.prototype.createIndividualSelector = function () {
     var selector = $("#selectIndividual");
     var that = this;
 
-    selector.addOption = function (individualId, taxon) {
+    selector.addOption = function (individualId, taxon, species) {
         var e = '<option value="' + individualId + '">';
         e = e + taxon;
         e = e + '</option>';
         selector.append(e);
         that.birdName[individualId] = taxon;
+        that.birdSpecies[individualId] = species;
     };
 
     $.each(that.species, function (key, s) {
         selector.append('<option value="" disabled>' + s + '</option>');
         $.each(that.individuals[s], function (key, individual) {
             $.each(individual, function (individualId, taxon) {
-                selector.addOption(individualId, taxon)
+                selector.addOption(individualId, taxon, s)
             });
         });
     });

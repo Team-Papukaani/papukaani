@@ -194,6 +194,15 @@ class PublicView(StaticLiveServerTestCase):
         self.page.change_individual_selection(str(self.I.id))
         self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 73)
 
+    def test_animation_starts_replaying_correctly(self):
+        self.page.change_individual_selection(str(self.I.id))
+        elem = self.page.PLAY_SLIDER
+        ActionChains(self.page.driver).drag_and_drop_by_offset(elem, elem.size['width'], 0).perform()
+        time.sleep(1)
+        self.assertEquals(len(self.page.driver.find_elements_by_tag_name("g")), 71)
+        self.page.play()
+        self.assertLess(len(self.page.driver.find_elements_by_tag_name("g")), 71)
+
     def test_speedslider_is_hidden_initially(self):
         self.assertEquals(self.page.SPEED_SLIDER.is_displayed(), False)
 
@@ -266,6 +275,9 @@ class PublicView(StaticLiveServerTestCase):
         time.sleep(1)
         self.assertTrue(
             self.page.driver.find_element_by_css_selector("#descriptionModal h4.modal-title").text == ("Birdie"))
+
+        self.assertTrue(
+            self.page.driver.find_element_by_css_selector("#descriptionModal h6.modal-species").text == ("Kaakkuri"))
         self.assertEquals(self.page.driver.find_element_by_id("desc").text, "birdiekuvaus")
         self.assertTrue(
             self.page.driver.find_element_by_id("url").get_attribute("href") == ("http://www.birdie.kek/"))

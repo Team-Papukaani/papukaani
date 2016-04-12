@@ -274,6 +274,7 @@ body {
 
 #selectIndividual {
     list-style: none;
+    max-width: 190px;
 }
 
 .col {
@@ -290,6 +291,9 @@ body {
     margin-bottom: 5px;
 }
 
+.modal-species {
+    font-style: italic;
+}
 
 #selectIndividual li label {
     cursor: pointer;

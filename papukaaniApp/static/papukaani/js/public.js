@@ -34,7 +34,7 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
 };
 
 IndividualSorter.prototype.refresh = function () {
-    player.refreshRoutes();
+    player.refreshRoutes(true);
 };
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
@@ -88,7 +88,7 @@ function showPointsForIndividual(ids) {
             player.addRoute(route);
 
         }
-        player.refreshRoutes();
+        player.refreshRoutes(true);
         request = null;
     }
 }
@@ -131,7 +131,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
     var selector = $("#selectIndividual");
     var that = this;
 
-    selector.addOption = function (individualId, taxon) {
+    selector.addOption = function (individualId, taxon, species) {
         var lang = gettext('fi');
         if (lang != 'fi' && taxon.description != null && (taxon.description[lang] == null || taxon.description[lang] == "")) {
             lang = 'fi';
@@ -142,7 +142,8 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         var bird = {
             name: taxon.nickname,
             url: "",
-            description: ""
+            description: "",
+            species: species
         };
         if (taxon.descriptionURL !== null && taxon.descriptionURL[lang] !== null &&
             taxon.descriptionURL[lang] !== undefined && taxon.descriptionURL[lang] !== "") {
@@ -160,7 +161,7 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         selector.append('<option value="" disabled>' + s + '</option>');
         $.each(individuals[s], function (key, individual) {
             $.each(individual, function (individualId, taxon) {
-                selector.addOption(individualId, taxon)
+                selector.addOption(individualId, taxon, s)
             })
         })
     })

@@ -4,7 +4,6 @@ function Player(map) {
     this.routes = [];
     this.animating = false;
     this.routeSplit = 100; // points per polyline. affects line stylechanges and backwardsreversing optimization
-    this.fillerDistance = 360; // time in seconds between fake points of data for smoother animation
     this.slider = $("#playSlider");
     this.slider.slider({
         range: "min",
@@ -52,7 +51,7 @@ Player.prototype.addRoute = function (route) {
         return;
     }
     route.points.sort(function (a, b) {
-        return new Date(a.dateBegin) - new Date(b.dateBegin);
+        return new Date(a.d) - new Date(b.d);
     });
     if (route.points.length > 1) {
         var orig = route.points.slice(0);
@@ -65,15 +64,17 @@ Player.prototype.addRoute = function (route) {
 
             route.points.push(pointA);
 
-            var slice = parseFloat(datetimestringToUnixtime(pointB.dateBegin) - datetimestringToUnixtime(pointA.dateBegin)) / this.fillerDistance;
-            var directionVector = [pointB.wgs84Geometry.coordinates[0] - pointA.wgs84Geometry.coordinates[0], pointB.wgs84Geometry.coordinates[1] - pointA.wgs84Geometry.coordinates[1]];
+            // time in seconds between fake points
+            var fillInterval = Math.max(360, 3 * (datetimestringToUnixtime(orig[orig.length - 1].d) - datetimestringToUnixtime(orig[0].d)) / 86400);
+            var slice = parseFloat(datetimestringToUnixtime(pointB.d) - datetimestringToUnixtime(pointA.d)) / fillInterval;
+            var directionVector = [pointB.x - pointA.x, pointB.y - pointA.y];
             var directionVectorScalar = 1 / slice;
 
             slice = Math.floor(slice);
 
             for (var j = 0; j < slice - 1; j++) {
 
-                var time = new Date((datetimestringToUnixtime(pointA.dateBegin) + this.fillerDistance) * 1000);
+                var time = new Date((datetimestringToUnixtime(pointA.d) + fillInterval) * 1000);
                 var day = ('0' + time.getUTCDate()).slice(-2);
                 var month = ('0' + (time.getUTCMonth() + 1)).slice(-2);
                 var hours = ('0' + time.getUTCHours()).slice(-2);
@@ -82,9 +83,10 @@ Player.prototype.addRoute = function (route) {
                 var year = time.getUTCFullYear();
 
                 pointA = {
-                    wgs84Geometry: {coordinates: [pointA.wgs84Geometry.coordinates[0] + directionVector[0] * directionVectorScalar, pointA.wgs84Geometry.coordinates[1] + directionVector[1] * directionVectorScalar]},
+                    x: pointA.x + directionVector[0] * directionVectorScalar,
+                    y: pointA.y + directionVector[1] * directionVectorScalar,
                     filler: true,
-                    dateBegin: year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds + '+00:00'
+                    d: year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds + '+00:00'
                 }
                 route.points.push(pointA);
             }
@@ -96,26 +98,25 @@ Player.prototype.addRoute = function (route) {
     route.featureGroup.addTo(this.map);
     route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"})];
     route.lines[0].addTo(route.featureGroup);
+    var p = route.points[route.pointer];
+    route.marker = L.marker([p.x, p.y], {zIndexOffset: 1000});
 
-    var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;
-    route.marker = L.marker([markerPosition[1], markerPosition[0]], {zIndexOffset: 1000});
-
-    var lastPosition = route.points[route.points.length - 1].wgs84Geometry.coordinates;
-    this.map.setView([lastPosition[1], lastPosition[0]], 4);
+    var lastPosition = route.points[route.points.length - 1];
+    this.map.setView([lastPosition.x, lastPosition.y], 4);
 
     route.marker.addTo(route.featureGroup);
     route.marker.bindPopup(route.individualname + "<br>" +
-        displayTime(route.points[route.pointer].dateBegin), {autoPan: false}).openPopup();
+        displayTime(route.points[route.pointer].d), {autoPan: false}).openPopup();
     route.marker.on("move", function (event) {
         route.marker.getPopup().setContent(route.individualname + "<br>" +
-            displayTime(route.points[route.pointer].dateBegin));
+            displayTime(route.points[route.pointer].d));
     });
     this.routes.push(route);
     this.cslider.add({
         id: route.individualId,
         color: route.color,
-        start: route.points[0].dateBegin,
-        end: route.points[route.points.length - 1].dateBegin
+        start: route.points[0].d,
+        end: route.points[route.points.length - 1].d
     });
 }
 
@@ -126,7 +127,7 @@ Player.prototype.removeRoute = function (route) {
         this.routes.splice(index, 1);
         this.map.removeLayer(route.featureGroup);
         route.lines = [];
-        this.refreshRoutes();
+        this.refreshRoutes(true);
     }
     if (this.routes.length === 0) {
         this.stop();
@@ -152,8 +153,8 @@ Player.prototype.updateMinMax = function () {
     var min = 9007199254740991;
     var max = 0;
     for (var i = 0; i < this.routes.length; i++) {
-        min = Math.min(datetimestringToUnixtime(this.routes[i].points[0].dateBegin), min);
-        max = Math.max(datetimestringToUnixtime(this.routes[i].points[this.routes[i].points.length - 1].dateBegin), max);
+        min = Math.min(datetimestringToUnixtime(this.routes[i].points[0].d), min);
+        max = Math.max(datetimestringToUnixtime(this.routes[i].points[this.routes[i].points.length - 1].d), max);
     }
     min = Math.max(min, this.start);
     max = Math.min(max, this.end);
@@ -175,12 +176,13 @@ Player.prototype.play = function () {
     }
     if (this.runner) {
         clearInterval(this.runner);
-
         $("#play").html('<span class="glyphicon glyphicon-play"></span>');
         this.runner = undefined;
     } else {
+        if ($('#playLabel').text() === $('#playLabel_end').text()) { // replay
+            this.refreshRoutes(false);
+        }
         $("#play").html('<span class="glyphicon glyphicon-pause"></span>');
-        var options = this.slider.slider("option");
         this.run();
     }
 };
@@ -214,7 +216,7 @@ Player.prototype.drawRoutes = function (animate) {
         var pointCount = route.points.length;
         if (pointCount <= route.pointer) continue;
         var point = route.points[route.pointer];
-        var dateBegin = datetimestringToUnixtime(point.dateBegin);
+        var dateBegin = datetimestringToUnixtime(point.d);
         if (options.value > options.max) continue;
         this.animating = true;
 
@@ -232,11 +234,11 @@ Player.prototype.drawRoutes = function (animate) {
             route.featureGroup.removeLayer(route.lines.pop());
 
             point = route.points[route.pointer];
-            dateBegin = datetimestringToUnixtime(point.dateBegin);
+            dateBegin = datetimestringToUnixtime(point.d);
         }
 
         while (pointCount > route.pointer && dateBegin <= options.value) {
-            var coordinates = point.wgs84Geometry.coordinates;
+            var coordinates = [point.x, point.y];
             if (dateBegin >= options.min && dateBegin <= options.max) {
                 if (route.pointer % this.routeSplit === 0) {
                     for (var r = newestPolylineIndex; r >= 0; r--) {
@@ -244,7 +246,7 @@ Player.prototype.drawRoutes = function (animate) {
                         if (opacity < 0.3) break;
                         route.lines[r].setStyle({opacity: opacity});
                     }
-                    route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);
+                    route.lines[newestPolylineIndex].addLatLng(coordinates);
                     route.lines.push(L.polyline([], {
                         color: route.color,
                         opacity: 1,
@@ -253,17 +255,18 @@ Player.prototype.drawRoutes = function (animate) {
                     }));
                     route.lines[++newestPolylineIndex].addTo(route.featureGroup);
                 }
-                route.lines[newestPolylineIndex].addLatLng([coordinates[1], coordinates[0]]);
+                route.lines[newestPolylineIndex].addLatLng(coordinates);
             }
             route.pointer++;
             if (pointCount > route.pointer) {
                 point = route.points[route.pointer];
-                dateBegin = datetimestringToUnixtime(point.dateBegin);
+                dateBegin = datetimestringToUnixtime(point.d);
             }
         }
         if (pointCount === route.pointer) route.pointer--;
-        var coordinates = route.points[route.pointer].wgs84Geometry.coordinates;
-        route.marker.setLatLng([coordinates[1], coordinates[0]]);
+        var p = route.points[route.pointer];
+        var coordinates = [p.x, p.y];
+        route.marker.setLatLng(coordinates);
     }
 }
 
@@ -272,15 +275,18 @@ Player.prototype.clearRoute = function (route) {
     route.lines = [L.polyline([], {color: route.color, opacity: 1, smoothFactor: 2, lineCap: "butt"})];
     route.lines[0].addTo(route.featureGroup);
     route.pointer = 0;
-    var markerPosition = route.points[route.pointer].wgs84Geometry.coordinates;
-    route.marker.setLatLng([markerPosition[1], markerPosition[0]]);
+    var p = route.points[route.pointer];
+    var markerPosition = [p.x,p.y];
+    route.marker.setLatLng(markerPosition);
     route.marker.addTo(route.featureGroup);
 }
 
-Player.prototype.refreshRoutes = function (animate) {
+Player.prototype.refreshRoutes = function (draw) {
     this.updateMinMax();
     for (var i = 0, len = this.routes.length; i < len; i++) {
         this.clearRoute(this.routes[i]);
     }
-    this.drawRoutes(animate);
+    if (draw) {
+        this.drawRoutes();
+    }
 }

@@ -43,7 +43,7 @@ IndividualSorter.prototype.removePointsForIndividual = function (individualId) {
 };
 
 IndividualSorter.prototype.refresh = function () {
-    player.refreshRoutes();
+    player.refreshRoutes(true);
 };
 
 //Once the request has a response, changes the sorters points to the ones received in the response.
@@ -110,7 +110,7 @@ function showPointsForIndividual(ids) {
             rewriteNews();
 
         }
-        player.refreshRoutes();
+        player.refreshRoutes(true);
         request = null;
     }
 }

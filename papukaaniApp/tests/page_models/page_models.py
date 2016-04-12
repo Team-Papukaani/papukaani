@@ -87,6 +87,7 @@ class PublicPage(PageWithDeviceSelector):
 
     POLYLINE = Element(By.TAG_NAME, 'g')
     PLAY = Element(By.ID, 'play')
+    PLAY_SLIDER  = Element(By.ID, 'playSlider')
     SINGLE_MARKER = Element(By.XPATH, './/img[contains(@class, "leaflet-marker-icon")]')
     SKIP = Element(By.ID, 'skip')
     SPEED_SLIDER = Element(By.ID, 'speedSlider')
@@ -155,10 +156,12 @@ class PublicPage(PageWithDeviceSelector):
 
 
     def get_iframe_url(self):
+        time.sleep(1)
         self.IFRAME_BUTTON_OPEN.click()
         time.sleep(2)
         url = self.IFRAME_SRC.get_attribute('value')
         self.IFRAME_BUTTON_CLOSE.click()
+        time.sleep(1)
         return url
 
     def get_linelayercanvas_as_base64(self):
@@ -571,10 +574,14 @@ class NewsPage(Page):
     MESSAGE = Element(By.ID, 'messages')
     MODAL_MESSAGE = Element(By.ID, 'modalmessages')
     NEWS_SAVE_BUTTON = Element(By.XPATH, '//a[@id="news_tallenna"][1]')
+    NEWS_CLOSE_BUTTON = Element(By.ID, 'news_close_button')
     NEWS_DELETE_BUTTON = Element(By.CLASS_NAME, 'remove')
     NEWS_MODIFY_BUTTON = Element(By.CLASS_NAME, 'update')
+    NEWS_MODAL = Element(By.ID, 'news_modal')
+    CONFRIM_TEXT = True
 
-    def create_news(self, title, content, language, publishdate, targets="none"):
+
+    def set_inputs(self, title, content, language, publishdate, targets="none"):
         time.sleep(1)
         self.CREATE_NEWS_BUTTON.click()
         time.sleep(1)
@@ -586,8 +593,40 @@ class NewsPage(Page):
         self.driver.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(content))
         self.NEWS_TITLE.click()
         time.sleep(1)
+
+    def create_news(self, title, content, language, publishdate, targets="none"):
+        self.set_inputs(title, content, language, publishdate, targets)
         self.NEWS_SAVE_BUTTON.click()
+
+    def create_news_and_close_without_saving_accept(self, title, content, language, publishdate, targets="none"):
+        self.set_inputs(title, content, language, publishdate, targets)
+        self.NEWS_CLOSE_BUTTON.click()
         time.sleep(1)
+        self.driver.switch_to.alert.accept()
+        time.sleep(2)
+
+    def create_news_with_inputs(self, title, content, language, publishdate, targets="none"):
+        self.set_inputs(title, content, language, publishdate, targets)
+        self.NEWS_CLOSE_BUTTON.click()
+        time.sleep(1)
+
+    def create_news_without_inputs(self, title, content, language, publishdate, targets="none"):
+        self.set_inputs("", "", "", "", targets)
+        self.NEWS_CLOSE_BUTTON.click()
+        time.sleep(1)
+
+    def is_alert_present(self):
+        try:
+            self.driver.switch_to_alert().accept()
+        except:
+            self.CONFRIM_TEXT = False
+
+    def create_news_and_close_without_saving_dismiss(self, title, content, language, publishdate, targets="none"):
+        self.set_inputs(title, content, language, publishdate, targets)
+        self.NEWS_CLOSE_BUTTON.click()
+        time.sleep(1)
+        self.driver.switch_to.alert.dismiss()
+        time.sleep(2)
 
     def delete_first_news(self):
         self.NEWS_DELETE_BUTTON.click()

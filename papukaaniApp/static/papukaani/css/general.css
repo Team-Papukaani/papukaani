@@ -183,7 +183,7 @@ body {
 }
 
 #playSlider {
-    width: 100%;
+    width: calc(100% - 15px);
 }
 
 #sliderOverlay {
@@ -198,6 +198,7 @@ body {
 }
 
 #playLabel_end {
+    padding-right: 15px;
     float: right;
 }
 

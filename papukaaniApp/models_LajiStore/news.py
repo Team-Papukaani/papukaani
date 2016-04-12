@@ -7,7 +7,7 @@ class News:
     Represents the News table of LajiStore
     '''
 
-    def __init__(self, title, content, language, publishDate=None, targets=None, id=None, **kwargs):
+    def __init__(self, title, content, language, publishDate=None, targets=None, id=None):
         self.title = title
         self.content = content
         self.language = language

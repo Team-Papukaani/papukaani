@@ -17,13 +17,12 @@ function confirmdelete(form) {
     popup.show()
 }
 
-var errormessage;
+var closable = 0;
 
 $("#close_modal, .close").click(function (e) {
-    e.preventDefault();
-    $( "#error").empty();
-    $( "#error" ).append(errormessage);
-    errormessage = "";
+    if(closable==0) {
+        $('.modal').modal('hide');
+    }
 });
 
 tinymce.init({
@@ -31,7 +30,10 @@ tinymce.init({
     elementpath: false,
     height: 300,
     resize: false,
-    menubar: false
+    menubar: false,
+    plugins: "image code",
+    image_description: false,
+    toolbar: 'undo redo | bullist numlist | bold italic underline | fontselect fontsizeselect |  image code'
 });
 
 $('form').each(function () { // attach to all form elements on page
@@ -59,15 +61,14 @@ $('form').each(function () { // attach to all form elements on page
             }
         },
         showErrors: function (errorMap, errorList) {
-
             $.each(this.successList, function (index, value) {
+                closable=0;
                 $(value).popover('hide');
-                errormessage = "";
             });
 
 
             $.each(errorList, function (index, value) {
-                errormessage = value.message;
+                closable=1;
                 var _popover = $(value.element).popover({
                     trigger: 'manual',
                     placement: 'top',

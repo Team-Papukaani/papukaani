@@ -557,3 +557,6 @@ code {
     z-index: 1;
     background: #ccc;
 }
+#newsContainer{
+    padding-bottom: 60px;
+}

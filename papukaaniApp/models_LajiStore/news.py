@@ -79,8 +79,12 @@ def find_by_individual_and_language(individualID, language):
     :return: list of news
     '''
     individualID = '"' + LajiStoreAPI._URL + LajiStoreAPI._INDIVIDUAL_PATH + '/' + individualID + '"'
-
-    return find(targets=individualID, language=language)
+    found_news = find(targets=individualID, language=language)
+    filtered_news = []
+    for n in found_news:
+        if n.publishDate:
+            filtered_news.append(n)
+    return filtered_news
 
 
 def find(**kwargs):

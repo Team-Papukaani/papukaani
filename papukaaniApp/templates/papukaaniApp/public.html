@@ -153,7 +153,7 @@
                                     <div class="modal-body">
                                         <input class="form-control" type="text" readonly id="iframeSrc"/>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="modal-footer" style="float: left;">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">
                                             {% trans "Sulje" %}
                                         </button>
@@ -284,28 +284,22 @@
             modal.find('.newsContent').html(news.content);
 
             var publishedString = (news.publishDate != undefined) ? news.publishDate : '{% trans "Ei tiedossa" %}';
-            modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + publishedString);
+            modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + displayTime(publishedString));
 
-
+            var t;
             if (news.targets.length == 1) {
-                modal.find('.relatedBirds').html('{% trans "Liittyy lintuun" %}: ' + news.publishDate);
+                t = gettext('Liittyy lintuun') + ':' + sorter.getBird(news.targets[0]).name;
             } else {
-                var t;
-                if (news.targets.length == 1) {
-                    t = gettext('Liittyy lintuun') + ':' + sorter.getBird(news.targets[0]).name;
-                } else {
-                    t = gettext('Liittyy lintuihin') + ': '
-                    for (var j = 0; j < news.targets.length; j++) {
-                        t += sorter.getBird(news.targets[j]).name;
-                        if (j != news.targets.length - 1) {
-                            t = t + ", "
-                        }
+                t = gettext('Liittyy lintuihin') + ': ';
+                for (var j = 0; j < news.targets.length; j++) {
+                    t += sorter.getBird(news.targets[j]).name;
+                    if (j != news.targets.length - 1) {
+                        t = t + ", "
                     }
                 }
-                modal.find('.relatedBirds').html(t);
             }
 
-
+            modal.find('.relatedBirds').html(t);
 
         });
 

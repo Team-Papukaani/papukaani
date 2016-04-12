@@ -165,7 +165,7 @@ function rewriteNews() {
         html.push('<p">' + t + '</p>');
 
         if (n.publishDate) {
-            html.push('<span style="font-style: italic; display: block;">' + n.publishDate + '</span>')
+            html.push('<span style="font-style: italic; display: block;">' + displayTime(n.publishDate) + '</span>')
         }
         html.push('<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
         html.push(gettext('Avaa'));

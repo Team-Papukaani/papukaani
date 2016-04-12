@@ -49,9 +49,8 @@ IndividualSorter.prototype.refresh = function () {
 //Once the request has a response, changes the sorters points to the ones received in the response.
 function showPointsForIndividual(ids) {
 
+    if (request.readyState === 4) {
 
-    if (request.readyState !== 4) {
-    } else {
         $('#loading').modal('hide');
 
         var data = JSON.parse(request.response);
@@ -108,7 +107,6 @@ function showPointsForIndividual(ids) {
             }
 
             rewriteNews();
-
         }
         player.refreshRoutes(true);
         request = null;

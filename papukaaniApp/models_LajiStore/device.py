@@ -9,7 +9,7 @@ class Device:
     '''
 
     def __init__(self, deviceType, deviceManufacturer, deviceManufacturerID,
-                 dateCreated, dateEdited, id=None, **kwargs):
+                 dateCreated, dateEdited, id=None):
         self.deviceType = deviceType
         self.deviceManufacturer = deviceManufacturer
         self.deviceManufacturerID = deviceManufacturerID

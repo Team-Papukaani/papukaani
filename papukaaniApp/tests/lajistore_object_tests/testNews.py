@@ -22,6 +22,9 @@ class TestNews(TestCase):
         self.assertEqual(1, len(news.find_by_individual_and_language(A.id, "en")))
         n3.attach_to(A.id)
         self.assertEqual(2, len(news.find_by_individual_and_language(A.id, "en")))
+        n3.publishDate = None
+        n3.update()
+        self.assertEqual(1, len(news.find_by_individual_and_language(A.id, "en")))
 
     def test_create(self):
         self.assertEquals("Good News!", self.n.title)
@@ -64,6 +67,8 @@ class TestNews(TestCase):
             self.n.update()
 
     def test_publishedDate(self):
+        self.n.publishDate = None
+        self.n.update()
         self.assertEquals(None, self.n.publishDate)
         gotten = news.get(self.n.id)
         self.assertEquals(None, gotten.publishDate)
@@ -157,5 +162,6 @@ class TestNews(TestCase):
         return news.create(**{
             "title": title,
             "content": content,
-            "language": language
+            "language": language,
+            "publishDate" : "2016-04-06T00:00:00+00:00"
         })

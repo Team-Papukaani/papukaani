@@ -45,7 +45,7 @@
                 </div>
                 <div class="modal-footer">
                     <div>
-                        <a id="url" class="btn btn-primary" style="float: left" href="#" target="_blank"></a>
+                        <a id="url" class="btn btn-primary" href="#" target="_blank"></a>
                     </div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         {% trans "Sulje" %}
@@ -55,6 +55,31 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+        <div class="modal" tabindex="-1" role="dialog" id="newsModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="newsContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="publishDate" ></div>
+                    <div class="relatedBirds"></div>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        {% trans "Sulje" %}
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
 
     <div class="container-fluid" id="mapContainer">
         <div class="row no-gutters" style="height:100%;">
@@ -62,12 +87,6 @@
                 <div id="map" tabindex="1"></div>
 
                 <div id="timeline">
-                    <style>
-                        table {
-                            width: 100%;
-                            box-sizing: border-box;
-                        }
-                    </style>
                     <div class="firstCol">
                         <div class="choose_actions form-inline padded2">
                             <div id="birds">
@@ -136,7 +155,7 @@
                                     <div class="modal-body">
                                         <input class="form-control" type="text" readonly id="iframeSrc"/>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="modal-footer" style="float: left;">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">
                                             {% trans "Sulje" %}
                                         </button>
@@ -178,20 +197,9 @@
                 </div>
             </div>
             <div class="hidden-sm col-md-3 col-lg-2">
-                <div id="nyheter">
-                    <h1>Nyhe
-                        34534
-                        543534
-                        543
-                        5345
-                        43534
-                        5435345345
-                        435435
-                        435
-                        435
-                        435
-                        435
-                        435435ter</h1>a sdfasf
+                <div id="news">
+                    <h1>{% trans "Uutiset" %}</h1>
+                    <div id="newslist"></div>
                 </div>
             </div>
         </div>
@@ -266,6 +274,34 @@
 
         });
 
+
+        $('#newsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            var id = button.data('id');
+            var news = sorter.getNews(id);
+            console.log(news)
+
+            modal.find('.modal-title').html(news.title);
+            modal.find('.newsContent').html(news.content);
+            modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + displayTime(news.publishDate));
+
+            var t;
+            if (news.targets.length == 1) {
+                t = gettext('Liittyy lintuun') + ': ' + sorter.getBird(news.targets[0]).name;
+            } else {
+                t = gettext('Liittyy lintuihin') + ': ';
+                for (var j = 0; j < news.targets.length; j++) {
+                    t += sorter.getBird(news.targets[j]).name;
+                    if (j != news.targets.length - 1) {
+                        t = t + ", "
+                    }
+                }
+            }
+
+            modal.find('.relatedBirds').html(t);
+
+        });
 
         $("#speedSlider").hide();
         $("#speed").hover(

@@ -59,12 +59,34 @@ body {
     bottom: 20px;
 }
 
-#nyheter {
-    padding: 20px;
+#news {
+    padding: 15px;
+    font-size: small;
+    overflow: auto;
+    height: 100vh;
+}
+
+#url {
+    float: left;
+}
+
+.publishDate {
+    text-align: left;
+}
+
+.relatedBirds {
+    display: inline;
+    float: left;
+    text-align: left;"
 }
 
 #formatForm span.glyphicon {
     top: 0px;
+}
+
+#timeline table {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .row.no-gutters {

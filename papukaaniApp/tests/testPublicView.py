@@ -9,8 +9,9 @@ from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import PublicPage
 from papukaaniApp.tests.test_utils import take_screenshot_of_test_case
 from django.conf import settings
-import dateutil.parser
+import datetime
 
+import dateutil.parser
 
 class PublicView(StaticLiveServerTestCase):
     def setUp(self):
@@ -35,6 +36,32 @@ class PublicView(StaticLiveServerTestCase):
 
         self.D = device.create(**dev)
         self.D2 = device.create(**dev2)
+
+        new = {
+            "title": "Uutinen",
+            "content": "Uutisen sisältö",
+            "language": "fi",
+            "targets": { self.I.id },
+            "publishDate": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")+"+00:00"
+        }
+
+        new2 = {
+            "title": "Uutinen2",
+            "content": "Uutisen sisältö2",
+            "language": "fi",
+            "targets": { self.I2.id }
+        }
+
+        self.oldnews = news.create("Uutinen3","Uutisen sisältö3", "fi",
+                              publishDate=(datetime.datetime.now() - datetime.timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
+                              targets={ self.I.id })
+
+        self.newnews = news.create("Uutinen4","Uutisen sisältö4", "fi",
+                              publishDate=(datetime.datetime.now() + datetime.timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%S")+"+00:00",
+                              targets={ self.I.id })
+
+        self.N = news.create(**new)
+        self.N2 = news.create(**new2)
 
         self.D.attach_to(self.I.id, "1000-01-01T10:00:00+00:00")
         self.D2.attach_to(self.I2.id, "1000-01-01T10:00:00+00:00")
@@ -311,3 +338,18 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_START.send_keys("13.12.2010 00:00")
         self.page.TIME_START.send_keys(Keys.ENTER)
         self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
+
+    def selecting_bird_displays_its_news(self):
+        self.page.change_individual_selection(str(self.I.id))
+        self.assertTrue(
+            "Uutinen" in self.page.driver.find_element_by_css_selector("#newslist").text)
+        self.assertTrue(
+            "Uutinen2" not in self.page.driver.find_element_by_css_selector("#newslist").text)
+
+    def news_are_ordered_by_date(self):
+
+
+
+        self.page.change_individual_selection(str(self.I.id))
+
+        print(self.page.driver.find_element_by_css_selector("#newslist").text)

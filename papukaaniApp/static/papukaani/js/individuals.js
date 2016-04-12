@@ -15,7 +15,16 @@ function confirmdelete(form) {
         popup.hide()
     });
     popup.show()
-};
+}
+
+var errormessage;
+
+$("#close_modal, .close").click(function (e) {
+    e.preventDefault();
+    $( "#error").empty();
+    $( "#error" ).append(errormessage);
+    errormessage = "";
+});
 
 tinymce.init({
     selector: 'textarea', // change this value according to your HTML
@@ -53,13 +62,12 @@ $('form').each(function () { // attach to all form elements on page
 
             $.each(this.successList, function (index, value) {
                 $(value).popover('hide');
+                errormessage = "";
             });
 
 
             $.each(errorList, function (index, value) {
-
-                console.log(value.message);
-
+                errormessage = value.message;
                 var _popover = $(value.element).popover({
                     trigger: 'manual',
                     placement: 'top',

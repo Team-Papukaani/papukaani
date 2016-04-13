@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-11 10:46+0300\n"
+"POT-Creation-Date: 2016-04-13 03:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: papukaaniApp/static/papukaani/js/choose.js:49
+#: papukaaniApp/static/papukaani/js/devices.js:203
 msgid "Tallennetaan"
 msgstr "Tallennetaan..."
 
@@ -36,6 +37,7 @@ msgid "Tietoja ladataaan"
 msgstr "Tietoja ladataan"
 
 #: papukaaniApp/static/papukaani/js/choose.js:104
+#: papukaaniApp/static/papukaani/js/devices.js:257
 msgid "Virhe ladattaessa tietoja"
 msgstr "Virhe ladattaessa tietoja"
 
@@ -51,55 +53,65 @@ msgstr "Virheellinen aikaformaatti!"
 msgid "Lämpötila"
 msgstr "Lämpötila"
 
-#: papukaaniApp/static/papukaani/js/devices.js:25
-msgid "Irroita"
-msgstr "Irroita"
-
-#: papukaaniApp/static/papukaani/js/devices.js:39
-msgid "Ei lintuja"
-msgstr "Ei lintuja"
-
-#: papukaaniApp/static/papukaani/js/devices.js:78
-msgid "Kiinnitysajankohdan lisäys onnistui. "
-msgstr "Kiinnitysajankohdan lisäys onnistui. "
-
-#: papukaaniApp/static/papukaani/js/devices.js:109
-msgid "Irrotusajankohdan lisäys onnistui. "
-msgstr "Irrotusajankohdan lisäys onnistui. "
-
-#: papukaaniApp/static/papukaani/js/devices.js:119
-msgid "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
-msgstr "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
-
-#: papukaaniApp/static/papukaani/js/devices.js:136
-msgid ""
-"Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite "
-"on jo merkitty kiinnitetyksi. "
+#: papukaaniApp/static/papukaani/js/devices.js:125
+msgid "Uusi kiinnitys"
 msgstr ""
-"Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite "
-"on jo merkitty kiinnitetyksi. "
 
-#: papukaaniApp/static/papukaani/js/devices.js:149
-msgid "Päivämäärä ei saa olla tulevaisuudessa. "
-msgstr "Päivämäärä ei saa olla tulevaisuudessa. "
+#: papukaaniApp/static/papukaani/js/devices.js:217
+msgid "Virhe kun yritettiin tallentaa"
+msgstr ""
 
-#: papukaaniApp/static/papukaani/js/devices.js:160
-msgid "Päivämäärä ei määritelty! "
-msgstr "Päivämäärä ei määritelty! "
+#: papukaaniApp/static/papukaani/js/devices.js:223
+#, fuzzy
+#| msgid "Poista"
+msgid "Poistetaan"
+msgstr "Poista"
 
-#: papukaaniApp/static/papukaani/js/devices.js:174
-msgid "Lintua ei määritelty! "
+#: papukaaniApp/static/papukaani/js/devices.js:233
+msgid "Virhe kun yritettiin poistaa"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/devices.js:243
+msgid "Ladataan"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/devices.js:372
+#, fuzzy
+#| msgid "Lintua ei määritelty! "
+msgid "Lintua ei määritelty!"
 msgstr "Lintua ei määritelty! "
 
-#: papukaaniApp/static/papukaani/js/individuals.js:85
+#: papukaaniApp/static/papukaani/js/devices.js:376
+#, fuzzy
+#| msgid "Päivämäärä ei määritelty! "
+msgid "Kiinnityspäivämäärää ei määritelty!"
+msgstr "Päivämäärä ei määritelty! "
+
+#: papukaaniApp/static/papukaani/js/devices.js:380
+#, fuzzy
+#| msgid "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
+msgid "Irroitus ei saa olla ennen kiinnitystä!"
+msgstr "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
+
+#: papukaaniApp/static/papukaani/js/devices.js:385
+#, fuzzy
+#| msgid "Päivämäärä ei saa olla tulevaisuudessa. "
+msgid "Päivämäärä ei saa olla tulevaisuudessa!"
+msgstr "Päivämäärä ei saa olla tulevaisuudessa. "
+
+#: papukaaniApp/static/papukaani/js/devices.js:391
+msgid "Laite on tuona aikana jo kiinni linnussa."
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/individuals.js:94
 msgid "Tämä kenttä on pakollinen."
 msgstr "Tämä kenttä on pakollinen."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:86
+#: papukaaniApp/static/papukaani/js/individuals.js:95
 msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 msgstr "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:87
+#: papukaaniApp/static/papukaani/js/individuals.js:96
 msgid "Anna oikea http(s):lla alkava osoite."
 msgstr "Anna oikea http(s):lla alkava osoite."
 
@@ -187,14 +199,59 @@ msgstr "Ruotsi"
 msgid "Uutisia ladataan"
 msgstr "Uutisia ladataan"
 
-#: papukaaniApp/static/papukaani/js/public.js:78
+#: papukaaniApp/static/papukaani/js/public.js:88
 msgid "Lisätietoja"
 msgstr "Lisätietoja"
 
-#: papukaaniApp/static/papukaani/js/public.js:135
+#: papukaaniApp/static/papukaani/js/public.js:148
+msgid "Lintu"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/public.js:150
+msgid "Linnut"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/public.js:155
+msgid " ja "
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/public.js:168
+msgid "Avaa"
+msgstr ""
+
+#: papukaaniApp/static/papukaani/js/public.js:216
 msgid "fi"
 msgstr "fi"
 
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr "'"
+
+#, fuzzy
+#~| msgid "Virhe ladattaessa tietoja"
+#~ msgid "Virhe ladattaessa kiinnityksiä"
+#~ msgstr "Virhe ladattaessa tietoja"
+
+#, fuzzy
+#~| msgid "Päivämäärä ei määritelty! "
+#~ msgid "Irroituspäivämäärää ei määritelty"
+#~ msgstr "Päivämäärä ei määritelty! "
+
+#~ msgid "Irroita"
+#~ msgstr "Irroita"
+
+#~ msgid "Ei lintuja"
+#~ msgstr "Ei lintuja"
+
+#~ msgid "Kiinnitysajankohdan lisäys onnistui. "
+#~ msgstr "Kiinnitysajankohdan lisäys onnistui. "
+
+#~ msgid "Irrotusajankohdan lisäys onnistui. "
+#~ msgstr "Irrotusajankohdan lisäys onnistui. "
+
+#~ msgid ""
+#~ "Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla "
+#~ "laite on jo merkitty kiinnitetyksi. "
+#~ msgstr ""
+#~ "Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla "
+#~ "laite on jo merkitty kiinnitetyksi. "

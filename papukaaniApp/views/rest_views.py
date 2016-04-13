@@ -17,6 +17,7 @@ def getGatheringsForDevice(request):
         _move_altitude(g)
     return Response(gatherings)
 
+@gzip_page
 @api_view(['GET'])
 def getPublicGatheringsForIndividual(request):
     """
@@ -90,3 +91,4 @@ def _move_altitude(g):
     coordinates = g['wgs84Geometry']['coordinates']
     if len(coordinates) == 3:
         g['altitude'] = coordinates.pop()
+

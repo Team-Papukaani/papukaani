@@ -58,6 +58,10 @@ class Device:
     def is_attached(self):
         return False if self.get_attached_individualid() is None else True
 
+    def to_dict(self):
+        dict = self.__dict__.copy()
+        return dict
+
 
 def find(**kwargs):
     '''

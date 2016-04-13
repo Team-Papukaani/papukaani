@@ -60,10 +60,7 @@ body {
 }
 
 #news {
-    padding: 15px;
-    font-size: small;
-    overflow: auto;
-    height: 100vh;
+    padding: 20px;
 }
 
 #url {

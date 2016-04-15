@@ -490,11 +490,13 @@ code {
 .firstCol {
     float: left;
     width: 200px;
+    padding-bottom: 1px;
 }
 
 .secondCol {
     float: left;
     width: calc(100% - 200px);
+    padding-bottom: 1px;
 }
 
 #public .ui-datepicker {

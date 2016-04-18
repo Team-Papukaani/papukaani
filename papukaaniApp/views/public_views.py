@@ -22,15 +22,14 @@ def public(request):
     individuals = dict()
     inds_objects = individual.find_exclude_deleted()
 
-
     for individuale in inds_objects:
-
         key = individuale.taxon
         individuals.setdefault(key, [])
         individualInfo = {'nickname': individuale.nickname,
                           'description': individuale.description,
                           'descriptionURL': individuale.descriptionURL,
-                          'news' : json.dumps(news.find_by_individual_and_language(individualID=individuale.id, language=request.LANGUAGE_CODE))
+                          'news': json.dumps(news.find_by_individual_and_language(individualID=individuale.id,
+                                                                                  language=request.LANGUAGE_CODE))
                           }
 
         individuals[key].append({individuale.id: individualInfo})

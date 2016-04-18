@@ -5,6 +5,7 @@ from datetime import datetime
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.views.decorators.gzip import gzip_page
 
+
 @api_view(['GET'])
 def getGatheringsForDevice(request):
     """
@@ -16,6 +17,7 @@ def getGatheringsForDevice(request):
     for g in gatherings:
         _move_altitude(g)
     return Response(gatherings)
+
 
 @api_view(['GET'])
 def getPublicGatheringsForIndividual(request):
@@ -32,18 +34,21 @@ def getPublicGatheringsForIndividual(request):
         data[id] = gatherings
     return Response(data)
 
+
 @gzip_page
 @api_view(['GET'])
 @require_auth
 def getAllGatheringsForIndividual(request):
     id = request.GET.get('individualId')
     gatherings = _get_gatherings_data(id, public_only=False,
-        extras_originatingDevice=True)   
+                                      extras_originatingDevice=True)
     return Response(gatherings)
+
 
 def _get_gatherings_data(individual_id, public_only=True, extras_originatingDevice=False, extras_onlymapdata=False):
     indiv = individual.get(individual_id)
-    gatherings_obj = indiv.get_public_gatherings() if public_only else indiv.get_all_gatherings(extras_originatingDevice=extras_originatingDevice)
+    gatherings_obj = indiv.get_public_gatherings() if public_only else indiv.get_all_gatherings(
+        extras_originatingDevice=extras_originatingDevice)
     gatherings_json = []
 
     for go in gatherings_obj:
@@ -85,6 +90,7 @@ def _get_gatherings_data(individual_id, public_only=True, extras_originatingDevi
 def _remove_publicity(gathering):
     if 'publicityRestrictions' in gathering:
         del gathering['publicityRestrictions']
+
 
 def _move_altitude(g):
     coordinates = g['wgs84Geometry']['coordinates']

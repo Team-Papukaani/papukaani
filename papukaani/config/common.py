@@ -100,7 +100,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'DEFAULT_CACHE_TABLE',
         'OPTIONS': {
-            'TIMEOUT': 5*60,  # 5 minutes
+            'TIMEOUT': 5 * 60,  # 5 minutes
             'MAX_ENTRIES': 300,  # limit for clean-up using fifo
             'CULL_FREQUENCY': 2,  # 1/n amount of entries to clean-up
         }
@@ -109,7 +109,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'PUBLIC_CACHE_TABLE',
         'OPTIONS': {
-            'TIMEOUT': 15*60,  # 15 minutes
+            'TIMEOUT': 15 * 60,  # 15 minutes
             'MAX_ENTRIES': 300,  # limit for clean-up using fifo
             'CULL_FREQUENCY': 2,  # 1/n amount of entries to clean-up
         }
@@ -123,13 +123,13 @@ from django.utils.translation import ugettext_lazy as _
 
 # Available languages
 LANGUAGES = [
-('fi', _('Suomi')),
-('en', _('Englanti')),
-('sv', _('Ruotsi')),
+    ('fi', _('Suomi')),
+    ('en', _('Englanti')),
+    ('sv', _('Ruotsi')),
 ]
 
 LOCALE_PATHS = [
-os.path.join(BASE_DIR, 'papukaaniApp', 'locale'),
+    os.path.join(BASE_DIR, 'papukaaniApp', 'locale'),
 ]
 
 # Default language if we can't determine user's preference
@@ -165,42 +165,42 @@ XEPHYR_VISIBILITY = 0
 MOCK_AUTHENTICATION = "Off"
 
 LOGGING = {
-'version': 1,
-'disable_existing_loggers': False,
-'handlers': {
-                'console': {
-                    'class': 'logging.StreamHandler',
-                },
-                'logfile': {
-                    'class': 'logging.handlers.RotatingFileHandler',
-                    'filename': 'papukaani.log',
-                    'maxBytes': 1024 * 100,
-                    'backupCount': 3,
-                },
-            },
-'loggers': {
-               'django': {
-                   'handlers': ['console', 'logfile'],
-                   'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-               },
-               'papukaaniApp': {
-                   'handlers': ['console', 'logfile'],
-                   'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
-               },
-               'papukaaniApp.lajistore_requests_summary': {
-                   'handlers': ['console', 'logfile'],
-                   'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
-                   'propagate': False,
-               },
-               'papukaaniApp.lajistore_requests': {
-                   'handlers': ['console', 'logfile'],
-                   'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
-                   'propagate': False,
-               },
-               'papukaaniApp.requests': {
-                   'handlers': ['logfile'],
-                   'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
-                   'propagate': False,
-               },
-           },
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'logfile': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'papukaani.log',
+            'maxBytes': 1024 * 100,
+            'backupCount': 3,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'logfile'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+        'papukaaniApp': {
+            'handlers': ['console', 'logfile'],
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+        },
+        'papukaaniApp.lajistore_requests_summary': {
+            'handlers': ['console', 'logfile'],
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+            'propagate': False,
+        },
+        'papukaaniApp.lajistore_requests': {
+            'handlers': ['console', 'logfile'],
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+            'propagate': False,
+        },
+        'papukaaniApp.requests': {
+            'handlers': ['logfile'],
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+            'propagate': False,
+        },
+    },
 }

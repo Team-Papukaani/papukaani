@@ -16,5 +16,17 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    },
+    'public': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    },
+    'routes': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 MOCK_AUTHENTICATION = "Skip"
 

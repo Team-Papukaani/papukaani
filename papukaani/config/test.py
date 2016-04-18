@@ -22,6 +22,9 @@ CACHES = {
     },
     'public': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    },
+    'routes': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
 

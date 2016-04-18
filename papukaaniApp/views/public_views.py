@@ -30,7 +30,7 @@ def public(request):
         individualInfo = {'nickname': individuale.nickname,
                           'description': individuale.description,
                           'descriptionURL': individuale.descriptionURL,
-                          'news' : json.dumps(news.find_by_individual_and_language(individualID=individuale.id, language=request.LANGUAGE_CODE), default=set_default)
+                          'news' : json.dumps(news.find_by_individual_and_language(individualID=individuale.id, language=request.LANGUAGE_CODE))
                           }
 
         individuals[key].append({individuale.id: individualInfo})
@@ -63,8 +63,3 @@ def public(request):
                }
 
     return render(request, 'papukaaniApp/public.html', context)
-
-def set_default(obj):
-    if isinstance(obj, set):
-        return list(obj)
-    return obj.__dict__

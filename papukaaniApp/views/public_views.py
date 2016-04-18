@@ -1,6 +1,7 @@
 import json
 
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.cache import cache_page
 
 from papukaaniApp.models import *
 from papukaaniApp.models_TipuApi import species
@@ -11,7 +12,7 @@ from papukaaniApp.views.login_view import *
 from papukaaniApp.views.decorators import count_lajistore_requests
 
 
-
+@cache_page(60 * 15, cache="public")
 @count_lajistore_requests
 @xframe_options_exempt  # Allows the view to be loaded in an iFrame
 def public(request):

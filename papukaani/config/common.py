@@ -100,7 +100,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'DEFAULT_CACHE_TABLE',
         'OPTIONS': {
-            'TIMEOUT': 300,  # 5 minutes
+            'TIMEOUT': 5*60,  # 5 minutes
             'MAX_ENTRIES': 300,  # limit for clean-up using fifo
             'CULL_FREQUENCY': 2,  # 1/n amount of entries to clean-up
         }
@@ -109,7 +109,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'PUBLIC_CACHE_TABLE',
         'OPTIONS': {
-            'TIMEOUT': 300,  # 5 minutes
+            'TIMEOUT': 15*60,  # 15 minutes
             'MAX_ENTRIES': 300,  # limit for clean-up using fifo
             'CULL_FREQUENCY': 2,  # 1/n amount of entries to clean-up
         }

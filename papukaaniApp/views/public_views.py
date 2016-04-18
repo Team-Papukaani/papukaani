@@ -17,13 +17,15 @@ def public(request):
 
     public_cache = False
     individual_cache = None
+    individual_cache_key = 'individuals_' + request.LANGUAGE_CODE
     species_cache = None
+    species_cache_key = 'species_' + request.LANGUAGE_CODE
 
     if not authorized:  # try to load cache for non-loggedIn users
         try:
             public_cache = caches['public']
-            individual_cache = public_cache.get('individuals_' + request.LANGUAGE_CODE)
-            species_cache = public_cache.get('species_' + request.LANGUAGE_CODE)
+            individual_cache = public_cache.get(individual_cache_key)
+            species_cache = public_cache.get(species_cache_key)
         except:
             public_cache = False
             individual_cache = None
@@ -35,8 +37,8 @@ def public(request):
         ordered_species = _get_species(request, individuals)
         if public_cache:  # if using cache, set values
             public_cache.set_many({
-                'individuals_' + request.LANGUAGE_CODE: individuals,
-                'species_' + request.LANGUAGE_CODE: ordered_species
+                individual_cache_key: individuals,
+                species_cache_key: ordered_species
             })
     else:  # use cache
         individuals = individual_cache

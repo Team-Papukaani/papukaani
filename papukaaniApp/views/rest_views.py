@@ -40,9 +40,9 @@ def getPublicGatheringsForIndividual(request):
     ids = request.GET.get('individualId').split(",")
     data = {}
     for id in ids:
-        cache_name = 'route_' + id
+        cache_key = 'route_' + id
         if public_cache:
-            route_cache = public_cache.get(cache_name)
+            route_cache = public_cache.get(cache_key)
             if route_cache is not None:
                 data[id] = route_cache
                 continue
@@ -52,9 +52,13 @@ def getPublicGatheringsForIndividual(request):
         gatherings.append(indiv.nickname)
 
         if public_cache:
-            public_cache.set(cache_name, gatherings)
+            public_cache.set(cache_key, gatherings)
 
         data[id] = gatherings
+
+        if public_cache:
+            public_cache.close()
+
     return Response(data)
 
 

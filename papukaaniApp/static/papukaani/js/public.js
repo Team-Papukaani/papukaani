@@ -243,8 +243,6 @@ IndividualSorter.prototype.createIndividualSelector = function (individuals, spe
         that.birdInfo[individualId] = bird;
     };
 
-    console.log(individuals);
-    console.log(species);
     $.each(species, function (key, s) {
         selector.append('<option value="" disabled>' + s + '</option>');
         $.each(individuals[s], function (key, individual) {

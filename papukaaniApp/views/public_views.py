@@ -25,17 +25,20 @@ def public(request):
             individual_cache = public_cache.get('individuals_' + request.LANGUAGE_CODE)
             species_cache = public_cache.get('species_' + request.LANGUAGE_CODE)
         except:
+            public_cache = False
+            individual_cache = None
+            species_cache = None
             pass
 
-    if individual_cache is None or species_cache is None: # load from datastore
+    if individual_cache is None or species_cache is None:  # load from datastore
         individuals = _get_individuals(request)
         ordered_species = _get_species(request, individuals)
-        if public_cache: # if using cache, set values
+        if public_cache:  # if using cache, set values
             public_cache.set_many({
                 'individuals_' + request.LANGUAGE_CODE: individuals,
                 'species_' + request.LANGUAGE_CODE: ordered_species
             })
-    else: # use cache
+    else:  # use cache
         individuals = individual_cache
         ordered_species = species_cache
 

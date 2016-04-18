@@ -1,7 +1,10 @@
+from django.core.cache import caches
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from papukaaniApp.models_LajiStore import document, individual, gathering
 from datetime import datetime
+
+from papukaaniApp.services.laji_auth_service.laji_auth import authenticated
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.views.decorators.gzip import gzip_page
 
@@ -25,12 +28,32 @@ def getPublicGatheringsForIndividual(request):
     REST-controller for getting bird-specific gatherings.
     """
 
+    public_cache = False
+
+    if not authenticated(request):  # dont cache loggedIn requests
+        try:
+            public_cache = caches['public']
+        except:
+            public_cache = False
+            pass
+
     ids = request.GET.get('individualId').split(",")
     data = {}
     for id in ids:
+        cache_name = 'route_' + id
+        if public_cache:
+            route_cache = public_cache.get(cache_name)
+            if route_cache is not None:
+                data[id] = route_cache
+                continue
+
         indiv = individual.get(id)
         gatherings = _get_gatherings_data(id, public_only=True, extras_onlymapdata=True)
         gatherings.append(indiv.nickname)
+
+        if public_cache:
+            public_cache.set(cache_name, gatherings)
+
         data[id] = gatherings
     return Response(data)
 

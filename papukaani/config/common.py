@@ -98,7 +98,7 @@ REST_FRAMEWORK = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'cache_table',
+        'LOCATION': 'DEFAULT_CACHE_TABLE',
         'OPTIONS': {
             'TIMEOUT': 300,  # 5 minutes
             'MAX_ENTRIES': 300,  # limit for clean-up using fifo
@@ -107,7 +107,7 @@ CACHES = {
     },
     'public': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'public_cache_table',
+        'LOCATION': 'PUBLIC_CACHE_TABLE',
         'OPTIONS': {
             'TIMEOUT': 300,  # 5 minutes
             'MAX_ENTRIES': 300,  # limit for clean-up using fifo

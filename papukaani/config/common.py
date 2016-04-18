@@ -101,8 +101,8 @@ CACHES = {
         'LOCATION': 'DEFAULT_CACHE_TABLE',
         'OPTIONS': {
             'TIMEOUT': 5 * 60,  # 5 minutes
-            'MAX_ENTRIES': 300,  # limit for clean-up using fifo
-            'CULL_FREQUENCY': 2,  # 1/n amount of entries to clean-up
+            'MAX_ENTRIES': 30,  # limit for clean-up using fifo
+            'CULL_FREQUENCY': 3,  # 1/n amount of entries to clean-up
         }
     },
     'public': {
@@ -110,8 +110,17 @@ CACHES = {
         'LOCATION': 'PUBLIC_CACHE_TABLE',
         'OPTIONS': {
             'TIMEOUT': 15 * 60,  # 15 minutes
-            'MAX_ENTRIES': 300,  # limit for clean-up using fifo
-            'CULL_FREQUENCY': 2,  # 1/n amount of entries to clean-up
+            'MAX_ENTRIES': 10,  # limit for clean-up using fifo
+            'CULL_FREQUENCY': 3,  # 1/n amount of entries to clean-up
+        }
+    },
+    'routes': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'ROUTES_CACHE_TABLE',
+        'OPTIONS': {
+            'TIMEOUT': 30 * 60,  # 30 minutes
+            'MAX_ENTRIES': 30,  # limit for clean-up using fifo
+            'CULL_FREQUENCY': 3,  # 1/n amount of entries to clean-up
         }
     }
 }

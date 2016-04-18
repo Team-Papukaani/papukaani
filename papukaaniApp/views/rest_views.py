@@ -28,21 +28,21 @@ def getPublicGatheringsForIndividual(request):
     REST-controller for getting bird-specific gatherings.
     """
 
-    public_cache = False
+    routes_cache = False
 
     if not authenticated(request):  # dont cache loggedIn requests
         try:
-            public_cache = caches['public']
+            routes_cache = caches['routes']
         except:
-            public_cache = False
+            routes_cache = False
             pass
 
     ids = request.GET.get('individualId').split(",")
     data = {}
     for id in ids:
         cache_key = 'route_' + id
-        if public_cache:
-            route_cache = public_cache.get(cache_key)
+        if routes_cache:
+            route_cache = routes_cache.get(cache_key)
             if route_cache is not None:
                 data[id] = route_cache
                 continue
@@ -51,13 +51,13 @@ def getPublicGatheringsForIndividual(request):
         gatherings = _get_gatherings_data(id, public_only=True, extras_onlymapdata=True)
         gatherings.append(indiv.nickname)
 
-        if public_cache:
-            public_cache.set(cache_key, gatherings)
+        if routes_cache:
+            routes_cache.set(cache_key, gatherings)
 
         data[id] = gatherings
 
-        if public_cache:
-            public_cache.close()
+        if routes_cache:
+            routes_cache.close()
 
     return Response(data)
 

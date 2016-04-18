@@ -1,15 +1,9 @@
-import json
-
-from django.shortcuts import render, get_object_or_404
-
-from papukaaniApp.models import *
+from django.core.cache import caches
 from papukaaniApp.models_TipuApi import species
-from papukaaniApp.utils.view_utils import extract_latlongs
 from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.views.login_view import *
 from papukaaniApp.views.decorators import count_lajistore_requests
-
 
 
 @count_lajistore_requests
@@ -18,39 +12,48 @@ def public(request):
     """
     Controller for '/public/'.
     """
-    individuals = dict()
-    inds_objects = individual.find_exclude_deleted()
 
+    authorized = authenticated(request)
 
-    for individuale in inds_objects:
+    public_cache = False
+    individual_cache = None
+    individual_cache_key = 'individuals_' + request.LANGUAGE_CODE
+    species_cache = None
+    species_cache_key = 'species_' + request.LANGUAGE_CODE
 
-        key = individuale.taxon
-        individuals.setdefault(key, [])
-        individualInfo = {'nickname': individuale.nickname,
-                          'description': individuale.description,
-                          'descriptionURL': individuale.descriptionURL,
-                          'news' : json.dumps(news.find_by_individual_and_language(individualID=individuale.id, language=request.LANGUAGE_CODE), default=set_default)
-                          }
+    if not authorized:  # try to load cache for non-loggedIn users
+        try:
+            public_cache = caches['public']
+            individual_cache = public_cache.get(individual_cache_key)
+            species_cache = public_cache.get(species_cache_key)
+        except:
+            public_cache = False
+            individual_cache = None
+            species_cache = None
+            pass
 
-        individuals[key].append({individuale.id: individualInfo})
+    if individual_cache is None or species_cache is None:  # load from datastore
+        individuals = _get_individuals(request)
+        ordered_species = _get_species(request, individuals)
+        if public_cache:  # if using cache, set values
+            public_cache.set_many({
+                individual_cache_key: individuals,
+                species_cache_key: ordered_species
+            })
+    else:  # use cache
+        individuals = individual_cache
+        ordered_species = species_cache
 
-    all_species = species.get_all_in_user_language(request.LANGUAGE_CODE)
-    ordered_species = []
-    for s in all_species:
-        if s.id in individuals:
-            individuals[s.name] = individuals.pop(s.id)  # Renames the species
-            ordered_species.append(s.name)
-    ordered_species.sort()
-
-    display_navigation = authenticated(request)
+    if public_cache:
+        public_cache.close()
 
     extended = 'base.html'
-    if display_navigation:
+    if authorized:
         extended = 'base_with_nav.html'
 
     context = {'individuals': json.dumps(individuals),
                'species': json.dumps(ordered_species),
-               'display_navigation': display_navigation,
+               'display_navigation': authorized,
                'individualIds': request.GET.get('individuals', []),
                'speed': request.GET.get('speed', ''),
                'loc': request.GET.get('loc', [61.0, 20.0]),
@@ -63,7 +66,37 @@ def public(request):
 
     return render(request, 'papukaaniApp/public.html', context)
 
+
 def set_default(obj):
     if isinstance(obj, set):
         return list(obj)
     return obj.__dict__
+
+
+def _get_individuals(request):
+    individuals = dict()
+    inds_objects = individual.find_exclude_deleted()
+    for individuale in inds_objects:
+        key = individuale.taxon
+        individuals.setdefault(key, [])
+        individualInfo = {'nickname': individuale.nickname,
+                          'description': individuale.description,
+                          'descriptionURL': individuale.descriptionURL,
+                          'news': json.dumps(news.find_by_individual_and_language(individualID=individuale.id,
+                                                                                  language=request.LANGUAGE_CODE),
+                                             default=set_default)
+                          }
+
+        individuals[key].append({individuale.id: individualInfo})
+    return individuals
+
+
+def _get_species(request, individuals, cache=False):
+    all_species = species.get_all_in_user_language(request.LANGUAGE_CODE)
+    ordered_species = []
+    for s in all_species:
+        if s.id in individuals:
+            individuals[s.name] = individuals.pop(s.id)  # Renames the species
+            ordered_species.append(s.name)
+    ordered_species.sort()
+    return ordered_species

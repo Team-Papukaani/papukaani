@@ -24,7 +24,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -94,6 +93,38 @@ REST_FRAMEWORK = {
     'UNICODE_JSON': True,
 }
 
+# Cache
+# https://docs.djangoproject.com/en/1.8/topics/cache/
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'DEFAULT_CACHE_TABLE',
+        'OPTIONS': {
+            'TIMEOUT': 5 * 60,  # minutes * seconds
+            'MAX_ENTRIES': 30,  # limit for clean-up using fifo
+            'CULL_FREQUENCY': 3,  # 1/n amount of entries to clean-up
+        }
+    },
+    'public': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'PUBLIC_CACHE_TABLE',
+        'OPTIONS': {
+            'TIMEOUT': 60 * 60,  # minutes * seconds
+            'MAX_ENTRIES': 10,  # limit for clean-up using fifo
+            'CULL_FREQUENCY': 3,  # 1/n amount of entries to clean-up
+        }
+    },
+    'routes': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'ROUTES_CACHE_TABLE',
+        'OPTIONS': {
+            'TIMEOUT': 60 * 60,  # minutes * seconds
+            'MAX_ENTRIES': 30,  # limit for clean-up using fifo
+            'CULL_FREQUENCY': 3,  # 1/n amount of entries to clean-up
+        }
+    }
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -104,7 +135,7 @@ LANGUAGES = [
     ('fi', _('Suomi')),
     ('en', _('Englanti')),
     ('sv', _('Ruotsi')),
-    ]
+]
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'papukaaniApp', 'locale'),
@@ -121,7 +152,6 @@ USE_I18N = True
 
 USE_L10N = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -131,7 +161,7 @@ LAJISTORE_URL = 'https://lajistore.laji.fi/'
 LAJISTORE_COLLECTIONID = 'http://tun.fi/HR.1427'
 TIPUAPI_URL = 'https://fmnh-ws-test.it.helsinki.fi/tipu-api/species'
 
-LAJIAUTH_URL =  "https://fmnh-ws-test.it.helsinki.fi/laji-auth/"
+LAJIAUTH_URL = "https://fmnh-ws-test.it.helsinki.fi/laji-auth/"
 
 LAJIAUTH_USER = os.environ["LAJIAUTH_USER"]
 
@@ -159,24 +189,24 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'logfile'], 
+            'handlers': ['console', 'logfile'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
-        'papukaaniApp' : {
+        'papukaaniApp': {
             'handlers': ['console', 'logfile'],
             'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
         },
-        'papukaaniApp.lajistore_requests_summary' : {
-            'handlers': ['console', 'logfile'],
-            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
-            'propagate': False,
-        },
-        'papukaaniApp.lajistore_requests' : {
+        'papukaaniApp.lajistore_requests_summary': {
             'handlers': ['console', 'logfile'],
             'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
             'propagate': False,
         },
-        'papukaaniApp.requests' : {
+        'papukaaniApp.lajistore_requests': {
+            'handlers': ['console', 'logfile'],
+            'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
+            'propagate': False,
+        },
+        'papukaaniApp.requests': {
             'handlers': ['logfile'],
             'level': os.getenv('PAPUKAANI_LOG_LEVEL', 'WARN'),
             'propagate': False,

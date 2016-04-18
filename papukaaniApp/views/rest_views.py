@@ -9,6 +9,7 @@ from papukaaniApp.services.laji_auth_service.require_auth import require_auth
 from django.views.decorators.gzip import gzip_page
 
 
+@gzip_page
 @api_view(['GET'])
 def getGatheringsForDevice(request):
     """
@@ -22,6 +23,7 @@ def getGatheringsForDevice(request):
     return Response(gatherings)
 
 
+@gzip_page
 @api_view(['GET'])
 def getPublicGatheringsForIndividual(request):
     """

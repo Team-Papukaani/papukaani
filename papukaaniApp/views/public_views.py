@@ -1,4 +1,6 @@
 from django.core.cache import caches
+from django.views.decorators.gzip import gzip_page
+
 from papukaaniApp.models_TipuApi import species
 from django.views.decorators.clickjacking import xframe_options_exempt
 from papukaaniApp.models_LajiStore import *
@@ -6,6 +8,7 @@ from papukaaniApp.views.login_view import *
 from papukaaniApp.views.decorators import count_lajistore_requests
 
 
+@gzip_page
 @count_lajistore_requests
 @xframe_options_exempt  # Allows the view to be loaded in an iFrame
 def public(request):

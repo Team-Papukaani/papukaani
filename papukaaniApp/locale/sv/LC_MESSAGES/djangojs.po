@@ -55,11 +55,11 @@ msgstr "Temperatur"
 
 #: papukaaniApp/static/papukaani/js/devices.js:125
 msgid "Uusi kiinnitys"
-msgstr "FIXME"
+msgstr "Ny fästning"
 
 #: papukaaniApp/static/papukaani/js/devices.js:217
 msgid "Virhe kun yritettiin tallentaa"
-msgstr "FIXME"
+msgstr "Något gick fel med sparandet"
 
 #: papukaaniApp/static/papukaani/js/devices.js:223
 msgid "Poistetaan"
@@ -67,11 +67,11 @@ msgstr "Radera"
 
 #: papukaaniApp/static/papukaani/js/devices.js:233
 msgid "Virhe kun yritettiin poistaa"
-msgstr "FIXME"
+msgstr "Något gick fel med raderingen"
 
 #: papukaaniApp/static/papukaani/js/devices.js:243
 msgid "Ladataan"
-msgstr "FIXME"
+msgstr "Laddar"
 
 #: papukaaniApp/static/papukaani/js/devices.js:372
 msgid "Lintua ei määritelty!"
@@ -91,7 +91,7 @@ msgstr "Datum får inte vara i framtiden."
 
 #: papukaaniApp/static/papukaani/js/devices.js:391
 msgid "Laite on tuona aikana jo kiinni linnussa."
-msgstr "FIXME"
+msgstr "Sändaren är redan fäst till en fågel vid den angivna tidspunkten."
 
 #: papukaaniApp/static/papukaani/js/individuals.js:94
 msgid "Tämä kenttä on pakollinen."
@@ -195,19 +195,19 @@ msgstr "Information"
 
 #: papukaaniApp/static/papukaani/js/public.js:148
 msgid "Lintu"
-msgstr "FIXME"
+msgstr "Fågel"
 
 #: papukaaniApp/static/papukaani/js/public.js:150
 msgid "Linnut"
-msgstr "FIXME"
+msgstr "Fåglar"
 
 #: papukaaniApp/static/papukaani/js/public.js:155
 msgid " ja "
-msgstr "FIXME"
+msgstr " och"
 
 #: papukaaniApp/static/papukaani/js/public.js:168
 msgid "Avaa"
-msgstr "FIXME"
+msgstr "Öppna"
 
 #: papukaaniApp/static/papukaani/js/public.js:216
 msgid "fi"

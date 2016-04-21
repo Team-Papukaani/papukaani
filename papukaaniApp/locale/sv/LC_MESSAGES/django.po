@@ -140,7 +140,7 @@ msgstr "Välj sändare"
 
 #: papukaaniApp/templates/papukaaniApp/devices.html:59
 msgid "ei irroitettu"
-msgstr "FIXME"
+msgstr "ej fäst"
 
 #: papukaaniApp/templates/papukaaniApp/devices.html:64
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:21
@@ -171,11 +171,11 @@ msgstr "Uttagen"
 
 #: papukaaniApp/templates/papukaaniApp/devices.html:133
 msgid "Tätä laitetta ei ole koskaan kiinnitetty"
-msgstr "FIXME"
+msgstr "Denna sändare har ej fästs."
 
 #: papukaaniApp/templates/papukaaniApp/devices.html:140
 msgid "Tämän laitteen kiinnityksiä ei onnistuttu lataamaan."
-msgstr "FIXME"
+msgstr "Sändarens fästningar kunde inte laddas."
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:13
 msgid "Määrittele formaatti:"
@@ -417,7 +417,7 @@ msgstr "Läs mera"
 
 #: papukaaniApp/templates/papukaaniApp/public.html:287
 msgid "Julkaistu"
-msgstr "FIXME"
+msgstr "Publicerad"
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:20
 msgid "Tiedosto:"
@@ -446,12 +446,12 @@ msgstr "Administrera formater"
 #: papukaaniApp/views/device_views.py:127
 #, python-format
 msgid "Annettuna aikana linnussa on jo kiinni laite %s"
-msgstr "FIXME %s"
+msgstr "Under den angivna tidspunkten är sändare %s redan fäst till fågeln"
 
 #: papukaaniApp/views/device_views.py:133
 #, python-format
 msgid "Annettuna aikana laite on jo kiinni linnussa %s"
-msgstr "FIXME %s"
+msgstr "Under den angivna tidspunkten är sändaren redan fäst till fågel %s"
 
 #: papukaaniApp/views/formats_views.py:36
 msgid "Muutokset tallennettu!"
@@ -517,6 +517,3 @@ msgstr "Uppladdning lyckades!"
 #: papukaaniApp/views/upload_views.py:46
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "Du måste välja en fil att ladda upp!"
-
-#~ msgid "Kiinnitä"
-#~ msgstr "Fäst"

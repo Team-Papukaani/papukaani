@@ -215,8 +215,3 @@ msgstr "en"
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Virhe ladattaessa tietoja"
-#~ msgid "Virhe ladattaessa kiinnityksiä"
-#~ msgstr "Error while loading data"

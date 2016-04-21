@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-11 10:45+0300\n"
+"POT-Creation-Date: 2016-04-13 03:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: papukaani/config/common.py:104
-#: papukaaniApp/templates/papukaaniApp/news.html:41
+#: papukaaniApp/templates/papukaaniApp/news.html:44
 msgid "Suomi"
 msgstr "Finnish"
 
 #: papukaani/config/common.py:105
-#: papukaaniApp/templates/papukaaniApp/news.html:42
+#: papukaaniApp/templates/papukaaniApp/news.html:45
 msgid "Englanti"
 msgstr "English"
 
 #: papukaani/config/common.py:106
-#: papukaaniApp/templates/papukaaniApp/news.html:43
+#: papukaaniApp/templates/papukaaniApp/news.html:46
 msgid "Ruotsi"
 msgstr "Swedish"
 
@@ -38,9 +38,9 @@ msgstr "The page you are looking for does not exist."
 
 #: papukaaniApp/templates/base.html:4
 #: papukaaniApp/templates/papukaaniApp/choose.html:81
-#: papukaaniApp/templates/papukaaniApp/devices.html:76
-#: papukaaniApp/templates/papukaaniApp/news.html:95
-#: papukaaniApp/templates/papukaaniApp/public.html:207
+#: papukaaniApp/templates/papukaaniApp/devices.html:154
+#: papukaaniApp/templates/papukaaniApp/news.html:99
+#: papukaaniApp/templates/papukaaniApp/public.html:215
 msgid "fi"
 msgstr "en"
 
@@ -68,6 +68,7 @@ msgstr "Manage birds"
 
 #: papukaaniApp/templates/navigation.html:23
 #: papukaaniApp/templates/papukaaniApp/news.html:22
+#: papukaaniApp/templates/papukaaniApp/public.html:201
 msgid "Uutiset"
 msgstr "News"
 
@@ -97,17 +98,18 @@ msgid "Ei"
 msgstr "No"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:24
+#: papukaaniApp/templates/papukaaniApp/devices.html:103
 #: papukaaniApp/templates/papukaaniApp/individuals.html:17
 msgid "Peruuta"
 msgstr "Cancel"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:34
-#: papukaaniApp/templates/papukaaniApp/public.html:108
+#: papukaaniApp/templates/papukaaniApp/public.html:127
 msgid "Aloita seuranta:"
 msgstr "Start tracking:"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:42
-#: papukaaniApp/templates/papukaaniApp/public.html:113
+#: papukaaniApp/templates/papukaaniApp/public.html:132
 msgid "Lopeta seuranta:"
 msgstr "Stop tracking:"
 
@@ -116,9 +118,10 @@ msgid "Näytä pisteet aikavälillä"
 msgstr "Show points in interval"
 
 #: papukaaniApp/templates/papukaaniApp/choose.html:61
+#: papukaaniApp/templates/papukaaniApp/devices.html:106
 #: papukaaniApp/templates/papukaaniApp/formats.html:153
 #: papukaaniApp/templates/papukaaniApp/individuals.html:63
-#: papukaaniApp/templates/papukaaniApp/news.html:59
+#: papukaaniApp/templates/papukaaniApp/news.html:64
 msgid "Tallenna"
 msgstr "Save"
 
@@ -130,29 +133,48 @@ msgstr "Reset"
 msgid "Hallitse lähettimiä"
 msgstr "Manage devices"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:28
+#: papukaaniApp/templates/papukaaniApp/devices.html:26
 msgid "Valitse lähetin"
 msgstr "Select device"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:39
-msgid "Lintu"
-msgstr "Bird"
+#: papukaaniApp/templates/papukaaniApp/devices.html:59
+msgid "ei irroitettu"
+msgstr "not detached"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:40
-msgid "Kiinnitetty"
-msgstr "Attached"
+#: papukaaniApp/templates/papukaaniApp/devices.html:64
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:21
+msgid "Muokkaa"
+msgstr "Edit"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:41
-msgid "Irroitettu"
-msgstr "Detached"
+#: papukaaniApp/templates/papukaaniApp/devices.html:67
+#: papukaaniApp/templates/papukaaniApp/individuals.html:65
+#: papukaaniApp/templates/papukaaniApp/list_formats.html:22
+msgid "Poista"
+msgstr "Delete"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:48
+#: papukaaniApp/templates/papukaaniApp/devices.html:81
 msgid "Valitse kiinnitettävä lintu"
 msgstr "Choose bird to attach"
 
-#: papukaaniApp/templates/papukaaniApp/devices.html:61
-msgid "Kiinnitä"
-msgstr "Attach"
+#: papukaaniApp/templates/papukaaniApp/devices.html:119
+msgid "Lintu"
+msgstr "Bird"
+
+#: papukaaniApp/templates/papukaaniApp/devices.html:120
+msgid "Kiinnitetty"
+msgstr "Attached"
+
+#: papukaaniApp/templates/papukaaniApp/devices.html:121
+msgid "Irroitettu"
+msgstr "Detached"
+
+#: papukaaniApp/templates/papukaaniApp/devices.html:133
+msgid "Tätä laitetta ei ole koskaan kiinnitetty"
+msgstr "This device has never been attached"
+
+#: papukaaniApp/templates/papukaaniApp/devices.html:140
+msgid "Tämän laitteen kiinnityksiä ei onnistuttu lataamaan."
+msgstr "This device's attachments could not be loaded"
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:13
 msgid "Määrittele formaatti:"
@@ -282,11 +304,6 @@ msgstr "Ring number"
 msgid "Muokkaa kuvauksia"
 msgstr "Edit descriptions"
 
-#: papukaaniApp/templates/papukaaniApp/individuals.html:65
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:22
-msgid "Poista"
-msgstr "Delete"
-
 #: papukaaniApp/templates/papukaaniApp/individuals.html:74
 msgid "KUVAUKSET"
 msgstr "DESCRIPTIONS"
@@ -316,19 +333,16 @@ msgid "URL ruotsinkieliseen kuvaukseen"
 msgstr "URL to Swedish description"
 
 #: papukaaniApp/templates/papukaaniApp/individuals.html:118
-#: papukaaniApp/templates/papukaaniApp/news.html:62
+#: papukaaniApp/templates/papukaaniApp/news.html:67
 #: papukaaniApp/templates/papukaaniApp/public.html:51
-#: papukaaniApp/templates/papukaaniApp/public.html:141
+#: papukaaniApp/templates/papukaaniApp/public.html:75
+#: papukaaniApp/templates/papukaaniApp/public.html:160
 msgid "Sulje"
 msgstr "Close"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:19
 msgid "Formaatin nimi"
 msgstr "Format name"
-
-#: papukaaniApp/templates/papukaaniApp/list_formats.html:21
-msgid "Muokkaa"
-msgstr "Edit"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:33
 msgid "Haluatko varmasti poistaa formaatin "
@@ -338,41 +352,41 @@ msgstr "Are you sure you want to delete the format "
 msgid "Kirjaudu sisään:"
 msgstr "Log in:"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:23
-#: papukaaniApp/templates/papukaaniApp/news.html:32
+#: papukaaniApp/templates/papukaaniApp/news.html:24
+#: papukaaniApp/templates/papukaaniApp/news.html:34
 msgid "Luo uutinen"
 msgstr "Create news"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:35
+#: papukaaniApp/templates/papukaaniApp/news.html:38
 msgid "Otsikko"
 msgstr "Headline"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:40
+#: papukaaniApp/templates/papukaaniApp/news.html:43
 msgid "Valitse kieli"
 msgstr "Select language"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:45
-#: papukaaniApp/templates/papukaaniApp/news.html:78
+#: papukaaniApp/templates/papukaaniApp/news.html:49
+#: papukaaniApp/templates/papukaaniApp/news.html:83
 msgid "Julkaisupäivämäärä"
 msgstr "Publishing date"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:51
+#: papukaaniApp/templates/papukaaniApp/news.html:55
 msgid "Lisää uutiseen liitettävä lintu"
 msgstr "Add bird that news regards"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:75
+#: papukaaniApp/templates/papukaaniApp/news.html:80
 msgid "ID"
 msgstr "ID"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:76
+#: papukaaniApp/templates/papukaaniApp/news.html:81
 msgid "Julkaisun otsikko"
 msgstr "Publication headline"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:77
+#: papukaaniApp/templates/papukaaniApp/news.html:82
 msgid "Julkaisun kieli"
 msgstr "Publication language"
 
-#: papukaaniApp/templates/papukaaniApp/news.html:79
+#: papukaaniApp/templates/papukaaniApp/news.html:84
 msgid "Julkaisuun liittyvät linnut"
 msgstr "Birds that publication concerns"
 
@@ -380,26 +394,30 @@ msgstr "Birds that publication concerns"
 msgid "Reittiä ladataan"
 msgstr "Loading route"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:75
+#: papukaaniApp/templates/papukaaniApp/public.html:94
 msgid "Lisää lintu"
 msgstr "Add bird"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:93
-#: papukaaniApp/templates/papukaaniApp/public.html:99
+#: papukaaniApp/templates/papukaaniApp/public.html:112
+#: papukaaniApp/templates/papukaaniApp/public.html:118
 msgid "Nopeus"
 msgstr "Speed"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:122
+#: papukaaniApp/templates/papukaaniApp/public.html:141
 msgid "Jaa"
 msgstr "Share"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:134
+#: papukaaniApp/templates/papukaaniApp/public.html:153
 msgid "Linkki"
 msgstr "Link"
 
-#: papukaaniApp/templates/papukaaniApp/public.html:261
+#: papukaaniApp/templates/papukaaniApp/public.html:269
 msgid "Lue lisää"
 msgstr "Read more"
+
+#: papukaaniApp/templates/papukaaniApp/public.html:287
+msgid "Julkaistu"
+msgstr "Published"
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:20
 msgid "Tiedosto:"
@@ -424,6 +442,16 @@ msgstr "Send"
 #: papukaaniApp/templates/papukaaniApp/upload.html:47
 msgid "Formaattien hallinta"
 msgstr "Manage formats"
+
+#: papukaaniApp/views/device_views.py:127
+#, python-format
+msgid "Annettuna aikana linnussa on jo kiinni laite %s"
+msgstr "At that time the bird already has a device: %s"
+
+#: papukaaniApp/views/device_views.py:133
+#, python-format
+msgid "Annettuna aikana laite on jo kiinni linnussa %s"
+msgstr "At that time the device is already attached to the bird %s"
 
 #: papukaaniApp/views/formats_views.py:36
 msgid "Muutokset tallennettu!"
@@ -489,3 +517,6 @@ msgstr "Upload successful!"
 #: papukaaniApp/views/upload_views.py:46
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"
+
+#~ msgid "Kiinnitä"
+#~ msgstr "Attach"

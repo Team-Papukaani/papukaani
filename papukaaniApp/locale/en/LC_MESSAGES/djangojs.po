@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-11 10:46+0300\n"
+"POT-Creation-Date: 2016-04-13 03:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: papukaaniApp/static/papukaani/js/choose.js:49
+#: papukaaniApp/static/papukaani/js/devices.js:203
 msgid "Tallennetaan"
 msgstr "Saving"
 
@@ -35,6 +36,7 @@ msgid "Tietoja ladataaan"
 msgstr "Loading information"
 
 #: papukaaniApp/static/papukaani/js/choose.js:104
+#: papukaaniApp/static/papukaani/js/devices.js:257
 msgid "Virhe ladattaessa tietoja"
 msgstr "Error while loading data"
 
@@ -50,55 +52,55 @@ msgstr "Invalid time format!"
 msgid "Lämpötila"
 msgstr "Temperature"
 
-#: papukaaniApp/static/papukaani/js/devices.js:25
-msgid "Irroita"
-msgstr "Detach"
+#: papukaaniApp/static/papukaani/js/devices.js:125
+msgid "Uusi kiinnitys"
+msgstr "New attachment"
 
-#: papukaaniApp/static/papukaani/js/devices.js:39
-msgid "Ei lintuja"
-msgstr "No birds"
+#: papukaaniApp/static/papukaani/js/devices.js:217
+msgid "Virhe kun yritettiin tallentaa"
+msgstr "Error while trying to save"
 
-#: papukaaniApp/static/papukaani/js/devices.js:78
-msgid "Kiinnitysajankohdan lisäys onnistui. "
-msgstr "Succesfully added attach time. "
+#: papukaaniApp/static/papukaani/js/devices.js:223
+msgid "Poistetaan"
+msgstr "Deleting"
 
-#: papukaaniApp/static/papukaani/js/devices.js:109
-msgid "Irrotusajankohdan lisäys onnistui. "
-msgstr "Succesfully added detach time. "
+#: papukaaniApp/static/papukaani/js/devices.js:233
+msgid "Virhe kun yritettiin poistaa"
+msgstr "Error while trying to delete"
 
-#: papukaaniApp/static/papukaani/js/devices.js:119
-msgid "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
-msgstr "Detach date can't be before attach date. "
+#: papukaaniApp/static/papukaani/js/devices.js:243
+msgid "Ladataan"
+msgstr "Loading"
 
-#: papukaaniApp/static/papukaani/js/devices.js:136
-msgid ""
-"Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite "
-"on jo merkitty kiinnitetyksi. "
-msgstr ""
-"Attach date can't be inside a time interval where the device has already "
-"been marked as attached. "
+#: papukaaniApp/static/papukaani/js/devices.js:372
+msgid "Lintua ei määritelty!"
+msgstr "No bird was defined!"
 
-#: papukaaniApp/static/papukaani/js/devices.js:149
-msgid "Päivämäärä ei saa olla tulevaisuudessa. "
-msgstr "The date can't be in the future. "
+#: papukaaniApp/static/papukaani/js/devices.js:376
+msgid "Kiinnityspäivämäärää ei määritelty!"
+msgstr "The attach date was not defined!"
 
-#: papukaaniApp/static/papukaani/js/devices.js:160
-msgid "Päivämäärä ei määritelty! "
-msgstr "The date was not defined! "
+#: papukaaniApp/static/papukaani/js/devices.js:380
+msgid "Irroitus ei saa olla ennen kiinnitystä!"
+msgstr "Detach date can't be before attach date!"
 
-#: papukaaniApp/static/papukaani/js/devices.js:174
-msgid "Lintua ei määritelty! "
-msgstr "A bird was not defined! "
+#: papukaaniApp/static/papukaani/js/devices.js:385
+msgid "Päivämäärä ei saa olla tulevaisuudessa!"
+msgstr "The date can't be in the future!"
 
-#: papukaaniApp/static/papukaani/js/individuals.js:85
+#: papukaaniApp/static/papukaani/js/devices.js:391
+msgid "Laite on tuona aikana jo kiinni linnussa."
+msgstr "At that time the device is already attached to a bird."
+
+#: papukaaniApp/static/papukaani/js/individuals.js:94
 msgid "Tämä kenttä on pakollinen."
 msgstr "This field is required."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:86
+#: papukaaniApp/static/papukaani/js/individuals.js:95
 msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 msgstr "Please enter a name that is at least {0} letters in length."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:87
+#: papukaaniApp/static/papukaani/js/individuals.js:96
 msgid "Anna oikea http(s):lla alkava osoite."
 msgstr "Please enter a valid address starting with http(s)."
 
@@ -186,11 +188,27 @@ msgstr "Swedish"
 msgid "Uutisia ladataan"
 msgstr "Loading news"
 
-#: papukaaniApp/static/papukaani/js/public.js:78
+#: papukaaniApp/static/papukaani/js/public.js:88
 msgid "Lisätietoja"
 msgstr "Information"
 
-#: papukaaniApp/static/papukaani/js/public.js:135
+#: papukaaniApp/static/papukaani/js/public.js:148
+msgid "Lintu"
+msgstr "Bird"
+
+#: papukaaniApp/static/papukaani/js/public.js:150
+msgid "Linnut"
+msgstr "Birds"
+
+#: papukaaniApp/static/papukaani/js/public.js:155
+msgid " ja "
+msgstr " and "
+
+#: papukaaniApp/static/papukaani/js/public.js:168
+msgid "Avaa"
+msgstr "Open"
+
+#: papukaaniApp/static/papukaani/js/public.js:216
 msgid "fi"
 msgstr "en"
 

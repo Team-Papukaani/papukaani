@@ -6,10 +6,8 @@ from datetime import datetime
 
 from papukaaniApp.services.laji_auth_service.laji_auth import authenticated
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
-from django.views.decorators.gzip import gzip_page
 
 
-@gzip_page
 @api_view(['GET'])
 def getGatheringsForDevice(request):
     """
@@ -23,7 +21,6 @@ def getGatheringsForDevice(request):
     return Response(gatherings)
 
 
-@gzip_page
 @api_view(['GET'])
 def getPublicGatheringsForIndividual(request):
     """
@@ -64,7 +61,6 @@ def getPublicGatheringsForIndividual(request):
     return Response(data)
 
 
-@gzip_page
 @api_view(['GET'])
 @require_auth
 def getAllGatheringsForIndividual(request):

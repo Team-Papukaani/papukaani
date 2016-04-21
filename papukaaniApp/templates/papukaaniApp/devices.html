@@ -7,68 +7,146 @@
     <link rel="stylesheet" type="text/css"
           href="{% static 'papukaani/libraries/jquery/jquery-ui-timepicker-addon.css' %}">
     <link rel="stylesheet" href="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'papukaani/css/devices.css' %}">
 
 {% endblock %}
 
 {% autoescape off %}
-{% block body_attr %} onload='init({{ attachments_of_devices }}, {{ individual_names }}, "{{ csrf_token }}")'{% endblock %}
+{% block body_attr %} onload='init({{ devices_json }}, {{ individuals_json }}, "{{ csrf_token }}")'{% endblock %}
 {% endautoescape %}
 
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-
                 <h1 class="heading">{% trans "Hallitse lähettimiä" %}</h1>
-
-                <form>
                     <p class="heading">
-                        <select id="selectDevice" class="form-control form-field" style="display:inline"
-                                onchange="displayIndividuals(this.value)">
-                            <option selected disabled>{% trans "Valitse lähetin" %}</option>
+                        <select id="selectDevice" class="form-control form-field" style="display:inline" >
+                            <option selected disabled>
+                                {% trans "Valitse lähetin" %}
+                            </option>
                             {% for device in devices %}
-                                <option value="{{ device.id }}">{{ device.deviceManufacturerID }}</option>
+                                <option value="{{ device.id }}">
+                                    {{ device.deviceManufacturerID }} 
+                                    {# ({{ device.id }}) #}
+                                </option> 
                             {% endfor %}
                         </select>
 
-                        <span id="errors"></span>
+                        <span id="message_area"></span>
                     </p>
 
-                    <table id="table" class="table table-stripped table-nonfluid">
-                        <tr>
-                            <th>{% trans "Lintu" %}</th>
-                            <th>{% trans "Kiinnitetty" %}</th>
-                            <th>{% trans "Irroitettu" %}</th>
-                            <th></th>
-                        </tr>
-                        <tbody id="individuals"></tbody>
-                        <tr id="attacher">
-                            <td>
-                                <select id="individualId">
-                                    <option disabled selected>{% trans "Valitse kiinnitettävä lintu" %}</option>
-                                    {% for individual in individuals %}
-                                        <option value="{{ individual.id }}">{{ individual.nickname }}</option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" id="start_time" name="start_time" class="dateinput datepicker"
-                                       onblur="validateDateFormat(this)" placeholder="dd.mm.yyyy HH:mm">
-                            </td>
-                            <td></td>
-                            <td>
-                                <a id="attach" class="btn btn-sm btn-primary"
-                                   onclick="attachDevice()">{% trans "Kiinnitä" %}</a>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
+                    <div id='devs-main'>
+                    </div>
+
             </div>
         </div>
     </div>
+
+    <!-- underscore templates -->
+
+    <!-- template for attachments that are being displayed -->
+    <script type='text/template' id='att-display-template'>
+<tr id="att-<%= att.id %>" class="att display">
+    <td class="attached-individual"> <%= individualName %> </td>
+    <td class="attach-time"> 
+        <%= $.format.date(att.attached, "dd.MM.yyyy HH:mm") %> 
+    </td>
+    <td class="remove-time">
+        <% if (att.removed) { %> 
+            <%= $.format.date(att.removed, "dd.MM.yyyy HH:mm") %>
+        <% } else { %>
+            <span class="text-muted not-removed-note">{% trans "ei irroitettu" %}</span>
+        <% } %> 
+    </td>
+    <td> 
+        <a class='edit-button btn btn-sm btn-primary'>
+            {% trans "Muokkaa" %}
+        </a>
+        <a class='delete-button btn btn-sm btn-primary'>
+            {% trans "Poista" %}
+        </a>
+    </td>
+</tr>
+    </script>
+
+    <!-- template for attachments that are being edited -->
+    <script type='text/template' id='att-editing-template'>
+<tr id="att-<%= isNew ? 'new' : att.id %>" 
+    class="att editing active <%= isNew ? 'new' : '' %>"
+    data-id="<%= isNew ? 'none' : att.id %>">
+    <td> 
+        <select class="select-individual">
+            <option value="None" disabled <%= isNew ? 'selected' : '' %>>
+                {% trans "Valitse kiinnitettävä lintu" %}
+            </option>
+            <% _.each(individuals, function (indiv) { %>
+                <% var selected = indiv.id === att.individualID ? " selected" : "" %>
+                <option value="<%= indiv.id %>"<%= selected %>>
+                    <%= indiv.nickname %>
+                </option>
+            <% }); %>
+        </select>
+    </td>
+    <td> 
+        <input type='text' name='attach-time' class='dateinput datepicker'
+               placeholder='dd.mm.yyyy HH:mm'
+               value='<%= $.format.date(att.attached, "dd.MM.yyyy HH:mm") %>'>
+    </td>
+    <td> 
+        <input type='text' name='remove-time' class='dateinput datepicker'
+               placeholder='dd.mm.yyyy HH:mm' 
+               value='<%= $.format.date(att.removed, "dd.MM.yyyy HH:mm") %>'>
+    </td>
+    <td>
+        <a class='cancel-button btn btn-sm btn-primary'>
+            {% trans "Peruuta" %}
+        </a>
+        <a class='save-button btn btn-sm btn-primary'>
+            {% trans "Tallenna" %}
+        </a>
+    </td>
+</tr>
+    </script>
+
+    <!-- template for the table of attachments -->
+    <script type="text/template" id="device-atts-template">
+<table id="atts-list-<%= deviceID %>" 
+       class="atts-list table table-hover table-nonfluid"
+       data-id="<%= deviceID %>">
+    <thead>
+        <tr>
+            <th style="width: 25%">{% trans "Lintu" %}</th>
+            <th style="width: 25%">{% trans "Kiinnitetty" %}</th>
+            <th style="width: 25%">{% trans "Irroitettu" %}</th>
+            <th style="width: 25%"></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+    </script>
+
+    <script type="text/template" id="none-note-template">
+<tr class="none-note text-muted">
+    <td colspan=4> 
+        {% trans "Tätä laitetta ei ole koskaan kiinnitetty" %}
+    </td>
+</tr>
+    </script>
+
+    <script type="text/template" id="loading-error-template">
+<p class="text-danger"> 
+    {% trans "Tämän laitteen kiinnityksiä ei onnistuttu lataamaan." %}
+</p>
+    </script>
+
 {% endblock %}
 
 {% block scripts %}
+    <script src="{% static 'papukaani/libraries/underscore-min.js' %}"></script> 
+    <script src="//cdn.jsdelivr.net/bluebird/3.3.4/bluebird.min.js"></script> 
+    {# <script src="//cdn.jsdelivr.net/bluebird/3.3.4/bluebird.js"></script> #}
     <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui.js' %}"></script>
     <script src="{% static 'papukaani/libraries/jquery/jquery-dateFormat.min.js' %}"></script>
 

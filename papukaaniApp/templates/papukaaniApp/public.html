@@ -288,11 +288,11 @@
 
             var t;
             if (news.targets.length == 1) {
-                t = gettext('Liittyy lintuun') + ': ' + sorter.getBird(news.targets[0]).name;
+                t = gettext('Liittyy lintuun') + ': ' + '<span data-tip="tooltip" title="' + sorter.getBird(news.targets[0]).species + '">' + sorter.getBird(news.targets[0]).name + '</span>';
             } else {
                 t = gettext('Liittyy lintuihin') + ': ';
                 for (var j = 0; j < news.targets.length; j++) {
-                    t += sorter.getBird(news.targets[j]).name;
+                    t += '<span data-tip="tooltip" title="' + sorter.getBird(news.targets[j]).species + '">' + sorter.getBird(news.targets[j]).name + '</span>';
                     if (j != news.targets.length - 1) {
                         t = t + ", "
                     }
@@ -313,5 +313,6 @@
 
                 }
         );
+
     </script>
 {% endblock %}

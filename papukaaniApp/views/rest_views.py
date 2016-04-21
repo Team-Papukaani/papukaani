@@ -16,7 +16,6 @@ def getGatheringsForDevice(request):
         _move_altitude(g)
     return Response(gatherings)
 
-@gzip_page
 @api_view(['GET'])
 def getPublicGatheringsForIndividual(request):
     """

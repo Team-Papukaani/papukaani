@@ -83,6 +83,21 @@ class TestNews(TestCase):
             self.n.publishDate = "I'm not a valid time"
             self.n.update()
 
+    def test_eventDate(self):
+        t = "2016-01-01T01:02:03+00:00"
+        self.n.eventDate = t
+        self.n.update()
+        gotten = news.get(self.n.id)
+        self.assertEquals(t, gotten.eventDate)
+
+        with self.assertRaises(ValueError):
+            self.n.eventDate = "I'm not a valid time"
+            self.n.update()
+            
+        with self.assertRaises(ValueError):
+            self.n.eventDate = None
+            self.n.update()
+
     def test_getting_attached_is_empty(self):
         self.assertEqual(set(), self.n.get_attached_individuals())
 
@@ -163,5 +178,5 @@ class TestNews(TestCase):
             "title": title,
             "content": content,
             "language": language,
-            "publishDate" : "2016-04-06T00:00:00+00:00"
+            "publishDate": "2016-04-06T00:00:00+00:00"
         })

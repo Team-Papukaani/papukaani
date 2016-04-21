@@ -100,11 +100,10 @@
 <script src="{% static 'papukaani/libraries/jquery/jquery-ui/jquery-ui-timepicker-'|add:lang|add:'.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/datetimepicker.js' %}"></script>
 <script src="{% static 'papukaani/js/utils/datepicker-'|add:lang|add:'.js' %}"></script>
-<script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
+<script src="{% static 'papukaani/libraries/tinymce/tinymce.min.js' %}"></script>
 <script src="{% static 'papukaani/libraries/toggleOption.js' %}"></script>
 <script src="{% static 'papukaani/js/news.js' %}"></script>
+<script src="{% static 'papukaani/js/utils/init_tinymce.js' %}"></script>
 <script>
     {% autoescape off %}
     sorter = new IndividualSorter({{ individuals }}, {{ species }});

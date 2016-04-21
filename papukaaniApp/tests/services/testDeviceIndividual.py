@@ -1,5 +1,6 @@
 from django.test import TestCase
 from papukaaniApp.services.deviceindividual_service import DeviceIndividual
+from papukaaniApp.services.deviceindividual_service.DeviceIndividual import AlreadyHasDevice, DeviceAlreadyAttached
 from papukaaniApp.models_LajiStore import individual, device
 
 
@@ -77,21 +78,24 @@ class testDeviceIndividual(TestCase):
 
     def testAttachTwiceDoesNotAttachAgain(self):
         self.assertEquals(0, len(DeviceIndividual.find()))
-        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        DeviceIndividual.attach(    self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
         self.assertEquals(1, len(DeviceIndividual.find()))
-        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        with self.assertRaises(AlreadyHasDevice):
+            DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
         self.assertEquals(1, len(DeviceIndividual.find()))
 
     def testAttachToAnotherDeviceDoesNotAttach(self):
-        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        DeviceIndividual.attach(    self.D.id,  self.I.id, "2015-09-29T14:00:00+03:00")
         self.assertEquals(1, len(DeviceIndividual.find()))
-        DeviceIndividual.attach(self.D2.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        with self.assertRaises(AlreadyHasDevice):
+            DeviceIndividual.attach(self.D2.id, self.I.id, "2015-09-29T14:00:00+03:00")
         self.assertEquals(1, len(DeviceIndividual.find()))
 
     def testAttachToAnotherIndividualDoesNotAttach(self):
-        DeviceIndividual.attach(self.D.id, self.I.id, "2015-09-29T14:00:00+03:00")
+        DeviceIndividual.attach(    self.D.id, self.I.id,  "2015-09-29T14:00:00+03:00")
         self.assertEquals(1, len(DeviceIndividual.find()))
-        DeviceIndividual.attach(self.D.id, self.I2.id, "2015-09-29T14:00:00+03:00")
+        with self.assertRaises(DeviceAlreadyAttached):
+            DeviceIndividual.attach(self.D.id, self.I2.id, "2015-09-29T14:00:00+03:00")
         self.assertEquals(1, len(DeviceIndividual.find()))
 
     def testAttachDetachOne(self):

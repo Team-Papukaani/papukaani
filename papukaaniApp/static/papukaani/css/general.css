@@ -365,7 +365,7 @@ body > .container {
     padding: 50px 0 0;
 }
 
-.container .text-muted {
+footer .text-muted {
     color: #ffffff;
     margin: 20px 0;
 }
@@ -557,6 +557,7 @@ code {
     z-index: 1;
     background: #ccc;
 }
+
 #newsContainer{
     padding-bottom: 60px;
 }

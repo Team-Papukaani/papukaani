@@ -14,8 +14,7 @@ _INDIVIDUAL_PATH = "individuals"
 _DEVICEINDIVIDUAL_PATH = "deviceIndividuals"
 _NEWS_PATH = "news"
 
-_ERROR_MSG = "Error while saving to LajiStore. Check arguments!\ŋ"
-
+_ERROR_MSG = "Error while saving to LajiStore. Check arguments!"
 
 # Service for LajiStore. All methods return a dictionary representing a json object, except delete methods that return a Response object. Query arguments can be passed to get_all_* methods
 # as keyword parameters. For example get_all_devices(deviceType="exampleType") returns all devices with deviceType "exampleType".
@@ -100,12 +99,14 @@ def delete_deviceindividual(id):
 
 def post_deviceindividual(**data):
     data = _rebuild_deviceindividual_attachment_ids(data)
-    return _post(data, _DEVICEINDIVIDUAL_PATH)
+    item = _post(data, _DEVICEINDIVIDUAL_PATH)
+    return _strip_deviceindividual_attachment_ids(item)
 
 
 def update_deviceindividual(**data):
     data = _rebuild_deviceindividual_attachment_ids(data)
-    return _put(_DEVICEINDIVIDUAL_PATH + "/" + str(data["id"]), data)
+    item = _put(_DEVICEINDIVIDUAL_PATH + "/" + str(data["id"]), data)
+    return _strip_deviceindividual_attachment_ids(item)
 
 
 def delete_all_deviceindividual():
@@ -208,6 +209,7 @@ def delete_all_individuals():
 def _delete(uri):
     url = _URL + uri
     response = requests.delete(url, auth=_AUTH)
+    # response.raise_for_status()
     if 'id' in response:
         response['id'] = response['id'].rsplit('/', 1)[-1]
     return response
@@ -217,7 +219,9 @@ def _get(uri, **kwargs):
     url = _URL + uri
     if kwargs:
         url += _add_query(**kwargs)
-    response = requests.get(url, auth=_AUTH).json()
+    raw = requests.get(url, auth=_AUTH)
+    # raw.raise_for_status()
+    response = raw.json()
     if 'id' in response:
         response['id'] = response['id'].rsplit('/', 1)[-1]
     if '@context' in response: del response['@context']
@@ -242,14 +246,14 @@ def _create_response(data, uri, post):
         raw = requests.post(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
     else:
         raw = requests.put(url, json.dumps(data), headers=_JSON_HEADERS, auth=_AUTH)
-
+    
+    # raw.raise_for_status()
     response = raw.json()
 
     if "id" not in response:
         error = _ERROR_MSG
         if "validation_messages" in response:
-            for e in response["validation_messages"]:
-                error += e + " : " + str(response["validation_messages"][e]) + "\ŋ"
+            error += '\n' + json.dumps(response['validation_messages'], indent=4)
         raise ValueError(error)
 
     response['id'] = response['id'].rsplit('/', 1)[-1]

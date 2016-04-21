@@ -1,6 +1,6 @@
 from django.test import TestCase
+from papukaaniApp.services.deviceindividual_service.DeviceIndividual import DeviceAlreadyAttached, AlreadyHasDevice
 from papukaaniApp.models_LajiStore import *
-
 
 class TestDevice(TestCase):
     def setUp(self):
@@ -66,7 +66,10 @@ class TestDevice(TestCase):
 
         A, B = self._create_individuals()
         self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
-        self.d.attach_to(B.id, "2015-10-10T10:10:10+00:00")
+
+        with self.assertRaises(DeviceAlreadyAttached):
+            self.d.attach_to(B.id, "2015-10-10T10:10:10+00:00")
+
         attachments = self.d.get_attachments()
 
         self.assertEquals(len(attachments), 1)
@@ -78,15 +81,15 @@ class TestDevice(TestCase):
         self.d.individuals = []
 
         A, B = self._create_individuals()
-        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
-        self.d.detach_from(A.id, "2015-10-10T10:10:10+00:00")
+        self.d.attach_to(A.id,                 "2015-10-10T10:10:10+00:00")
+        self.d.detach_from(A.id,               "2015-10-10T10:10:10+00:00")
         self.assertTrue(self.d.attach_to(B.id, "2015-10-10T10:10:10+00:00") is None)
 
         self._delete_individuals([A, B])
 
     def test_remove(self):
         A, B = self._create_individuals()
-        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
+        self.d.attach_to(A.id,   "2015-10-10T10:10:10+00:00")
         self.d.detach_from(A.id, "2015-10-10T10:10:10+00:00")
         individuals = self.d.get_attachments()
         self.assertEquals(len(individuals), 1)
@@ -104,9 +107,9 @@ class TestDevice(TestCase):
 
     def test_getting_individuals(self):
         A, B = self._create_individuals()
-        self.d.attach_to(A.id, "2015-10-10T10:10:10+00:00")
-        self.d.detach_from(A.id, "2015-10-10T10:10:10+00:01")
-        self.d.attach_to(B.id, "2015-10-10T10:10:10+00:02")
+        self.d.attach_to(A.id,   "2015-10-10T10:10:10+00:00")
+        self.d.detach_from(A.id, "2015-10-10T10:11:11+00:00")
+        self.d.attach_to(B.id,   "2015-10-10T10:12:12+00:00")
         individuals = self.d.get_attachments()
         self.assertEquals(len(individuals), 2)
 

@@ -5,7 +5,6 @@ import sys
 from papukaani.config import common
 
 
-
 if __name__ == "__main__":
     if "test" in sys.argv:
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "papukaani.config.test")

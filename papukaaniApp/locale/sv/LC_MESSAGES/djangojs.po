@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-11 10:46+0300\n"
+"POT-Creation-Date: 2016-04-13 03:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: papukaaniApp/static/papukaani/js/choose.js:49
+#: papukaaniApp/static/papukaani/js/devices.js:203
 msgid "Tallennetaan"
 msgstr "Sparar..."
 
@@ -36,6 +37,7 @@ msgid "Tietoja ladataaan"
 msgstr "Information laddas"
 
 #: papukaaniApp/static/papukaani/js/choose.js:104
+#: papukaaniApp/static/papukaani/js/devices.js:257
 msgid "Virhe ladattaessa tietoja"
 msgstr "Fel vid laddning av information"
 
@@ -51,55 +53,55 @@ msgstr "Ogiltigt tidsformat"
 msgid "Lämpötila"
 msgstr "Temperatur"
 
-#: papukaaniApp/static/papukaani/js/devices.js:25
-msgid "Irroita"
-msgstr "Ta ut"
+#: papukaaniApp/static/papukaani/js/devices.js:125
+msgid "Uusi kiinnitys"
+msgstr "Ny fästning"
 
-#: papukaaniApp/static/papukaani/js/devices.js:39
-msgid "Ei lintuja"
-msgstr "Inga fåglar"
+#: papukaaniApp/static/papukaani/js/devices.js:217
+msgid "Virhe kun yritettiin tallentaa"
+msgstr "Något gick fel med sparandet"
 
-#: papukaaniApp/static/papukaani/js/devices.js:78
-msgid "Kiinnitysajankohdan lisäys onnistui. "
-msgstr "Tilläggning av fästtidpunkten lyckades. "
+#: papukaaniApp/static/papukaani/js/devices.js:223
+msgid "Poistetaan"
+msgstr "Radera"
 
-#: papukaaniApp/static/papukaani/js/devices.js:109
-msgid "Irrotusajankohdan lisäys onnistui. "
-msgstr "Tilläggning av uttagningstidpunkten lyckades. "
+#: papukaaniApp/static/papukaani/js/devices.js:233
+msgid "Virhe kun yritettiin poistaa"
+msgstr "Något gick fel med raderingen"
 
-#: papukaaniApp/static/papukaani/js/devices.js:119
-msgid "Irroituspäivämäärä ei saa olla ennen kiinnityspäivämäärää. "
+#: papukaaniApp/static/papukaani/js/devices.js:243
+msgid "Ladataan"
+msgstr "Laddar"
+
+#: papukaaniApp/static/papukaani/js/devices.js:372
+msgid "Lintua ei määritelty!"
+msgstr "Fågeln definierades inte!"
+
+#: papukaaniApp/static/papukaani/js/devices.js:376
+msgid "Kiinnityspäivämäärää ei määritelty!"
+msgstr "Datum definierades inte!"
+
+#: papukaaniApp/static/papukaani/js/devices.js:380
+msgid "Irroitus ei saa olla ennen kiinnitystä!"
 msgstr "Uttagningstidpunkten får inte vara före fästtidpunkten."
 
-#: papukaaniApp/static/papukaani/js/devices.js:136
-msgid ""
-"Kiinnityspäivämäärä ei saa sijoittua sellaiselle ajanjaksolle, jolla laite "
-"on jo merkitty kiinnitetyksi. "
-msgstr ""
-"Fästtidpunkten får inte överläppa en tidpunkt då sändaren har redan varit "
-"fäst. "
+#: papukaaniApp/static/papukaani/js/devices.js:385
+msgid "Päivämäärä ei saa olla tulevaisuudessa!"
+msgstr "Datum får inte vara i framtiden."
 
-#: papukaaniApp/static/papukaani/js/devices.js:149
-msgid "Päivämäärä ei saa olla tulevaisuudessa. "
-msgstr "Datum får inte vara i framtiden. "
+#: papukaaniApp/static/papukaani/js/devices.js:391
+msgid "Laite on tuona aikana jo kiinni linnussa."
+msgstr "Sändaren är redan fäst till en fågel vid den angivna tidspunkten."
 
-#: papukaaniApp/static/papukaani/js/devices.js:160
-msgid "Päivämäärä ei määritelty! "
-msgstr "Datum definierades inte! "
-
-#: papukaaniApp/static/papukaani/js/devices.js:174
-msgid "Lintua ei määritelty! "
-msgstr "Fågeln definierades inte! "
-
-#: papukaaniApp/static/papukaani/js/individuals.js:85
+#: papukaaniApp/static/papukaani/js/individuals.js:94
 msgid "Tämä kenttä on pakollinen."
 msgstr "Fältet är obligatorisk."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:86
+#: papukaaniApp/static/papukaani/js/individuals.js:95
 msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 msgstr "Namnet måste vara minst {0} bokstäver i längd."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:87
+#: papukaaniApp/static/papukaani/js/individuals.js:96
 msgid "Anna oikea http(s):lla alkava osoite."
 msgstr "Ange en giltig address som börjar med http(s)."
 
@@ -187,11 +189,27 @@ msgstr "Svenska"
 msgid "Uutisia ladataan"
 msgstr "Nyheter laddas"
 
-#: papukaaniApp/static/papukaani/js/public.js:78
+#: papukaaniApp/static/papukaani/js/public.js:88
 msgid "Lisätietoja"
 msgstr "Information"
 
-#: papukaaniApp/static/papukaani/js/public.js:135
+#: papukaaniApp/static/papukaani/js/public.js:148
+msgid "Lintu"
+msgstr "Fågel"
+
+#: papukaaniApp/static/papukaani/js/public.js:150
+msgid "Linnut"
+msgstr "Fåglar"
+
+#: papukaaniApp/static/papukaani/js/public.js:155
+msgid " ja "
+msgstr " och"
+
+#: papukaaniApp/static/papukaani/js/public.js:168
+msgid "Avaa"
+msgstr "Öppna"
+
+#: papukaaniApp/static/papukaani/js/public.js:216
 msgid "fi"
 msgstr "sv"
 

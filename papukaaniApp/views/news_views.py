@@ -10,6 +10,9 @@ from papukaaniApp.models_LajiStore import news
 from papukaaniApp.models_LajiStore import individual
 from papukaaniApp.models_TipuApi import species
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 _RESPONSE_BASE = {"errors": None, "status": "OK"}
 
@@ -108,6 +111,7 @@ def _create(request):
         n = news.create(request.POST["title"], request.POST["content"], request.POST["language"], publishDate, targets)
     except Exception as e:
         _add_error(response, str(e))
+        logger.error(e)
         return JsonResponse(response)
 
     response["news"] = {}
@@ -155,9 +159,7 @@ def _update(request, id):
         _add_error(response, "Not found")
         return JsonResponse(response)
 
-    print(vars(request))
     PUT = QueryDict(request.body)
-    print(PUT)
     missing = _check_missing_params(PUT, 'title', 'language', 'content')
     _add_error(response, missing)
     if _has_errors(response):

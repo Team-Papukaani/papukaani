@@ -7,9 +7,11 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^choose/$', views.choose, name='choose'),
     url(r'^choose/setIndividualGatherings$', views.set_individual_gatherings),
+
     url(r'^devices/$', views.devices, name='devices'),
-    url(r'^devices/(?P<device_id>.+)/attach/$', views.attach_to),
-    url(r'^devices/(?P<device_id>.+)/remove/$', views.remove_from),
+    url(r'^devices/attachments/(?P<attachment_id>.+)$', views.attachments_rest),
+    url(r'^devices/attachments/$', views.attachments_rest_root),
+
     url(r'^formats/create/(?P<id>.+)/$', views.show_format, name='create_format'),
     url(r'^formats/$', views.list_formats, name='list_formats'),
     url(r'^formats/(?P<id>.+)/$', views.show_format, name="show_format"),

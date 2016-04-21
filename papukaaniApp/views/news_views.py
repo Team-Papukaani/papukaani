@@ -10,6 +10,9 @@ from papukaaniApp.models_LajiStore import news
 from papukaaniApp.models_LajiStore import individual
 from papukaaniApp.models_TipuApi import species
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 _RESPONSE_BASE = {"errors": None, "status": "OK"}
 
@@ -79,6 +82,7 @@ def _list(request):
             "content": n.content,
             "language": n.language,
             "publishDate": n.publishDate,
+            "eventDate": n.eventDate,
             "targets": list(n.targets)
         }
     return JsonResponse(response)
@@ -95,9 +99,14 @@ def _create(request):
         return JsonResponse(response)
 
     publishDate = None if "publishDate" not in request.POST else request.POST["publishDate"]
-    publishDate = _check_date(response, publishDate)
+    eventDate = None if "eventDate" not in request.POST else request.POST["eventDate"]
+
+    dates = _check_date(response, publishDate=publishDate, eventDate=eventDate)
     if _has_errors(response):
         return JsonResponse(response)
+
+    publishDate = dates["publishDate"]
+    eventDate = dates["eventDate"]
 
     targets = None if "targets" not in request.POST else request.POST["targets"]
     targets = _check_targets(response, targets)
@@ -105,9 +114,11 @@ def _create(request):
         return JsonResponse(response)
 
     try:
-        n = news.create(request.POST["title"], request.POST["content"], request.POST["language"], publishDate, targets)
+        n = news.create(request.POST["title"], request.POST["content"], request.POST["language"], publishDate,
+                        eventDate, targets)
     except Exception as e:
         _add_error(response, str(e))
+        logger.error(e)
         return JsonResponse(response)
 
     response["news"] = {}
@@ -117,6 +128,7 @@ def _create(request):
         "content": n.content,
         "language": n.language,
         "publishDate": n.publishDate,
+        "eventDate": n.eventDate,
         "targets": list(n.targets)
     }
 
@@ -137,6 +149,7 @@ def _read(request, id):
             "content": n.content,
             "language": n.language,
             "publishDate": n.publishDate,
+            "eventDate": n.eventDate,
             "targets": list(n.targets)
         }
     else:
@@ -155,9 +168,7 @@ def _update(request, id):
         _add_error(response, "Not found")
         return JsonResponse(response)
 
-    print(vars(request))
     PUT = QueryDict(request.body)
-    print(PUT)
     missing = _check_missing_params(PUT, 'title', 'language', 'content')
     _add_error(response, missing)
     if _has_errors(response):
@@ -167,7 +178,11 @@ def _update(request, id):
     n.language = PUT["language"]
     n.content = PUT["content"]
     n.publishDate = None if "publishDate" not in PUT else PUT["publishDate"]
-    n.publishDate = _check_date(response, n.publishDate)
+    n.publishDate = _check_date(response, publishDate=n.publishDate)
+    if _has_errors(response):
+        return JsonResponse(response)
+    n.eventDate = None if "eventDate" not in PUT else PUT["eventDate"]
+    n.eventDate = _check_date(response, eventDate=n.eventDate)
     if _has_errors(response):
         return JsonResponse(response)
     n.targets = [] if "targets" not in PUT else PUT["targets"]
@@ -183,6 +198,7 @@ def _update(request, id):
         "content": n.content,
         "language": n.language,
         "publishDate": n.publishDate,
+        "eventDate": n.eventDate,
         "targets": n.targets
     }
     return JsonResponse(response)
@@ -224,15 +240,25 @@ def _has_errors(response):
     return len(response["errors"]) > 0
 
 
-def _check_date(response, publishDate):
-    if publishDate is None:
-        return publishDate
+def _check_date(response, eventDate=None, publishDate=None):
+    dates = {
+        "eventDate": eventDate,
+        "publishDate": publishDate
+    }
+    if dates["publishDate"] is not None:
+        try:
+            d = dateutil.parser.parse(dates["publishDate"])
+            dates["publishDate"] = d.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+        except ValueError:
+            _add_error(response, "publishDate:Päivämäärä formaatti on väärin")
+
     try:
-        d = dateutil.parser.parse(publishDate)
-        publishDate = d.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+        d = dateutil.parser.parse(dates["eventDate"])
+        dates["eventDate"] = d.strftime("%Y-%m-%dT%H:%M:%S+00:00")
     except ValueError:
-        _add_error(response, "Päivämäärä formaatti on väärin")
-    return publishDate
+        _add_error(response, "eventDate:Päivämäärä formaatti on väärin")
+
+    return dates
 
 
 def _check_targets(response, targets):

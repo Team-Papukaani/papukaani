@@ -178,13 +178,13 @@ def _update(request, id):
     n.language = PUT["language"]
     n.content = PUT["content"]
     n.publishDate = None if "publishDate" not in PUT else PUT["publishDate"]
-    n.publishDate = _check_date(response, publishDate=n.publishDate)
-    if _has_errors(response):
-        return JsonResponse(response)
     n.eventDate = None if "eventDate" not in PUT else PUT["eventDate"]
-    n.eventDate = _check_date(response, eventDate=n.eventDate)
+    dates = _check_date(response, publishDate=n.publishDate, eventDate=n.eventDate)
     if _has_errors(response):
         return JsonResponse(response)
+
+    n.publishDate = dates["publishDate"]
+    n.eventDate = dates["eventDate"]
     n.targets = [] if "targets" not in PUT else PUT["targets"]
     n.targets = _check_targets(response, n.targets)
     if _has_errors(response):
@@ -253,6 +253,8 @@ def _check_date(response, eventDate=None, publishDate=None):
             _add_error(response, "publishDate:Päivämäärä formaatti on väärin")
 
     try:
+        if dates["eventDate"] is None:
+            raise ValueError
         d = dateutil.parser.parse(dates["eventDate"])
         dates["eventDate"] = d.strftime("%Y-%m-%dT%H:%M:%S+00:00")
     except ValueError:

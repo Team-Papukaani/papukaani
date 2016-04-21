@@ -1,5 +1,6 @@
 from papukaaniApp.services.lajistore_service import LajiStoreAPI
 from papukaaniApp.models_LajiStore import individual
+from papukaaniApp.utils.model_utils import *
 
 
 class News:
@@ -7,11 +8,12 @@ class News:
     Represents the News table of LajiStore
     '''
 
-    def __init__(self, title, content, language, publishDate=None, targets=None, id=None):
+    def __init__(self, title, content, language, publishDate=None, eventDate=None, targets=None, id=None):
         self.title = title
         self.content = content
         self.language = language
         self.publishDate = publishDate
+        self.eventDate = eventDate if eventDate else current_time_as_lajistore_timestamp()
         self.targets = set() if targets is None else targets
         self.id = id
 
@@ -114,13 +116,13 @@ def get(id):
         return None
 
 
-def create(title, content, language, publishDate=None, targets=None):
+def create(title, content, language, publishDate=None, eventDate=None, targets=None):
     '''
     Creates a news instance in LajiStore and a corresponding News object
     :return: A News object
     '''
     try:
-        news = News(title, content, language, publishDate, targets)
+        news = News(title, content, language, publishDate, eventDate, targets)
         data = LajiStoreAPI.post_news(**news.__dict__)
         news.id = data['id']
     except Exception as e:

@@ -84,9 +84,9 @@ function showPointsForIndividual(ids) {
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
                 html.push('<button type="button" class="showDescription btn btn-info btn-xs" ' +
                     'data-toggle="modal" data-target="#descriptionModal" data-id="' +
-                    ids[i] + '"data-tip="tooltip" title="' + sorter.getBird(ids[i]).species + '">' + individualname + '</button>');
+                    ids[i] + '" data-tip="tooltip" title="' + sorter.getBird(ids[i]).species + '">' + individualname + '</button>');
             } else {
-                html.push('<span title="' + sorter.getBird(ids[i]).species + '">' + individualname + '</span>')
+                html.push('<span data-tip="tooltip" title="' + sorter.getBird(ids[i]).species + '">' + individualname + '</span>')
             }
             html.push('</div>');
             html.push('</div>');

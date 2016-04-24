@@ -785,7 +785,7 @@ class NewsPage(Page):
         sel.select_by_value(key)
         while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(2)
-        time.sleep(2)
+        time.sleep(1)
         self.NEWS_SAVE_BUTTON.click()
         time.sleep(1)
 

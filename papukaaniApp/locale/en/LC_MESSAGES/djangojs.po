@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-13 03:06+0300\n"
+"POT-Creation-Date: 2016-04-25 17:59+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,15 +92,15 @@ msgstr "The date can't be in the future!"
 msgid "Laite on tuona aikana jo kiinni linnussa."
 msgstr "At that time the device is already attached to a bird."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:94
+#: papukaaniApp/static/papukaani/js/individuals.js:100
 msgid "Tämä kenttä on pakollinen."
 msgstr "This field is required."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:95
+#: papukaaniApp/static/papukaani/js/individuals.js:101
 msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 msgstr "Please enter a name that is at least {0} letters in length."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:96
+#: papukaaniApp/static/papukaani/js/individuals.js:102
 msgid "Anna oikea http(s):lla alkava osoite."
 msgstr "Please enter a valid address starting with http(s)."
 
@@ -136,79 +136,79 @@ msgstr "Are you sure you want to remove this news?"
 msgid "Lisää uutinen"
 msgstr "Add news"
 
-#: papukaaniApp/static/papukaani/js/news.js:49
+#: papukaaniApp/static/papukaani/js/news.js:53
 msgid "Otsikko puuttuu"
 msgstr "Please give a headline"
 
-#: papukaaniApp/static/papukaani/js/news.js:50
+#: papukaaniApp/static/papukaani/js/news.js:54
 msgid "Sisältö puuttuu"
 msgstr "News content missing"
 
-#: papukaaniApp/static/papukaani/js/news.js:51
+#: papukaaniApp/static/papukaani/js/news.js:55
 msgid "Kieli puuttuu"
 msgstr "Please specify a language"
 
-#: papukaaniApp/static/papukaani/js/news.js:109
+#: papukaaniApp/static/papukaani/js/news.js:56
+msgid "Tapahtumapvm puuttuu"
+msgstr "Event date missing"
+
+#: papukaaniApp/static/papukaani/js/news.js:123
 msgid "Uutinen luotu onnistuneesti!"
 msgstr "News created successfully!"
 
-#: papukaaniApp/static/papukaani/js/news.js:125
+#: papukaaniApp/static/papukaani/js/news.js:139
 msgid "Tiedot tallennettu onnistuneesti!"
 msgstr "Information saved successfully!"
 
-#: papukaaniApp/static/papukaani/js/news.js:161
+#: papukaaniApp/static/papukaani/js/news.js:175
 msgid "Tiedot poistettu onnistuneesti!"
 msgstr "Information deleted successfully!"
 
-#: papukaaniApp/static/papukaani/js/news.js:176
+#: papukaaniApp/static/papukaani/js/news.js:190
 msgid "Muokkaa uutista"
 msgstr "Edit news"
 
-#: papukaaniApp/static/papukaani/js/news.js:213
+#: papukaaniApp/static/papukaani/js/news.js:229
 msgid "Muokkaa"
 msgstr "Edit"
 
-#: papukaaniApp/static/papukaani/js/news.js:214
+#: papukaaniApp/static/papukaani/js/news.js:230
 msgid "Poista"
 msgstr "Delete"
 
-#: papukaaniApp/static/papukaani/js/news.js:223
+#: papukaaniApp/static/papukaani/js/news.js:239
 msgid "Suomi"
 msgstr "Finnish"
 
-#: papukaaniApp/static/papukaani/js/news.js:224
+#: papukaaniApp/static/papukaani/js/news.js:240
 msgid "Englanti"
 msgstr "English"
 
-#: papukaaniApp/static/papukaani/js/news.js:225
+#: papukaaniApp/static/papukaani/js/news.js:241
 msgid "Ruotsi"
 msgstr "Swedish"
 
-#: papukaaniApp/static/papukaani/js/news.js:314
+#: papukaaniApp/static/papukaani/js/news.js:330
 msgid "Uutisia ladataan"
 msgstr "Loading news"
 
-#: papukaaniApp/static/papukaani/js/public.js:88
-msgid "Lisätietoja"
-msgstr "Information"
-
-#: papukaaniApp/static/papukaani/js/public.js:148
+#: papukaaniApp/static/papukaani/js/public.js:150
 msgid "Lintu"
 msgstr "Bird"
 
-#: papukaaniApp/static/papukaani/js/public.js:150
+#: papukaaniApp/static/papukaani/js/public.js:152
 msgid "Linnut"
 msgstr "Birds"
 
-#: papukaaniApp/static/papukaani/js/public.js:155
+#: papukaaniApp/static/papukaani/js/public.js:157
 msgid " ja "
 msgstr " and "
 
-#: papukaaniApp/static/papukaani/js/public.js:168
+#: papukaaniApp/static/papukaani/js/public.js:170
 msgid "Avaa"
 msgstr "Open"
 
-#: papukaaniApp/static/papukaani/js/public.js:216
+#: papukaaniApp/static/papukaani/js/public.js:218
 msgid "fi"
 msgstr "en"
 

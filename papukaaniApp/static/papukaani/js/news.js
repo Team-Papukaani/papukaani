@@ -42,6 +42,10 @@ $(function () {
         $('#news_modal h4.modal-title').text(gettext("Lisää uutinen"))
         $('#news_modal').modal({show: true});
         $("#news_tallenna").data("id", "");
+        var dt = new Date();
+        var dt_farmated = ('0' + dt.getUTCDate()).slice(-2) + "." + ('0' + dt.getMonth()).slice(-2) + "." + dt.getFullYear() + " " + ('0' + dt.getHours()).slice(-2) + ":" + ('0' + dt.getMinutes()).slice(-2);
+        $("#news_publishDate").val(dt_farmated);
+        $("#news_eventDate").val(dt_farmated);
     });
     $("#news_tallenna").click(function (e) {
         e.preventDefault();
@@ -49,6 +53,7 @@ $(function () {
         if ($('#news_title').val() == '') $('#modalmessages').append("<br>" +  gettext('Otsikko puuttuu'));
         if (tinyMCE.get('news_content').getContent() == "") $('#modalmessages').append("<br>" + gettext('Sisältö puuttuu'));
         if ($('#news_language').val() == '') $('#modalmessages').append("<br> " + gettext('Kieli puuttuu'));
+        if ($('#news_eventDate').val() == '') $('#modalmessages').append("<br> " + gettext('Tapahtumapvm puuttuu'));
         if ($('#modalmessages').text()) return;
 
         if ($(this).data("id")) {
@@ -78,6 +83,9 @@ function save_news(id) {
     };
     if ($("#news_publishDate").val() != "") {
         postdata.publishDate = parseTime($("#news_publishDate").val(), "+00:00");
+    }
+    if ($("#news_eventDate").val() != "") {
+        postdata.eventDate = parseTime($("#news_eventDate").val(), "+00:00");
     }
 
     var targets = [];
@@ -168,6 +176,7 @@ function read_news(id) {
         $('#news_language').val(n.language);
         tinyMCE.get('news_content').setContent(n.content);
         $("#news_publishDate").val(n.publishDate ? displayTimeWithLeadingZeroes(n.publishDate) : '');
+        $("#news_eventDate").val(n.eventDate ? displayTimeWithLeadingZeroes(n.eventDate) : '');
         for (var i = 0; i < n.targets.length; i++) {
             $("#selectIndividual").val(n.targets[i]).trigger('change');
         }
@@ -177,7 +186,6 @@ function read_news(id) {
 
 function load_news() {
     showLoadingBar();
-
     $.get('/papukaani/news/list', function (data) {
         var list = $("#newslist tbody");
         var html = [];
@@ -196,6 +204,8 @@ function load_news() {
                 $('<td id="language"></td>').text(language(v.language))
             ).append(
                 $('<td id="publishdate"></td>').text(v.publishDate ? displayTimeWithLeadingZeroes(v.publishDate) : '')
+            ).append(
+                $('<td id="eventdate"></td>').text(v.eventDate ? displayTimeWithLeadingZeroes(v.eventDate) : '')
             ).append(
                 $('<td id="targets"></td>').html(targets)
             ).append(

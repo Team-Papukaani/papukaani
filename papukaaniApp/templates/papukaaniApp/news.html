@@ -39,21 +39,28 @@
                                        type="text"/>
                                 <textarea name="news_content" id="news_content"></textarea>
                                 <div class="input-group">
-                                    <select class="form-control" name="news_language" id="news_language">
+                                    <span class="input-group-addon"
+                                          id="basic-addon1">{% trans "Julkaisupvm" %}</span>
+                                    <input type="text" id="news_publishDate" name="news_publishDate"
+                                           class="dateinput datepicker form-control" placeholder="dd.mm.yyyy HH:mm"
+                                           maxlength="16">
+                                    <span class="input-group-addon"
+                                          id="basic-addon1">{% trans "Tapahtumapvm" %}</span>
+                                    <input type="text" id="news_eventDate" name="news_eventDate"
+                                           class="dateinput datepicker form-control" placeholder="dd.mm.yyyy HH:mm"
+                                           maxlength="16">
+                                </div>
+                                <div class="input-group">
+                                <select id="selectIndividual">
+                                    <option value="">{% trans "Lisää uutiseen liitettävä lintu" %}</option>
+                                </select>
+                                <select class="form-control" width="200" style="width: 200px" name="news_language" id="news_language">
                                         <option value="">{% trans "Valitse kieli" %}</option>
                                         <option value="fi">{% trans "Suomi" %}</option>
                                         <option value="en">{% trans "Englanti" %}</option>
                                         <option value="sv">{% trans "Ruotsi" %}</option>
-                                    </select>
-                                    <span class="input-group-addon"
-                                          id="basic-addon1">{% trans "Julkaisupäivämäärä" %}</span>
-                                    <input type="text" id="news_publishDate" name="news_publishDate"
-                                           class="dateinput datepicker form-control" placeholder="dd.mm.yyyy HH:mm"
-                                           maxlength="16">
-                                </div>
-                                <select id="selectIndividual">
-                                    <option value="">{% trans "Lisää uutiseen liitettävä lintu" %}</option>
                                 </select>
+                                    </div>
                                 <br/>
 
                                 <div id="birdlist"></div>
@@ -81,6 +88,7 @@
                         <th>{% trans "Julkaisun otsikko" %}</th>
                         <th>{% trans "Julkaisun kieli" %}</th>
                         <th>{% trans "Julkaisupäivämäärä" %}</th>
+                        <th>{% trans "Tapahtumapäivämäärä" %}</th>
                         <th>{% trans "Julkaisuun liittyvät linnut" %}</th>
                         <th width="15%"></th>
                     </tr>

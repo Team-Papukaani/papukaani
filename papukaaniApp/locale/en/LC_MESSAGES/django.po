@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-25 17:59+0300\n"
+"POT-Creation-Date: 2016-04-25 18:12+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -433,6 +433,14 @@ msgstr "Event occured"
 #: papukaaniApp/templates/papukaaniApp/public.html:291
 msgid "Julkaistu"
 msgstr "Published"
+
+#: papukaaniApp/templates/papukaaniApp/public.html:296
+msgid "Liittyy lintuun"
+msgstr "Regarding bird"
+
+#: papukaaniApp/templates/papukaaniApp/public.html:298
+msgid "Liittyy lintuihin"
+msgstr "Regarding birds"
 
 #: papukaaniApp/templates/papukaaniApp/upload.html:20
 msgid "Tiedosto:"

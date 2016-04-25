@@ -9,7 +9,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.I3 = individual.create("test2", "ERIEUR")
         self.targets = []
         self.targets.append(self.I2.id)
-        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', self.targets)
+        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', '2016-03-01T00:00:00+00:00', self.targets)
         self.page = NewsPage()
         self.page.navigate()
 

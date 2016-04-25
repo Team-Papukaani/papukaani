@@ -68,6 +68,7 @@
                     <div class="newsContent"></div>
                 </div>
                 <div class="modal-footer">
+                    <div class="eventDate" ></div>
                     <div class="publishDate" ></div>
                     <div class="relatedBirds"></div>
 
@@ -284,13 +285,17 @@
 
             modal.find('.modal-title').html(news.title);
             modal.find('.newsContent').html(news.content);
-            modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + displayTime(news.publishDate));
+            modal.find('.eventDate').html('{% trans "Ajankohta" %}: ' + displayTime(news.eventDate));
+
+            if (news.publishDate) {
+                modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + displayTime(news.publishDate));
+            }
 
             var t;
             if (news.targets.length == 1) {
-                t = gettext('Liittyy lintuun') + ': ' + '<span data-tip="tooltip" title="' + sorter.getBird(news.targets[0]).species + '">' + sorter.getBird(news.targets[0]).name + '</span>';
+                t = '{% trans 'Liittyy lintuun' %}: ' + '<span data-tip="tooltip" title="' + sorter.getBird(news.targets[0]).species + '">' + sorter.getBird(news.targets[0]).name + '</span>';
             } else {
-                t = gettext('Liittyy lintuihin') + ': ';
+                t = '{% trans 'Liittyy lintuihin' %}: ';
                 for (var j = 0; j < news.targets.length; j++) {
                     t += '<span data-tip="tooltip" title="' + sorter.getBird(news.targets[j]).species + '">' + sorter.getBird(news.targets[j]).name + '</span>';
                     if (j != news.targets.length - 1) {

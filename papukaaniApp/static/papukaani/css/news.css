@@ -1,4 +1,4 @@
-#news_publishDate {
+#news_publishDate, #news_eventDate {
     position: relative;
     z-index: 99999999;
 }

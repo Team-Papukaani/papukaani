@@ -125,7 +125,7 @@ function rewriteNews() {
         }
     }
     news.sort(function(a,b) {
-        return new Date(b.publishDate) - new Date(a.publishDate);
+        return new Date(b.eventDate) - new Date(a.eventDate);
     });
 
     html = [];
@@ -165,7 +165,7 @@ function rewriteNews() {
         html.push('<p">' + t + '</p>');
 
 
-        html.push('<span style="font-style: italic; display: block;">' + displayTime(n.publishDate) + '</span>')
+        html.push('<span style="font-style: italic; display: block;">' + displayTime(n.eventDate) + '</span>')
         html.push('<button type="button" class="btn btn-primary btn-xs openNews" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
         html.push(gettext('Avaa'));
         html.push('</button>');

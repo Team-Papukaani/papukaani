@@ -68,6 +68,7 @@
                     <div class="newsContent"></div>
                 </div>
                 <div class="modal-footer">
+                    <div class="eventDate" ></div>
                     <div class="publishDate" ></div>
                     <div class="relatedBirds"></div>
 
@@ -284,7 +285,11 @@
 
             modal.find('.modal-title').html(news.title);
             modal.find('.newsContent').html(news.content);
-            modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + displayTime(news.publishDate));
+            modal.find('.eventDate').html('{% trans "Ajankohta" %}: ' + displayTime(news.eventDate));
+
+            if (news.publishDate) {
+                modal.find('.publishDate').html('{% trans "Julkaistu" %}: ' + displayTime(news.publishDate));
+            }
 
             var t;
             if (news.targets.length == 1) {

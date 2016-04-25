@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-13 03:06+0300\n"
+"POT-Creation-Date: 2016-04-25 17:59+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,15 +93,15 @@ msgstr "Datum får inte vara i framtiden."
 msgid "Laite on tuona aikana jo kiinni linnussa."
 msgstr "Sändaren är redan fäst till en fågel vid den angivna tidspunkten."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:94
+#: papukaaniApp/static/papukaani/js/individuals.js:100
 msgid "Tämä kenttä on pakollinen."
 msgstr "Fältet är obligatorisk."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:95
+#: papukaaniApp/static/papukaani/js/individuals.js:101
 msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 msgstr "Namnet måste vara minst {0} bokstäver i längd."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:96
+#: papukaaniApp/static/papukaani/js/individuals.js:102
 msgid "Anna oikea http(s):lla alkava osoite."
 msgstr "Ange en giltig address som börjar med http(s)."
 
@@ -137,82 +137,85 @@ msgstr "Är du säker att du vill radera denna nyhet?"
 msgid "Lisää uutinen"
 msgstr "Lägg till nyhet"
 
-#: papukaaniApp/static/papukaani/js/news.js:49
+#: papukaaniApp/static/papukaani/js/news.js:53
 msgid "Otsikko puuttuu"
 msgstr "Rubrik saknas"
 
-#: papukaaniApp/static/papukaani/js/news.js:50
+#: papukaaniApp/static/papukaani/js/news.js:54
 msgid "Sisältö puuttuu"
 msgstr "Innehåll saknas"
 
-#: papukaaniApp/static/papukaani/js/news.js:51
+#: papukaaniApp/static/papukaani/js/news.js:55
 msgid "Kieli puuttuu"
 msgstr "Språk saknas"
 
-#: papukaaniApp/static/papukaani/js/news.js:109
+#: papukaaniApp/static/papukaani/js/news.js:56
+msgid "Tapahtumapvm puuttuu"
+msgstr "Händelsedatum saknas"
+
+#: papukaaniApp/static/papukaani/js/news.js:123
 msgid "Uutinen luotu onnistuneesti!"
 msgstr "Skapandet av nyhet lyckades!"
 
-#: papukaaniApp/static/papukaani/js/news.js:125
+#: papukaaniApp/static/papukaani/js/news.js:139
 msgid "Tiedot tallennettu onnistuneesti!"
 msgstr "Information sparats!"
 
-#: papukaaniApp/static/papukaani/js/news.js:161
+#: papukaaniApp/static/papukaani/js/news.js:175
 msgid "Tiedot poistettu onnistuneesti!"
 msgstr "Radering av informationen lyckades!"
 
-#: papukaaniApp/static/papukaani/js/news.js:176
+#: papukaaniApp/static/papukaani/js/news.js:190
 msgid "Muokkaa uutista"
 msgstr "Redigera nyheter"
 
-#: papukaaniApp/static/papukaani/js/news.js:213
+#: papukaaniApp/static/papukaani/js/news.js:229
 msgid "Muokkaa"
 msgstr "Redigera"
 
-#: papukaaniApp/static/papukaani/js/news.js:214
+#: papukaaniApp/static/papukaani/js/news.js:230
 msgid "Poista"
 msgstr "Radera"
 
-#: papukaaniApp/static/papukaani/js/news.js:223
+#: papukaaniApp/static/papukaani/js/news.js:239
 msgid "Suomi"
 msgstr "Finska"
 
-#: papukaaniApp/static/papukaani/js/news.js:224
+#: papukaaniApp/static/papukaani/js/news.js:240
 msgid "Englanti"
 msgstr "Engelska"
 
-#: papukaaniApp/static/papukaani/js/news.js:225
+#: papukaaniApp/static/papukaani/js/news.js:241
 msgid "Ruotsi"
 msgstr "Svenska"
 
-#: papukaaniApp/static/papukaani/js/news.js:314
+#: papukaaniApp/static/papukaani/js/news.js:330
 msgid "Uutisia ladataan"
 msgstr "Nyheter laddas"
 
-#: papukaaniApp/static/papukaani/js/public.js:88
-msgid "Lisätietoja"
-msgstr "Information"
-
-#: papukaaniApp/static/papukaani/js/public.js:148
+#: papukaaniApp/static/papukaani/js/public.js:150
 msgid "Lintu"
 msgstr "Fågel"
 
-#: papukaaniApp/static/papukaani/js/public.js:150
+#: papukaaniApp/static/papukaani/js/public.js:152
 msgid "Linnut"
 msgstr "Fåglar"
 
-#: papukaaniApp/static/papukaani/js/public.js:155
+#: papukaaniApp/static/papukaani/js/public.js:157
 msgid " ja "
 msgstr " och"
 
-#: papukaaniApp/static/papukaani/js/public.js:168
+#: papukaaniApp/static/papukaani/js/public.js:170
 msgid "Avaa"
 msgstr "Öppna"
 
-#: papukaaniApp/static/papukaani/js/public.js:216
+#: papukaaniApp/static/papukaani/js/public.js:218
 msgid "fi"
 msgstr "sv"
 
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr ""
+
+#~ msgid "Lisätietoja"
+#~ msgstr "Information"

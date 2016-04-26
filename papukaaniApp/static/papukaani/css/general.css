@@ -501,8 +501,8 @@ code {
 }
 
 #public .ui-datepicker {
-    position: relative !important;
-    top: -570px !important;
+    position: absolute !important;
+    top: 385px !important;
 }
 
 .birdrow {

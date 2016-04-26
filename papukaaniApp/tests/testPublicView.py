@@ -370,6 +370,16 @@ class PublicView(StaticLiveServerTestCase):
         self.assertTrue(
             "Uutinen1" not in self.page.driver.find_element_by_css_selector("#newslist").text)
 
+    def test_selecting_bird_displays_only_its_public_news(self):
+        self.oldnews.publishDate = None
+        self.oldnews.update()
+        self.page.driver.refresh()
+        self.page.change_individual_selection(str(self.I.id))
+        self.assertTrue(
+            "Uutinen4" in self.page.driver.find_element_by_css_selector("#newslist").text)
+        self.assertTrue(
+            "Uutinen3" not in self.page.driver.find_element_by_css_selector("#newslist").text)
+
     def test_news_of_language_not_selected_not_shown(self):
         self.page.change_individual_selection(str(self.I.id))
         self.assertTrue(

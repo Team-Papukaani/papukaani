@@ -31,13 +31,8 @@ class testLajiStoreAPI(TestCase):
         self.news = {
             "title": "test",
             "content": "testtest",
-            "language": "fi"
-        }
-
-        self.news = {
-            "title": "test",
-            "content": "testtest",
-            "language": "fi"
+            "language": "fi",
+            "eventDate": "2015-09-14T15:29:28+03:00"
         }
 
     def testLajiStoreNews(self):

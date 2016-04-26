@@ -216,6 +216,3 @@ msgstr "fi"
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr "'"
-
-#~ msgid "Lisätietoja"
-#~ msgstr "Lisätietoja"

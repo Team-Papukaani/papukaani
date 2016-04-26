@@ -171,7 +171,7 @@ msgstr "Uttagen"
 
 #: papukaaniApp/templates/papukaaniApp/devices.html:133
 msgid "Tätä laitetta ei ole koskaan kiinnitetty"
-msgstr "Denna sändare har ej fästs."
+msgstr "Denna sändare har ej fästs"
 
 #: papukaaniApp/templates/papukaaniApp/devices.html:140
 msgid "Tämän laitteen kiinnityksiä ei onnistuttu lataamaan."
@@ -342,11 +342,11 @@ msgstr "Stäng"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:19
 msgid "Formaatin nimi"
-msgstr "Formatets namn*"
+msgstr "Formatets namn"
 
 #: papukaaniApp/templates/papukaaniApp/list_formats.html:33
 msgid "Haluatko varmasti poistaa formaatin "
-msgstr "Är du säker att du vill radera fågeln?"
+msgstr "Är du säker att du vill radera formatet "
 
 #: papukaaniApp/templates/papukaaniApp/login.html:11
 msgid "Kirjaudu sisään:"
@@ -367,7 +367,7 @@ msgstr "Publikationsdatum"
 
 #: papukaaniApp/templates/papukaaniApp/news.html:48
 msgid "Tapahtumapvm"
-msgstr "L"
+msgstr "Händelsedatum"
 
 #: papukaaniApp/templates/papukaaniApp/news.html:55
 msgid "Lisää uutiseen liitettävä lintu"

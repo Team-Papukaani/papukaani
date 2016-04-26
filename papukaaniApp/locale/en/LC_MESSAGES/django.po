@@ -174,7 +174,7 @@ msgstr "This device has never been attached"
 
 #: papukaaniApp/templates/papukaaniApp/devices.html:140
 msgid "Tämän laitteen kiinnityksiä ei onnistuttu lataamaan."
-msgstr "This device's attachments could not be loaded"
+msgstr "This device's attachments could not be loaded."
 
 #: papukaaniApp/templates/papukaaniApp/formats.html:13
 msgid "Määrittele formaatti:"
@@ -540,6 +540,3 @@ msgstr "Upload successful!"
 #: papukaaniApp/views/upload_views.py:46
 msgid "Et valinnut ladattavaa tiedostoa!"
 msgstr "You did not choose a file to upload!"
-
-#~ msgid "Kiinnitä"
-#~ msgstr "Attach"

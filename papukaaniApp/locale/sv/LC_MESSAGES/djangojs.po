@@ -21,7 +21,7 @@ msgstr ""
 #: papukaaniApp/static/papukaani/js/choose.js:49
 #: papukaaniApp/static/papukaani/js/devices.js:203
 msgid "Tallennetaan"
-msgstr "Sparar..."
+msgstr "Sparar"
 
 #: papukaaniApp/static/papukaani/js/choose.js:54
 #: papukaaniApp/static/papukaani/js/choose.js:64
@@ -47,7 +47,7 @@ msgstr "Välj fågel"
 
 #: papukaaniApp/static/papukaani/js/chooseMap.js:24
 msgid "Virheellinen aikaformaatti!"
-msgstr "Ogiltigt tidsformat"
+msgstr "Ogiltigt tidsformat!"
 
 #: papukaaniApp/static/papukaani/js/chooseMap.js:141
 msgid "Lämpötila"
@@ -83,11 +83,11 @@ msgstr "Datum definierades inte!"
 
 #: papukaaniApp/static/papukaani/js/devices.js:380
 msgid "Irroitus ei saa olla ennen kiinnitystä!"
-msgstr "Uttagningstidpunkten får inte vara före fästtidpunkten."
+msgstr "Uttagningstidpunkten får inte vara före fästtidpunkten!"
 
 #: papukaaniApp/static/papukaani/js/devices.js:385
 msgid "Päivämäärä ei saa olla tulevaisuudessa!"
-msgstr "Datum får inte vara i framtiden."
+msgstr "Datum får inte vara i framtiden!"
 
 #: papukaaniApp/static/papukaani/js/devices.js:391
 msgid "Laite on tuona aikana jo kiinni linnussa."
@@ -216,6 +216,3 @@ msgstr "sv"
 #: papukaaniApp/static/papukaani/libraries/jquery/jquery-ui/jquery-ui.min.js:8
 msgid "'"
 msgstr ""
-
-#~ msgid "Lisätietoja"
-#~ msgstr "Information"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-25 17:59+0300\n"
+"POT-Creation-Date: 2016-04-26 21:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,18 +90,18 @@ msgid "Päivämäärä ei saa olla tulevaisuudessa!"
 msgstr "Datum får inte vara i framtiden!"
 
 #: papukaaniApp/static/papukaani/js/devices.js:391
-msgid "Laite on tuona aikana jo kiinni linnussa."
-msgstr "Sändaren är redan fäst till en fågel vid den angivna tidspunkten."
+msgid "Laite on tuona aikana jo kiinni linnussa "
+msgstr "vid den angivna tidspunkten är sändaren redan fäst till "
 
-#: papukaaniApp/static/papukaani/js/individuals.js:100
+#: papukaaniApp/static/papukaani/js/individuals.js:83
 msgid "Tämä kenttä on pakollinen."
 msgstr "Fältet är obligatorisk."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:101
+#: papukaaniApp/static/papukaani/js/individuals.js:84
 msgid "Nimen pitää olla vähintään {0} kirjaimen pituinen."
 msgstr "Namnet måste vara minst {0} bokstäver i längd."
 
-#: papukaaniApp/static/papukaani/js/individuals.js:102
+#: papukaaniApp/static/papukaani/js/individuals.js:85
 msgid "Anna oikea http(s):lla alkava osoite."
 msgstr "Ange en giltig address som börjar med http(s)."
 
@@ -153,43 +153,43 @@ msgstr "Språk saknas"
 msgid "Tapahtumapvm puuttuu"
 msgstr "Händelsedatum saknas"
 
-#: papukaaniApp/static/papukaani/js/news.js:123
+#: papukaaniApp/static/papukaani/js/news.js:106
 msgid "Uutinen luotu onnistuneesti!"
 msgstr "Skapandet av nyhet lyckades!"
 
-#: papukaaniApp/static/papukaani/js/news.js:139
+#: papukaaniApp/static/papukaani/js/news.js:122
 msgid "Tiedot tallennettu onnistuneesti!"
 msgstr "Information sparats!"
 
-#: papukaaniApp/static/papukaani/js/news.js:175
+#: papukaaniApp/static/papukaani/js/news.js:158
 msgid "Tiedot poistettu onnistuneesti!"
 msgstr "Radering av informationen lyckades!"
 
-#: papukaaniApp/static/papukaani/js/news.js:190
+#: papukaaniApp/static/papukaani/js/news.js:173
 msgid "Muokkaa uutista"
 msgstr "Redigera nyheter"
 
-#: papukaaniApp/static/papukaani/js/news.js:229
+#: papukaaniApp/static/papukaani/js/news.js:212
 msgid "Muokkaa"
 msgstr "Redigera"
 
-#: papukaaniApp/static/papukaani/js/news.js:230
+#: papukaaniApp/static/papukaani/js/news.js:213
 msgid "Poista"
 msgstr "Radera"
 
-#: papukaaniApp/static/papukaani/js/news.js:239
+#: papukaaniApp/static/papukaani/js/news.js:222
 msgid "Suomi"
 msgstr "Finska"
 
-#: papukaaniApp/static/papukaani/js/news.js:240
+#: papukaaniApp/static/papukaani/js/news.js:223
 msgid "Englanti"
 msgstr "Engelska"
 
-#: papukaaniApp/static/papukaani/js/news.js:241
+#: papukaaniApp/static/papukaani/js/news.js:224
 msgid "Ruotsi"
 msgstr "Svenska"
 
-#: papukaaniApp/static/papukaani/js/news.js:330
+#: papukaaniApp/static/papukaani/js/news.js:313
 msgid "Uutisia ladataan"
 msgstr "Nyheter laddas"
 

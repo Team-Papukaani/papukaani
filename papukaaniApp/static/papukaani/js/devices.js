@@ -388,7 +388,7 @@ var validateAtt = function(att, oldAtts) {
     var overlapping = overlapsWithOld(att, oldAtts);
     if (overlapping !== null) {
         var name = getByID(devs.individuals, overlapping.individualID).nickname;
-        throw new ValidationError(gettext('Laite on tuona aikana jo kiinni linnussa.') + name);
+        throw new ValidationError(gettext('Laite on tuona aikana jo kiinni linnussa ') + name);
     }
 }
 

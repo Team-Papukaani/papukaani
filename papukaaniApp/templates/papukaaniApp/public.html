@@ -115,7 +115,7 @@
                                                      height="40"/>
                                             </td>
                                             <td>
-                                                <div id="speedSlider" class="small-slider" data-toggle="tooltip"
+                                                <div id="speedSlider" class="small-slider" data-tip="tooltip"
                                                      title="{% trans "Nopeus" %}"
                                                      data-placement="top" style="top:-5px;"></div>
                                             </td>
@@ -281,7 +281,6 @@
             var modal = $(this);
             var id = button.data('id');
             var news = sorter.getNews(id);
-            console.log(news)
 
             modal.find('.modal-title').html(news.title);
             modal.find('.newsContent').html(news.content);

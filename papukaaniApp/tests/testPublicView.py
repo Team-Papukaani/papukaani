@@ -408,11 +408,14 @@ class PublicView(StaticLiveServerTestCase):
 
     def test_modal_displays_news_correctly(self):
         self.page.change_individual_selection(str(self.I2.id))
+        time.sleep(1)
         self.page.driver.find_element_by_css_selector("button.openNews").click()
         self.assertTrue("Uutinen2" in self.page.driver.find_element_by_css_selector("#newsModal h4.modal-title").text)
         self.assertTrue("Uutisen sisältö2" in self.page.driver.find_element_by_css_selector(".newsContent").text)
         self.assertTrue("Ajankohta: 16.12.2009 00:00" in self.page.driver.find_element_by_css_selector(".eventDate").text)
         self.assertTrue("Julkaistu: 16.12.2010 00:00" in self.page.driver.find_element_by_css_selector(".publishDate").text)
-        self.assertTrue("Liittyy lintuihin: Birdie, Birdie2" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
+        self.assertTrue("Liittyy lintuihin:" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
+        self.assertTrue(" Birdie2" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
+        self.assertTrue(" Birdie" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
 
 

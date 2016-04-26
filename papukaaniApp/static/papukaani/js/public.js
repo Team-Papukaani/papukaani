@@ -1,4 +1,5 @@
 var request = null;
+$('[data-tip="tooltip"]').tooltip();
 
 function IndividualSorter(restUrl, individuals, species, map) {
     this.restUrl = restUrl;

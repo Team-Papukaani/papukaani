@@ -51,12 +51,11 @@ class TestNewsFrontend(StaticLiveServerTestCase):
 
     def test_add_targets(self):
         self.page.add_targets(str(self.I3.id))
-        time.sleep(5)
         n = news.get(self.I.id)
         g = n.targets.pop()
         b = individual.get(g)
         print(vars(b))
-        print(self.page.FIRST_NEWS_TARGETS.text)
+        print(self.page.MODAL_MESSAGE.text)
         self.assertEquals("test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)
 
     def test_close_without_saving_confirmed(self):

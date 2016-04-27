@@ -776,7 +776,7 @@ class NewsPage(Page):
         time.sleep(1)
 
     def add_targets(self, key):
-        time.sleep(3)
+        time.sleep(5)
         self.NEWS_MODIFY_BUTTON.click()
         time.sleep(3)
         self.driver.find_element_by_css_selector("button.remove").click()

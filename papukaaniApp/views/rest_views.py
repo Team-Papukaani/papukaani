@@ -1,12 +1,8 @@
-from django.core.cache import caches
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from papukaaniApp.models_LajiStore import document, individual, gathering
 from datetime import datetime
-
-from papukaaniApp.services.laji_auth_service.laji_auth import authenticated
 from papukaaniApp.services.laji_auth_service.require_auth import require_auth
-
 
 @api_view(['GET'])
 def getGatheringsForDevice(request):
@@ -20,60 +16,32 @@ def getGatheringsForDevice(request):
         _move_altitude(g)
     return Response(gatherings)
 
-
 @api_view(['GET'])
 def getPublicGatheringsForIndividual(request):
     """
     REST-controller for getting bird-specific gatherings.
     """
 
-    routes_cache = False
-
-    if not authenticated(request):  # dont cache loggedIn requests
-        try:
-            routes_cache = caches['routes']
-        except:
-            routes_cache = False
-            pass
-
     ids = request.GET.get('individualId').split(",")
     data = {}
     for id in ids:
-        cache_key = 'route_' + id
-        if routes_cache:
-            route_cache = routes_cache.get(cache_key)
-            if route_cache is not None:
-                data[id] = route_cache
-                continue
-
         indiv = individual.get(id)
         gatherings = _get_gatherings_data(id, public_only=True, extras_onlymapdata=True)
         gatherings.append(indiv.nickname)
-
-        if routes_cache:
-            routes_cache.set(cache_key, gatherings)
-
         data[id] = gatherings
-
-        if routes_cache:
-            routes_cache.close()
-
     return Response(data)
-
 
 @api_view(['GET'])
 @require_auth
 def getAllGatheringsForIndividual(request):
     id = request.GET.get('individualId')
     gatherings = _get_gatherings_data(id, public_only=False,
-                                      extras_originatingDevice=True)
+        extras_originatingDevice=True)   
     return Response(gatherings)
-
 
 def _get_gatherings_data(individual_id, public_only=True, extras_originatingDevice=False, extras_onlymapdata=False):
     indiv = individual.get(individual_id)
-    gatherings_obj = indiv.get_public_gatherings() if public_only else indiv.get_all_gatherings(
-        extras_originatingDevice=extras_originatingDevice)
+    gatherings_obj = indiv.get_public_gatherings() if public_only else indiv.get_all_gatherings(extras_originatingDevice=extras_originatingDevice)
     gatherings_json = []
 
     for go in gatherings_obj:
@@ -116,8 +84,8 @@ def _remove_publicity(gathering):
     if 'publicityRestrictions' in gathering:
         del gathering['publicityRestrictions']
 
-
 def _move_altitude(g):
     coordinates = g['wgs84Geometry']['coordinates']
     if len(coordinates) == 3:
         g['altitude'] = coordinates.pop()
+

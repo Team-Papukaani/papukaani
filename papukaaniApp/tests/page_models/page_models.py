@@ -787,6 +787,6 @@ class NewsPage(Page):
             time.sleep(2)
         time.sleep(1)
         self.NEWS_SAVE_BUTTON.click()
-        time.sleep(1)
+        time.sleep(2)
 
 

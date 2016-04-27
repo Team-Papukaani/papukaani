@@ -55,7 +55,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         g = n.targets.pop()
         b = individual.get(g)
         print(vars(b))
-        print(self.page.MODAL_MESSAGE.text)
+
         self.assertEquals("test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)
 
     def test_close_without_saving_confirmed(self):

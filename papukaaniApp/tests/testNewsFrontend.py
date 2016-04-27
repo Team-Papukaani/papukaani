@@ -4,13 +4,15 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from papukaaniApp.models_LajiStore import *
 from papukaaniApp.tests.page_models.page_models import NewsPage
 
+
 class TestNewsFrontend(StaticLiveServerTestCase):
     def setUp(self):
         self.I2 = individual.create("test", "ERIEUR")
         self.I3 = individual.create("test2", "ERIEUR")
         self.targets = []
         self.targets.append(self.I2.id)
-        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', '2016-03-01T00:00:00+00:00', self.targets)
+        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', '2016-03-01T00:00:00+00:00',
+                             self.targets)
         self.page = NewsPage()
         self.page.navigate()
 
@@ -51,12 +53,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
 
     def test_add_targets(self):
         self.page.add_targets(str(self.I3.id))
-        n = news.get(self.I.id)
-        g = n.targets.pop()
-        b = individual.get(g)
-        print(vars(b))
-
-        self.assertEquals("test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)
+        self.assertEquals("test (Siili), test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)
 
     def test_close_without_saving_confirmed(self):
         self.page.create_news_and_close_without_saving_accept("Title", "Content", "Ruotsi", "01.03.2016 00:00")

@@ -53,7 +53,9 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.page.add_targets(str(self.I3.id))
         time.sleep(1)
         n = news.get(self.I.id)
-        print(vars(n))
+        g = n.targets.pop()
+        b = individual.get(g)
+        print(vars(b))
         print(self.page.FIRST_NEWS_TARGETS.text)
         self.assertEquals("test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)
 

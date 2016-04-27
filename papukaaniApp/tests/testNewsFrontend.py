@@ -51,7 +51,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
 
     def test_add_targets(self):
         self.page.add_targets(str(self.I3.id))
-        time.sleep(3)
+        time.sleep(5)
         n = news.get(self.I.id)
         g = n.targets.pop()
         b = individual.get(g)

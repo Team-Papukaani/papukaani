@@ -778,15 +778,15 @@ class NewsPage(Page):
     def add_targets(self, key):
         time.sleep(5)
         self.NEWS_MODIFY_BUTTON.click()
-        time.sleep(3)
+        time.sleep(5)
         self.driver.find_element_by_css_selector("button.remove").click()
-        time.sleep(3)
+        time.sleep(5)
         sel = Select(self.INDIVIDUAL_SELECTOR)
         sel.select_by_value(key)
         while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(2)
-        time.sleep(3)
+        time.sleep(5)
         self.NEWS_SAVE_BUTTON.click()
-        time.sleep(3)
+        time.sleep(5)
 
 

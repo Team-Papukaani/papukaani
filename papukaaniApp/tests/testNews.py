@@ -12,8 +12,8 @@ _URL = '/papukaani/news/'
 class TestNews(TestCase):
     def setUp(self):
         self.c = Client()
-        self.A = news.create('title', 'test', 'fi')
-        self.B = news.create('title2', 'test2', 'en', None, [1])
+        self.A = news.create('title', 'test', 'fi', eventDate="2016-03-01T00:00:00+00:00")
+        self.B = news.create('title2', 'test2', 'en', None, None, [1])
 
     def tearDown(self):
         news.delete_all()
@@ -24,18 +24,33 @@ class TestNews(TestCase):
             "language": "en",
             "targets": [],
             "publishDate": "2016-03-01T00:00:00+00:00",
+            "eventDate": "2016-3-1",
             "title": "test3"
         }
         response = self.c.post(_URL, postdata)
 
         self.assertEquals(len(news.find()), 3)
 
-    def test_post_with_bad_date(self):
+    def test_post_with_bad_publishdate(self):
         postdata = {
             "content": "p>test</p>",
             "language": "en",
             "targets": [],
             "publishDate": "532452345",
+            "eventDate": "2016-3-1",
+            "title": "test3"
+        }
+        response = self.c.post(_URL, postdata)
+
+        self.assertEquals(len(news.find()), 2)
+
+    def test_post_with_bad_eventdate(self):
+        postdata = {
+            "content": "p>test</p>",
+            "language": "en",
+            "targets": [],
+            "publishDate": "2016-3-1",
+            "eventDate": "123sdfasf",
             "title": "test3"
         }
         response = self.c.post(_URL, postdata)
@@ -46,6 +61,7 @@ class TestNews(TestCase):
         postdata = {
             "content": "p>test</p>",
             "language": "en",
+            "eventDate": "2016-3-1",
             "title": ""
         }
         response = self.c.post(_URL, postdata)
@@ -56,28 +72,12 @@ class TestNews(TestCase):
         postdata = {
             "content": "",
             "language": "en",
+            "eventDate": "2016-3-1",
             "title": "test"
         }
         response = self.c.post(_URL, postdata)
 
         self.assertEquals(len(news.find()), 2)
-
-    def test_post_with_targets(self):
-        I = individual.create("test", "test")
-        I2 = individual.create("test", "test")
-        targets = []
-        targets.append(I.id)
-        targets.append(I2.id)
-        postdata = {
-            "content": "p>test</p>",
-            "language": "en",
-            "targets": json.dumps(targets),
-            "publishDate": "2016-3-1",
-            "title": "test3"
-        }
-        response = self.c.post(_URL, postdata)
-
-        self.assertEquals(len(news.find()), 3)
 
     def test_delete(self):
         response = self.c.delete(_URL + self.A.id)
@@ -103,6 +103,7 @@ class TestNews(TestCase):
             "content": "p>test</p>",
             "language": "en",
             "targets": json.dumps(targets),
+            "eventDate": "2016-3-1",
             "publishDate": "2016-3-1",
             "title": "test3"
         }
@@ -114,6 +115,7 @@ class TestNews(TestCase):
             "content": "p>test</p>",
             "language": "en",
             "targets": "12345645",
+            "eventDate": "2016-3-1",
             "publishDate": "2016-3-1",
             "title": "test3"
         }
@@ -125,6 +127,7 @@ class TestNews(TestCase):
             "content": "p>test</p>",
             "language": "en",
             "targets": "",
+            "eventDate": "2016-3-1",
             "publishDate": "2016-3-1",
             "title": "test3"
         }
@@ -136,6 +139,7 @@ class TestNews(TestCase):
             "content": "p>test</p>",
             "language": "en",
             "targets": " 12341234,12341234",
+            "eventDate": "2016-3-1",
             "publishDate": "2016-3-1",
             "title": "test3"
         }

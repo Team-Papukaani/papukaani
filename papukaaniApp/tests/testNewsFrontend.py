@@ -1,3 +1,4 @@
+import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from papukaaniApp.models_LajiStore import *
@@ -9,7 +10,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
         self.I3 = individual.create("test2", "ERIEUR")
         self.targets = []
         self.targets.append(self.I2.id)
-        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', self.targets)
+        self.I = news.create("Title", "<p>content</p>", "sv", '2016-03-01T00:00:00+00:00', '2016-03-01T00:00:00+00:00', self.targets)
         self.page = NewsPage()
         self.page.navigate()
 
@@ -38,6 +39,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
 
     def test_show_correct_message_after_modify(self):
         self.page.modify_news("Title2", "Content2", "Suomi", "01.03.2015 00:00")
+        time.sleep(3)
         self.assertEquals("Title2", self.page.FIRST_NEWS_TITLE.text)
         self.assertEquals("Tiedot tallennettu onnistuneesti!", self.page.MESSAGE.text)
 
@@ -48,6 +50,7 @@ class TestNewsFrontend(StaticLiveServerTestCase):
 
     def test_add_targets(self):
         self.page.add_targets(str(self.I3.id))
+        time.sleep(3)
         self.assertEquals("test2 (Siili)", self.page.FIRST_NEWS_TARGETS.text)
 
     def test_close_without_saving_confirmed(self):

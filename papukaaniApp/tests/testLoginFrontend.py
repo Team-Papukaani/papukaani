@@ -12,7 +12,7 @@ class TestLoginFrontend(StaticLiveServerTestCase):
 
     def setUp(self):
         settings.MOCK_AUTHENTICATION = "On"
-        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1920,1200))
+        self.display = Display(visible=settings.XEPHYR_VISIBILITY, size=(1920,1400))
         self.display.start()
         self.driver = get_configured_firefox()
 

@@ -6,10 +6,12 @@ from selenium.webdriver.common.keys import Keys
 import time
 from selenium.webdriver.support.wait import WebDriverWait
 from papukaaniApp.tests.page_models.page_model import Page, Element
+import logging
+from papukaaniApp.tests.test_utils import retry_if_stale, decorate_all_methods
 
+logger = logging.getLogger(__name__)
 
 BASE_URL = "http://127.0.0.1:8081"
-
 
 class NavigationPage(Page):
     """
@@ -24,19 +26,6 @@ class NavigationPage(Page):
         Click the link-element and proceed to the page it directs to.
         """
         self.UPLOAD_LINK.click()
-
-
-class PageWithDeviceSelector(Page):
-    DEVICE_SELECTOR = Element(By.ID, 'selectDevice')
-
-    def get_device_selection(self):
-        return self.DEVICE_SELECTOR.get_attribute('value')
-
-    def change_device_selection(self, key):
-        sel = Select(self.DEVICE_SELECTOR)
-        sel.select_by_value(key)
-        while self.DEVICE_SELECTOR.get_attribute('disabled'):
-            time.sleep(0.1)
 
 
 class UploadPage(Page):
@@ -79,7 +68,7 @@ class UploadPage(Page):
         sel.select_by_value(key)
 
 
-class PublicPage(PageWithDeviceSelector):
+class PublicPage(Page):
     """
     Page Object for the public page.
     """
@@ -332,32 +321,169 @@ class ChoosePage(Page):
         return self.INDIVIDUAL_SELECTOR.get_attribute('value')
 
 
-class DevicePage(PageWithDeviceSelector):
+@decorate_all_methods(retry_if_stale)
+class DevicePage(Page):
     """
     Page Object for the device page.
     """
-    START_TIME = Element(By.ID, "start_time")
-    REMOVE_TIME = Element(By.ID, "remove_time")
-    ATTACH = Element(By.ID, "attach")
-    REMOVE = Element(By.CLASS_NAME, "btn-danger")
-    ATTACHER = Element(By.ID, "attacher")
 
     url = BASE_URL + '/papukaani/devices/'
 
     def __init__(self):
         super().__init__()
 
-    def get_individual_name(self, individualId):
-        return self.driver.find_element_by_id("name" + str(individualId)).text
+    def clickNew(self):
+        self._css('.new-button:not(.disabled)').click()
 
-    def attach_individual(self, bird, timestamp):
-        selector = self.driver.find_element_by_id("individualId")
-        sel = Select(selector)
-        sel.select_by_value(bird)
+    def clickCancel(self):
+        self._css('.cancel-button').click()
 
-        self.START_TIME.send_keys(timestamp)
+    def clickSave(self):
+        self._css('.save-button').click()
 
-        self.ATTACH.click()
+    def _getRowBy(self, row=None, attID=None):
+
+        if (row is not None) and (attID is not None):
+            raise ValueError('Must specify only one of row and attID')
+
+        # by row index
+        if row is not None:
+            rows = self.driver.find_elements_by_css_selector('.atts-list tbody tr')
+            return rows[row]
+
+        # by attachment id 
+        if attID is not None:
+            return self._css('.atts-list tbody tr#att-%s' % attID)
+
+        raise ValueError('Must specify one of row and attID')
+
+    def clickDelete(self, row=None, attID=None):
+        row = self._getRowBy(row=row, attID=attID)
+        delete = row.find_element_by_css_selector('.delete-button')
+        delete.click()
+
+    def clickEdit(self, row=None, attID=None):
+        row = self._getRowBy(row=row, attID=attID)
+        edit = row.find_element_by_css_selector('.edit-button')
+        edit.click()
+
+    def getDisplayedAttachTime(self, row=None, attID=None):
+        row = self._getRowBy(row=row, attID=attID)
+        return row.find_element_by_css_selector('.attach-time').text.strip()
+
+    def getDisplayedRemoveTime(self, row=None, attID=None):
+        row = self._getRowBy(row=row, attID=attID)
+        el = row.find_element_by_css_selector('.remove-time')
+        if el.find_elements_by_css_selector('.not-removed-note'):
+            return None
+        else:
+            return el.text.strip()
+
+    def getDisplayedIndividualName(self, row=None, attID=None):
+        row = self._getRowBy(row=row, attID=attID)
+        return row.find_element_by_css_selector('.attached-individual').text.strip()
+
+    def numTableRows(self):
+        return len(self.driver.find_elements_by_css_selector('.atts-list tbody tr'))
+
+    def numAttachments(self):
+        return len(self.driver.find_elements_by_css_selector('.att'))
+
+    def getCurrentDeviceID(self):
+        return self._css('#selectDevice').get_attribute('value')
+
+    def _getIndividualInput(self):
+        return self._css('.select-individual')
+
+    def _getAttachedInput(self):
+        return self._css('[name=attach-time]')
+
+    def _getRemovedInput(self):
+        return self._css('[name=remove-time]')
+
+    def isEditing(self):
+        return self._hasOne('.att.editing')
+
+    def getEditingIndividualChoice(self):
+        selected = self._getIndividualInput().get_attribute('value')
+        if selected == 'None':
+            return None
+        return selected
+
+    def getEditingAttachedChoice(self):
+        return self._getAttachedInput().get_attribute('value')
+
+    def getEditingRemovedChoice(self):
+        return self._getRemovedInput().get_attribute('value')
+
+    def inputAttachedChoice(self, s):
+        self._getAttachedInput().clear()
+        self._getAttachedInput().send_keys(s)
+
+    def inputRemovedChoice(self, s):
+        self._getRemovedInput().clear()
+        self._getRemovedInput().send_keys(s)
+
+    def inputIndividualChoice(self, indID):
+        sel = Select(self._getIndividualInput())
+        sel.select_by_value(indID)
+
+    def changeDevice(self, devID):
+        sel = Select(self._css('#selectDevice'))
+        sel.select_by_value(devID)
+
+    def hasNoneNote(self):
+        return self._hasOne('.none-note')
+
+    def hasTableHeadings(self):
+        return self._hasOne('.atts-list thead')
+
+    def hasMessage(self):
+        return len(self._css('#message_area').text.strip()) > 0
+        
+    def hasErrorMessage(self):
+        return self.hasMessage() and \
+                'error-message' in self._css('#message_area').get_attribute('class')
+
+    def hasInfoMessage(self):
+        return self.hasMessage() and \
+                'info-message' in self._css('#message_area').get_attribute('class')
+
+    def hasNewButton(self):
+        return self._hasOne('.new-button')
+
+    def newButtonEnabled(self):
+        return not ('disabled' in self._css('.new-button').get_attribute('class'))
+
+    def deviceSelectorEnabled(self):
+        return self._hasOne('#selectDevice') and \
+            self._hasNone('#selectDevice[disabled=disabled]')
+
+    def editDeleteButtonsPresentAndEnabled(self):
+        return \
+            self._hasNone('.edit-button.disabled') and \
+            self._hasNone('.delete-button.disabled') and \
+            self._hasSome('.edit-button:not(.disabled)') and \
+            self._hasSome('.delete-button:not(.disabled)')
+
+    def editDeleteButtonsPresentAndDisabled(self):
+        return \
+            self._hasSome('.edit-button.disabled') and \
+            self._hasSome('.delete-button.disabled') and \
+            self._hasNone('.edit-button:not(.disabled)') and \
+            self._hasNone('.delete-button:not(.disabled)')
+
+    def _css(self, selector):
+        return self.driver.find_element_by_css_selector(selector)
+
+    def _hasOne(self, selector):
+        return len(self.driver.find_elements_by_css_selector(selector)) == 1
+
+    def _hasSome(self, selector):
+        return len(self.driver.find_elements_by_css_selector(selector)) > 0
+
+    def _hasNone(self, selector):
+        return len(self.driver.find_elements_by_css_selector(selector)) == 0
 
 
 class IndividualPage(Page):
@@ -659,6 +785,8 @@ class NewsPage(Page):
         sel.select_by_value(key)
         while self.INDIVIDUAL_SELECTOR.get_attribute('disabled'):
             time.sleep(2)
-        time.sleep(2)
-        self.NEWS_SAVE_BUTTON.click()
         time.sleep(1)
+        self.NEWS_SAVE_BUTTON.click()
+        time.sleep(2)
+
+

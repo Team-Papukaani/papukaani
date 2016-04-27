@@ -42,7 +42,8 @@ class PublicView(StaticLiveServerTestCase):
             "content": "Uutisen sisältö",
             "language": "fi",
             "targets": { self.I.id },
-            "publishDate": "2010-12-15T00:00:00+00:00"
+            "publishDate": "2010-12-15T00:00:00+00:00",
+            "eventDate": "2009-12-15T00:00:00+00:00"
         }
 
         new2 = {
@@ -50,21 +51,23 @@ class PublicView(StaticLiveServerTestCase):
             "content": "Uutisen sisältö2",
             "language": "fi",
             "targets": { self.I.id, self.I2.id },
-            "publishDate": "2010-12-16T00:00:00+00:00"
+            "publishDate": "2010-12-16T00:00:00+00:00",
+            "eventDate": "2009-12-16T00:00:00+00:00"
+
         }
         self.oldnews = news.create("Uutinen3","Uutisen sisältö3", "fi",
                               publishDate="2009-12-15T00:00:00+00:00",
+                              eventDate="2010-12-15T00:00:00+00:00",
                               targets={ self.I.id })
 
         self.newnews = news.create("Uutinen4","Uutisen sisältö4", "fi",
                               publishDate="2011-12-15T00:00:00+00:00",
+                              eventDate="2010-12-15T00:00:00+00:00",
                               targets={ self.I.id })
 
         self.swenews = news.create("Svensk nyhet","Svenska bra", "sv",
                               publishDate="2011-12-15T00:00:00+00:00",
-                              targets={ self.I.id })
-
-        self.nodatenews = news.create("Dateless","Dateless", "fi",
+                              eventDate="2010-12-15T00:00:00+00:00",
                               targets={ self.I.id })
 
         self.N = news.create(**new)
@@ -110,7 +113,6 @@ class PublicView(StaticLiveServerTestCase):
         self.swenews.delete()
         self.oldnews.delete()
         self.newnews.delete()
-        self.nodatenews.delete()
 
     def test_marker_moves_when_play_is_pressed(self):
         self.page.play_animation_for_individual(str(self.I.id))
@@ -361,49 +363,59 @@ class PublicView(StaticLiveServerTestCase):
         self.page.TIME_START.send_keys(Keys.ENTER)
         self.assertEqual(self.canvas['long-red'], self.page.get_linelayercanvas_as_base64())
 
-    def selecting_bird_displays_its_news(self):
+    def test_selecting_bird_displays_its_news(self):
         self.page.change_individual_selection(str(self.I2.id))
         self.assertTrue(
             "Uutinen2" in self.page.driver.find_element_by_css_selector("#newslist").text)
         self.assertTrue(
             "Uutinen1" not in self.page.driver.find_element_by_css_selector("#newslist").text)
 
-    def news_of_language_not_selected_not_shown(self):
+    def test_selecting_bird_displays_only_its_public_news(self):
+        self.oldnews.publishDate = None
+        self.oldnews.update()
+        self.page.driver.refresh()
+        self.page.change_individual_selection(str(self.I.id))
+        self.assertTrue(
+            "Uutinen4" in self.page.driver.find_element_by_css_selector("#newslist").text)
+        self.assertTrue(
+            "Uutinen3" not in self.page.driver.find_element_by_css_selector("#newslist").text)
+
+    def test_news_of_language_not_selected_not_shown(self):
         self.page.change_individual_selection(str(self.I.id))
         self.assertTrue(
             "Svensk nyhet" not in self.page.driver.find_element_by_css_selector("#newslist").text)
 
-    def news_without_dates_not_shown(self):
+    def test_news_are_ordered_by_event_date(self):
         self.page.change_individual_selection(str(self.I.id))
         self.assertTrue(
-            "Dateless" not in self.page.driver.find_element_by_css_selector("#newslist").text)
-
-    def news_are_ordered_by_date(self):
-        self.page.change_individual_selection(str(self.I.id))
-        self.assertTrue(
-            "2011" in str(self.page.driver.find_element_by_css_selector("#newslist").text).rsplit('\n')[2])
+            "2010" in str(self.page.driver.find_element_by_css_selector("#newslist").text).rsplit('\n')[2])
         self.assertTrue(
             "2009" in str(self.page.driver.find_element_by_css_selector("#newslist").text).rsplit('\n')[10])
 
 
-    def removing_bird_removes_news_regarding_only_that_bird(self):
+    def test_removing_bird_removes_news_regarding_only_that_bird(self):
         self.page.change_individual_selection(str(self.I.id))
         self.page.remove_selected_individual(str(self.I.id))
         self.assertTrue(not self.page.driver.find_element_by_css_selector("#newslist").text)
 
 
-    def removing_bird_doesnt_remove_news_regarding_other_bird_as_well(self):
+    def test_removing_bird_doesnt_remove_news_regarding_other_bird_as_well(self):
         self.page.change_individual_selection(str(self.I.id))
         self.page.change_individual_selection(str(self.I2.id))
+        time.sleep(1)
         self.page.remove_selected_individual(str(self.I.id))
         self.assertTrue("Uutinen2" in self.page.driver.find_element_by_css_selector("#newslist").text)
 
-    def modal_displays_news_correctly(self):
+    def test_modal_displays_news_correctly(self):
         self.page.change_individual_selection(str(self.I2.id))
+        time.sleep(1)
         self.page.driver.find_element_by_css_selector("button.openNews").click()
         self.assertTrue("Uutinen2" in self.page.driver.find_element_by_css_selector("#newsModal h4.modal-title").text)
         self.assertTrue("Uutisen sisältö2" in self.page.driver.find_element_by_css_selector(".newsContent").text)
+        self.assertTrue("Ajankohta: 16.12.2009 00:00" in self.page.driver.find_element_by_css_selector(".eventDate").text)
         self.assertTrue("Julkaistu: 16.12.2010 00:00" in self.page.driver.find_element_by_css_selector(".publishDate").text)
-        self.assertTrue("Liittyy lintuihin: Birdie, Birdie2" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
+        self.assertTrue("Liittyy lintuihin:" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
+        self.assertTrue(" Birdie2" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
+        self.assertTrue(" Birdie" in self.page.driver.find_element_by_css_selector(".relatedBirds").text)
 
 

@@ -61,13 +61,17 @@ body {
 
 #news {
     padding: 20px;
+    overflow: auto;
+    height: calc(100vh - 50px);
+    max-height:calc(100vh - 50px);
+    box-sizing: border-box;
 }
 
 #url {
     float: left;
 }
 
-.publishDate {
+.publishDate, .eventDate {
     text-align: left;
 }
 
@@ -365,7 +369,7 @@ body > .container {
     padding: 50px 0 0;
 }
 
-.container .text-muted {
+footer .text-muted {
     color: #ffffff;
     margin: 20px 0;
 }
@@ -490,11 +494,14 @@ code {
 .firstCol {
     float: left;
     width: 200px;
+    padding-bottom: 1px;
 }
 
 .secondCol {
     float: left;
     width: calc(100% - 200px);
+    padding-bottom: 1px;
+
 }
 
 #public .ui-datepicker {
@@ -554,6 +561,7 @@ code {
     z-index: 1;
     background: #ccc;
 }
+
 #newsContainer{
     padding-bottom: 60px;
 }

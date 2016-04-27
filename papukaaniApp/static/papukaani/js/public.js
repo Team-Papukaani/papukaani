@@ -1,4 +1,5 @@
 var request = null;
+$('[data-tip="tooltip"]').tooltip();
 
 function IndividualSorter(restUrl, individuals, species, map) {
     this.restUrl = restUrl;
@@ -79,13 +80,14 @@ function showPointsForIndividual(ids) {
             html.push('<div class="birds">');
             html.push('<div data-id="' + ids[i] + '" class="firstCol" id="' + id + '">');
             html.push('<button type="button" class="remove" style="float: left; display: block" aria-hidden="true">' +
-                '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>' +
-                ' <span>' + individualname + '</span> ');
+                '<span class="glyphicon glyphicon-remove" style="float: left" aria-hidden="true"></span></button>');
 
             if (sorter.getBird(ids[i]).description != "" || sorter.getBird(ids[i]).url != "") {
                 html.push('<button type="button" class="showDescription btn btn-info btn-xs" ' +
                     'data-toggle="modal" data-target="#descriptionModal" data-id="' +
-                    ids[i] + '">' + gettext('Lisätietoja') + '</button>');
+                    ids[i] + '" data-tip="tooltip" title="' + sorter.getBird(ids[i]).species + '">' + individualname + '</button>');
+            } else {
+                html.push('<span data-tip="tooltip" title="' + sorter.getBird(ids[i]).species + '">' + individualname + '</span>')
             }
             html.push('</div>');
             html.push('</div>');
@@ -107,6 +109,7 @@ function showPointsForIndividual(ids) {
             }
 
             rewriteNews();
+            $('[data-tip="tooltip"]').tooltip();
         }
         player.refreshRoutes(true);
         request = null;
@@ -123,7 +126,7 @@ function rewriteNews() {
         }
     }
     news.sort(function(a,b) {
-        return new Date(b.publishDate) - new Date(a.publishDate);
+        return new Date(b.eventDate) - new Date(a.eventDate);
     });
 
     html = [];
@@ -145,11 +148,11 @@ function rewriteNews() {
         var t = "";
 
         if (n.targets.length == 1) {
-            t = gettext('Lintu') + ': ' + sorter.getBird(n.targets[0]).name;
+            t = gettext('Lintu') + ': ' + '<span data-tip="tooltip" title="' + sorter.getBird(n.targets[0]).species + '">' + sorter.getBird(n.targets[0]).name + '</span>';
         } else {
             t = gettext('Linnut') + ': ';
             for (var j = 0; j < n.targets.length; j++) {
-                t += sorter.getBird(n.targets[j]).name;
+                t += '<span data-tip="tooltip" title="' + sorter.getBird(n.targets[j]).species + '">' + sorter.getBird(n.targets[j]).name + '</span>';
 
                 if (j == 4 && n.targets.length > 5) {
                     t = t + gettext(' ja ' + String(n.targets.length - j) + ' muuta');
@@ -163,7 +166,7 @@ function rewriteNews() {
         html.push('<p">' + t + '</p>');
 
 
-        html.push('<span style="font-style: italic; display: block;">' + displayTime(n.publishDate) + '</span>')
+        html.push('<span style="font-style: italic; display: block;">' + displayTime(n.eventDate) + '</span>')
         html.push('<button type="button" class="btn btn-primary btn-xs openNews" data-toggle="modal" data-target="#newsModal" data-id=' + n.id + '>');
         html.push(gettext('Avaa'));
         html.push('</button>');
@@ -410,12 +413,6 @@ function generateIframeUrl() {
     inputBox.val(url + '?' + lang + '&' + individuals + '&' + speed + '&' + zoom + '&' + loc + time);
     inputBox.select()
 }
-
-$(function () {
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-});
 
 function points_in_timerange(points, start, end) {
     var a = start !== "" ? new Date(parseTime(start, "+00:00")) : new Date(1900, 1, 1, 0, 0, 0, 0);

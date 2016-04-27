@@ -117,6 +117,10 @@ class Individual:
             if (start <= gBegin <= end):
                 yield g
 
+    def to_dict(self):
+        dict = self.__dict__.copy()
+        return dict
+
 def _timestamp_to_datetime(timestamp):
     timestamp = timestamp[:-3] + timestamp[-2:]
     return datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S%z")

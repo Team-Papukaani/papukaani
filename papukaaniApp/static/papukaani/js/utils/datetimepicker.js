@@ -45,7 +45,7 @@ function pad(number, length) {
 
 //Checks if the date is between the two parameters.
 function dateIsBetween(date, start, end) {
-    return (date.getTime() >= start.getTime() && date.getTime() <= end.getTime());
+    return (start.getTime() <= date.getTime() && date.getTime() <= end.getTime());
 }
 
 function initDatepicker() {

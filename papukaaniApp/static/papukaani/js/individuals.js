@@ -25,17 +25,6 @@ $("#close_modal, .close").click(function (e) {
     }
 });
 
-tinymce.init({
-    selector: 'textarea', // change this value according to your HTML
-    elementpath: false,
-    height: 300,
-    resize: false,
-    menubar: false,
-    plugins: "image code",
-    image_description: false,
-    toolbar: 'undo redo | bullist numlist | bold italic underline | fontselect fontsizeselect |  image code'
-});
-
 $('form').each(function () { // attach to all form elements on page
     $.validator.setDefaults({
         ignore: []

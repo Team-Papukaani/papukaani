@@ -257,4 +257,3 @@ var has = function(obj, propName) {
     return obj.hasOwnProperty(propName);
 };
 
-
